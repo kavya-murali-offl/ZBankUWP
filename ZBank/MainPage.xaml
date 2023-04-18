@@ -1,0 +1,310 @@
+﻿<Page
+    x:Class="ZBank.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationBackground}">
+    <Page.Resources>
+        <DataTemplate
+            x:Key="WideTopDataTemplate"
+            x:DataType="local:Navigation">
+            <StackPanel
+                Style="{ThemeResource WithTextContainer}">
+                <FontIcon
+                    Glyph="{x:Bind IconSource}"
+                    Style="{StaticResource MenuIconStyle}" />
+                <TextBlock
+                    Text="{x:Bind Text}"
+                    Style="{StaticResource MenuText}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate
+            x:Key="NarrowTopDataTemplate"
+            x:DataType="local:Navigation">
+            <StackPanel
+                ToolTipService.ToolTip="{x:Bind Text}"
+                ToolTipService.Placement="Bottom"
+                Style="{ThemeResource WithTextContainer}">
+                <FontIcon
+                    Glyph="{x:Bind IconSource}"
+                    Style="{StaticResource MenuIconStyle}" />
+            </StackPanel>
+        </DataTemplate>
+        <Style
+            TargetType="ListViewItem"
+            x:Name="WideMenuListItemStyle">
+            <Setter
+                Property="HorizontalAlignment"
+                Value="Stretch" />
+            <Setter
+                Property="HorizontalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="Width"
+                Value="Auto" />
+            <Setter
+                Property="Padding"
+                Value="0" />
+            <Setter
+                Property="Margin"
+                Value="5,0,0,0" />
+            <Setter
+                Property="CornerRadius"
+                Value="5" />
+            <Setter
+                Property="Background"
+                Value="Transparent" />
+            <Setter
+                Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+                        TargetType="ListViewItem">
+                        <ListViewItemPresenter
+                            CornerRadius="5"
+                            SelectedForeground="{ThemeResource ApplicationAccentColor}"
+                            SelectedPointerOverBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}"
+                            PointerOverBackground="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
+                            SelectionCheckMarkVisualEnabled="False"
+                            SelectedBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style
+            TargetType="ListViewItem"
+            x:Name="NarrowMenuListItemStyle">
+            <Setter
+                Property="MinWidth"
+                Value="42" />
+            <Setter
+                Property="Width"
+                Value="42" />
+            <Setter
+                Property="Margin"
+                Value="5,0,0,0" />
+            <Setter
+                Property="HorizontalAlignment"
+                Value="Left" />
+            <Setter
+                Property="HorizontalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="Background"
+                Value="Transparent" />
+            <Setter
+                Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+                        TargetType="ListViewItem">
+                        <ListViewItemPresenter
+                            CornerRadius="5"
+                            SelectedForeground="{ThemeResource ApplicationAccentColor}"
+                            SelectedPointerOverBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}"
+                            PointerOverBackground="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
+                            SelectionCheckMarkVisualEnabled="False"
+                            SelectedBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup
+                x:Name="VisualStateGroup">
+                <VisualState
+                    x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                            MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="MySplitView.IsPaneOpen"
+                            Value="True" />
+                        <Setter
+                            Target="TopListView.ItemTemplate"
+                            Value="{StaticResource WideTopDataTemplate}" />
+                        <Setter
+                            Target="TopListView.ItemContainerStyle"
+                            Value="{StaticResource WideMenuListItemStyle}" />
+                        <Setter
+                            Target="ExpandButton.Visibility"
+                            Value="Collapsed" />
+                        <Setter
+                            Target="ShrinkButton.Visibility"
+                            Value="Visible" />
+                        <Setter
+                            Target="IconContainer.Orientation"
+                            Value="Horizontal" />
+                        <Setter
+                            Target="MySplitView.DisplayMode"
+                            Value="CompactInline" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState
+                    x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                            MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="MySplitView.IsPaneOpen"
+                            Value="False" />
+                        <Setter
+                            Target="TopListView.ItemTemplate"
+                            Value="{StaticResource NarrowTopDataTemplate}" />
+                        <Setter
+                            Target="TopListView.ItemContainerStyle"
+                            Value="{StaticResource NarrowMenuListItemStyle}" />
+                        <Setter
+                            Target="ExpandButton.Visibility"
+                            Value="Visible" />
+                        <Setter
+                            Target="ShrinkButton.Visibility"
+                            Value="Collapsed" />
+                        <Setter
+                            Target="IconContainer.Orientation"
+                            Value="Vertical" />
+                        <Setter
+                            Target="MySplitView.DisplayMode"
+                            Value="CompactOverlay" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="48" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid
+            x:Name="AppTitleBar"
+            Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    x:Name="LeftPaddingColumn"
+                    Width="0" />
+                <ColumnDefinition />
+                <ColumnDefinition
+                    x:Name="RightPaddingColumn"
+                    Width="0" />
+            </Grid.ColumnDefinitions>
+            <Image
+                Source="Assets/StoreLogo.png"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Width="20"
+                Height="20"
+                Margin="8,0,8,0" />
+            <TextBlock
+                x:Name="AppTitleTextBlock"
+                Text="ZBank"
+                Foreground="{ThemeResource ApplicationForeground}"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Margin="35,0,0,0" />
+        </Grid>
+        <SplitView
+            x:Name="MySplitView"
+            Grid.Row="1"
+            PaneBackground="{ThemeResource ApplicationBackground}"
+            CompactPaneLength="48"
+            DisplayMode="CompactInline"
+            OpenPaneLength="NaN">
+            <SplitView.Pane>
+
+                <Grid
+                    Style="{ThemeResource InnerGrid}"
+                    x:Name="WideGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="*" />
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
+
+                    <StackPanel
+                        Grid.Row="0">
+                        <ListView
+                            Margin="0,10,0,0"
+                            x:Name="TopListView"
+                            ItemsSource="{x:Bind TopNavigationList}"
+                            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                            SelectionChanged="Navigation_SelectionChanged"
+                            IsItemClickEnabled="True" />
+                        <Button
+                            x:Name="ExpandButton"
+                            Click="OnExpandClicked"
+                            Style="{ThemeResource ExpandButton}">
+                            <FontIcon
+                                Glyph="&#xE150;"
+                                Style="{ThemeResource ShrinkIcon}" />
+                        </Button>
+                        <Button
+                            x:Name="ShrinkButton"
+                            Click="OnShrinkClicked"
+                            Style="{ThemeResource ExpandButton}">
+                            <FontIcon
+                                Glyph="&#xEDE2;"
+                                Style="{ThemeResource ShrinkIcon}" />
+                        </Button>
+                    </StackPanel>
+                   
+                    
+                    <StackPanel Grid.Row="2" x:Name="IconContainer">
+                        <ToggleButton x:Name="ThemeToggleButton" Style="{ThemeResource SecondaryToggleButton}" Click="ToggleButton_Click">
+                            <FontIcon
+                                Glyph="&#xE793;"
+                                 />
+                        </ToggleButton>
+                        <Button
+                            Style="{ThemeResource SecondaryButton}">
+                            <FontIcon
+                                Glyph="&#xE713;"
+                               />
+                        </Button>
+                    </StackPanel>
+                    
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            Grid.Row="3"
+                            Name="Container2"
+                            Style="{ThemeResource ItemContainer}">
+                            <PersonPicture
+                                Margin="5,10,5,10"
+                                Style="{ThemeResource ProfilePicture}"
+                                ProfilePicture="/Assets/Pro pic.jpg" />
+                            <TextBlock
+                                Text="Kavya Murali"
+                                Style="{ThemeResource ProfileNameText}" />
+                            <FontIcon
+                                Glyph="&#xE70D;"
+                                Style="{ThemeResource ProfileDropdownIcon}" />
+                        </StackPanel>
+                </Grid>
+
+
+            </SplitView.Pane>
+            <SplitView.Content>
+                <ScrollViewer>
+                    <Frame
+                        x:Name="ContentFrame"
+                        Margin="4,8,8,8"
+                        Background="{ThemeResource ApplicationPageBackground}"
+                        CornerRadius="8" />
+                </ScrollViewer>
+            </SplitView.Content>
+
+        </SplitView>
+    </Grid>
+
+</Page>

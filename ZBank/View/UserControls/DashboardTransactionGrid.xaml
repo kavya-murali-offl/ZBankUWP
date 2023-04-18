@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="ZBank.View.UserControls.DashboardTransactionGrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank.View.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:model="using:ZBank.Model"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+     
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <PersonPicture 
+                                        Grid.Column="0"
+                                        Width="35" Height="35" 
+                                        Margin="0,0,10,0"
+                                        ProfilePicture="/Assets/Pro pic.jpg"
+                            />
+            <StackPanel Grid.Column="1" Padding="5">
+                <TextBlock
+                            Grid.Column="1"
+                            Text="{x:Bind TransactionObj.OtherAccount}" Style="{ThemeResource BoldNormalText}" />
+                <TextBlock
+                            Grid.Column="1"
+                            Text="{x:Bind  TransactionObj.RecordedOn}" Style="{ThemeResource NormalText}" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" 
+                        Padding="5" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock
+                            Grid.Column="1"
+                            FontSize="20"
+                    TextAlignment="Right"
+                            Foreground="LightGreen"
+                            Text="{x:Bind TransactionObj.Amount}" Style="{ThemeResource BoldNormalText}" />
+
+            </StackPanel>
+        </Grid>
+              
+</UserControl>
