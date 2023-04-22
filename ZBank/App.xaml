@@ -3,18 +3,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZBank"
-    xmlns:config="using:ZBank.Config"
-    RequestedTheme="Light"
-    >
+    xmlns:config="using:ZBank.Config">
     <Application.Resources>
         <ResourceDictionary>
+
+
             <ResourceDictionary.MergedDictionaries>
-      
-                <ResourceDictionary Source="/ThemeControl/ThemeDictionary.xaml"/>
-                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" 
-                           ControlsResourcesVersion="Version1"/>
-                <ResourceDictionary Source="/Styles/FontDictionary.xaml"/>
-                <ResourceDictionary Source="/Styles/CommonStyles.xaml"/>
+                <!--<ResourceDictionary
+                    Source="/Styles/_Styles.xaml" />-->
+                <ResourceDictionary
+                    Source="/ThemeControl/ThemeDictionary.xaml" />
+                <ResourceDictionary
+                    Source="/Styles/_FontSizes.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

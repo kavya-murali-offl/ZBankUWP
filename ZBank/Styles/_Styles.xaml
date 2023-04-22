@@ -1,108 +1,151 @@
 ﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-   
+
     <ResourceDictionary.ThemeDictionaries>
-        <!--<ResourceDictionary x:Key="Light" Source="/ThemeControl/LightThemeDictionary.xaml"/>
-        <ResourceDictionary x:Key="Dark" Source="/ThemeControl/DarkThemeDictionary.xaml" />
-        <ResourceDictionary x:Key="Default" Source="/ThemeControl/LightThemeDictionary.xaml" />-->
 
-        <ResourceDictionary x:Key="Light">
-            <Color x:Key="ApplicationBackground">#DCDCDC</Color>
+        <ResourceDictionary
+            x:Key="Light">
             <Color
-                x:Key="ApplicationPageBackground">#F0F0F0</Color>
-            <Color x:Key="ApplicationForeground">#000000</Color>
-            <Color x:Key="ApplicationAccentColor">#ba4273</Color>
+                x:Key="PrimaryBackground">#DCDCDC</Color>
             <Color
-                x:Key="SystemAccentColor">#ba4273</Color>
+                x:Key="SecondaryBackground">#F0F0F0</Color>
             <Color
-                x:Key="SecondaryForeground">#666666</Color>
-
-            <Color
-                x:Key="System">#ba4273</Color>
-            <Color x:Key="ApplicationInactiveSelectionHighlightBrush">#E3E3E3</Color>
-            <Color
-                x:Key="ApplicationActiveSelectionHighlightBrush">#f0dde4</Color>
-           
-           
-            <Color
-                x:Key="SystemControlHighlightAltListAccentHighBrush">#ba4273</Color>
-            <Color
-                x:Key="SystemControlHighlightBaseMediumBrush">#ba4273</Color>
-        </ResourceDictionary>
-
-        <ResourceDictionary x:Key="Dark">
-            <Color x:Key="ApplicationBackground">#212121</Color>
-            <Color x:Key="ApplicationPageBackground">#161618</Color>
-            <Color x:Key="ApplicationForeground">#ffffff</Color>
+                x:Key="PrimaryForeground">#000000</Color>
             <Color
                 x:Key="SecondaryForeground">#DCDCDC</Color>
             <Color
-                x:Key="ApplicationAccentColor">#ba4273</Color>
-            <Color x:Key="SystemAccentColor">#ba4273</Color>
-            <Color x:Key="ApplicationInactiveSelectionHighlightBrush">#666666</Color>
+                x:Key="AccentColor">#ba4273</Color>
             <Color
-                x:Key="ApplicationActiveSelectionHighlightBrush">#41242f</Color>
-            <AcrylicBrush x:Key="AcrylicBackground"
-            BackgroundSource="HostBackdrop"
-            TintColor="#161618"
-            TintOpacity="0.7"
-            FallbackColor="#ffffff"/>
-            <Color x:Key="SystemControlHighlightAltListAccentHighBrush">#FFBA4273</Color>
-            <Color x:Key="SystemControlHighlightBaseMediumBrush" >#FFBA4273</Color>
+                x:Key="InactiveSelectionColor">#E3E3E3</Color>
+            <Color
+                x:Key="ActiveSelectionColor">#f0dde4</Color>
+
         </ResourceDictionary>
 
-        <ResourceDictionary x:Key="Default">
-            <Color x:Key="ApplicationBackground">#f4f4f4</Color>
-            <Color x:Key="ApplicationPaneBackground">#ffffff</Color>
-            <Color x:Key="ApplicationPageBackground">#d3d3d3</Color>
-            <Color x:Key="ApplicationForeground">#000000</Color>
-            <Color x:Key="ApplicationAccentColor">#FFBA4273</Color>
-            <Color x:Key="ApplicationInactiveSelectionHighlightBrush">#E3E3E3</Color>
-            <Color x:Key="ApplicationActiveSelectionHighlightBrush">#f0dde4</Color>
+        <ResourceDictionary
+            x:Key="Dark">
+            <Color
+                x:Key="PrimaryBackground">#212121</Color>
+            <Color
+                x:Key="SecondaryBackground">#161618</Color>
+            <Color
+                x:Key="PrimaryForeground">#FFFFFF</Color>
+            <Color
+                x:Key="SecondaryForeground">#DCDCDC</Color>
+            <Color
+                x:Key="AccentColor">#ba4273</Color>
+            <Color
+                x:Key="InactiveSelectionColor">#666666</Color>
+            <Color
+                x:Key="ActiveSelectionColor">#41242f</Color>
+
+
         </ResourceDictionary>
+
+        <ResourceDictionary
+            x:Key="Default">
+
+            <Color
+                x:Key="PrimaryBackground">#212121</Color>
+            <Color
+                x:Key="SecondaryBackground">#161618</Color>
+            <Color
+                x:Key="PrimaryForeground">#FFFFFF</Color>
+            <Color
+                x:Key="SecondaryForeground">#DCDCDC</Color>
+            <Color
+                x:Key="AccentColor">#ba4273</Color>
+            <Color
+                x:Key="InactiveSelectionColor">#666666</Color>
+            <Color
+                x:Key="ActiveSelectionColor">#41242f</Color>
+
+        </ResourceDictionary>
+   
     </ResourceDictionary.ThemeDictionaries>
-
-    <AcrylicBrush
-        x:Key="AccentAcrylicBrush"
-        TintColor="{ThemeResource ApplicationAccentColor}"
-        TintOpacity="1"
-        FallbackColor="{ThemeResource ApplicationAccentColor}" />
-    
     <SolidColorBrush
-        x:Key="AccentColorBrush"
-        Color="{ThemeResource SystemAccentColor}" />
-
+        x:Key="ApplicationBackground"
+        Color="{StaticResource PrimaryBackground}" />
     <SolidColorBrush
-        x:Key="ForegroundBrush"
-        Color="{ThemeResource ApplicationForeground}" />
-
+        x:Key="ApplicationPageBackground"
+        Color="{StaticResource SecondaryBackground}" />
+    <SolidColorBrush
+        x:Key="ApplicationForeground"
+        Color="{StaticResource PrimaryForeground}" />
     <SolidColorBrush
         x:Key="SecondaryForegroundBrush"
         Color="{ThemeResource SecondaryForeground}" />
 
-    <Style TargetType="ToggleSwitch" x:Name="ToggleSwitchStyle">
-        <Setter Property="Margin" Value="0,0,10,0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="Width" Value="Auto" />
-        <Setter Property="OnContent" Value="" />
-        <Setter Property="OffContent" Value="" />
-        <Setter Property="Foreground" Value="{ThemeResource ApplicationAccentColor}" />
+    <SolidColorBrush
+        x:Key="ApplicationInactiveSelectionHighlightBrush"
+        Color="{StaticResource InactiveSelectionColor}" />
+    <SolidColorBrush
+        x:Key="ApplicationActiveSelectionHighlightBrush"
+        Color="{StaticResource ActiveSelectionColor}" />
+
+    <SolidColorBrush
+        x:Key="AccentColorBrush"
+        Color="{StaticResource AccentColor}" />
+    
+    <Style
+        TargetType="ToggleSwitch"
+        x:Name="ToggleSwitchStyle">
+        <Setter
+            Property="Margin"
+            Value="0,0,10,0" />
+        <Setter
+            Property="Padding"
+            Value="0" />
+        <Setter
+            Property="Width"
+            Value="Auto" />
+        <Setter
+            Property="OnContent"
+            Value="" />
+        <Setter
+            Property="OffContent"
+            Value="" />
+        <Setter
+            Property="Foreground"
+            Value="{StaticResource AccentColorBrush}" />
     </Style>
 
-    <Style TargetType="StackPanel" x:Name="DashboardTransactionGridStyle">
-        <Setter Property="BorderThickness" Value="0.5" />
-        <Setter Property="BorderBrush" Value="Gray" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="Padding" Value="20" />
-        <Setter Property="Margin" Value="10" />
+    <Style
+        TargetType="StackPanel"
+        x:Name="DashboardTransactionGridStyle">
+        <Setter
+            Property="BorderThickness"
+            Value="0.5" />
+        <Setter
+            Property="BorderBrush"
+            Value="Gray" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="CornerRadius"
+            Value="10" />
+        <Setter
+            Property="Padding"
+            Value="20" />
+        <Setter
+            Property="Margin"
+            Value="10" />
     </Style>
 
-    <Style TargetType="Grid" x:Name="InnerGrid">
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
+    <Style
+        TargetType="Grid"
+        x:Name="InnerGrid">
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Stretch" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Stretch" />
     </Style>
 
     <Style
@@ -114,7 +157,7 @@
         <Setter
             Property="FontSize"
             Value="18" />
-     
+
     </Style>
 
     <Style
@@ -128,11 +171,21 @@
             Value="Bottom" />
     </Style>
 
-    <Style TargetType="FontIcon" x:Name="LogoStyle">
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Margin" Value="5,10,5,10" />
-        <Setter Property="Foreground" Value="{ThemeResource ApplicationAccentColor}" />
-        <Setter Property="FontSize" Value="40" />
+    <Style
+        TargetType="FontIcon"
+        x:Name="LogoStyle">
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Left" />
+        <Setter
+            Property="Margin"
+            Value="5,10,5,10" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource AccentColorBrush}" />
+        <Setter
+            Property="FontSize"
+            Value="40" />
     </Style>
 
     <Style
@@ -152,7 +205,7 @@
             Value="1.25" />
         <Setter
             Property="BorderBrush"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="CornerRadius"
             Value="6" />
@@ -167,7 +220,7 @@
         x:Name="SecondaryButton">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="Background"
             Value="{ThemeResource ApplicationPageBackground}" />
@@ -194,7 +247,7 @@
         <Setter
             Property="Background"
             Value="{ThemeResource ApplicationBackground}" />
-        
+
         <Setter
             Property="Margin"
             Value="5,12,5,0" />
@@ -265,7 +318,7 @@
             Value="0,0,5,0" />
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="CornerRadius"
             Value="5" />
@@ -288,7 +341,7 @@
             Value="10,10,0,5" />
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="Foreground"
             Value="#ffffff" />
@@ -345,7 +398,7 @@
             Value="10" />
     </Style>
 
-    
+
     <Style
         TargetType="PersonPicture"
         x:Name="ProfilePicture">
@@ -371,7 +424,7 @@
             Value="Left" />
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="Margin"
             Value="10,5,10,5" />
@@ -388,7 +441,7 @@
             Value="Center" />
         <Setter
             Property="Padding"
-            Value="15,0,12,0" />   
+            Value="15,0,12,0" />
         <Setter
             Property="TextWrapping"
             Value="NoWrap" />
@@ -399,13 +452,13 @@
             Property="TextTrimming"
             Value="CharacterEllipsis" />
     </Style>
-    
+
     <Style
         TargetType="FontIcon"
         x:Name="ProfileDropdownIcon">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="HorizontalAlignment"
             Value="Right" />
@@ -436,7 +489,7 @@
         x:Name="LogoOnlyStyle">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="HorizontalAlignment"
             Value="Center" />
@@ -453,7 +506,7 @@
         x:Name="IconOnlyStyle">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="HorizontalAlignment"
             Value="Center" />
@@ -481,53 +534,116 @@
             Value="Bottom" />
     </Style>
 
-    
 
-    <Style TargetType="FontIcon" x:Name="MenuIconStyle">
-        <Setter Property="FontSize" Value="20" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="#FFBA4273" />
+
+    <Style
+        TargetType="FontIcon"
+        x:Name="MenuIconStyle">
+        <Setter
+            Property="FontSize"
+            Value="20" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Left" />
+        <Setter
+            Property="Foreground"
+            Value="#FFBA4273" />
     </Style>
 
-    <Style TargetType="TextBlock" x:Name="MenuText">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Padding" Value="20,0,10,0" />
-        <Setter Property="Foreground" Value="{ThemeResource ApplicationForeground}" />
+    <Style
+        TargetType="TextBlock"
+        x:Name="MenuText">
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Left" />
+        <Setter
+            Property="Padding"
+            Value="20,0,10,0" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ApplicationForeground}" />
     </Style>
 
-    <Style TargetType="TextBlock" x:Name="DashboardHeading">
-        <Setter Property="FontSize" Value="18" />
-        <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Margin" Value="0,0,0,20" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="{ThemeResource ApplicationForeground}" />
+    <Style
+        TargetType="TextBlock"
+        x:Name="DashboardHeading">
+        <Setter
+            Property="FontSize"
+            Value="18" />
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold" />
+        <Setter
+            Property="Margin"
+            Value="0,0,0,20" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Left" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ApplicationForeground}" />
     </Style>
 
-    <Style TargetType="Grid" x:Name="PaneStyle">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="Background" Value="{ThemeResource ApplicationPageBackground}" />
-        <Setter Property="Margin" Value="8,8,0,8" />
-        <Setter Property="Padding" Value="5,0,5,0" />
+    <Style
+        TargetType="Grid"
+        x:Name="PaneStyle">
+        <Setter
+            Property="BorderThickness"
+            Value="0" />
+        <Setter
+            Property="CornerRadius"
+            Value="8" />
+        <Setter
+            Property="Background"
+            Value="{ThemeResource ApplicationPageBackground}" />
+        <Setter
+            Property="Margin"
+            Value="8,8,0,8" />
+        <Setter
+            Property="Padding"
+            Value="5,0,5,0" />
     </Style>
 
-    <Style TargetType="TextBlock" x:Name="BoldNormalText">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontWeight" Value="Semibold" />
-        <Setter Property="Foreground" Value="{ThemeResource ApplicationForeground}" />
+    <Style
+        TargetType="TextBlock"
+        x:Name="BoldNormalText">
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="FontWeight"
+            Value="Semibold" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ApplicationForeground}" />
     </Style>
 
 
-    <Style TargetType="TextBlock" x:Name="NormalText">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Foreground" Value="{ThemeResource ApplicationForeground}" />
+    <Style
+        TargetType="TextBlock"
+        x:Name="NormalText">
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="FontWeight"
+            Value="Normal" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ApplicationForeground}" />
     </Style>
 
 
 </ResourceDictionary>
-            

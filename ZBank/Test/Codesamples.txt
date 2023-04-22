@@ -1,1 +1,188 @@
-﻿
+﻿// Cards design
+
+      <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0">
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Margin="5,0,5,5"
+                        Text="Cards" />
+                </StackPanel>
+                <Grid
+                    
+                    Height="Auto"
+                    Grid.Row="1">
+                    <Grid MaxWidth="400"
+                        HorizontalAlignment="Left"
+                        MinHeight="150"
+                      >
+                   
+                        <ListView
+                            Height="Auto"
+                            Canvas.ZIndex="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            SelectionMode="None"
+                            x:Name="CardList">
+                            <ListView.ItemContainerStyle>
+                                <Style
+                                    Tar
+                                    Type="ListViewItem">
+                                    <Setter
+                                        Property="HorizontalContentAlignment"
+                                        Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListViewItem>
+                                <StackPanel
+                                    HorizontalAlignment="Stretch"
+                                    MinHeight="100"
+                                    Padding="10"
+                                    CornerRadius="20"
+                                    Background="Azure">
+                                    <TextBlock
+                                        FontWeight="Bold"
+                                        Foreground="Black"
+                                        Text="CREDIT" />
+
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Foreground="Black"
+                                        FontSize="25"
+                                        Padding="0,10,0,10"
+                                        Text="1234 5678 1234 1234" />
+
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock
+                                                HorizontalAlignment="Left"
+                                                FontWeight="SemiBold"
+                                                Foreground="Black"
+                                                FontSize="15"
+                                                Padding="0,5,0,0"
+                                                Text="Available Credit Limit" />
+                                            <TextBlock
+                                                HorizontalAlignment="Left"
+                                                FontWeight="Bold"
+                                                Foreground="Black"
+                                                FontSize="18"
+                                                Padding="0,0,0,0"
+                                                Text="$200000,00" />
+                                        </StackPanel>
+                                    </Grid>
+                                    
+                                </StackPanel>
+                            </ListViewItem>
+                        </ListView>
+                        <Grid
+                            Background="{ThemeResource ApplicationAccentColor}"
+                            Padding="5"
+                            CornerRadius="15"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Margin="0"
+                            Canvas.ZIndex="10">
+                            <FontIcon
+                                FontSize="15"
+                                Glyph="&#xF0D5;" />
+                        </Grid>
+
+
+                        <Grid
+                            Background="{ThemeResource ApplicationAccentColor}"
+                            Padding="5"
+                            CornerRadius="15"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Margin="0"
+                            Canvas.ZIndex="10">
+                            <FontIcon
+                                FontSize="15"
+                                Glyph="&#xF0D6;" />
+                        </Grid>
+                        
+                    </Grid>
+                </Grid>
+
+
+
+
+
+
+<Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="First.(Grid.Row)" Value="0" />
+                        <Setter Target="First.(Grid.Column)" Value="0" />
+                        <Setter Target="Second.(Grid.Row)" Value="0" />
+                        <Setter
+                            Target="Second.(Grid.Column)"
+                            Value="1" />
+                        <Setter Target="First.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="Second.(Grid.ColumnSpan)" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="First.(Grid.Row)" Value="0" />
+                        <Setter Target="First.(Grid.Column)" Value="0" />
+                        <Setter Target="Second.(Grid.Row)" Value="1" />
+                        <Setter Target="Second.(Grid.Column)" Value="0" />
+
+                        <Setter Target="First.(Grid.ColumnSpan)" Value="2" />
+                        <Setter Target="Second.(Grid.ColumnSpan)" Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+
+            <Grid  Name="First"  CornerRadius="5" Padding="0" Margin="10">
+                <StackPanel Grid.Row="0" Grid.Column="0" Style="{ThemeResource DashboardTransactionGridStyle}">
+                    <TextBlock 
+                    Text="Latest Transactions"
+                    Style="{ThemeResource DashboardHeading}"
+                    />
+                    <ListView ItemsSource="{x:Bind DashboardViewModel.LatestTransactions}" x:Name="TransactionsListView"
+                     ItemContainerStyle="{ThemeResource TransactionContainer}"
+                              SelectionMode="None" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Transaction" >
+
+                            <transactionUserControl:DashboardTransactionGrid />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Grid>
+
+
+        <StackPanel Name="Second">
+            <TextBlock Text="Second"/>
+
+        </StackPanel>
+     
+            </Grid>

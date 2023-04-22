@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Entity.BusinessObjects;
 using ZBank.Model;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -23,15 +24,12 @@ namespace ZBank.View.UserControls
 {
     public sealed partial class DashboardTransactionGrid : UserControl
     {
-        public Transaction TransactionObj { get { return this.DataContext as Transaction; } }
+        public TransactionBObj TransactionBObj { get { return this.DataContext as TransactionBObj; } }
 
         public DashboardTransactionGrid()
         {
             this.InitializeComponent();
             this.DataContextChanged += (s, e) => Bindings.Update();
         }
-
-
-     
     }
 }

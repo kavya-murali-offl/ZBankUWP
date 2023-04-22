@@ -7,83 +7,320 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:model="using:ZBank.Model"
+    xmlns:modelBObj="using:ZBank.Entity.BusinessObjects"
     xmlns:transactionUserControl="using:ZBank.View.UserControls"
     Background="{ThemeResource ApplicationPageBackground}">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="Wide">
+            <VisualStateGroup>
+                <VisualState
+                    x:Name="wideScreen">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800" />
+                        <AdaptiveTrigger
+                            MinWindowWidth="1100" />
                     </VisualState.StateTriggers>
+
                     <VisualState.Setters>
-                        <Setter Target="First.(Grid.Row)" Value="0" />
-                        <Setter Target="First.(Grid.Column)" Value="0" />
-                        <Setter Target="Second.(Grid.Row)" Value="0" />
-                        <Setter Target="Second.(Grid.Column)" Value="1" />
-                       
-                        
-                        <Setter Target="First.(Grid.ColumnSpan)" Value="1" />
-                        <Setter Target="Second.(Grid.ColumnSpan)" Value="1" />
+                        <Setter
+                            Target="GridRoot.ColumnDefinitions[0].Width"
+                            Value="*" />
+                        <Setter
+                            Target="GridRoot.ColumnDefinitions[1].Width"
+                            Value="*" />
+                        <Setter
+                            Target="grid1.(Grid.Row)"
+                            Value="0" />
+                        <Setter
+                            Target="grid1.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="grid2.(Grid.Row)"
+                            Value="0" />
+                        <Setter
+                            Target="grid2.(Grid.Column)"
+                            Value="1" />
+                        <Setter
+                            Target="grid3.(Grid.Row)"
+                            Value="1" />
+                        <Setter
+                            Target="grid3.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="grid4.(Grid.Row)"
+                            Value="1" />
+                        <Setter
+                            Target="grid4.(Grid.Column)"
+                            Value="1" />
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="Narrow">
+                <VisualState
+                    x:Name="narrowScreen">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
+                        <AdaptiveTrigger
+                            MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="First.(Grid.Row)" Value="0" />
-                        <Setter Target="First.(Grid.Column)" Value="0" />
-                        <Setter Target="Second.(Grid.Row)" Value="1" />
-                        <Setter Target="Second.(Grid.Column)" Value="0" />
-
-                        <Setter Target="First.(Grid.ColumnSpan)" Value="2" />
-                        <Setter Target="Second.(Grid.ColumnSpan)" Value="2" />
+                        <Setter
+                            Target="GridRoot.ColumnDefinitions[0].Width"
+                            Value="*" />
+                        <Setter
+                            Target="GridRoot.ColumnDefinitions[1].Width"
+                            Value="0" />
+                        <Setter
+                            Target="grid1.(Grid.Row)"
+                            Value="0" />
+                        <Setter
+                            Target="grid1.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="grid2.(Grid.Row)"
+                            Value="1" />
+                        <Setter
+                            Target="grid2.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="grid3.(Grid.Row)"
+                            Value="2" />
+                        <Setter
+                            Target="grid3.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="grid4.(Grid.Row)"
+                            Value="3" />
+                        <Setter
+                            Target="grid4.(Grid.Column)"
+                            Value="0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+
+        <Grid
+            x:Name="GridRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--Total balance-->
+            <Grid
+                x:Name="grid1"
+                Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="*" />
                 </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    Width="Auto"
+                    Height="Auto"
+                    MinHeight="100"
+                    Padding="15"
+                    Canvas.ZIndex="10"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource AccentColorBrush}"
+                    Background="{ThemeResource ApplicationBackground}"
+                    CornerRadius="25">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Text="Total Balance"
+                        Foreground="{ThemeResource ApplicationForeground}"
+                        FontSize="17"
+                        FontWeight="SemiBold" />
+                    <TextBlock
+                        Text="$12345.78"
+                        FontSize="25"
+                        Foreground="{ThemeResource ApplicationForeground}"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Center"
+                        Padding="5,10,5,10" />
 
+                    <Grid>
+                        <StackPanel Width="Auto" HorizontalAlignment="Left">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Total Savings"
+                                Foreground="{ThemeResource ApplicationForeground}"
+                                FontSize="15"
+                                FontWeight="Normal" />
+                            <TextBlock
+                                Text="$12345.78"
+                                FontSize="20"
+                                Foreground="{ThemeResource ApplicationForeground}"
+                                FontWeight="SemiBold"
+                                HorizontalAlignment="Center"
+                                Padding="5,10,5,10" />
+                        </StackPanel>
 
-            <Grid  Name="First"  CornerRadius="12" Padding="25,15,15,25" Margin="10">
-                <StackPanel Grid.Row="0" Grid.Column="0" Style="{ThemeResource DashboardTransactionGridStyle}">
-                    <TextBlock 
-                    Text="Latest Transactions"
-                    Style="{ThemeResource DashboardHeading}"
-                    />
-                    <ListView ItemsSource="{x:Bind DashboardViewModel.LatestTransactions}" x:Name="TransactionsListView"
-                      SelectionMode="None">
+                        <StackPanel Width="Auto" HorizontalAlignment="Right">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Total Deposits"
+                                Foreground="{ThemeResource ApplicationForeground}"
+                                FontSize="15"
+                                FontWeight="Normal" />
+                            <TextBlock
+                                Text="$12345.78"
+                                FontSize="20"
+                                Foreground="{ThemeResource ApplicationForeground}"
+                                FontWeight="SemiBold"
+                                HorizontalAlignment="Center"
+                                Padding="5,10,5,10" />
+                        </StackPanel>
+                       
+                        
+                    </Grid>
+                </StackPanel>
+                <StackPanel
+                    Width="Auto"
+                    Height="Auto"
+                    Grid.Row="0"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource AccentColorBrush}"
+                    MinHeight="100"
+                    Grid.Column="1"
+                    Padding="15"
+                    Background="{ThemeResource ApplicationPageBackground}"
+                    Margin="-30,0,0,0"
+                    CornerRadius="15">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Text="Income / Month"
+                        Foreground="{ThemeResource ApplicationForeground}"
+                        FontSize="14"
+                        FontWeight="SemiBold" />
+                    <TextBlock
+                        Text="$12345.78"
+                        FontSize="20"
+                        Foreground="{ThemeResource ApplicationForeground}"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Center"
+                        Padding="5,10,5,10" />
+
+                    <Border
+                        Height="0.4"
+                        Background="{ThemeResource AccentColorBrush}"
+                        Margin="30,0,0,10" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Text="Expense / Month"
+                        Foreground="{ThemeResource ApplicationForeground}"
+                        FontSize="14"
+                        FontWeight="SemiBold" />
+                    <TextBlock
+                        Text="$12345.78"
+                        FontSize="20"
+                        Foreground="{ThemeResource ApplicationForeground}"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Center"
+                        Padding="5,10,5,10" />
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    CornerRadius="10">
+                    
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,10,0,0">
+                        <Button
+                            HorizontalAlignment="Center"
+                            Content="Self Transfer"
+                            Style="{ThemeResource PrimaryButton}" />
+                        <Button
+                            HorizontalAlignment="Center"
+                            Content="Transfer"
+                            Style="{ThemeResource PrimaryButton}" />
+                        <Button
+                            Content="Request"
+                            HorizontalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Style="{ThemeResource PrimaryButton}" />
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+            <Grid
+                Padding="10"
+                x:Name="grid2"
+                Height="Auto"
+                Width="Auto"
+              >
+              
+      
+            </Grid>
+            <Grid
+                x:Name="grid3"
+                Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    CornerRadius="10"
+                    Padding="10"
+                    Background="{ThemeResource ApplicationBackground}">
+                    <TextBlock
+                        Padding="10"
+                        FontWeight="SemiBold"
+                        FontSize="16"
+                        Text="Latest Transactions" />
+                    <ListView
+                        ItemsSource="{x:Bind DashboardViewModel.LatestTransactions}"
+                        x:Name="TransactionsListView"
+                        SelectionMode="None">
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="model:Transaction" >
+                            <DataTemplate
+                                x:DataType="modelBObj:TransactionBObj">
                                 <transactionUserControl:DashboardTransactionGrid />
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style
+                                TargetType="ListViewItem">
+                                <Setter
+                                    Property="HorizontalContentAlignment"
+                                    Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
                     </ListView>
-                    <!--<StackPanel DataContext="{Binding SelectedItem, ElementName=TransactionsListView}"
-            Margin="0,24,0,0">
-                    <TextBlock Text="{Binding Balance}"/>
-                    <TextBlock Text="{Binding OtherAccount}"/>
-                    <TextBlock Text="{Binding RecordedOn}"/>
-                </StackPanel>-->
                 </StackPanel>
 
             </Grid>
-
-
-        <StackPanel Name="Second">
-            <TextBlock Text="Second"/>
-
-        </StackPanel>
-     
+            <Grid
+                x:Name="grid4"
+                Background="DarkGray"
+                Margin="10">
+                <TextBlock
+                    Text="Grid 3"
+                    FontSize="30" />
             </Grid>
-
+        </Grid>
+    </Grid>
 </Page>

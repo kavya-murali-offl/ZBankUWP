@@ -230,19 +230,20 @@
                         <RowDefinition
                             Height="Auto" />
                     </Grid.RowDefinitions>
-                    
+
 
                     <StackPanel
                         Grid.Row="0">
                         <ListView
                             Margin="0,10,0,0"
                             x:Name="TopListView"
+                            Loaded="TopListView_Loaded"
                             ItemsSource="{x:Bind TopNavigationList}"
-                            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                             SelectionChanged="Navigation_SelectionChanged"
                             IsItemClickEnabled="True" />
                         <Button
                             x:Name="ExpandButton"
+                            ToolTipService.ToolTip="Expand"
                             Click="OnExpandClicked"
                             Style="{ThemeResource ExpandButton}">
                             <FontIcon
@@ -252,44 +253,49 @@
                         <Button
                             x:Name="ShrinkButton"
                             Click="OnShrinkClicked"
+                            ToolTipService.ToolTip="Collapse"
                             Style="{ThemeResource ExpandButton}">
                             <FontIcon
                                 Glyph="&#xEDE2;"
                                 Style="{ThemeResource ShrinkIcon}" />
                         </Button>
                     </StackPanel>
-                   
-                    
-                    <StackPanel Grid.Row="2" x:Name="IconContainer">
-                        <ToggleButton x:Name="ThemeToggleButton" Style="{ThemeResource SecondaryToggleButton}" Click="ToggleButton_Click">
+
+                    <StackPanel
+                        Grid.Row="1"
+                        x:Name="IconContainer">
+                        <ToggleButton
+                            x:Name="ThemeToggleButton"
+                            Style="{ThemeResource SecondaryToggleButton}"
+                            Loaded="ThemeToggleButton_Loaded"
+                            Click="ToggleButton_Click">
                             <FontIcon
-                                Glyph="&#xE793;"
-                                 />
+                                Glyph="&#xE793;" />
                         </ToggleButton>
                         <Button
+                            Click="SettingsButton_Click"
                             Style="{ThemeResource SecondaryButton}">
                             <FontIcon
-                                Glyph="&#xE713;"
-                               />
+                                Glyph="&#xE713;" />
                         </Button>
                     </StackPanel>
-                    
-                        <StackPanel
-                            HorizontalAlignment="Center"
-                            Grid.Row="3"
-                            Name="Container2"
-                            Style="{ThemeResource ItemContainer}">
-                            <PersonPicture
-                                Margin="5,10,5,10"
-                                Style="{ThemeResource ProfilePicture}"
-                                ProfilePicture="/Assets/Pro pic.jpg" />
-                            <TextBlock
-                                Text="Kavya Murali"
-                                Style="{ThemeResource ProfileNameText}" />
-                            <FontIcon
-                                Glyph="&#xE70D;"
-                                Style="{ThemeResource ProfileDropdownIcon}" />
-                        </StackPanel>
+
+
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Grid.Row="2"
+                        Style="{ThemeResource ItemContainer}">
+                        <PersonPicture
+                            Margin="5,10,5,10"
+                            Style="{ThemeResource ProfilePicture}"
+                            ProfilePicture="/Assets/Pro pic.jpg" />
+                        <TextBlock
+                            Text="Kavya Murali"
+                            Style="{ThemeResource ProfileNameText}" />
+                        <FontIcon
+                            Glyph="&#xE70D;"
+                            Style="{ThemeResource ProfileDropdownIcon}" />
+                    </StackPanel>
                 </Grid>
 
 

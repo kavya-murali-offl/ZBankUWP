@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,11 +25,42 @@ namespace ZBank.View
     public sealed partial class Dashboard : Page
     {
         public DashboardViewModel DashboardViewModel { get; set; }
-
         public Dashboard()
         {
             this.InitializeComponent();
             DashboardViewModel = new DashboardViewModel();
+            var items = new List<FlipViewItem>
+            {
+                new FlipViewItem { Background = new SolidColorBrush(Colors.Red) },
+                new FlipViewItem { Background = new SolidColorBrush(Colors.Green) },
+                new FlipViewItem { Background = new SolidColorBrush(Colors.Blue) }
+            };
+           
         }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            //if (CardList.SelectedIndex > 0)
+            //{
+            //    CardList.SelectedIndex--;
+            //}
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            //if (CardList.SelectedIndex < CardList.Items.Count - 1)
+            //{
+            //    CardList.SelectedIndex++;
+            //}
+        }
+
+
     }
+
+    public class FlipViewItem
+    {
+        public Brush Background { get; set; }
+        // other properties for the item
+    }
+
 }

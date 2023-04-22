@@ -8,7 +8,6 @@ namespace ZBank.Model
 {
     public class Transaction
     {
-
         public Transaction(TransactionType transactionType, ModeOfPayment mode, decimal amount, DateTime recordedOn, decimal balance, string otherAccount, string description) { 
             TransactionType = transactionType;  
             ModeOfPayment = mode;

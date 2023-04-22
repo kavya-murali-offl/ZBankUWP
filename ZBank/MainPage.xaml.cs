@@ -19,6 +19,8 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using System.Net.NetworkInformation;
 using Windows.ApplicationModel.Core;
+using ZBank.View.Main;
+using Windows.ApplicationModel.Store;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -32,50 +34,42 @@ namespace ZBank
         public IList<Navigation> TopNavigationList { get; private set; }
         public IList<Navigation> BottomNavigationList { get; private set; }
 
-        public string SelectedItem;
+        public Navigation SelectedItem;
 
         CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+
         public MainPage()
         {
             this.InitializeComponent();
+            LoadTheme();
             LoadData();
+            LoadTitleBar();
+        }
 
-            FrameworkElement root = (FrameworkElement)Window.Current.Content;
-            root.RequestedTheme = AppSettings.Theme;
-            SetThemeToggle(AppSettings.Theme);
-
-            
+        private void LoadTitleBar()
+        {
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
-            // Set caption buttons background to transparent.
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            //titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["ApplicationBackground"];
+            //titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["ApplicationForeground"];
 
-            // Set XAML element as a drag region.
             Window.Current.SetTitleBar(AppTitleBar);
 
-            // Register a handler for when the size of the overlaid caption control changes.
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
 
-            // Register a handler for when the title bar visibility changes.
-            // For example, when the title bar is invoked in full screen mode.
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
 
-            // Register a handler for when the window activation changes.
             Window.Current.CoreWindow.Activated += CoreWindow_Activated;
         }
 
-
-
-        private void SetThemeToggle(ElementTheme theme)
+        private void LoadTheme()
         {
-            //if (theme == AppSettings.DEFAULTTHEME)
-            //    ThemeToggleButton.IsChecked = false;
-            //else
-            //    ThemeToggleButton.IsChecked = true;
+            ThemeSelector.InitializeTheme();
         }
 
-        public void LoadData()
+
+        private void LoadData()
         {
             TopNavigationList = new List<Navigation>
             {
@@ -83,11 +77,6 @@ namespace ZBank
                 new Navigation("Accounts", "\uE910"),
                 new Navigation("Cards", "\uE8C7"),
                 new Navigation("Transactions", "\uE8AB"),
-            };
-            BottomNavigationList = new List<Navigation>
-            {
-                new Navigation("Theme", "\uE793", true),
-                new Navigation("Settings", "\uE713"),
             };
         }
 
@@ -101,10 +90,10 @@ namespace ZBank
 
         public void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //TopAppMenuList.SelectedItem = NavigationList.FirstOrDefault();
+            SelectedItem = TopNavigationList.FirstOrDefault();
         }
 
-      
+
         private void OnShrinkClicked(object sender, RoutedEventArgs e)
         {
             MySplitView.IsPaneOpen = false;
@@ -125,28 +114,27 @@ namespace ZBank
 
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Console.WriteLine(BottomListView.SelectedItem.ToString());
             ContentFrame.Navigate(typeof(Dashboard));
         }
 
-        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        private async void ToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement window = (FrameworkElement)Window.Current.Content;
-            if (AppSettings.Theme == AppSettings.DEFAULTTHEME)
+            if(ThemeSelector.Theme == ElementTheme.Light)
             {
-                AppSettings.Theme = AppSettings.NONDEFLTHEME;
-                window.RequestedTheme = AppSettings.NONDEFLTHEME;
+                await ThemeSelector.SetTheme(ElementTheme.Dark);
+            }
+            else if(ThemeSelector.Theme == ElementTheme.Dark)
+            {
+                await ThemeSelector.SetTheme(ElementTheme.Light);
             }
             else
             {
-                AppSettings.Theme = AppSettings.DEFAULTTHEME;
-                window.RequestedTheme = AppSettings.DEFAULTTHEME;
+                await ThemeSelector.SetTheme(ElementTheme.Default);
             }
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
-            // Get the size of the caption controls and set padding.
             LeftPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayLeftInset);
             RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
         }
@@ -169,13 +157,53 @@ namespace ZBank
             if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
             {
                 AppTitleTextBlock.Foreground =
-                   new SolidColorBrush(settings.UIElementColor(UIElementType.GrayText));
+                (SolidColorBrush)(Application.Current.Resources["SecondaryForegroundBrush"]);
             }
             else
             {
                 AppTitleTextBlock.Foreground =
-                   new SolidColorBrush(settings.UIElementColor(UIElementType.WindowText));
+                   (SolidColorBrush)(Application.Current.Resources["ForegroundBrush"]);
             }
+        }
+
+        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var currentAV = ApplicationView.GetForCurrentView();
+            var newAV = CoreApplication.CreateNewView();
+            await newAV.Dispatcher.RunAsync(
+            CoreDispatcherPriority.Normal,
+            async () =>
+            {
+                var newWindow = Window.Current;
+                var newAppView = ApplicationView.GetForCurrentView();
+
+                newAppView.Title = "Settings"; 
+
+                var frame = new Frame();
+                frame.RequestedTheme = ThemeSelector.Theme;
+                frame.Navigate(typeof(SettingsPage)); 
+                newWindow.Content = frame;
+                newWindow.Activate();
+
+                await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
+                            newAppView.Id,
+                            ViewSizePreference.UseMinimum,
+                            currentAV.Id,
+                            ViewSizePreference.UseMinimum);
+            });
+        }
+
+        private void ThemeToggleButton_Loaded(object sender, RoutedEventArgs e)
+        {
+            //if()
+            //    ThemeToggleButton.IsChecked = true;
+            //else
+            //    ThemeToggleButton.IsChecked = false;
+        }
+
+        private void TopListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            TopListView.SelectedIndex = 0;
         }
     }
 
