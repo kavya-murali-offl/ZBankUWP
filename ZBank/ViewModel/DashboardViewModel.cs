@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using ZBank.Model;
 
 namespace ZBank.ViewModel
 {
-    public class DashboardViewModel
+    public class DashboardViewModel : ViewModelBase
     {
 
         private IList<string> _cardBackgrounds = new List<string>
@@ -48,20 +49,23 @@ namespace ZBank.ViewModel
         public ObservableCollection<TransactionBObj> LatestTransactions
         {
             get { return _transactions; }
-            set { _transactions = value; OnPropertyChanged("ID"); }
+            set { 
+                _transactions = value; 
+                _transactions.CollectionChanged += OnCollectionChanged;
+                OnPropertyChanged(nameof(LatestTransactions));
+            }
+        }
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(LatestTransactions));
         }
 
         public ObservableCollection<CardBObj> AllCards
         {
             get { return _cards; }
-            set { _cards = value; OnPropertyChanged("ID"); }
+            set { _cards = value; OnPropertyChanged(nameof(AllCards)); }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

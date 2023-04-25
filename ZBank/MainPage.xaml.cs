@@ -21,6 +21,7 @@ using System.Net.NetworkInformation;
 using Windows.ApplicationModel.Core;
 using ZBank.View.Main;
 using Windows.ApplicationModel.Store;
+using ZBank.ViewModel;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -32,15 +33,17 @@ namespace ZBank
     {
 
         public IList<Navigation> TopNavigationList { get; private set; }
-        public IList<Navigation> BottomNavigationList { get; private set; }
 
         public Navigation SelectedItem;
+
+        public MainViewModel ViewModel;
 
         CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
 
         public MainPage()
         {
             this.InitializeComponent();
+            ViewModel = new MainViewModel();
             LoadTheme();
             LoadData();
             LoadTitleBar();
@@ -80,14 +83,6 @@ namespace ZBank
             };
         }
 
-        private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
-        {
-        }
-
-        private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
-        {
-        }
-
         public void Page_Loaded(object sender, RoutedEventArgs e)
         {
             SelectedItem = TopNavigationList.FirstOrDefault();
@@ -114,24 +109,10 @@ namespace ZBank
 
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ContentFrame.Navigate(typeof(Dashboard));
+            ContentFrame.Navigate(typeof(Home));
         }
 
-        private async void ToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            if(ThemeSelector.Theme == ElementTheme.Light)
-            {
-                await ThemeSelector.SetTheme(ElementTheme.Dark);
-            }
-            else if(ThemeSelector.Theme == ElementTheme.Dark)
-            {
-                await ThemeSelector.SetTheme(ElementTheme.Light);
-            }
-            else
-            {
-                await ThemeSelector.SetTheme(ElementTheme.Default);
-            }
-        }
+
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {

@@ -215,10 +215,8 @@
             Grid.Row="1"
             PaneBackground="{ThemeResource ApplicationBackground}"
             CompactPaneLength="48"
-            DisplayMode="CompactInline"
             OpenPaneLength="NaN">
             <SplitView.Pane>
-
                 <Grid
                     Style="{ThemeResource InnerGrid}"
                     x:Name="WideGrid">
@@ -247,7 +245,8 @@
                             Click="OnExpandClicked"
                             Style="{ThemeResource ExpandButton}">
                             <FontIcon
-                                Glyph="&#xE150;"
+                                FontFamily="Segoe Fluent Icons"
+                                Glyph="&#xE126;"
                                 Style="{ThemeResource ShrinkIcon}" />
                         </Button>
                         <Button
@@ -256,7 +255,7 @@
                             ToolTipService.ToolTip="Collapse"
                             Style="{ThemeResource ExpandButton}">
                             <FontIcon
-                                Glyph="&#xEDE2;"
+                                Glyph="&#xE127;"
                                 Style="{ThemeResource ShrinkIcon}" />
                         </Button>
                     </StackPanel>
@@ -268,13 +267,14 @@
                             x:Name="ThemeToggleButton"
                             Style="{ThemeResource SecondaryToggleButton}"
                             Loaded="ThemeToggleButton_Loaded"
-                            Click="ToggleButton_Click">
+                            Command="{x:Bind ViewModel.SwitchThemeCommand}">
                             <FontIcon
-                                Glyph="&#xE793;" />
+                                FontFamily="Segoe MDL2 Assets"
+                                Glyph="&#xE708;" />
                         </ToggleButton>
                         <Button
                             Click="SettingsButton_Click"
-                            Style="{ThemeResource SecondaryButton}">
+                            Style="{ThemeResource SecondaryMenuButton}">
                             <FontIcon
                                 Glyph="&#xE713;" />
                         </Button>
@@ -304,7 +304,6 @@
                 <ScrollViewer>
                     <Frame
                         x:Name="ContentFrame"
-                        Margin="4,8,8,8"
                         Background="{ThemeResource ApplicationPageBackground}"
                         CornerRadius="8" />
                 </ScrollViewer>

@@ -18,7 +18,7 @@
                     x:Name="wideScreen">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger
-                            MinWindowWidth="1100" />
+                            MinWindowWidth="900" />
                     </VisualState.StateTriggers>
 
                     <VisualState.Setters>
@@ -120,32 +120,77 @@
             <Grid
                 x:Name="grid1"
                 Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
-                        Width="2*" />
+                        Width="*" />
                     <ColumnDefinition
                         Width="*" />
                 </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Margin="0,0,5,0"
+                        Grid.Column="0" BorderBrush="{ThemeResource ApplicationAccentColor}"
+                                BorderThickness="1" CornerRadius="8" Padding="15"
+                                >
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="Total Balance"
+                            Foreground="{ThemeResource ApplicationForeground}"
+                            FontSize="17"
+                            FontWeight="SemiBold" />
+                        <TextBlock
+                            Text="$12345.78"
+                            FontSize="25"
+                            Foreground="{ThemeResource ApplicationForeground}"
+                            FontWeight="Bold"
+                            HorizontalAlignment="Center"
+                            Padding="5,10,5,10" />
+
+                    <Grid
+                        Margin="0,20,0,0">
+                            <StackPanel HorizontalAlignment="Left">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Text="Total Savings"
+                                    Foreground="{ThemeResource ApplicationForeground}"
+                                    FontSize="15"
+                                    FontWeight="Normal" />
+                                <TextBlock
+                                    Text="$12345.78"
+                                    FontSize="20"
+                                    Foreground="{ThemeResource ApplicationForeground}"
+                                    FontWeight="SemiBold"
+                                    HorizontalAlignment="Center"
+                                    Padding="5,10,5,10" />
+
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Text="Total Deposits"
+                                    Foreground="{ThemeResource ApplicationForeground}"
+                                    FontSize="15"
+                                    FontWeight="Normal" />
+                                <TextBlock
+                                    Text="$12345.78"
+                                    FontSize="20"
+                                    Foreground="{ThemeResource ApplicationForeground}"
+                                    FontWeight="SemiBold"
+                                    HorizontalAlignment="Center"
+                                    Padding="5,10,5,10" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
                 <StackPanel
-                    Grid.Row="0"
-                    Width="Auto"
-                    Height="Auto"
-                    MinHeight="100"
-                    Padding="15"
-                    Canvas.ZIndex="10"
+                    Margin="5,0,0,0"
+                    Grid.Column="1"
+                    BorderBrush="{ThemeResource ApplicationAccentColor}"
                     BorderThickness="1"
-                    BorderBrush="{ThemeResource AccentColorBrush}"
-                    Background="{ThemeResource ApplicationBackground}"
-                    CornerRadius="25">
+                    CornerRadius="8"
+                    Padding="15">
                     <TextBlock
                         HorizontalAlignment="Center"
-                        Text="Total Balance"
+                        Text="Net Profit / Month"
                         Foreground="{ThemeResource ApplicationForeground}"
                         FontSize="17"
                         FontWeight="SemiBold" />
@@ -157,11 +202,12 @@
                         HorizontalAlignment="Center"
                         Padding="5,10,5,10" />
 
-                    <Grid>
-                        <StackPanel Width="Auto" HorizontalAlignment="Left">
+                    <Grid Margin="0,20,0,0">
+                        <StackPanel
+                            HorizontalAlignment="Left">
                             <TextBlock
                                 HorizontalAlignment="Center"
-                                Text="Total Savings"
+                                Text="Income / Month"
                                 Foreground="{ThemeResource ApplicationForeground}"
                                 FontSize="15"
                                 FontWeight="Normal" />
@@ -172,12 +218,13 @@
                                 FontWeight="SemiBold"
                                 HorizontalAlignment="Center"
                                 Padding="5,10,5,10" />
-                        </StackPanel>
 
-                        <StackPanel Width="Auto" HorizontalAlignment="Right">
+                        </StackPanel>
+                        <StackPanel
+                            HorizontalAlignment="Right">
                             <TextBlock
                                 HorizontalAlignment="Center"
-                                Text="Total Deposits"
+                                Text="Expense / Month"
                                 Foreground="{ThemeResource ApplicationForeground}"
                                 FontSize="15"
                                 FontWeight="Normal" />
@@ -189,56 +236,34 @@
                                 HorizontalAlignment="Center"
                                 Padding="5,10,5,10" />
                         </StackPanel>
-                       
-                        
                     </Grid>
                 </StackPanel>
-                <StackPanel
-                    Width="Auto"
-                    Height="Auto"
-                    Grid.Row="0"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource AccentColorBrush}"
-                    MinHeight="100"
-                    Grid.Column="1"
-                    Padding="15"
-                    Background="{ThemeResource ApplicationPageBackground}"
-                    Margin="-30,0,0,0"
-                    CornerRadius="15">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Text="Income / Month"
-                        Foreground="{ThemeResource ApplicationForeground}"
-                        FontSize="14"
-                        FontWeight="SemiBold" />
-                    <TextBlock
-                        Text="$12345.78"
-                        FontSize="20"
-                        Foreground="{ThemeResource ApplicationForeground}"
-                        FontWeight="SemiBold"
-                        HorizontalAlignment="Center"
-                        Padding="5,10,5,10" />
 
-                    <Border
-                        Height="0.4"
-                        Background="{ThemeResource AccentColorBrush}"
-                        Margin="30,0,0,10" />
 
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Text="Expense / Month"
-                        Foreground="{ThemeResource ApplicationForeground}"
-                        FontSize="14"
-                        FontWeight="SemiBold" />
-                    <TextBlock
-                        Text="$12345.78"
-                        FontSize="20"
-                        Foreground="{ThemeResource ApplicationForeground}"
-                        FontWeight="SemiBold"
-                        HorizontalAlignment="Center"
-                        Padding="5,10,5,10" />
-                </StackPanel>
-                <StackPanel
+                <!--<StackPanel
+                    Orientation="Horizontal"
+                    Grid.Column="1">
+                    <StackPanel
+                       
+                        Width="Auto"
+                        Height="Auto"
+                        MinHeight="100"
+                        Padding="15"
+                        Canvas.ZIndex="10"
+                        BorderThickness="1"
+                        BorderBrush="{ThemeResource AccentColorBrush}"
+                        Background="{ThemeResource ApplicationBackground}"
+                        CornerRadius="25">
+                       
+
+                      
+
+                    </StackPanel>-->
+                   
+                <!--</StackPanel>-->
+               
+
+                <!--<StackPanel
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     CornerRadius="10">
@@ -260,18 +285,182 @@
                             HorizontalAlignment="Center"
                             VerticalContentAlignment="Center"
                             Style="{ThemeResource PrimaryButton}" />
-                    </StackPanel>
+                    </StackPanel>-->
 
-                </StackPanel>
+                <!--</StackPanel>-->
             </Grid>
             <Grid
                 Padding="10"
                 x:Name="grid2"
-                Height="Auto"
-                Width="Auto"
               >
-              
-      
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                    <Grid
+                        HorizontalAlignment="Left"
+                        Grid.Column="0"
+                        MaxHeight="400"
+                       >
+
+                        <ListView
+                            MaxWidth="450"
+                            Canvas.ZIndex="1"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            SelectionMode="None"
+                            x:Name="CardList">
+                            <ListView.ItemContainerStyle>
+                                <Style
+                                    TargetType="ListViewItem">
+                                    <Setter
+                                        Property="HorizontalContentAlignment"
+                                        Value="Left" />
+                             
+                            </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListViewItem>
+                            <Grid
+                                HorizontalAlignment="Stretch"
+                                MinHeight="200"
+                                MinWidth="350"
+                                Padding="15"
+                                CornerRadius="20">
+                                <Grid.Background>
+                                    <ImageBrush
+                                        ImageSource="/Assets/CardBackgrounds/card1.jpg" Stretch="UniformToFill"></ImageBrush>
+                                </Grid.Background>
+                                <TextBlock
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Top"
+                                        Foreground="Azure"
+                                        Text="CREDIT" />
+
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Foreground="Azure"
+                                        FontSize="20"
+                                        Padding="0,10,0,10"
+                                        Text="**** **** **** 1234" />
+                                    
+                                    <Grid VerticalAlignment="Bottom">
+                                        <StackPanel>
+                                            <TextBlock
+                                                HorizontalAlignment="Left"
+                                                FontWeight="SemiBold"
+                                                Foreground="Azure"
+                                                FontSize="12"
+                                                Padding="0,5,0,0"
+                                                Text="Available Credit Limit" />
+                                            <TextBlock
+                                                HorizontalAlignment="Left"
+                                                FontWeight="Bold"
+                                                Foreground="Azure"
+                                                FontSize="14"
+                                                Padding="0,0,0,0"
+                                                Text="$200000,00" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                </Grid>
+                            </ListViewItem>
+                        </ListView>
+                        <Grid
+                            Background="{ThemeResource ApplicationAccentColor}"
+                            Padding="5"
+                            CornerRadius="15"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Margin="0"
+                            Canvas.ZIndex="10">
+                            <FontIcon
+                                Foreground="White"
+                                FontSize="15"
+                                Glyph="&#xF0D5;" />
+                        </Grid>
+
+
+                        <Grid
+                            Background="{ThemeResource ApplicationAccentColor}"
+                            Padding="5"
+                            CornerRadius="15"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Margin="0"
+                            Canvas.ZIndex="10">
+                            <FontIcon
+                            Foreground="White"
+                            FontSize="15"
+                                Glyph="&#xF0D6;" />
+                        </Grid>
+
+                    </Grid>
+
+                <StackPanel 
+                    HorizontalAlignment="Stretch"
+                    Grid.Column="1"
+                    Margin="10,0,0,0"
+                    BorderBrush="{ThemeResource ApplicationAccentColor}" Height="Auto" Width="Auto">
+                    <Button
+                        Width="Auto"
+                        Margin="0,10,0,10"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource PrimaryButton}"
+                        Content="Send Money" />
+                    <Button
+                        Width="Auto"
+                        Margin="0,10,0,10"
+                        
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource PrimaryButton}"
+                        Content="Pay Card" />
+                    <Button
+                        Margin="0,10,0,10"
+                        Width="Auto"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource PrimaryButton}"
+                        Content="Manage Card" />
+
+                    <Button
+                        Width="Auto"
+                        Margin="0,10,0,10"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource SecondaryButton}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon
+                                    Symbol="Add" />
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    Text="Add Card" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+
+                    <!--<StackPanel BorderThickness="1" Background="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" BorderBrush="{ThemeResource ApplicationAccentColor}">
+                        <TextBlock
+                            Margin="5,20,0,10"
+                            Text="Account Number" />
+                        <TextBox
+                            Margin="5,10,5,10"
+                            FontSize="12"
+                            Height="30"
+                            PlaceholderText="**** **** **** ****" />
+                        <Button
+                            Width="Auto"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource SecondaryButton}"
+                            Content="Send Money" />-->
+                   
+                </StackPanel>
+
+
             </Grid>
             <Grid
                 x:Name="grid3"
@@ -279,8 +468,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
                         Width="2*" />
-                    <ColumnDefinition
-                        Width="*" />
+                   
                 </Grid.ColumnDefinitions>
                 <StackPanel
                     CornerRadius="10"

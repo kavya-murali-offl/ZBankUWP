@@ -27,7 +27,7 @@
                 <ColumnDefinition
                     Width="Auto" />
             </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
+        <Grid Grid.Column="0" Padding="0,0,0,0">
             <Ellipse
                 Stroke="{x:Bind TransactionBObj.BorderColor}"
                 Width="35"
@@ -41,6 +41,7 @@
                 Glyph="{x:Bind TransactionBObj.ArrowIcon}" />
         </Grid>
         <StackPanel
+            Margin="0,0,10,0"
             HorizontalAlignment="Stretch"
                 Grid.Column="1"
                 Padding="10">
@@ -59,7 +60,7 @@
             <StackPanel
                 Grid.Column="2"
                 Width="Auto"
-                Padding="5"
+                Padding="5,5,10,5"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Stretch">
                 <TextBlock
@@ -69,14 +70,14 @@
                     TextAlignment="Right"
                     Text="{x:Bind TransactionBObj.Amount}"
                     Style="{ThemeResource BoldNormalText}" />
-            <TextBlock
-                x:Name="Balance"
-                FontSize="14"
-                HorizontalAlignment="Right"
-                TextAlignment="Right"
-                Foreground="Gray"
-                Text="{x:Bind TransactionBObj.Balance}"
-                Style="{ThemeResource BoldNormalText}" />
+                <TextBlock
+                    x:Name="Balance"
+                    FontSize="14"
+                    HorizontalAlignment="Right"
+                    TextAlignment="Right"
+                    Foreground="Gray"
+                    Text="{x:Bind TransactionBObj.Balance}"
+                    Style="{ThemeResource BoldNormalText}" />
 
         </StackPanel>
         

@@ -123,6 +123,8 @@
     <Compile Include="Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
     <Compile Include="Entity\BusinessObjects\TransactionBObj.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -134,8 +136,13 @@
     <Compile Include="ViewModel\CardsViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\TransactionViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ViewModel\VMObjects\RelayCommand.cs" />
     <Compile Include="View\Main\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Main\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Main\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -153,6 +160,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\CardBackgrounds\card1.jpg" />
+    <Content Include="Assets\CardBackgrounds\card2.jpg" />
+    <Content Include="Assets\CardBackgrounds\card3.jpg" />
+    <Content Include="Assets\CardBackgrounds\card4.jpg" />
     <Content Include="Assets\Pro pic.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -201,6 +212,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Main\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Main\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,12 +242,6 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Resources\Strings\en-US\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\CardBackgrounds\card2.webp" />
-    <None Include="Assets\CardBackgrounds\card3.webp" />
-    <None Include="Assets\CardBackgrounds\card4.webp" />
-    <None Include="Assets\CardBackgrounds\card1.webp" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

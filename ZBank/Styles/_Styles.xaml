@@ -2,92 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <ResourceDictionary.ThemeDictionaries>
-
-        <ResourceDictionary
-            x:Key="Light">
-            <Color
-                x:Key="PrimaryBackground">#DCDCDC</Color>
-            <Color
-                x:Key="SecondaryBackground">#F0F0F0</Color>
-            <Color
-                x:Key="PrimaryForeground">#000000</Color>
-            <Color
-                x:Key="SecondaryForeground">#DCDCDC</Color>
-            <Color
-                x:Key="AccentColor">#ba4273</Color>
-            <Color
-                x:Key="InactiveSelectionColor">#E3E3E3</Color>
-            <Color
-                x:Key="ActiveSelectionColor">#f0dde4</Color>
-
-        </ResourceDictionary>
-
-        <ResourceDictionary
-            x:Key="Dark">
-            <Color
-                x:Key="PrimaryBackground">#212121</Color>
-            <Color
-                x:Key="SecondaryBackground">#161618</Color>
-            <Color
-                x:Key="PrimaryForeground">#FFFFFF</Color>
-            <Color
-                x:Key="SecondaryForeground">#DCDCDC</Color>
-            <Color
-                x:Key="AccentColor">#ba4273</Color>
-            <Color
-                x:Key="InactiveSelectionColor">#666666</Color>
-            <Color
-                x:Key="ActiveSelectionColor">#41242f</Color>
-
-
-        </ResourceDictionary>
-
-        <ResourceDictionary
-            x:Key="Default">
-
-            <Color
-                x:Key="PrimaryBackground">#212121</Color>
-            <Color
-                x:Key="SecondaryBackground">#161618</Color>
-            <Color
-                x:Key="PrimaryForeground">#FFFFFF</Color>
-            <Color
-                x:Key="SecondaryForeground">#DCDCDC</Color>
-            <Color
-                x:Key="AccentColor">#ba4273</Color>
-            <Color
-                x:Key="InactiveSelectionColor">#666666</Color>
-            <Color
-                x:Key="ActiveSelectionColor">#41242f</Color>
-
-        </ResourceDictionary>
-   
-    </ResourceDictionary.ThemeDictionaries>
-    <SolidColorBrush
-        x:Key="ApplicationBackground"
-        Color="{StaticResource PrimaryBackground}" />
-    <SolidColorBrush
-        x:Key="ApplicationPageBackground"
-        Color="{StaticResource SecondaryBackground}" />
-    <SolidColorBrush
-        x:Key="ApplicationForeground"
-        Color="{StaticResource PrimaryForeground}" />
-    <SolidColorBrush
-        x:Key="SecondaryForegroundBrush"
-        Color="{ThemeResource SecondaryForeground}" />
-
-    <SolidColorBrush
-        x:Key="ApplicationInactiveSelectionHighlightBrush"
-        Color="{StaticResource InactiveSelectionColor}" />
-    <SolidColorBrush
-        x:Key="ApplicationActiveSelectionHighlightBrush"
-        Color="{StaticResource ActiveSelectionColor}" />
-
-    <SolidColorBrush
-        x:Key="AccentColorBrush"
-        Color="{StaticResource AccentColor}" />
     
+   
+
     <Style
         TargetType="ToggleSwitch"
         x:Name="ToggleSwitchStyle">
@@ -108,7 +25,7 @@
             Value="" />
         <Setter
             Property="Foreground"
-            Value="{StaticResource AccentColorBrush}" />
+            Value="{ThemeResource AccentColorBrush}" />
     </Style>
 
     <Style
@@ -182,7 +99,7 @@
             Value="5,10,5,10" />
         <Setter
             Property="Foreground"
-            Value="{ThemeResource AccentColorBrush}" />
+            Value="{ThemeResource ApplicationForeground}" />
         <Setter
             Property="FontSize"
             Value="40" />
