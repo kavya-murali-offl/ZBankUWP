@@ -5,119 +5,118 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary
             x:Key="Light">
-            <Color
-                x:Key="ApplicationBackground">#F0F0F0</Color>
-            <Color
-                x:Key="ApplicationPageBackground">#DFDFDE</Color>
-            <Color
-                x:Key="ApplicationForeground">#000000</Color>
-            <Color
-                x:Key="ApplicationAccentColor">#ba4273</Color>
-            <Color
-                x:Key="SystemAccentColor">#ba4273</Color>
-            <Color
-                x:Key="SecondaryForeground">#666666</Color>
+            <SolidColorBrush
+                x:Key="ApplicationBackground"
+                Color="#F0F0F0" />
+            <SolidColorBrush
+                x:Key="ApplicationPageBackground"
+                Color="#DFDFDE" />
+            <SolidColorBrush
+                x:Key="ApplicationBackgroundThemeBrush"
+                Color="#DFDFDE" />
+            <SolidColorBrush
+                x:Key="ApplicationForeground"
+                Color="#000000" />
+            <SolidColorBrush
+                x:Key="ApplicationAccentColor"
+                Color="#BA4273" />
+            <SolidColorBrush
+                x:Key="SecondaryForeground"
+                Color="#666666" />
             <Color
                 x:Key="ApplicationInactiveSelectionHighlightBrush">#E3E3E3</Color>
             <Color
                 x:Key="ApplicationActiveSelectionHighlightBrush">#f0dde4</Color>
-            <Color
-                x:Key="SystemControlHighlightAltListAccentHighBrush">#ba4273</Color>
-            <Color
-                x:Key="SystemControlHighlightBaseMediumBrush">#ba4273</Color>
         </ResourceDictionary>
 
         <ResourceDictionary
             x:Key="Dark">
+            <SolidColorBrush
+                x:Key="ApplicationBackground"
+                Color="#000000" />
+            <SolidColorBrush
+                x:Key="ApplicationPageBackground"
+                Color="#161618" />
+            <SolidColorBrush
+                x:Key="ApplicationBackgroundThemeBrush"
+                Color="#161618" />
+            <SolidColorBrush
+                x:Key="ApplicationForeground"
+                Color="#ffffff" />
+            <SolidColorBrush
+                x:Key="SecondaryForeground"
+                Color="#DCDCDC" />
             <Color
-                x:Key="ApplicationBackground">#000000</Color>
-            <Color
-                x:Key="ApplicationPageBackground">#161618</Color>
-            <Color
-                x:Key="ApplicationForeground">#ffffff</Color>
-            <Color
-                x:Key="SecondaryForeground">#DCDCDC</Color>
-            <Color
-                x:Key="ApplicationAccentColor">#ba4273</Color>
-            <Color
-                x:Key="SystemAccentColor">#ba4273</Color>
+                x:Key="ApplicationAccentColor">#BA4273</Color>
             <Color
                 x:Key="ApplicationInactiveSelectionHighlightBrush">#666666</Color>
             <Color
                 x:Key="ApplicationActiveSelectionHighlightBrush">#41242f</Color>
-            <AcrylicBrush
-                x:Key="AcrylicBackground"
-                BackgroundSource="HostBackdrop"
-                TintColor="#161618"
-                TintOpacity="0.7"
-                FallbackColor="#ffffff" />
-            <Color
-                x:Key="SystemControlHighlightAltListAccentHighBrush">#FFBA4273</Color>
-            <Color
-                x:Key="SystemControlHighlightBaseMediumBrush">#FFBA4273</Color>
         </ResourceDictionary>
 
         <ResourceDictionary
             x:Key="Default">
+            <SolidColorBrush
+                x:Key="ApplicationBackground"
+                Color="#000000" />
+            <SolidColorBrush
+                x:Key="ApplicationPageBackground"
+                Color="#161618" />
+            <SolidColorBrush
+                x:Key="ApplicationBackgroundThemeBrush"
+                Color="#161618" />
+            <SolidColorBrush
+                x:Key="ApplicationForeground"
+                Color="#ffffff" />
+            <SolidColorBrush
+                x:Key="SecondaryForeground"
+                Color="#DCDCDC" />
             <Color
-                x:Key="ApplicationBackground">#f4f4f4</Color>
-            <Color
-                x:Key="ApplicationPageBackground">#000000</Color>
-            <Color
-                x:Key="ApplicationForeground">#000000</Color>
-            <Color
-                x:Key="ApplicationAccentColor">#FFBA4273</Color>
-            <Color
-                x:Key="ApplicationInactiveSelectionHighlightBrush">#E3E3E3</Color>
-            <Color
-                x:Key="ApplicationActiveSelectionHighlightBrush">#f0dde4</Color>
-            <Color
-                x:Key="SystemControlHighlightAltListAccentHighBrush">#FFBA4273</Color>
-            <Color
-                x:Key="SystemControlHighlightBaseMediumBrush">#FFBA4273</Color>
+                x:Key="ApplicationAccentColor">#BA4273</Color>
+            <SolidColorBrush
+                x:Key="ApplicationInactiveSelectionHighlightBrush"
+                Color="#666666" />
+            <SolidColorBrush
+                x:Key="ApplicationActiveSelectionHighlightBrush"
+                Color="#41242f" />
         </ResourceDictionary>
+      
     </ResourceDictionary.ThemeDictionaries>
-
-    <AcrylicBrush
-        x:Key="AccentAcrylicBrush"
-        TintColor="{ThemeResource ApplicationAccentColor}"
-        TintOpacity="1"
-        FallbackColor="{ThemeResource ApplicationAccentColor}" />
-
     <SolidColorBrush
-        x:Key="AccentColorBrush"
-        Color="{ThemeResource SystemAccentColor}" />
-
+        x:Key="SystemControlHighlightBaseMediumBrush"
+        Color="{ThemeResource ApplicationAccentColor}" />
+    <SolidColorBrush
+        x:Key="SystemControlHighlightAltListAccentHighBrush"
+        Color="{ThemeResource ApplicationAccentColor}" />
+    
     <SolidColorBrush
         x:Key="ForegroundBrush"
         Color="{ThemeResource ApplicationForeground}" />
-
     <SolidColorBrush
         x:Key="SecondaryForegroundBrush"
         Color="{ThemeResource SecondaryForeground}" />
 
-    <Style
-        TargetType="ToggleSwitch"
-        x:Name="ToggleSwitchStyle">
-        <Setter
-            Property="Margin"
-            Value="0,0,10,0" />
-        <Setter
-            Property="Padding"
-            Value="0" />
-        <Setter
-            Property="Width"
-            Value="Auto" />
-        <Setter
-            Property="OnContent"
-            Value="" />
-        <Setter
-            Property="OffContent"
-            Value="" />
-        <Setter
-            Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
-    </Style>
+    <SolidColorBrush
+        x:Key="ToggleButtonBackgroundChecked"
+        Color="{ThemeResource ApplicationAccentColor}" />
+    <SolidColorBrush
+        x:Key="ToggleButtonBackgroundCheckedPointerOver"
+        Color="{ThemeResource ApplicationAccentColor}" />
+    <SolidColorBrush
+        x:Key="ToggleButtonBackgroundCheckedPressed"
+        Color="{ThemeResource ApplicationAccentColor}" />
+
+
+    <SolidColorBrush
+        x:Key="ToggleButtonBackground"
+        Color="{ThemeResource ApplicationAccentColor}" />
+    <SolidColorBrush
+        x:Key="ToggleButtonBackgroundPointerOver"
+        Color="{ThemeResource ApplicationAccentColor}" />
+    <SolidColorBrush
+        x:Key="ToggleButtonBackgroundPressed"
+        Color="{ThemeResource ApplicationAccentColor}" />
+
 
     <Style
         TargetType="StackPanel"
@@ -228,9 +227,6 @@
         x:Name="SecondaryButton">
 
         <Setter
-            Property="Background"
-            Value="{ThemeResource ApplicationPageBackground}" />
-        <Setter
             Property="Padding"
             Value="7" />
         <Setter
@@ -253,10 +249,10 @@
             Value="{ThemeResource ApplicationPageBackground}" />
         <Setter
             Property="Padding"
-            Value="10" />
+            Value="7" />
         <Setter
             Property="Margin"
-            Value="5,0,5,0" />
+            Value="7,0,5,10" />
         <Setter
             Property="BorderThickness"
             Value="0" />
@@ -301,10 +297,10 @@
             Value="{ThemeResource ApplicationPageBackground}" />
         <Setter
             Property="Margin"
-            Value="5,0,5,10" />
+            Value="7,0,5,10" />
         <Setter
             Property="Padding"
-            Value="10" />
+            Value="7" />
         <Setter
             Property="CornerRadius"
             Value="5" />

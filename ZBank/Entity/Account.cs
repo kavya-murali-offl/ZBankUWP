@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ZBank.Entity
+{
+    public class Account
+    {
+
+        public Account(decimal amount) {
+            AccountNumber = "1111111111111111111";
+            IFSCCode = "ZBNK1233";
+            AccountName = "xxx";
+            AccountStatus = AccountStatus.ACTIVE;
+            OpenedOn = DateTime.Now;
+            Currency = Currency.INR;
+            Amount = amount;
+        }
+        public string AccountNumber { get; set; }
+
+        public string IFSCCode { get; set; }
+
+        public string AccountName { get; set; }
+
+        public AccountStatus AccountStatus { get; set; }
+
+        public DateTime OpenedOn { get; set; }
+
+        public Currency Currency { get; set; }
+
+        public decimal Amount { get; set; }
+    }
+}

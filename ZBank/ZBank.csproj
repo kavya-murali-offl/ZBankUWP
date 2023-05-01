@@ -121,9 +121,19 @@
     </Compile>
     <Compile Include="Config\ThemeSelector.cs" />
     <Compile Include="Converters\LocalizationConverter.cs" />
+    <Compile Include="Entity\Beneficiary.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
+    <Compile Include="Entity\BusinessObjects\Notification.cs" />
     <Compile Include="Entity\BusinessObjects\TransactionBObj.cs" />
+    <Compile Include="Entity\Account.cs" />
+    <Compile Include="Entity\CreditCard.cs" />
+    <Compile Include="Entity\CurrentAccount.cs" />
+    <Compile Include="Entity\DebitCard.cs" />
+    <Compile Include="Entity\SavingsAccount.cs" />
+    <Compile Include="Entity\TermDepositAccount.cs" />
+    <Compile Include="Entity\RecurringDepositAccount.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -150,8 +160,26 @@
     <Compile Include="View\Main\Transactions.xaml.cs">
       <DependentUpon>Transactions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\AmountInfoCardControl.xaml.cs">
+      <DependentUpon>AmountInfoCardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\CardControl.xaml.cs">
+      <DependentUpon>CardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\Chart1.xaml.cs">
+      <DependentUpon>Chart1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\DashboardCardTemplateUserControl.xaml.cs">
+      <DependentUpon>DashboardCardTemplateUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\DashboardRowControl.xaml.cs">
+      <DependentUpon>DashboardRowControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\DashboardTransactionGrid.xaml.cs">
       <DependentUpon>DashboardTransactionGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\OneByTwoGrid.xaml.cs">
+      <DependentUpon>OneByTwoGrid.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -224,12 +252,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UserControls\AmountInfoCardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\CardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\Chart1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\DashboardCardTemplateUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\DashboardRowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserControls\DashboardTransactionGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\OneByTwoGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="LiveCharts">
+      <Version>0.9.7</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>

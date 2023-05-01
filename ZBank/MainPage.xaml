@@ -214,7 +214,7 @@
             x:Name="MySplitView"
             Grid.Row="1"
             PaneBackground="{ThemeResource ApplicationBackground}"
-            CompactPaneLength="48"
+            CompactPaneLength="50"
             OpenPaneLength="NaN">
             <SplitView.Pane>
                 <Grid
@@ -269,6 +269,8 @@
                             Loaded="ThemeToggleButton_Loaded"
                             Command="{x:Bind ViewModel.SwitchThemeCommand}">
                             <FontIcon
+                                Foreground="{ThemeResource ApplicationForeground}"
+                                FontSize="18"
                                 FontFamily="Segoe MDL2 Assets"
                                 Glyph="&#xE708;" />
                         </ToggleButton>

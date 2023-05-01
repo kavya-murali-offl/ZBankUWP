@@ -13,6 +13,7 @@
                 <ResourceDictionary
                     Source="/Styles/_FontSizes.xaml" />
             </controls:XamlControlsResources.MergedDictionaries>
+
         </controls:XamlControlsResources>
     </Application.Resources>
 </Application>

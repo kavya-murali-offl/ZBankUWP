@@ -14,7 +14,19 @@ namespace ZBank.ViewModel
 
         private ObservableCollection<Card> _cards { get; set; }
 
-        public CardsViewModel() { }
+        public CardsViewModel() { 
+        
+        
+        }
+
+        private IList<string> _cardBackgrounds = new List<string>
+        {
+            "/Assets/CardBackgrounds/card1.webp",
+            "/Assets/CardBackgrounds/card2.webp",
+            "/Assets/CardBackgrounds/card3.webp",
+            "/Assets/CardBackgrounds/card4.webp",
+        };
+
 
         public void LoadCards(){
 

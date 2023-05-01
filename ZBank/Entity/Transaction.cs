@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace ZBank.Model
 {
@@ -16,7 +17,9 @@ namespace ZBank.Model
             Balance = balance;
             OtherAccount = otherAccount;    
             Description = description;
-        }    
+
+        }
+
         public string ID { get; set; }
 
         public TransactionType TransactionType { get; set; }

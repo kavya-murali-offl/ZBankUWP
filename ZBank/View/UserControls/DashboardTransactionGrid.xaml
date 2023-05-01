@@ -14,7 +14,8 @@
             x:Name="DateFormatConverter" />
 
     </UserControl.Resources>
-        <Grid HorizontalAlignment="Stretch" Width="Auto">
+
+    <Grid HorizontalAlignment="Stretch" Width="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition
                     Height="Auto" />

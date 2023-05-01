@@ -54,8 +54,10 @@ namespace ZBank
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            //titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["ApplicationBackground"];
-            //titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["ApplicationForeground"];
+            titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["ApplicationBackground"];
+            titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["ApplicationForeground"];
+            titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemAccentColor"];
+            titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["ApplicationBackground"];
 
             Window.Current.SetTitleBar(AppTitleBar);
 
@@ -96,6 +98,7 @@ namespace ZBank
             TopListView.ItemContainerStyle = NarrowMenuListItemStyle;
             ShrinkButton.Visibility = Visibility.Collapsed;
             ExpandButton.Visibility = Visibility.Visible;
+            IconContainer.Orientation = Orientation.Vertical;
         }
 
         private void OnExpandClicked(object sender, RoutedEventArgs e)
@@ -105,14 +108,13 @@ namespace ZBank
             TopListView.ItemContainerStyle = WideMenuListItemStyle;
             ExpandButton.Visibility = Visibility.Collapsed;
             ShrinkButton.Visibility = Visibility.Visible;
+            IconContainer.Orientation = Orientation.Horizontal;
         }
 
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ContentFrame.Navigate(typeof(Home));
         }
-
-
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
@@ -176,10 +178,10 @@ namespace ZBank
 
         private void ThemeToggleButton_Loaded(object sender, RoutedEventArgs e)
         {
-            //if()
-            //    ThemeToggleButton.IsChecked = true;
-            //else
-            //    ThemeToggleButton.IsChecked = false;
+            if (ThemeSelector.Theme == ElementTheme.Dark)
+                ThemeToggleButton.IsChecked = true;
+            else
+                ThemeToggleButton.IsChecked = false;
         }
 
         private void TopListView_Loaded(object sender, RoutedEventArgs e)

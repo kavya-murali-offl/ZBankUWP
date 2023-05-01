@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 
 namespace ZBank.Model
 {
@@ -14,7 +15,6 @@ namespace ZBank.Model
             Pin = "1111";
             ExpiryMonth = "12";
             ExpiryYear = "1992";
-            Type = type;
         }
 
         public string ID { get; set; }
@@ -25,8 +25,6 @@ namespace ZBank.Model
 
         public string CardNumber { get; set; }
 
-        public string AccountID { get; set; }
-
         public string CustomerID { get; set; }
 
         public string CVV { get; set; }
@@ -34,8 +32,6 @@ namespace ZBank.Model
         public string ExpiryMonth { get; set; }
 
         public string ExpiryYear { get; set; }
-
-        public CardType Type { get; set; }
     }
 
     public enum CardType
