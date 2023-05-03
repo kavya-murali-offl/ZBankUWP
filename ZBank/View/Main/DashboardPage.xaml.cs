@@ -22,11 +22,11 @@ namespace ZBank.View
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Dashboard : Page
+    public sealed partial class DashboardPage : Page
     {
         public DashboardViewModel DashboardViewModel { get; set; } = new DashboardViewModel();
 
-        public Dashboard()
+        public DashboardPage()
         {
             this.InitializeComponent();
            

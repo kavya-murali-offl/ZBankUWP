@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using ZBank.Model;
+using ZBank.Entities;
 
 namespace ZBank.Utilities.Converters
 {

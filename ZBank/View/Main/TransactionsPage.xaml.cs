@@ -20,9 +20,9 @@ namespace ZBank.View.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Transactions : Page
+    public sealed partial class TransactionsPage : Page
     {
-        public Transactions()
+        public TransactionsPage()
         {
             this.InitializeComponent();
         }

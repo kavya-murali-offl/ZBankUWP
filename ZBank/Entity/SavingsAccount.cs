@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBank.Entity
+namespace ZBank.Entities
 {
-    public class SavingsAccount
+    public class SavingsAccount : Account
     {
-
+        public decimal InterestRate { get; set; }
     }
 }

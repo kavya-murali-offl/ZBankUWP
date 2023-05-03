@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
-using ZBank.Entity;
-using ZBank.Entity.BusinessObjects;
-using ZBank.Model;
+using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
+using ZBank.Entities;
 
 namespace ZBank.ViewModel
 {

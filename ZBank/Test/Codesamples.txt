@@ -82,7 +82,7 @@
                             </ListViewItem>
                         </ListView>
                         <Grid
-                            Background="{ThemeResource ApplicationAccentColor}"
+                            Background="{ThemeResource SystemAccentColor}"
                             Padding="5"
                             CornerRadius="15"
                             VerticalAlignment="Center"
@@ -96,7 +96,7 @@
 
 
                         <Grid
-                            Background="{ThemeResource ApplicationAccentColor}"
+                            Background="{ThemeResource SystemAccentColor}"
                             Padding="5"
                             CornerRadius="15"
                             VerticalAlignment="Center"

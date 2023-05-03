@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZBank.Model;
+using ZBank.Entities;
 
-namespace ZBank.Entity.BusinessObjects
+namespace ZBank.Entities.BusinessObjects
 {
     public class CardBObj
     {

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBank.Entity
+namespace ZBank.Entities
 {
     public class Account
     {
+        public Account() { }
 
         public Account(decimal amount) {
             AccountNumber = "1111111111111111111";
@@ -23,6 +24,10 @@ namespace ZBank.Entity
         public string IFSCCode { get; set; }
 
         public string AccountName { get; set; }
+
+        public string UserID { get; set; }
+
+        public string CreatedOn { get; set; }
 
         public AccountStatus AccountStatus { get; set; }
 

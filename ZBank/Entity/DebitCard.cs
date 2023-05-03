@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZBank.Model;
+using ZBank.Entities;
 
-namespace ZBank.Entity
+namespace ZBank.Entities
 {
-    public class DebitCard 
+    public class DebitCard : Card
     {
+
+        public DebitCard() { }  
+        public DebitCard(string cardNumber, CardType type) : base(cardNumber, type)
+        {
+
+        }
         public string AccountID { get; set; }
     }
 }

@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
-namespace ZBank.Model
+namespace ZBank.Entities
 {
     public class Transaction
     {
+        public Transaction() { }
+
         public Transaction(TransactionType transactionType, ModeOfPayment mode, decimal amount, DateTime recordedOn, decimal balance, string otherAccount, string description) { 
             TransactionType = transactionType;  
             ModeOfPayment = mode;
@@ -17,7 +19,6 @@ namespace ZBank.Model
             Balance = balance;
             OtherAccount = otherAccount;    
             Description = description;
-
         }
 
         public string ID { get; set; }

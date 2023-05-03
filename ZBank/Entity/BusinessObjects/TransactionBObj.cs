@@ -1,7 +1,7 @@
 ﻿using System;
-using ZBank.Model;
+using ZBank.Entities;
 
-namespace ZBank.Entity.BusinessObjects
+namespace ZBank.Entities.BusinessObjects
 {
     public class TransactionBObj
     {

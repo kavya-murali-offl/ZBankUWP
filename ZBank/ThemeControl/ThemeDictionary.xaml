@@ -5,89 +5,51 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary
             x:Key="Light">
-            <SolidColorBrush
-                x:Key="ApplicationBackground"
-                Color="#F0F0F0" />
-            <SolidColorBrush
-                x:Key="ApplicationPageBackground"
-                Color="#DFDFDE" />
-            <SolidColorBrush
-                x:Key="ApplicationBackgroundThemeBrush"
-                Color="#DFDFDE" />
-            <SolidColorBrush
-                x:Key="ApplicationForeground"
-                Color="#000000" />
-            <SolidColorBrush
-                x:Key="ApplicationAccentColor"
-                Color="#BA4273" />
-            <SolidColorBrush
-                x:Key="SecondaryForeground"
-                Color="#666666" />
-            <Color
-                x:Key="ApplicationInactiveSelectionHighlightBrush">#E3E3E3</Color>
-            <Color
-                x:Key="ApplicationActiveSelectionHighlightBrush">#f0dde4</Color>
+
         </ResourceDictionary>
 
         <ResourceDictionary
             x:Key="Dark">
-            <SolidColorBrush
-                x:Key="ApplicationBackground"
-                Color="#000000" />
-            <SolidColorBrush
-                x:Key="ApplicationPageBackground"
-                Color="#161618" />
-            <SolidColorBrush
-                x:Key="ApplicationBackgroundThemeBrush"
-                Color="#161618" />
-            <SolidColorBrush
-                x:Key="ApplicationForeground"
-                Color="#ffffff" />
-            <SolidColorBrush
-                x:Key="SecondaryForeground"
-                Color="#DCDCDC" />
-            <Color
-                x:Key="ApplicationAccentColor">#BA4273</Color>
-            <Color
-                x:Key="ApplicationInactiveSelectionHighlightBrush">#666666</Color>
-            <Color
-                x:Key="ApplicationActiveSelectionHighlightBrush">#41242f</Color>
+          
         </ResourceDictionary>
 
         <ResourceDictionary
             x:Key="Default">
-            <SolidColorBrush
-                x:Key="ApplicationBackground"
-                Color="#000000" />
-            <SolidColorBrush
-                x:Key="ApplicationPageBackground"
-                Color="#161618" />
-            <SolidColorBrush
-                x:Key="ApplicationBackgroundThemeBrush"
-                Color="#161618" />
-            <SolidColorBrush
-                x:Key="ApplicationForeground"
-                Color="#ffffff" />
-            <SolidColorBrush
-                x:Key="SecondaryForeground"
-                Color="#DCDCDC" />
-            <Color
-                x:Key="ApplicationAccentColor">#BA4273</Color>
-            <SolidColorBrush
-                x:Key="ApplicationInactiveSelectionHighlightBrush"
-                Color="#666666" />
-            <SolidColorBrush
-                x:Key="ApplicationActiveSelectionHighlightBrush"
-                Color="#41242f" />
+      
         </ResourceDictionary>
       
     </ResourceDictionary.ThemeDictionaries>
     <SolidColorBrush
+        x:Key="ApplicationBackground"
+        Color="{ThemeResource SystemAltHighColor}" />  
+    <SolidColorBrush
+        x:Key="ApplicationPageBackground"
+        Color="{ThemeResource SystemAltLowColor}" />
+    
+    <SolidColorBrush
+        x:Key="ApplicationForeground"
+        Color="{ThemeResource SystemBaseHighColor}" />
+
+    <SolidColorBrush
+        x:Key="SecondaryForeground"
+        Color="{ThemeResource SystemBaseHighColor}" />
+
+    <SolidColorBrush
+        x:Key="ApplicationBackgroundThemeBrush"
+        Color="{ThemeResource SystemChromeMediumColor}" />
+    <SolidColorBrush
+        x:Key="ApplicationInactiveSelectionHighlightBrush"
+        Color="{ThemeResource SystemChromeMediumColor}" />
+    <SolidColorBrush
+        x:Key="ApplicationActiveSelectionHighlightBrush"
+        Color="{ThemeResource SystemChromeHighColor}" />
+
+    <SolidColorBrush
         x:Key="SystemControlHighlightBaseMediumBrush"
-        Color="{ThemeResource ApplicationAccentColor}" />
+        Color="{ThemeResource SystemAccentColor}" />
     <SolidColorBrush
         x:Key="SystemControlHighlightAltListAccentHighBrush"
-        Color="{ThemeResource ApplicationAccentColor}" />
+        Color="{ThemeResource SystemAccentColor}" />
     
     <SolidColorBrush
         x:Key="ForegroundBrush"
@@ -98,26 +60,113 @@
 
     <SolidColorBrush
         x:Key="ToggleButtonBackgroundChecked"
-        Color="{ThemeResource ApplicationAccentColor}" />
+        Color="{ThemeResource SystemAccentColorDark2}" />
     <SolidColorBrush
         x:Key="ToggleButtonBackgroundCheckedPointerOver"
-        Color="{ThemeResource ApplicationAccentColor}" />
+        Color="{ThemeResource SystemAccentColor}" />
     <SolidColorBrush
         x:Key="ToggleButtonBackgroundCheckedPressed"
-        Color="{ThemeResource ApplicationAccentColor}" />
-
+        Color="{ThemeResource SystemAccentColor}" />
+    
 
     <SolidColorBrush
         x:Key="ToggleButtonBackground"
-        Color="{ThemeResource ApplicationAccentColor}" />
+        Color="{ThemeResource SystemChromeHighColor}" />
     <SolidColorBrush
         x:Key="ToggleButtonBackgroundPointerOver"
-        Color="{ThemeResource ApplicationAccentColor}" />
+        Color="{ThemeResource SystemChromeMediumColor}" />
     <SolidColorBrush
         x:Key="ToggleButtonBackgroundPressed"
-        Color="{ThemeResource ApplicationAccentColor}" />
+        Color="{ThemeResource SystemChromeHighColor}" />
 
+    <SolidColorBrush
+        x:Key="ButtonBackground"
+        Color="{ThemeResource SystemChromeLowColor}" />
+    <SolidColorBrush
+        x:Key="ButtonBackgroundPointerOver"
+        Color="{ThemeResource SystemChromeMediumColor}" />
+    <SolidColorBrush
+        x:Key="ButtonBackgroundPressed"
+        Color="{ThemeResource SystemChromeMediumColor}" />
 
+    <Style
+        TargetType="ListViewItem"
+        x:Name="WideMenuListItemStyle">
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Stretch" />
+        <Setter
+            Property="HorizontalContentAlignment"
+            Value="Center" />
+        <Setter
+            Property="Width"
+            Value="Auto" />
+        <Setter
+            Property="Padding"
+            Value="0" />
+        <Setter
+            Property="Margin"
+            Value="5,0,0,0" />
+        <Setter
+            Property="CornerRadius"
+            Value="5" />
+        <Setter
+            Property="Background"
+            Value="Transparent" />
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="ListViewItem">
+                    <ListViewItemPresenter
+                        CornerRadius="5"
+                        SelectedForeground="{ThemeResource SystemAccentColor}"
+                        SelectedPointerOverBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}"
+                        PointerOverBackground="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
+                        SelectionCheckMarkVisualEnabled="False"
+                        SelectedBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style
+        TargetType="ListViewItem"
+        x:Name="NarrowMenuListItemStyle">
+        <Setter
+            Property="MinWidth"
+            Value="42" />
+        <Setter
+            Property="Width"
+            Value="42" />
+        <Setter
+            Property="Margin"
+            Value="5,0,0,0" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Left" />
+        <Setter
+            Property="HorizontalContentAlignment"
+            Value="Center" />
+        <Setter
+            Property="Background"
+            Value="Transparent" />
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="ListViewItem">
+                    <ListViewItemPresenter
+                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                        CornerRadius="5"
+                        SelectedPointerOverBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}"
+                        PointerOverBackground="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
+                        SelectionCheckMarkVisualEnabled="False"
+                        SelectedBackground="{ThemeResource ApplicationActiveSelectionHighlightBrush}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style
         TargetType="StackPanel"
         x:Name="DashboardTransactionGridStyle">
@@ -160,7 +209,7 @@
         x:Name="ShrinkIcon">
         <Setter
             Property="Foreground"
-            Value="#ffffff" />
+            Value="{ThemeResource SystemChromeWhiteColor}" />
         <Setter
             Property="FontSize"
             Value="18" />
@@ -189,7 +238,7 @@
             Value="5,10,5,10" />
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource SystemAccentColor}" />
         <Setter
             Property="FontSize"
             Value="40" />
@@ -200,19 +249,16 @@
         x:Name="PrimaryButton">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationForeground}" />
+            Value="{ThemeResource SystemChromeWhiteColor}" />
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationActiveSelectionHighlightBrush}" />
+            Value="{ThemeResource SystemAccentColorDark2}" />
         <Setter
             Property="FontSize"
             Value="14" />
         <Setter
             Property="BorderThickness"
-            Value="1.25" />
-        <Setter
-            Property="BorderBrush"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="0" />
         <Setter
             Property="CornerRadius"
             Value="6" />
@@ -225,7 +271,9 @@
     <Style
         TargetType="Button"
         x:Name="SecondaryButton">
-
+        <Setter
+            Property="Background"
+            Value="{ThemeResource SystemChromeLowColor}" />
         <Setter
             Property="Padding"
             Value="7" />
@@ -246,7 +294,7 @@
 
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationPageBackground}" />
+            Value="{ThemeResource SystemChromeLowColor}" />
         <Setter
             Property="Padding"
             Value="7" />
@@ -294,7 +342,7 @@
         x:Name="SecondaryToggleButton">
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationPageBackground}" />
+            Value="{ThemeResource SystemChromeLowColor}" />
         <Setter
             Property="Margin"
             Value="7,0,5,10" />
@@ -341,7 +389,7 @@
             Value="0,0,5,0" />
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource SystemAccentColorDark2}" />
         <Setter
             Property="CornerRadius"
             Value="5" />
@@ -364,10 +412,7 @@
             Value="7,10,0,5" />
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationAccentColor}" />
-        <Setter
-            Property="Foreground"
-            Value="#ffffff" />
+            Value="{ThemeResource SystemAccentColorDark2}" />
         <Setter
             Property="CornerRadius"
             Value="5" />
@@ -447,7 +492,7 @@
             Value="Left" />
         <Setter
             Property="Background"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource SystemAccentColor}" />
         <Setter
             Property="Margin"
             Value="10,5,10,5" />
@@ -481,7 +526,7 @@
         x:Name="ProfileDropdownIcon">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource SystemAccentColor}" />
         <Setter
             Property="HorizontalAlignment"
             Value="Right" />
@@ -512,7 +557,7 @@
         x:Name="LogoOnlyStyle">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource SystemAccentColorDark1}" />
         <Setter
             Property="HorizontalAlignment"
             Value="Center" />
@@ -529,7 +574,7 @@
         x:Name="IconOnlyStyle">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationAccentColor}" />
+            Value="{ThemeResource SystemAccentColor}" />
         <Setter
             Property="HorizontalAlignment"
             Value="Center" />
@@ -573,7 +618,7 @@
             Value="Left" />
         <Setter
             Property="Foreground"
-            Value="#FFBA4273" />
+            Value="{ThemeResource SystemAccentColorDark1}" />
     </Style>
 
     <Style

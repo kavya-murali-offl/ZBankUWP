@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZBank.Model;
+using ZBank.Entities;
 
 namespace ZBank.ViewModel
 {
@@ -19,7 +19,7 @@ namespace ZBank.ViewModel
         
         }
 
-        private IList<string> _cardBackgrounds = new List<string>
+        private readonly IList<string> _cardBackgrounds = new List<string>
         {
             "/Assets/CardBackgrounds/card1.webp",
             "/Assets/CardBackgrounds/card2.webp",

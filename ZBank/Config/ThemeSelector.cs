@@ -18,16 +18,18 @@ namespace ZBank.Config
 
         public static ElementTheme Theme { get; set; } = ElementTheme.Default;
 
-        public static void InitializeTheme()
+        public static async void InitializeTheme()
         {
            LoadCacheTheme();
+            SetThemeInSettings(Theme);
+            await SetThemeAllWindows();
         }
 
         public static async Task SetTheme(ElementTheme theme)
         {
             Theme = theme;
-            await SetThemeAllWindows();
             SetThemeInSettings(Theme);
+            await SetThemeAllWindows();
         }
 
         private static void LoadCacheTheme()

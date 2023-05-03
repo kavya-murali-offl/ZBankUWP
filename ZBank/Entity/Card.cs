@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-namespace ZBank.Model
+namespace ZBank.Entities
 {
     public class Card
     {
-        public Card(string cardNumber, CardType type) { 
+        public Card() { }
+        public Card(string cardNumber, CardType cardType) {
             CardNumber = cardNumber;
+            Type = cardType;
             CreatedOn = DateTime.Now;
             Pin = "1111";
             ExpiryMonth = "12";
@@ -22,6 +24,8 @@ namespace ZBank.Model
         public DateTime CreatedOn { get; set; }
 
         public string Pin { get; set; }
+
+        public CardType Type { get; set; }
 
         public string CardNumber { get; set; }
 

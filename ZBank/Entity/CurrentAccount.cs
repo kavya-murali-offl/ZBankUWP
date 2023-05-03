@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBank.Entity
+namespace ZBank.Entities
 {
-    public class CurrentAccount
+    public class CurrentAccount : Account
     {
         public decimal CHARGES = 100;
 

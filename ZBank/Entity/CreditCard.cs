@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZBank.Model;
+using ZBank.Entities;
 
-namespace ZBank.Entity
+namespace ZBank.Entities
 {
-    public class CreditCard 
+    public class CreditCard : Card
     {
+        public CreditCard() { }
+
+        public CreditCard(string cardNumber, CardType type) : base(cardNumber, type){
+        
+        }
 
         public CreditCardType CreditCardType { get; set; }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBank.Entity.BusinessObjects
+namespace ZBank.Entities.BusinessObjects
 {
     public class Notification
     {

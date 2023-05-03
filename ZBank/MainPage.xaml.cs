@@ -22,6 +22,8 @@ using Windows.ApplicationModel.Core;
 using ZBank.View.Main;
 using Windows.ApplicationModel.Store;
 using ZBank.ViewModel;
+using ZBank.ViewModel.VMObjects;
+using System.Windows.Input;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -33,6 +35,7 @@ namespace ZBank
     {
 
         public IList<Navigation> TopNavigationList { get; private set; }
+        public ICommand SwitchThemeCommand;
 
         public Navigation SelectedItem;
 
@@ -43,10 +46,9 @@ namespace ZBank
         public MainPage()
         {
             this.InitializeComponent();
-            ViewModel = new MainViewModel();
+            SwitchThemeCommand = new RelayCommand(SwitchTheme);
             LoadTheme();
             LoadData();
-            LoadTitleBar();
         }
 
         private void LoadTitleBar()
@@ -54,23 +56,34 @@ namespace ZBank
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["ApplicationBackground"];
-            titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["ApplicationForeground"];
-            titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemAccentColor"];
-            titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["ApplicationBackground"];
+
+            if(ThemeSelector.Theme == ElementTheme.Light)
+            {
+                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                titleBar.ForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+            }
+            else
+            {
+                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
+                titleBar.ForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
+            }
+
+            titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAccentColorDark3"];
+            titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
 
             Window.Current.SetTitleBar(AppTitleBar);
 
-            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
-
             Window.Current.CoreWindow.Activated += CoreWindow_Activated;
+
         }
 
         private void LoadTheme()
         {
             ThemeSelector.InitializeTheme();
+            LoadTitleBar();
         }
 
 
@@ -90,12 +103,30 @@ namespace ZBank
             SelectedItem = TopNavigationList.FirstOrDefault();
         }
 
+        private async void SwitchTheme(object parameter)
+        {
+                if (ThemeSelector.Theme == ElementTheme.Light)
+                {
+                    await ThemeSelector.SetTheme(ElementTheme.Dark);
+                }
+                else if (ThemeSelector.Theme == ElementTheme.Dark)
+                {
+                    await ThemeSelector.SetTheme(ElementTheme.Light);
+                }
+                else
+                {
+                    await ThemeSelector.SetTheme(ElementTheme.Default);
+                }
+            LoadTitleBar();
+        }
+
+
 
         private void OnShrinkClicked(object sender, RoutedEventArgs e)
         {
             MySplitView.IsPaneOpen = false;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
-            TopListView.ItemContainerStyle = NarrowMenuListItemStyle;
+            TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
             ShrinkButton.Visibility = Visibility.Collapsed;
             ExpandButton.Visibility = Visibility.Visible;
             IconContainer.Orientation = Orientation.Vertical;
@@ -105,7 +136,7 @@ namespace ZBank
         {
             MySplitView.IsPaneOpen = true;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
-            TopListView.ItemContainerStyle = WideMenuListItemStyle;
+            TopListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
             ExpandButton.Visibility = Visibility.Collapsed;
             ShrinkButton.Visibility = Visibility.Visible;
             IconContainer.Orientation = Orientation.Horizontal;
@@ -113,13 +144,15 @@ namespace ZBank
 
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ContentFrame.Navigate(typeof(Home));
-        }
-
-        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
-        {
-            LeftPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayLeftInset);
-            RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
+           Navigation selectedItem = TopListView.SelectedItem as Navigation;
+            if(selectedItem.Text == "Transactions")
+            {
+              ContentFrame.Navigate(typeof(TransactionsPage));
+            }
+            else
+            {
+                ContentFrame.Navigate(typeof(DashboardPage));
+            }
         }
 
         private void CoreTitleBar_IsVisibleChanged(CoreApplicationViewTitleBar sender, object args)
@@ -136,16 +169,15 @@ namespace ZBank
 
         private void CoreWindow_Activated(CoreWindow sender, WindowActivatedEventArgs args)
         {
-            UISettings settings = new UISettings();
             if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
             {
-                AppTitleTextBlock.Foreground =
-                (SolidColorBrush)(Application.Current.Resources["SecondaryForegroundBrush"]);
+                //AppTitleTextBlock.Foreground =
+                //(Color)(Application.Current.Resources["SystemBaseHighColor"]);
             }
             else
             {
-                AppTitleTextBlock.Foreground =
-                   (SolidColorBrush)(Application.Current.Resources["ForegroundBrush"]);
+                //AppTitleTextBlock.Foreground =
+                //   (SolidColorBrush)(Application.Current.Resources["SystemBaseLowColor"]);
             }
         }
 

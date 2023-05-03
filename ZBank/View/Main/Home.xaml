@@ -6,10 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:modelBObj="using:ZBank.Entity.BusinessObjects"
+    xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:usercontrol="using:ZBank.View.UserControls"
-    xmlns:entity="using:ZBank.Entity"
+    xmlns:entity="using:ZBank.Entities"
     Background="{ThemeResource ApplicationBackgroundThemeBrush}">
     <Grid
         x:Name="RootGrid"
@@ -254,7 +254,7 @@
                     <usercontrol:CardControl
                         Grid.Column="1"
                         MyTitle="Latest Transactions"
-                        MinHeight="498"
+                        MinHeight="506"
                         x:Name="Row3Column2">
                         <usercontrol:CardControl.MyContent>
                             <ListView
@@ -439,55 +439,57 @@
                 MinHeight="100"
                 MyTitle="Quick Actions">
                 <usercontrol:CardControl.MyContent>
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-                        <Button
-                            Padding="7"
-                            Style="{ThemeResource SecondaryButton}">
-                            <Button.Content>
-                                <StackPanel>
-                                    <FontIcon
-                                        Glyph="&#xE725;"
-                                        FontFamily="Segoe MDL2 Assets" />
-                                    <TextBlock
-                                        Padding="5,5,5,0"
-                                        Text="Transfer" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button
-                            Style="{ThemeResource SecondaryButton}"
-                            Padding="7">
-                            <Button.Content>
-                                <StackPanel>
-                                    <FontIcon
-                                        Glyph="&#xE2B3;"
-                                        FontFamily="Segoe MDL2 Assets" />
-                                    <TextBlock
-                                        Padding="5,5,5,0"
-                                        Text="Self Transfer" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button
-                            Padding="7"
-                            Style="{ThemeResource SecondaryButton}">
-                            <Button.Content>
-                                <StackPanel>
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Auto">
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button
+                                Padding="7"
+                                Style="{ThemeResource SecondaryButton}">
+                                <Button.Content>
                                     <StackPanel>
                                         <FontIcon
-                                            FontSize="20"
+                                            Glyph="&#xE1CA;"
+                                            FontFamily="Segoe MDL2 Assets" />
+                                        <TextBlock
+                                            Padding="5,5,5,0"
+                                            Text="Self Transfer" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button
+                                MinWidth="80"
+                                Style="{ThemeResource SecondaryButton}"
+                                Padding="7">
+                                <Button.Content>
+                                    <StackPanel>
+                                        <FontIcon
+                                            Glyph="&#xE1CD;"
+                                            FontFamily="Segoe MDL2 Assets" />
+                                        <TextBlock
+                                            Padding="5,5,5,0"
+                                            Text="Split" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button
+                                MinWidth="80"
+                                Padding="7"
+                                Style="{ThemeResource SecondaryButton}">
+                                <Button.Content>
+                                    <StackPanel>
+                                        <FontIcon
                                             Glyph="&#xE2B3;"
                                             FontFamily="Segoe MDL2 Assets" />
                                         <TextBlock
                                             Padding="5,5,5,0"
                                             Text="Request" />
                                     </StackPanel>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+                    </ScrollViewer>
                 </usercontrol:CardControl.MyContent>
             </usercontrol:CardControl>
 

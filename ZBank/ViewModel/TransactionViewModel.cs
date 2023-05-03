@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZBank.Entity.BusinessObjects;
-using ZBank.Model;
+using ZBank.Entities.BusinessObjects;
+using ZBank.Entities;
 
 namespace ZBank.ViewModel
 {
