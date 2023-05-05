@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,14 +8,13 @@ using ZBank.Entities;
 
 namespace ZBank.Entities.BusinessObjects
 {
-    public class DebitCardDTO : DebitCard
+    [Table("DebitCard")]
+    public class DebitCardDTO 
     {
 
-        public DebitCardDTO(string cardNumber, CardType type) : base(cardNumber, type)
-        {
+        [PrimaryKey]
+        public string ID { get; set; }
 
-        }
-
-        public DebitCardDTO() { }
+        public string AccountID { get; set; }
     }
 }

@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite;
 
 namespace ZBank.Entities.BusinessObjects
 {
-    public class CreditCardDTO : CreditCard
+    [Table("CreditCard")]
+    public class CreditCardDTO
     {
 
-        public CreditCardDTO(string cardNumber, CardType type) : base(cardNumber, type)
-        {
+        [PrimaryKey]
+        public string ID { get; set; }
 
-        }
+        public CreditCardProvider Provider { get; set; }
 
-        public CreditCardDTO() { }
     }
 }

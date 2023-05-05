@@ -37,12 +37,16 @@ namespace ZBank.DatabaseHandler
         public async Task<bool> UpdateCredentials(CustomerCredentials customerCredentials) => await DatabaseAdapter.Update(customerCredentials);
 
         // Account
-
+        public async Task<IEnumerable<Account>> GetAllAccounts(string customerID) =>
+         await DatabaseAdapter.Query<Account>($"Select * from Account where UserID = ?", customerID);
+       
         public async Task<IList<CurrentAccount>> GetCurrentAccounts(string userID) =>
             await DatabaseAdapter.GetAll<CurrentAccount>().Where(x => x.UserID.Equals(userID)).OrderByDescending(x => x.CreatedOn).ToListAsync();
-       
-        public async Task<IList<SavingsAccount>> GetSavingsAccounts(string userID) => await DatabaseAdapter.GetAll<SavingsAccount>().Where(x => x.UserID == 
+
+        public async Task<IList<SavingsAccount>> GetSavingsAccounts(string userID) => await DatabaseAdapter.GetAll<SavingsAccount>().Where(x => x.UserID ==
         userID).OrderByDescending(x => x.CreatedOn).ToListAsync();
+
+
 
         public async Task<bool> InsertAccount(Account account) => await DatabaseAdapter.Insert(account);
 

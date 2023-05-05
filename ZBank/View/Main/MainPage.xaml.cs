@@ -24,6 +24,7 @@ using Windows.ApplicationModel.Store;
 using ZBank.ViewModel;
 using ZBank.ViewModel.VMObjects;
 using System.Windows.Input;
+using Windows.Media.Devices;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -35,57 +36,25 @@ namespace ZBank
     {
 
         public IList<Navigation> TopNavigationList { get; private set; }
-        public ICommand SwitchThemeCommand;
+
+        public IList<Navigation> BottomNavigationList { get; private set; }
 
         public Navigation SelectedItem;
 
         public MainViewModel ViewModel;
 
-        CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
 
         public MainPage()
         {
             this.InitializeComponent();
-            SwitchThemeCommand = new RelayCommand(SwitchTheme);
-            LoadTheme();
             LoadData();
-        }
-
-        private void LoadTitleBar()
-        {
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-
-            if(ThemeSelector.Theme == ElementTheme.Light)
-            {
-                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
-                titleBar.ForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
-            }
-            else
-            {
-                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
-                titleBar.ForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
-            }
-
-            titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAccentColorDark3"];
-            titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
-
-            Window.Current.SetTitleBar(AppTitleBar);
-
-            coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
-            Window.Current.CoreWindow.Activated += CoreWindow_Activated;
-
         }
 
         private void LoadTheme()
         {
             ThemeSelector.InitializeTheme();
-            LoadTitleBar();
-        }
 
+        }
 
         private void LoadData()
         {
@@ -96,30 +65,37 @@ namespace ZBank
                 new Navigation("Cards", "\uE8C7"),
                 new Navigation("Transactions", "\uE8AB"),
             };
+            BottomNavigationList = new List<Navigation>
+            {
+                new Navigation("Switch Theme", ThemeSelector.GetIcon()),
+                new Navigation("Settings", "\uE713"),
+            };
+        }
+
+        private void SwitchIcon()
+        {
+            BottomNavigationList.ElementAt(0).IconSource = ThemeSelector.GetIcon();
         }
 
         public void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadTheme();
             SelectedItem = TopNavigationList.FirstOrDefault();
         }
 
-        private async void SwitchTheme(object parameter)
+        private async void SwitchTheme()
         {
-                if (ThemeSelector.Theme == ElementTheme.Light)
-                {
-                    await ThemeSelector.SetTheme(ElementTheme.Dark);
-                }
-                else if (ThemeSelector.Theme == ElementTheme.Dark)
-                {
-                    await ThemeSelector.SetTheme(ElementTheme.Light);
-                }
-                else
-                {
-                    await ThemeSelector.SetTheme(ElementTheme.Default);
-                }
-            LoadTitleBar();
-        }
+            if (ThemeSelector.Theme == ElementTheme.Light)
+            {
+                await ThemeSelector.SetTheme(ElementTheme.Dark);
+            }
+            else
+            {
+                await ThemeSelector.SetTheme(ElementTheme.Light);
+            }
 
+            SwitchIcon();
+        }
 
 
         private void OnShrinkClicked(object sender, RoutedEventArgs e)
@@ -129,7 +105,6 @@ namespace ZBank
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
             ShrinkButton.Visibility = Visibility.Collapsed;
             ExpandButton.Visibility = Visibility.Visible;
-            IconContainer.Orientation = Orientation.Vertical;
         }
 
         private void OnExpandClicked(object sender, RoutedEventArgs e)
@@ -139,15 +114,19 @@ namespace ZBank
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
             ExpandButton.Visibility = Visibility.Collapsed;
             ShrinkButton.Visibility = Visibility.Visible;
-            IconContainer.Orientation = Orientation.Horizontal;
         }
 
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           Navigation selectedItem = TopListView.SelectedItem as Navigation;
-            if(selectedItem.Text == "Transactions")
+            Navigation selectedItem = TopListView.SelectedItem as Navigation;
+
+            if (selectedItem.Text == "Transactions")
             {
-              ContentFrame.Navigate(typeof(TransactionsPage));
+                ContentFrame.Navigate(typeof(TransactionsPage));
+            }
+            else if (selectedItem.Text == "Accounts")
+            {
+                ContentFrame.Navigate(typeof(AccountsPage));
             }
             else
             {
@@ -155,33 +134,7 @@ namespace ZBank
             }
         }
 
-        private void CoreTitleBar_IsVisibleChanged(CoreApplicationViewTitleBar sender, object args)
-        {
-            if (sender.IsVisible)
-            {
-                AppTitleBar.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                AppTitleBar.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void CoreWindow_Activated(CoreWindow sender, WindowActivatedEventArgs args)
-        {
-            if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
-            {
-                //AppTitleTextBlock.Foreground =
-                //(Color)(Application.Current.Resources["SystemBaseHighColor"]);
-            }
-            else
-            {
-                //AppTitleTextBlock.Foreground =
-                //   (SolidColorBrush)(Application.Current.Resources["SystemBaseLowColor"]);
-            }
-        }
-
-        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+        private async void SettingsWindowOpen()
         {
             var currentAV = ApplicationView.GetForCurrentView();
             var newAV = CoreApplication.CreateNewView();
@@ -192,14 +145,13 @@ namespace ZBank
                 var newWindow = Window.Current;
                 var newAppView = ApplicationView.GetForCurrentView();
 
-                newAppView.Title = "Settings"; 
-
+                newAppView.Title = "Settings";
                 var frame = new Frame();
                 frame.RequestedTheme = ThemeSelector.Theme;
-                frame.Navigate(typeof(SettingsPage)); 
+                frame.Navigate(typeof(SettingsPage));
                 newWindow.Content = frame;
-                newWindow.Activate();
 
+                newWindow.Activate();
                 await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
                             newAppView.Id,
                             ViewSizePreference.UseMinimum,
@@ -208,17 +160,22 @@ namespace ZBank
             });
         }
 
-        private void ThemeToggleButton_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (ThemeSelector.Theme == ElementTheme.Dark)
-                ThemeToggleButton.IsChecked = true;
-            else
-                ThemeToggleButton.IsChecked = false;
-        }
-
         private void TopListView_Loaded(object sender, RoutedEventArgs e)
         {
             TopListView.SelectedIndex = 0;
+        }
+
+        private void BottomListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Navigation selectedItem = e.ClickedItem as Navigation;
+            if (selectedItem.Text == "Settings")
+            {
+                SettingsWindowOpen();
+            }
+            else if (selectedItem.Text == "Switch Theme")
+            {
+                SwitchTheme();
+            }
         }
     }
 

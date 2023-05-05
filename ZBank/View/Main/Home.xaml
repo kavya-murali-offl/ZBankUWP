@@ -51,7 +51,7 @@
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState
-                    x:Name="mediumScreen">
+                    x:Name="narrowScreen">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger
                             MinWindowWidth="600" />

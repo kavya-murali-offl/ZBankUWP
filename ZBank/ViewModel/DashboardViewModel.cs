@@ -1,28 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Notifications;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
-using ZBank.Entities;
 
 namespace ZBank.ViewModel
 {
     public class DashboardViewModel : ViewModelBase
     {
 
-        private IList<string> _cardBackgrounds = new List<string>
+        private readonly IList<string> _cardBackgrounds = new List<string>
         {
             "/Assets/CardBackgrounds/card1.webp",
             "/Assets/CardBackgrounds/card2.webp",
             "/Assets/CardBackgrounds/card3.webp",
             "/Assets/CardBackgrounds/card4.webp",
         };
+
 
         private ObservableCollection<TransactionBObj> _transactions { get; set; }
 
@@ -54,25 +49,6 @@ namespace ZBank.ViewModel
                new CardBObj("33333333", CardType.DEBIT, _cardBackgrounds.ElementAt(2)),
                new CardBObj("44444444", CardType.CREDIT, _cardBackgrounds.ElementAt(3)),
             };
-
-            //_deposits = new ObservableCollection<TermDepositAccount>
-            //{
-            //    new TermDepositAccount(10000, 3, "1111"),
-            //    new TermDepositAccount(10000, 6, "1111"),
-            //    new TermDepositAccount(10000, 9, "1111"),
-            //    new TermDepositAccount(10000, 312, "1111"),
-            //};
-
-            //_beneficiaries = new ObservableCollection<Beneficiary>
-            //{
-            //    new Beneficiary("111111", "Kavya", "ZBNK1001"),
-            //    new Beneficiary("2222222", "Priya", "ZBNK1001")
-            //};
-
-            //_notifications = new ObservableCollection<Notification>
-            //{
-
-            //}
         }
 
         public ObservableCollection<TransactionBObj> LatestTransactions
@@ -109,7 +85,6 @@ namespace ZBank.ViewModel
             get { return _cards; }
             set { _cards = value; OnPropertyChanged(nameof(AllCards)); }
         }
-
     }
 
 

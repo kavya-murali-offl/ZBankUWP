@@ -8,6 +8,6 @@ namespace ZBank.Entities.EnumerationType
 {
     public enum AccountType
     {
-        CURRENT=0, SAVINGS=1
+        NONE=0, CURRENT=1, SAVINGS=2, TERM_DEPOSIT=3
     }
 }

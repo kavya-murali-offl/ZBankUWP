@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZBank.Entities
 {
+    [Table("Account")]
     public class Account
     {
         public Account() { }
@@ -19,6 +21,8 @@ namespace ZBank.Entities
             Currency = Currency.INR;
             Amount = amount;
         }
+
+        [PrimaryKey]
         public string AccountNumber { get; set; }
 
         public string IFSCCode { get; set; }

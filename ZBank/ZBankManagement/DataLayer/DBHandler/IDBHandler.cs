@@ -29,6 +29,8 @@ namespace ZBank.DatabaseHandler
 
 
         // Account
+        Task<IEnumerable<Account>> GetAllAccounts(string userID);
+
         Task<IList<CurrentAccount>> GetCurrentAccounts(string userID);
 
         Task<IList<SavingsAccount>> GetSavingsAccounts(string userID);

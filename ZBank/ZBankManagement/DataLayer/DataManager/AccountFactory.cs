@@ -14,7 +14,7 @@ namespace BankManagementDB.Controller
                     {
                         CurrentAccount currentAccount = new CurrentAccount
                         {
-                            InterestRate = Constants.AccountConstants.CURRENT_INTEREST_RATE
+                            InterestRate = 0
                         };
 
                         return currentAccount;
@@ -23,7 +23,7 @@ namespace BankManagementDB.Controller
                     {
                         SavingsAccount savingsAccount = new SavingsAccount
                         {
-                            InterestRate = Constants.AccountConstants.SAVINGS_INTEREST_RATE
+                            InterestRate = 3.1m
                         };
 
                         return savingsAccount;

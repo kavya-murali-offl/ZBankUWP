@@ -11,7 +11,7 @@ namespace ZBank.Entities
         
         }
 
-        public CreditCardType CreditCardType { get; set; }
+        public CreditCardProvider CreditCardType { get; set; }
 
         public decimal TotalOutstanding { get; set; }
 
@@ -23,7 +23,7 @@ namespace ZBank.Entities
 
     }
 
-    public enum CreditCardType
+    public enum CreditCardProvider
     {
         VISA=0,
         MASTERCARD=1,

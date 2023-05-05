@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using Windows.UI.Xaml;
 
 namespace ZBank.Entities
 {
+    [Table("Transactions")]
     public class Transaction
     {
         public Transaction() { }
@@ -21,7 +23,8 @@ namespace ZBank.Entities
             Description = description;
         }
 
-        public string ID { get; set; }
+        [PrimaryKey]
+        public string ReferenceID { get; set; }
 
         public TransactionType TransactionType { get; set; }
 

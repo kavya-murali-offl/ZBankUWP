@@ -99,7 +99,6 @@
             <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
-
         <Button
             x:Name="Column1"
             HorizontalAlignment="Stretch"

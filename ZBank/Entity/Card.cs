@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace ZBank.Entities
 {
+    [Table("Card")]
     public class Card
     {
         public Card() { }
@@ -19,6 +21,7 @@ namespace ZBank.Entities
             ExpiryYear = "1992";
         }
 
+        [PrimaryKey]
         public string ID { get; set; }
 
         public DateTime CreatedOn { get; set; }

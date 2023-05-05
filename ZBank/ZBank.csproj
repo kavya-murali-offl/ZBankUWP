@@ -119,7 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Config\ThemeSelector.cs" />
+    <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\Beneficiary.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
@@ -146,10 +146,14 @@
     <Compile Include="Entity\SavingsAccount.cs" />
     <Compile Include="Entity\TermDepositAccount.cs" />
     <Compile Include="Entity\RecurringDepositAccount.cs" />
+    <Compile Include="ViewModel\AccountPageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="View\Main\CustomPage.xaml.cs">
+      <DependentUpon>CustomPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entity\Card.cs" />
@@ -162,6 +166,9 @@
     <Compile Include="ViewModel\TransactionViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\VMObjects\RelayCommand.cs" />
+    <Compile Include="View\Main\AccountsPage.xaml.cs">
+      <DependentUpon>AccountsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Main\DashboardPage.xaml.cs">
       <DependentUpon>DashboardPage.xaml</DependentUpon>
     </Compile>
@@ -183,6 +190,9 @@
     <Compile Include="View\UserControls\Chart1.xaml.cs">
       <DependentUpon>Chart1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\CustomTitleBar.xaml.cs">
+      <DependentUpon>CustomTitleBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\DashboardCardTemplateUserControl.xaml.cs">
       <DependentUpon>DashboardCardTemplateUserControl.xaml</DependentUpon>
     </Compile>
@@ -195,69 +205,68 @@
     <Compile Include="View\UserControls\OneByTwoGrid.xaml.cs">
       <DependentUpon>OneByTwoGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ZBankManagement\Constants.cs" />
-    <Compile Include="ZBankManagement\DataManager\AccountFactory.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IAccountFactory.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\ICustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IGetAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IGetCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IGetCustomerCredentialsDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IGetCustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IGetTransactionDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertCredentialsDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertCreditCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertCurrentAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertCustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertDebitCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertSavingsAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IInsertTransactionDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\ILoginDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\ITransferAmountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IUpdateAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IUpdateCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IUpdateCreditCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IUpdateCustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\Contracts\IUpdateDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\GetAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\GetCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\GetCustomerCredentialsDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\GetCustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\GetTransactionDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertCredentialsDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertCreditCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertCurrentAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertCustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertDebitCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertSavingsAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\InsertTransactionDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\TranferAmountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\UpdateAccountDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\UpdateCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\UpdateCreditCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataManager\UpdateCustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DBAdapter\IDatabaseAdapter.cs" />
-    <Compile Include="ZBankManagement\DBAdapter\SQLiteDatabaseAdapter.cs" />
-    <Compile Include="ZBankManagement\DBHandler\DBHandler.cs" />
-    <Compile Include="ZBankManagement\DBHandler\IDBHandler.cs" />
-    <Compile Include="ZBankManagement\EventsArgs\LoginCustomerEventArgs.cs" />
-    <Compile Include="ZBankManagement\Store.cs" />
-    <Compile Include="ZBankManagement\UseCase\GetAllAccounts\GetAllAccountsPresenterCallback.cs" />
-    <Compile Include="ZBankManagement\UseCase\GetAllAccounts\GetAllAccountsRequest.cs" />
-    <Compile Include="ZBankManagement\UseCase\GetAllAccounts\GetAllAccountsResponse.cs" />
-    <Compile Include="ZBankManagement\UseCase\GetAllAccounts\GetAllAccountsUseCase.cs" />
-    <Compile Include="ZBankManagement\UseCase\IPresenterCallback.cs" />
-    <Compile Include="ZBankManagement\UseCase\IUseCaseCallback.cs" />
-    <Compile Include="ZBankManagement\UseCase\LoginUser\LoginCustomerPresenterCallback.cs" />
-    <Compile Include="ZBankManagement\UseCase\LoginUser\LoginCustomerRequest.cs" />
-    <Compile Include="ZBankManagement\UseCase\LoginUser\LoginCustomerResponse.cs" />
-    <Compile Include="ZBankManagement\UseCase\LoginUser\LoginCustomerUseCase.cs" />
-    <Compile Include="ZBankManagement\UseCase\UseCaseBase.cs" />
-    <Compile Include="ZBankManagement\UseCase\ZBankError.cs" />
+    <Compile Include="ZBankManagement\AppEvents.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\AccountFactory.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IAccountFactory.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\ICustomerDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetCustomerCredentialsDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetCustomerDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetTransactionDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertCredentialsDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertCreditCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertCurrentAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertCustomerDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertDebitCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertSavingsAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertTransactionDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\ILoginDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\ITransferAmountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IUpdateAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IUpdateCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IUpdateCreditCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IUpdateCustomerDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IUpdateDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\GetAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\GetCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\GetCustomerCredentialsDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\GetCustomerDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\GetTransactionDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCredentialsDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCreditCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCurrentAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCustomerDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertDebitCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertSavingsAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertTransactionDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\TranferAmountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateCreditCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateCustomerDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DBAdapter\IDatabaseAdapter.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DBAdapter\SQLiteDatabaseAdapter.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DBHandler\DBHandler.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DBHandler\IDBHandler.cs" />
+    <Compile Include="ZBankManagement\DataLayer\Dependencies\DependencyContainer.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\EventsArgs\LoginCustomerEventArgs.cs" />
+    <Compile Include="ZBankManagement\DataLayer\Store.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsCallback.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsPresenterCallback.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsRequest.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsResponse.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsUseCase.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\IPresenterCallback.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\IUseCaseCallback.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\UseCaseBase.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\ViewModelBase.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\ZBankError.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -285,7 +294,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="View\Main\CustomPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Main\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -310,6 +323,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ThemeControl\ThemeDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Main\AccountsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -338,6 +355,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\Chart1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\CustomTitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -381,7 +402,9 @@
   <ItemGroup>
     <PRIResource Include="Resources\Strings\en-US\Resources.resw" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assets\Bank.db3" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

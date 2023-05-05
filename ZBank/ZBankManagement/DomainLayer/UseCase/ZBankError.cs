@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZBank.Entity.EnumerationTypes;
 
 namespace BankManagementDB.Domain.UseCase
 {
     public class ZBankError
     {
-        public string Type { get; set; }
+        public ErrorType Type { get; set; }
         public string Message { get; set; }
     }
 

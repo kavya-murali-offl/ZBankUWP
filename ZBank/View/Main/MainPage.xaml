@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZBank"
+    xmlns:userControls="using:ZBank.View.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -57,14 +58,20 @@
                             Target="TopListView.ItemContainerStyle"
                             Value="{StaticResource WideMenuListItemStyle}" />
                         <Setter
+                            Target="BottomListView.ItemTemplate"
+                            Value="{StaticResource WideTopDataTemplate}" />
+                        <Setter
+                            Target="BottomListView.ItemContainerStyle"
+                            Value="{StaticResource WideMenuListItemStyle}" />
+                        <Setter
                             Target="ExpandButton.Visibility"
                             Value="Collapsed" />
                         <Setter
                             Target="ShrinkButton.Visibility"
                             Value="Visible" />
-                        <Setter
+                        <!--<Setter
                             Target="IconContainer.Orientation"
-                            Value="Horizontal" />
+                            Value="Horizontal" />-->
                         <Setter
                             Target="MySplitView.DisplayMode"
                             Value="CompactInline" />
@@ -87,14 +94,18 @@
                             Target="TopListView.ItemContainerStyle"
                             Value="{StaticResource NarrowMenuListItemStyle}" />
                         <Setter
+                            Target="BottomListView.ItemTemplate"
+                            Value="{StaticResource NarrowTopDataTemplate}" />
+                        <Setter
+                            Target="BottomListView.ItemContainerStyle"
+                            Value="{StaticResource NarrowMenuListItemStyle}" />
+                        <Setter
                             Target="ExpandButton.Visibility"
                             Value="Visible" />
                         <Setter
                             Target="ShrinkButton.Visibility"
                             Value="Collapsed" />
-                        <Setter
-                            Target="IconContainer.Orientation"
-                            Value="Vertical" />
+                         
                         <Setter
                             Target="MySplitView.DisplayMode"
                             Value="CompactOverlay" />
@@ -104,36 +115,10 @@
         </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition
-                Height="40" />
+                Height="34" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid
-            x:Name="AppTitleBar"
-            Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    x:Name="LeftPaddingColumn"
-                    Width="0" />
-                <ColumnDefinition />
-                <ColumnDefinition
-                    x:Name="RightPaddingColumn"
-                    Width="0" />
-            </Grid.ColumnDefinitions>
-            <Image
-                Source="Assets/StoreLogo.png"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Width="20"
-                Height="20"
-                Margin="8,0,8,0" />
-            <TextBlock
-                x:Name="AppTitleTextBlock"
-                Text="ZBank"
-                Foreground="{ThemeResource ApplicationForeground}"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Margin="35,0,0,0" />
-        </Grid>
+        <userControls:CustomTitleBar />
         <SplitView
             x:Name="MySplitView"
             Grid.Row="1"
@@ -156,6 +141,13 @@
 
                     <StackPanel
                         Grid.Row="0">
+                        <ListView
+                            Margin="0,10,0,0"
+                            x:Name="TopListView"
+                            Loaded="TopListView_Loaded"
+                            ItemsSource="{x:Bind TopNavigationList}"
+                            SelectionChanged="Navigation_SelectionChanged"
+                            IsItemClickEnabled="True" />
                         <Button
                             x:Name="ExpandButton"
                             ToolTipService.ToolTip="Expand"
@@ -175,17 +167,51 @@
                                 Glyph="&#xE127;"
                                 Style="{ThemeResource ShrinkIcon}" />
                         </Button>
-                        <ListView
-                            Margin="0,10,0,0"
-                            x:Name="TopListView"
-                            Loaded="TopListView_Loaded"
-                            ItemsSource="{x:Bind TopNavigationList}"
-                            SelectionChanged="Navigation_SelectionChanged"
-                            IsItemClickEnabled="True" />
-                        
                     </StackPanel>
 
                     <StackPanel
+                        Grid.Row="1">
+                        <ListView
+                            x:Name="BottomListView"
+                            SelectionMode="None"
+                            ItemClick="BottomListView_ItemClick"
+                            ItemsSource="{x:Bind BottomNavigationList}"
+                            IsItemClickEnabled="True" />
+                    </StackPanel>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Grid.Row="2"
+                        Style="{ThemeResource ItemContainer}">
+                        <PersonPicture
+                            Margin="7,10,5,10"
+                            Style="{ThemeResource ProfilePicture}"
+                            ProfilePicture="/Assets/Pro pic.jpg" />
+                        <TextBlock
+                            Text="Kavya Murali"
+                            Style="{ThemeResource ProfileNameText}" />
+                        <FontIcon
+                            Glyph="&#xE70D;"
+                            Style="{ThemeResource ProfileDropdownIcon}" />
+                    </StackPanel>
+                </Grid>
+
+
+            </SplitView.Pane>
+            <SplitView.Content>
+                <ScrollViewer>
+                    <Frame
+                        x:Name="ContentFrame"
+                        Background="{ThemeResource ApplicationPageBackground}"
+                        CornerRadius="8" />
+                </ScrollViewer>
+            </SplitView.Content>
+
+        </SplitView>
+    </Grid>
+
+</Page>
+
+<!--<StackPanel
                         Grid.Row="1"
                         x:Name="IconContainer">
                         <ToggleButton
@@ -205,39 +231,4 @@
                             <FontIcon
                                 Glyph="&#xE713;" />
                         </Button>
-                    </StackPanel>
-
-
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        Grid.Row="2"
-                        Style="{ThemeResource ItemContainer}">
-                        <PersonPicture
-                            Margin="5,10,5,10"
-                            Style="{ThemeResource ProfilePicture}"
-                            ProfilePicture="/Assets/Pro pic.jpg" />
-                        <TextBlock
-                            Text="Kavya Murali"
-                            Style="{ThemeResource ProfileNameText}" />
-                        <FontIcon
-                            Glyph="&#xE70D;"
-                            Style="{ThemeResource ProfileDropdownIcon}" />
-                    </StackPanel>
-                </Grid>
-
-
-            </SplitView.Pane>
-            <SplitView.Content>
-                <ScrollViewer>
-                    <Frame
-                        x:Name="ContentFrame"
-                        Margin="0,0,10,10"
-                        Background="{ThemeResource ApplicationPageBackground}"
-                        CornerRadius="8" />
-                </ScrollViewer>
-            </SplitView.Content>
-
-        </SplitView>
-    </Grid>
-
-</Page>
+                    </StackPanel>-->

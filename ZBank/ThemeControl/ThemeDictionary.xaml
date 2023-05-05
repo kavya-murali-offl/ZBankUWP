@@ -345,10 +345,10 @@
             Value="{ThemeResource SystemChromeLowColor}" />
         <Setter
             Property="Margin"
-            Value="7,0,5,10" />
+            Value="5,0,5,10" />
         <Setter
             Property="Padding"
-            Value="7" />
+            Value="5" />
         <Setter
             Property="CornerRadius"
             Value="5" />

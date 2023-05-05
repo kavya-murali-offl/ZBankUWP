@@ -14,5 +14,7 @@ namespace ZBank.Entities.BusinessObjects
         [PrimaryKey]
         public string ID { get; set; }
 
+        public string Interest { get; set; }
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using ZBank.Entities;
 
 namespace ZBank.DatabaseAdapter
 {
@@ -17,8 +18,9 @@ namespace ZBank.DatabaseAdapter
         private SQLiteAsyncConnection Connection { get; set; }
 
         private SQLiteConnectionString GetConnectionString(){
-            string databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BankDB.db3");
-            return new SQLiteConnectionString(databasePath, true, key: Environment.GetEnvironmentVariable("DATABASE_PASSWORD"));
+            var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            string databasePath = Path.Combine(localFolder.Path, "BankDB.db3");
+            return new SQLiteConnectionString(databasePath, true, key: "pass");
         }
 
         public async Task CreateTable<T>() where T : new() => await Connection.CreateTableAsync<T>();
