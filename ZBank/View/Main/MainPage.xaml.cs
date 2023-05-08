@@ -25,6 +25,8 @@ using ZBank.ViewModel;
 using ZBank.ViewModel.VMObjects;
 using System.Windows.Input;
 using Windows.Media.Devices;
+using System.ComponentModel;
+using BankManagementDB.Events;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -53,7 +55,7 @@ namespace ZBank
         private void LoadTheme()
         {
             ThemeSelector.InitializeTheme();
-
+            //((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
         }
 
         private void LoadData()
@@ -81,20 +83,30 @@ namespace ZBank
         {
             LoadTheme();
             SelectedItem = TopNavigationList.FirstOrDefault();
+            AppEvents.Instance.ThemeChanged += SwitchTheme;
         }
 
-        private async void SwitchTheme()
+        public void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            if (ThemeSelector.Theme == ElementTheme.Light)
-            {
-                await ThemeSelector.SetTheme(ElementTheme.Dark);
-            }
-            else
-            {
-                await ThemeSelector.SetTheme(ElementTheme.Light);
-            }
+            AppEvents.Instance.ThemeChanged -= SwitchTheme;
+        }
 
-            SwitchIcon();
+        private void SwitchTheme()
+        {
+            ThemeSelector.SwitchTheme();
+
+            ((FrameworkElement)Window.Current.Content).RequestedTheme = ThemeSelector.Theme;
+
+            //if (ThemeSelector.Theme == ElementTheme.Light)
+            //{
+            //    await ThemeSelector.SetTheme(ElementTheme.Dark);
+            //}
+            //else
+            //{
+            //    await ThemeSelector.SetTheme(ElementTheme.Light);
+            //}
+
+            //SwitchIcon();
         }
 
 
@@ -102,6 +114,8 @@ namespace ZBank
         {
             MySplitView.IsPaneOpen = false;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
+            BottomListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
+            BottomListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
             ShrinkButton.Visibility = Visibility.Collapsed;
             ExpandButton.Visibility = Visibility.Visible;
@@ -109,8 +123,12 @@ namespace ZBank
 
         private void OnExpandClicked(object sender, RoutedEventArgs e)
         {
+
+            // Call GoToState to switch to "State2"
             MySplitView.IsPaneOpen = true;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
+            BottomListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
+            BottomListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
             ExpandButton.Visibility = Visibility.Collapsed;
             ShrinkButton.Visibility = Visibility.Visible;
@@ -174,8 +192,14 @@ namespace ZBank
             }
             else if (selectedItem.Text == "Switch Theme")
             {
+
                 SwitchTheme();
             }
+        }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            
         }
     }
 

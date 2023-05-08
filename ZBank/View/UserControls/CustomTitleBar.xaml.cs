@@ -20,6 +20,18 @@ namespace ZBank.View.UserControls
             LoadTitleBar();
         }
 
+
+
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(CustomTitleBar), new PropertyMetadata(null));
+
+
         private void LoadTitleBar()
         {
             CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
@@ -29,7 +41,6 @@ namespace ZBank.View.UserControls
             Window.Current.SetTitleBar(AppTitleBar);
             ThemeSelector.UpdateTitleBarTheme();
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
-
         }
 
         private void CoreWindow_Activated(CoreWindow sender, WindowActivatedEventArgs args)
@@ -37,12 +48,16 @@ namespace ZBank.View.UserControls
             if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
             {
                 AppTitleTextBlock.Foreground =
+                (SolidColorBrush)(Application.Current.Resources["ApplicationForeground"]);
+                AppTitleBar.Background =
                 (SolidColorBrush)(Application.Current.Resources["ApplicationBackgroundThemeBrush"]);
             }
             else
             {
                 AppTitleTextBlock.Foreground =
                    (SolidColorBrush)(Application.Current.Resources["ApplicationForeground"]);
+                AppTitleBar.Background =
+               (SolidColorBrush)(Application.Current.Resources["ApplicationBackground"]);
             }
         }
 

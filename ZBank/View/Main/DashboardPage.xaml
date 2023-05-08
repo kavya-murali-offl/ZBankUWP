@@ -2,505 +2,501 @@
     x:Class="ZBank.View.DashboardPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ZBank.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:model="using:ZBank.Entities"
     xmlns:usercontrol="using:ZBank.View.UserControls"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
-    xmlns:userControls="using:ZBank.View.UserControls"
-    Background="{ThemeResource ApplicationBackgroundThemeBrush}">
-
-    <Grid
-        x:Name="RootGrid"
-        Margin="5">
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState
-                    x:Name="wideScreen">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger
-                            MinWindowWidth="1100" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter
-                            Target="LeftGrid.(Grid.Row)"
-                            Value="0" />
-                        <Setter
-                            Target="LeftGrid.(Grid.RowSpan)"
-                            Value="2" />
-                        <Setter
-                            Target="LeftGrid.(Grid.Column)"
-                            Value="0" />
-                        <Setter
-                            Target="LeftGrid.(Grid.ColumnSpan)"
-                            Value="1" />
-                        <Setter
-                            Target="RightGrid.(Grid.Row)"
-                            Value="0" />
-                        <Setter
-                            Target="LeftGrid.(Grid.RowSpan)"
-                            Value="2" />
-                        <Setter
-                            Target="RightGrid.(Grid.Column)"
-                            Value="1" />
-                        <Setter
-                            Target="RightGrid.(Grid.ColumnSpan)"
-                            Value="1" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState
-                    x:Name="mediumScreen">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger
-                            MinWindowWidth="600" />
-                        <AdaptiveTrigger
-                            MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter
-                            Target="LeftGrid.(Grid.ColumnSpan)"
-                            Value="2" />
-
-                        <Setter
-                            Target="LeftGrid.(Grid.Row)"
-                            Value="0" />
-                        <Setter
-                            Target="LeftGrid.(Grid.RowSpan)"
-                            Value="1" />
-                        <Setter
-                            Target="LeftGrid.(Grid.Column)"
-                            Value="0" />
-                        <Setter
-                            Target="LeftGrid.(Grid.ColumnSpan)"
-                            Value="2" />
-
-                        <Setter
-                            Target="RightGrid.(Grid.Row)"
-                            Value="1" />
-                        <Setter
-                            Target="LeftGrid.(Grid.RowSpan)"
-                            Value="1" />
-                        <Setter
-                            Target="RightGrid.(Grid.Column)"
-                            Value="0" />
-                        <Setter
-                            Target="RightGrid.(Grid.ColumnSpan)"
-                            Value="2" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                Width="2*" />
-            <ColumnDefinition
-                Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition
-                Height="*" />
-            <RowDefinition
-                Height="Auto" />
-        </Grid.RowDefinitions>
-
+   >
         <Grid
-            x:Name="LeftGrid">
+            Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+            x:Name="RootGrid"
+            Padding="5"
+            CornerRadius="10"
+            >
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState
+                        x:Name="wideScreen">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger
+                                MinWindowWidth="1100" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter
+                                Target="LeftGrid.(Grid.Row)"
+                                Value="0" />
+                            <Setter
+                                Target="LeftGrid.(Grid.RowSpan)"
+                                Value="2" />
+                            <Setter
+                                Target="LeftGrid.(Grid.Column)"
+                                Value="0" />
+                            <Setter
+                                Target="LeftGrid.(Grid.ColumnSpan)"
+                                Value="1" />
+                            <Setter
+                                Target="RightGrid.(Grid.Row)"
+                                Value="0" />
+                            <Setter
+                                Target="LeftGrid.(Grid.RowSpan)"
+                                Value="2" />
+                            <Setter
+                                Target="RightGrid.(Grid.Column)"
+                                Value="1" />
+                            <Setter
+                                Target="RightGrid.(Grid.ColumnSpan)"
+                                Value="1" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState
+                        x:Name="mediumScreen">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger
+                                MinWindowWidth="600" />
+                            <AdaptiveTrigger
+                                MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter
+                                Target="LeftGrid.(Grid.ColumnSpan)"
+                                Value="2" />
+
+                            <Setter
+                                Target="LeftGrid.(Grid.Row)"
+                                Value="0" />
+                            <Setter
+                                Target="LeftGrid.(Grid.RowSpan)"
+                                Value="1" />
+                            <Setter
+                                Target="LeftGrid.(Grid.Column)"
+                                Value="0" />
+                            <Setter
+                                Target="LeftGrid.(Grid.ColumnSpan)"
+                                Value="2" />
+
+                            <Setter
+                                Target="RightGrid.(Grid.Row)"
+                                Value="1" />
+                            <Setter
+                                Target="LeftGrid.(Grid.RowSpan)"
+                                Value="1" />
+                            <Setter
+                                Target="RightGrid.(Grid.Column)"
+                                Value="0" />
+                            <Setter
+                                Target="RightGrid.(Grid.ColumnSpan)"
+                                Value="2" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="2*" />
+                <ColumnDefinition
+                    Width="*" />
+            </Grid.ColumnDefinitions>
+
             <Grid.RowDefinitions>
                 <RowDefinition
                     Height="*" />
                 <RowDefinition
-                    Height="*" />
-                <RowDefinition
-                    Height="3*" />
+                    Height="Auto" />
             </Grid.RowDefinitions>
 
-            <usercontrol:OneByTwoGrid>
-                <usercontrol:OneByTwoGrid.Column1Content>
-                    <usercontrol:AmountInfoCardUserControl
-                        x:Name="Row1Column1"
-                        PrimaryTextHeading="Total Balance"
-                        PrimaryTextContent="$100000"
-                        SecondaryTextHeading1="Total Savings"
-                        SecondaryTextHeading2="Total Deposits"
-                        SecondaryContent1="$10000"
-                        SecondaryContent2="$20000" />
-                </usercontrol:OneByTwoGrid.Column1Content>
-                <usercontrol:OneByTwoGrid.Column2Content>
-                    <usercontrol:AmountInfoCardUserControl
-                        x:Name="Row1Column2"
-                        Grid.Column="1"
-                        PrimaryTextHeading="Net Profit / Month"
-                        PrimaryTextContent="$100000"
-                        SecondaryTextHeading1="Income / Month"
-                        SecondaryTextHeading2="Expense / Month"
-                        SecondaryContent1="$10000"
-                        SecondaryContent2="$20000" />
-                </usercontrol:OneByTwoGrid.Column2Content>
-            </usercontrol:OneByTwoGrid>
+            <Grid
+                x:Name="LeftGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="*" />
+                    <RowDefinition
+                        Height="*" />
+                    <RowDefinition
+                        Height="3*" />
+                </Grid.RowDefinitions>
 
-            <usercontrol:OneByTwoGrid
-                Grid.Row="1">
-                <usercontrol:OneByTwoGrid.Column1Content>
-                    <usercontrol:AmountInfoCardUserControl
-                        x:Name="Row2Column1"
-                        PrimaryTextHeading="Deposits"
-                        PrimaryTextContent="2"
-                        SecondaryTextHeading1="Active Deposits"
-                        SecondaryTextHeading2="Closed Deposits"
-                        SecondaryContent1="1"
-                        SecondaryContent2="2" />
-                </usercontrol:OneByTwoGrid.Column1Content>
+                <usercontrol:OneByTwoGrid>
+                    <usercontrol:OneByTwoGrid.Column1Content>
+                        <usercontrol:AmountInfoCardUserControl
+                            x:Name="Row1Column1"
+                            PrimaryTextHeading="Total Balance"
+                            PrimaryTextContent="₹10,0000"
+                            SecondaryTextHeading1="Total Savings"
+                            SecondaryTextHeading2="Total Deposits"
+                            SecondaryContent1="₹10,000"
+                            SecondaryContent2="₹20,000" />
+                    </usercontrol:OneByTwoGrid.Column1Content>
+                    <usercontrol:OneByTwoGrid.Column2Content>
+                        <usercontrol:AmountInfoCardUserControl
+                            x:Name="Row1Column2"
+                            Grid.Column="1"
+                            PrimaryTextHeading="Net Profit / Month"
+                            PrimaryTextContent="₹10,000"
+                            SecondaryTextHeading1="Income / Month"
+                            SecondaryTextHeading2="Expense / Month"
+                            SecondaryContent1="₹10,000"
+                            SecondaryContent2="₹20,000" />
+                    </usercontrol:OneByTwoGrid.Column2Content>
+                </usercontrol:OneByTwoGrid>
 
-                <usercontrol:OneByTwoGrid.Column2Content>
-                    <usercontrol:AmountInfoCardUserControl
-                        x:Name="Row2Column2"
-                        PrimaryTextHeading="Beneficiaries"
-                        PrimaryTextContent="10"
-                        SecondaryTextHeading1="Within Bank"
-                        SecondaryTextHeading2="Outside Bank"
-                        SecondaryContent1="10"
-                        SecondaryContent2="20" />
-                </usercontrol:OneByTwoGrid.Column2Content>
-            </usercontrol:OneByTwoGrid>
+                <usercontrol:OneByTwoGrid
+                    Grid.Row="1">
+                    <usercontrol:OneByTwoGrid.Column1Content>
+                        <usercontrol:AmountInfoCardUserControl
+                            x:Name="Row2Column1"
+                            PrimaryTextHeading="Deposits"
+                            PrimaryTextContent="2"
+                            SecondaryTextHeading1="Active Deposits"
+                            SecondaryTextHeading2="Closed Deposits"
+                            SecondaryContent1="1"
+                            SecondaryContent2="2" />
+                    </usercontrol:OneByTwoGrid.Column1Content>
 
-            <usercontrol:OneByTwoGrid
-                Grid.Row="2">
-                <usercontrol:OneByTwoGrid.Column1Content>
-                    <usercontrol:CardControl
-                        MinHeight="498"
-                        x:Name="Row3Column1"
-                        MyTitle="Quick Transfer">
-                        <usercontrol:CardControl.MyContent>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition
-                                        Height="*" />
-                                    <RowDefinition
-                                        Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <StackPanel
-                                    Padding="10,0,10,0"
-                                    VerticalAlignment="Top"
-                                    Orientation="Vertical">
+                    <usercontrol:OneByTwoGrid.Column2Content>
+                        <usercontrol:AmountInfoCardUserControl
+                            x:Name="Row2Column2"
+                            PrimaryTextHeading="Beneficiaries"
+                            PrimaryTextContent="10"
+                            SecondaryTextHeading1="Within Bank"
+                            SecondaryTextHeading2="Outside Bank"
+                            SecondaryContent1="10"
+                            SecondaryContent2="20" />
+                    </usercontrol:OneByTwoGrid.Column2Content>
+                </usercontrol:OneByTwoGrid>
 
-                                    <TextBlock
-                                        Margin="5,20,5,5"
-                                        Text="Account Number"
-                                        Style="{ThemeResource NormalText}"
-                                        Foreground="Gray"
-                                        FontSize="12" />
+                <usercontrol:OneByTwoGrid
+                    Grid.Row="2">
+                    <usercontrol:OneByTwoGrid.Column1Content>
+                        <usercontrol:CardControl
+                            MinHeight="410"
+                            x:Name="Row3Column1"
+                            MyTitle="Quick Transfer">
+                            <usercontrol:CardControl.MyContent>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition
+                                            Height="*" />
+                                        <RowDefinition
+                                            Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel
+                                        Padding="10,0,10,0"
+                                        VerticalAlignment="Top"
+                                        Orientation="Vertical">
 
-                                    <DropDownButton
-                                        HorizontalAlignment="Stretch"
-                                        CornerRadius="8"
-                                        Content="Select Account" />
+                                        <TextBlock
+                                            Margin="5,20,5,5"
+                                            Text="Account Number"
+                                            Style="{ThemeResource NormalSubText}"
+                                             />
 
-                                    <TextBlock
-                                        Margin="5,30,5,5"
-                                        Text="Beneficiary"
-                                        Style="{ThemeResource NormalText}"
-                                        Foreground="Gray"
-                                        FontSize="12" />
-                                    <DropDownButton
-                                        HorizontalAlignment="Stretch"
-                                        CornerRadius="8"
-                                        Content="Select Beneficiary" />
+                                        <DropDownButton
+                                            HorizontalAlignment="Stretch"
+                                            CornerRadius="8"
+                                            Content="Select Account" />
 
-
-                                    <TextBlock
-                                        Margin="5,30,5,5"
-                                        Text="Amount"
-                                        Style="{ThemeResource NormalText}"
-                                        Foreground="Gray"
-                                        FontSize="12" />
-                                    <TextBox />
-
-
-                                    <TextBlock
-                                        Margin="5,30,5,5"
-                                        Text="Payment Method"
-                                        Style="{ThemeResource NormalText}"
-                                        Foreground="Gray"
-                                        FontSize="12" />
-                                    <DropDownButton
-                                        HorizontalAlignment="Stretch"
-                                        CornerRadius="8"
-                                        Content="Select Payment Method" />
+                                        <TextBlock
+                                            Margin="5,30,5,5"
+                                            Text="Beneficiary"
+                                        Style="{ThemeResource NormalSubText}"
+                                             />
+                                        <DropDownButton
+                                            HorizontalAlignment="Stretch"
+                                            CornerRadius="8"
+                                            Content="Select Beneficiary" />
 
 
-                                </StackPanel>
-                                <StackPanel
-                                    Padding="10,0,10,20"
-                                    Grid.Row="1"
-                                    VerticalAlignment="Center"
-                                    MaxWidth="400">
-                                    <Button
-                                        Margin="0,30,0,0"
-                                        Style="{ThemeResource PrimaryButton}"
-                                        VerticalAlignment="Bottom"
-                                        HorizontalAlignment="Stretch">
-                                        <Button.Content>
-                                            <TextBlock
-                                                Text="Send" />
-                                        </Button.Content>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </usercontrol:CardControl.MyContent>
-                    </usercontrol:CardControl>
-                </usercontrol:OneByTwoGrid.Column1Content>
-                <usercontrol:OneByTwoGrid.Column2Content>
-                    <usercontrol:CardControl
-                        Grid.Column="1"
-                        MyTitle="Latest Transactions"
-                        MinHeight="506"
-                        x:Name="Row3Column2">
-                        <usercontrol:CardControl.MyContent>
-                            <ListView
-                                MaxHeight="390"
-                                ItemsSource="{x:Bind DashboardViewModel.LatestTransactions}"
-                                x:Name="TransactionsListView"
-                                SelectionMode="None">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate
-                                        x:DataType="modelBObj:TransactionBObj">
-                                        <ScrollViewer
-                                            VerticalScrollBarVisibility="Auto"
-                                            HorizontalScrollBarVisibility="Auto">
-                                            <usercontrol:DashboardTransactionGrid />
-                                        </ScrollViewer>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                                <ListView.ItemContainerStyle>
-                                    <Style
-                                        TargetType="ListViewItem">
-                                        <Setter
-                                            Property="HorizontalContentAlignment"
-                                            Value="Stretch" />
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-                            </ListView>
-                        </usercontrol:CardControl.MyContent>
-                    </usercontrol:CardControl>
-                </usercontrol:OneByTwoGrid.Column2Content>
-            </usercontrol:OneByTwoGrid>
-        </Grid>
+                                        <TextBlock
+                                            Margin="5,30,5,5"
+                                            Text="Amount"
+                                            Style="{ThemeResource NormalSubText}"
+                                             />
+                                        <TextBox />
 
-        <Grid
-            x:Name="RightGrid"
-            Grid.Column="1">
 
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="2*" />
-                <RowDefinition
-                    Height="*" />
-                <RowDefinition
-                    Height="2*" />
-            </Grid.RowDefinitions>
+                                        <TextBlock
+                                            Margin="5,30,5,5"
+                                            Text="Payment Method"
+                                            Style="{ThemeResource NormalSubText}"
+                                             />
+                                        <DropDownButton
+                                            HorizontalAlignment="Stretch"
+                                            CornerRadius="8"
+                                            Content="Select Payment Method" />
 
-            <usercontrol:CardControl
-                MyTitle="Cards">
-                <usercontrol:CardControl.MyControls>
-                    <StackPanel
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right">
-                        <Button
-                            Style="{ThemeResource SecondaryButton}">
-                            <Button.Content>
-                                <FontIcon
-                                    Foreground="{ThemeResource ApplicationForeground}"
-                                    Glyph="&#xE76B;" />
-                            </Button.Content>
-                        </Button>
-                        <Button
-                            Style="{ThemeResource SecondaryButton}">
-                            <Button.Content>
-                                <FontIcon
-                                    Foreground="{ThemeResource ApplicationForeground}"
-                                    Glyph="&#xE76C;" />
-                            </Button.Content>
-                        </Button>
-                    </StackPanel>
-                </usercontrol:CardControl.MyControls>
-                <usercontrol:CardControl.MyContent>
-                    <StackPanel
-                        Margin="0,10,0,0"
-                        Grid.Row="1"
-                        VerticalAlignment="Top">
-                        <StackPanel>
-                            <ListView
-                                VerticalContentAlignment="Top"
-                                HorizontalContentAlignment="Stretch"
-                                Grid.Column="1"
-                                SelectionMode="None"
-                                HorizontalAlignment="Stretch"
-                                x:Name="CardList">
-                                <ListView.ItemContainerStyle>
-                                    <Style
-                                        TargetType="ListViewItem">
-                                        <Setter
-                                            Property="HorizontalContentAlignment"
-                                            Value="Stretch" />
 
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-
-                                <ListViewItem
-                                    VerticalAlignment="Top">
-                                    <Grid
-                                        MinHeight="200"
-                                        MaxWidth="400"
-                                        HorizontalAlignment="Stretch"
-                                        Padding="15"
-                                        CornerRadius="20">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition
-                                                Height="Auto" />
-                                            <RowDefinition
-                                                Height="*" />
-                                            <RowDefinition
-                                                Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.Background>
-                                            <ImageBrush
-                                                ImageSource="/Assets/CardBackgrounds/card1.jpg"
-                                                Stretch="UniformToFill"></ImageBrush>
-                                        </Grid.Background>
-                                        <StackPanel
-                                            Grid.Row="0">
-                                            <TextBlock
-                                                FontWeight="Bold"
-                                                VerticalAlignment="Top"
-                                                Foreground="Azure"
-                                                Text="CREDIT" />
-                                        </StackPanel>
-
-                                        <Grid
-                                            Grid.Row="1">
-                                            <TextBlock
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                FontWeight="Bold"
-                                                Foreground="Azure"
-                                                FontSize="24"
-                                                Padding="0,10,0,10"
-                                                Text="**** **** **** 1234" />
-                                        </Grid>
-                                        <Grid
-                                            Grid.Row="2"
-                                            VerticalAlignment="Bottom">
-                                            <StackPanel>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Padding="10,0,10,20"
+                                        Grid.Row="1"
+                                        VerticalAlignment="Center"
+                                        MaxWidth="400">
+                                        <Button
+                                            Margin="0,30,0,0"
+                                            Style="{ThemeResource PrimaryButton}"
+                                            VerticalAlignment="Bottom"
+                                            HorizontalAlignment="Stretch">
+                                            <Button.Content>
                                                 <TextBlock
-                                                    HorizontalAlignment="Left"
-                                                    FontWeight="SemiBold"
+                                                    Text="Send" />
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </usercontrol:CardControl.MyContent>
+                        </usercontrol:CardControl>
+                    </usercontrol:OneByTwoGrid.Column1Content>
+                    <usercontrol:OneByTwoGrid.Column2Content>
+                        <usercontrol:CardControl
+                            Grid.Column="1"
+                            MyTitle="Latest Transactions"
+                            MinHeight="480"
+                            x:Name="Row3Column2">
+                            <usercontrol:CardControl.MyContent>
+                                <ListView
+                                    MaxHeight="390"
+                                    ItemsSource="{x:Bind DashboardViewModel.LatestTransactions}"
+                                    x:Name="TransactionsListView"
+                                    SelectionMode="None">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate
+                                            x:DataType="modelBObj:TransactionBObj">
+                                            <ScrollViewer
+                                                VerticalScrollBarVisibility="Auto"
+                                                HorizontalScrollBarVisibility="Auto">
+                                                <usercontrol:DashboardTransactionGrid />
+                                            </ScrollViewer>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style
+                                            TargetType="ListViewItem">
+                                            <Setter
+                                                Property="HorizontalContentAlignment"
+                                                Value="Stretch" />
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </usercontrol:CardControl.MyContent>
+                        </usercontrol:CardControl>
+                    </usercontrol:OneByTwoGrid.Column2Content>
+                </usercontrol:OneByTwoGrid>
+            </Grid>
+
+            <Grid
+                x:Name="RightGrid"
+                Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="2*" />
+                    <RowDefinition
+                        Height="*" />
+                    <RowDefinition
+                        Height="2*" />
+                </Grid.RowDefinitions>
+
+                <usercontrol:CardControl
+                    MyTitle="Cards">
+                    <usercontrol:CardControl.MyControls>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right">
+                            <Button
+                                Style="{ThemeResource SecondaryButton}">
+                                <Button.Content>
+                                    <FontIcon
+                                        Foreground="{ThemeResource ApplicationForeground}"
+                                        Glyph="&#xE76B;" />
+                                </Button.Content>
+                            </Button>
+                            <Button
+                                Style="{ThemeResource SecondaryButton}">
+                                <Button.Content>
+                                    <FontIcon
+                                        Foreground="{ThemeResource ApplicationForeground}"
+                                        Glyph="&#xE76C;" />
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+                    </usercontrol:CardControl.MyControls>
+                    <usercontrol:CardControl.MyContent>
+                        <StackPanel
+                            Margin="0,10,0,0"
+                            Grid.Row="1"
+                            VerticalAlignment="Top">
+                            <StackPanel>
+                                <ListView
+                                    VerticalContentAlignment="Top"
+                                    HorizontalContentAlignment="Stretch"
+                                    Grid.Column="1"
+                                    SelectionMode="None"
+                                    HorizontalAlignment="Stretch"
+                                    x:Name="CardList">
+                                    <ListView.ItemContainerStyle>
+                                        <Style
+                                            TargetType="ListViewItem">
+                                            <Setter
+                                                Property="HorizontalContentAlignment"
+                                                Value="Stretch" />
+
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+
+                                    <ListViewItem
+                                        VerticalAlignment="Top">
+                                        <Grid
+                                            MinHeight="200"
+                                            MaxWidth="400"
+                                            HorizontalAlignment="Stretch"
+                                            Padding="15"
+                                            CornerRadius="20">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition
+                                                    Height="Auto" />
+                                                <RowDefinition
+                                                    Height="*" />
+                                                <RowDefinition
+                                                    Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.Background>
+                                                <ImageBrush
+                                                    ImageSource="/Assets/CardBackgrounds/card1.jpg"
+                                                    Stretch="UniformToFill"></ImageBrush>
+                                            </Grid.Background>
+                                            <StackPanel
+                                                Grid.Row="0">
+                                                <TextBlock
+                                                    FontWeight="Bold"
+                                                    VerticalAlignment="Top"
                                                     Foreground="Azure"
-                                                    FontSize="12"
-                                                    Padding="0,5,0,0"
-                                                    Text="Available Credit Limit" />
+                                                    Text="CREDIT" />
+                                            </StackPanel>
+
+                                            <Grid
+                                                Grid.Row="1">
                                                 <TextBlock
-                                                    HorizontalAlignment="Left"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
                                                     FontWeight="Bold"
                                                     Foreground="Azure"
-                                                    FontSize="14"
-                                                    Padding="0,0,0,0"
-                                                    Text="$200000,00" />
-                                            </StackPanel>
+                                                    FontSize="16"
+                                                    Padding="0,10,0,10"
+                                                    Text="****  ****  ****  1234" />
+                                            </Grid>
+                                            <Grid
+                                                Grid.Row="2"
+                                                VerticalAlignment="Bottom">
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        HorizontalAlignment="Left"
+                                                        FontWeight="SemiBold"
+                                                        Foreground="Azure"
+                                                        FontSize="12"
+                                                        Padding="0,5,0,0"
+                                                        Text="Available Credit Limit" />
+                                                    <TextBlock
+                                                        HorizontalAlignment="Left"
+                                                        FontWeight="Bold"
+                                                        Foreground="Azure"
+                                                        FontSize="12"
+                                                        Padding="0,0,0,0"
+                                                        Text="₹200000,00" />
+                                                </StackPanel>
+                                            </Grid>
+
                                         </Grid>
+                                    </ListViewItem>
+                                </ListView>
+                                <Button
+                                    MinWidth="200"
+                                    HorizontalAlignment="Center"
+                                    Margin="10"
+                                    VerticalAlignment="Bottom"
+                                    Style="{ThemeResource PrimaryButton}">
+                                    <Button.Content>
+                                        <StackPanel
+                                            Orientation="Horizontal"
+                                            Padding="25,0,25,0">
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                Text="Manage Card" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </usercontrol:CardControl.MyContent>
+                </usercontrol:CardControl>
 
-                                    </Grid>
-                                </ListViewItem>
-                            </ListView>
-                            <Button
-                                MinWidth="200"
+                <usercontrol:CardControl
+                    Grid.Row="1"
+                    MinHeight="100"
+                    MyTitle="Quick Actions">
+                    <usercontrol:CardControl.MyContent>
+                        <ScrollViewer
+                            HorizontalScrollBarVisibility="Auto">
+                            <StackPanel
                                 HorizontalAlignment="Center"
-                                Margin="10"
-                                VerticalAlignment="Bottom"
-                                Style="{ThemeResource SecondaryButton}">
-                                <Button.Content>
-                                    <StackPanel
-                                        Orientation="Horizontal"
-                                        Padding="25,0,25,0">
-                                        <TextBlock
-                                            VerticalAlignment="Center"
-                                            Text="Manage Card" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
-                </usercontrol:CardControl.MyContent>
-            </usercontrol:CardControl>
+                                Orientation="Horizontal">
+                                <Button
+                                    Padding="7"
+                                    Style="{ThemeResource SecondaryButton}">
+                                    <Button.Content>
+                                        <StackPanel>
+                                            <FontIcon
+                                                Glyph="&#xE1CA;"
+                                                FontFamily="Segoe MDL2 Assets" />
+                                            <TextBlock
+                                                Padding="5,5,5,0"
+                                                Text="Self Transfer" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <Button
+                                    MinWidth="80"
+                                    Style="{ThemeResource SecondaryButton}"
+                                    Padding="7">
+                                    <Button.Content>
+                                        <StackPanel>
+                                            <FontIcon
+                                                Glyph="&#xE1CD;"
+                                                FontFamily="Segoe MDL2 Assets" />
+                                            <TextBlock
+                                                Padding="5,5,5,0"
+                                                Text="Split" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <Button
+                                    MinWidth="80"
+                                    Padding="7"
+                                    Style="{ThemeResource SecondaryButton}">
+                                    <Button.Content>
+                                        <StackPanel>
+                                            <FontIcon
+                                                Glyph="&#xE2B3;"
+                                                FontFamily="Segoe MDL2 Assets" />
+                                            <TextBlock
+                                                Padding="5,5,5,0"
+                                                Text="Request" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </usercontrol:CardControl.MyContent>
+                </usercontrol:CardControl>
 
-            <usercontrol:CardControl
-                Grid.Row="1"
-                MinHeight="100"
-                MyTitle="Quick Actions">
-                <usercontrol:CardControl.MyContent>
-                    <ScrollViewer
-                        HorizontalScrollBarVisibility="Auto">
-                        <StackPanel
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal">
-                            <Button
-                                Padding="7"
-                                Style="{ThemeResource SecondaryButton}">
-                                <Button.Content>
-                                    <StackPanel>
-                                        <FontIcon
-                                            Glyph="&#xE1CA;"
-                                            FontFamily="Segoe MDL2 Assets" />
-                                        <TextBlock
-                                            Padding="5,5,5,0"
-                                            Text="Self Transfer" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Button
-                                MinWidth="80"
-                                Style="{ThemeResource SecondaryButton}"
-                                Padding="7">
-                                <Button.Content>
-                                    <StackPanel>
-                                        <FontIcon
-                                            Glyph="&#xE1CD;"
-                                            FontFamily="Segoe MDL2 Assets" />
-                                        <TextBlock
-                                            Padding="5,5,5,0"
-                                            Text="Split" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Button
-                                MinWidth="80"
-                                Padding="7"
-                                Style="{ThemeResource SecondaryButton}">
-                                <Button.Content>
-                                    <StackPanel>
-                                        <FontIcon
-                                            Glyph="&#xE2B3;"
-                                            FontFamily="Segoe MDL2 Assets" />
-                                        <TextBlock
-                                            Padding="5,5,5,0"
-                                            Text="Request" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                        </StackPanel>
-                    </ScrollViewer>
-                </usercontrol:CardControl.MyContent>
-            </usercontrol:CardControl>
-
-            <usercontrol:CardControl
-                Grid.Row="2"
-                MyTitle="Notifications">
-
-            </usercontrol:CardControl>
-        </Grid>
+                <usercontrol:CardControl
+                    Grid.Row="2"
+                    MinHeight="150"
+                    MyTitle="Notifications">
+                </usercontrol:CardControl>
+            </Grid>
     </Grid>
+  
 </Page>

@@ -20,20 +20,28 @@ namespace ZBank.Config
 
         private static readonly ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
 
+
         public static ElementTheme Theme { get; set; } = ElementTheme.Default;
 
-        public static async void InitializeTheme()
+        public static void InitializeTheme()
         {
             LoadCacheTheme();
             SetThemeInSettings(Theme);
-            await SetThemeAllWindows();
+            SetThemeAllWindows();
         }
 
-        public static async Task SetTheme(ElementTheme theme)
+        public static void SwitchTheme()
         {
-            Theme = theme;
+            if (Theme == ElementTheme.Light)
+            {
+                Theme = ElementTheme.Dark;
+            }
+            else
+            {
+                Theme = ElementTheme.Light;
+            }
             SetThemeInSettings(Theme);
-            await SetThemeAllWindows();
+
         }
 
         public static string GetIcon()
@@ -78,19 +86,20 @@ namespace ZBank.Config
             titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
         }
 
-        private static async Task SetThemeAllWindows()
+        private static void SetThemeAllWindows()
         {
-            foreach (var view in CoreApplication.Views)
-            {
-                await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,async () =>
-                {
-                    if (Window.Current.Content is FrameworkElement frameworkElement)
-                    {
-                        frameworkElement.RequestedTheme = Theme;
-                        UpdateTitleBarTheme();
-                    }
-                });
-            }
+            //foreach (var view in CoreApplication.Views)
+            //{
+            //    await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            //    {
+            //        if (Window.Current.Content is FrameworkElement frameworkElement)
+            //        {
+            //            frameworkElement.RequestedTheme = Theme;
+
+            //            UpdateTitleBarTheme();
+            //        }
+            //    });
+            //}
         }
     }
 }

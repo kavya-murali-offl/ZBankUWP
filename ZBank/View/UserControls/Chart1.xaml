@@ -11,5 +11,8 @@
     d:DesignWidth="400">
 
     <Grid>
+        <Canvas
+            x:Name="PieChartCanvas" Width="200" Height="200">
+        </Canvas>
     </Grid>
 </UserControl>

@@ -1,24 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <ResourceDictionary.ThemeDictionaries>
-        <ResourceDictionary
-            x:Key="Light">
-
-        </ResourceDictionary>
-
-        <ResourceDictionary
-            x:Key="Dark">
-          
-        </ResourceDictionary>
-
-        <ResourceDictionary
-            x:Key="Default">
-      
-        </ResourceDictionary>
-      
-    </ResourceDictionary.ThemeDictionaries>
+    
     <SolidColorBrush
         x:Key="ApplicationBackground"
         Color="{ThemeResource SystemAltHighColor}" />  
@@ -88,7 +71,8 @@
     <SolidColorBrush
         x:Key="ButtonBackgroundPressed"
         Color="{ThemeResource SystemChromeMediumColor}" />
-
+    
+    
     <Style
         TargetType="ListViewItem"
         x:Name="WideMenuListItemStyle">
@@ -255,7 +239,10 @@
             Value="{ThemeResource SystemAccentColorDark2}" />
         <Setter
             Property="FontSize"
-            Value="14" />
+            Value="12" />
+        <Setter
+            Property="MaxWidth"
+            Value="300" />
         <Setter
             Property="BorderThickness"
             Value="0" />
@@ -369,12 +356,11 @@
             Value="Center" />
         <Setter
             Property="FontSize"
-            Value="20" />
+            Value="16" />
         <Setter
             Property="FontWeight"
             Value="SemiBold" />
     </Style>
-
     <Style
         TargetType="Button"
         x:Name="ShrinkButton">
@@ -615,7 +601,7 @@
             Value="Center" />
         <Setter
             Property="HorizontalAlignment"
-            Value="Left" />
+            Value="Center" />
         <Setter
             Property="Foreground"
             Value="{ThemeResource SystemAccentColorDark1}" />
@@ -698,21 +684,19 @@
             Value="{ThemeResource ApplicationForeground}" />
     </Style>
 
-
     <Style
         TargetType="TextBlock"
-        x:Name="NormalText">
+        x:Name="NormalSubText">
         <Setter
             Property="FontSize"
-            Value="14" />
+            Value="12" />
         <Setter
             Property="FontWeight"
             Value="Normal" />
         <Setter
             Property="Foreground"
-            Value="{ThemeResource ApplicationForeground}" />
+            Value="Gray" />
     </Style>
-
 
 </ResourceDictionary>
             

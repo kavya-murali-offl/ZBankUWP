@@ -187,7 +187,7 @@
                                     <TextBlock
                                         Margin="5,20,5,5"
                                         Text="Account Number"
-                                        Style="{ThemeResource NormalText}"
+                                        Style="{ThemeResource NormalSubText}"
                                         Foreground="Gray"
                                         FontSize="12" />
 
@@ -199,7 +199,7 @@
                                     <TextBlock
                                         Margin="5,30,5,5"
                                         Text="Beneficiary"
-                                        Style="{ThemeResource NormalText}"
+                                        Style="{ThemeResource NormalSubText}"
                                         Foreground="Gray"
                                         FontSize="12" />
                                     <DropDownButton
@@ -211,7 +211,7 @@
                                     <TextBlock
                                         Margin="5,30,5,5"
                                         Text="Amount"
-                                        Style="{ThemeResource NormalText}"
+                                        Style="{ThemeResource NormalSubText}"
                                         Foreground="Gray"
                                         FontSize="12" />
                                     <TextBox />
@@ -220,7 +220,7 @@
                                     <TextBlock
                                         Margin="5,30,5,5"
                                         Text="Payment Method"
-                                        Style="{ThemeResource NormalText}"
+                                        Style="{ThemeResource NormalSubText}"
                                         Foreground="Gray"
                                         FontSize="12" />
                                     <DropDownButton

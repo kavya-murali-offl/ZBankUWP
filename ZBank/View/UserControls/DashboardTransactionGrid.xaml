@@ -56,7 +56,7 @@
                     FontSize="12"
                 Text="{x:Bind TransactionBObj.RecordedOn, 
                     Converter={StaticResource DateFormatConverter}}"
-                    Style="{ThemeResource NormalText}" />
+                    Style="{ThemeResource NormalSubText}" />
             </StackPanel>
             <StackPanel
                 Grid.Column="2"

@@ -31,5 +31,7 @@ namespace ZBank.View.Main
             this.InitializeComponent();
             ViewModel = new AccountPageViewModel();
         }
+
+        public int a = 10;
     }
 }

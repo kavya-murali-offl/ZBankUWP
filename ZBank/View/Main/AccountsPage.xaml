@@ -9,17 +9,22 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid
+            Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+            x:Name="RootGrid"
+            Padding="5"
+            CornerRadius="10"
+        >
         <TextBlock
             Text="Accounts" />
         <ListView
-            ItemsSource="{x:Bind ViewModel.Accounts}"
+            ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}"
             SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate
                     x:DataType="model:Account">
                     <TextBlock
-                        Text="{x:Bind AccountNumber}" />
+                        Text="{Binding AccountNumber, Mode=OneWay}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemContainerStyle>

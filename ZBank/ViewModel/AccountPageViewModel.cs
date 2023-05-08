@@ -38,10 +38,10 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                userID = "1111"
+                UserID = "1111"
             };
 
-            GetAllAccountsPresenterCallback presenterCallback = new GetAllAccountsPresenterCallback(this);
+            IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
 
             UseCaseBase<GetAllAccountsRequest, GetAllAccountsResponse> useCase = new GetAllAccountsUseCase();
 

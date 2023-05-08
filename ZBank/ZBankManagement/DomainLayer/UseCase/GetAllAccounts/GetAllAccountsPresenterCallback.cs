@@ -13,7 +13,7 @@ using ZBank.ViewModel;
 
 namespace ZBank.ZBankManagement.UseCase.GetAllAccounts
 {
-    public class GetAllAccountsPresenterCallback :IPresenterCallback<GetAllAccountsResponse>
+    public class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
     {
         private AccountPageViewModel AccountPageViewModel { get; set; }
 

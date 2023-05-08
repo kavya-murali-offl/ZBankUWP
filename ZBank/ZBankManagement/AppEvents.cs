@@ -10,16 +10,38 @@ namespace BankManagementDB.Events
 
     public class AppEvents
     {
-        public event Action<bool> IsLoggedIn;
-        public event Action<IEnumerable<Account>> IsAccountsLoaded;
+        private AppEvents() { }
+
+        private static AppEvents instance = null;
+
+        public static AppEvents Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new AppEvents();
+                }
+                return instance;
+            }
+        }
+
+        public event Action<bool> LoggedIn;
+        public event Action<IEnumerable<Account>> AccountsLoaded;
+        public event Action ThemeChanged;
 
         public void OnSuccessfulLogin(bool IsLoginSuccess){
-            IsLoggedIn?.Invoke(IsLoginSuccess);
+            LoggedIn?.Invoke(IsLoginSuccess);
         }
 
         public void OnGetAccountsSuccess(IEnumerable<Account> accounts)
         {
-            IsAccountsLoaded?.Invoke(accounts);
+            AccountsLoaded?.Invoke(accounts);
+        }
+
+        public void OnThemeChanged()
+        {
+            ThemeChanged?.Invoke();
         }
     }
 }

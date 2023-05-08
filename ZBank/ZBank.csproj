@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\Beneficiary.cs" />
@@ -150,9 +151,6 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
-    <Compile Include="View\Main\CustomPage.xaml.cs">
-      <DependentUpon>CustomPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -257,10 +255,7 @@
     <Compile Include="ZBankManagement\DataLayer\Dependencies\DependencyContainer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\EventsArgs\LoginCustomerEventArgs.cs" />
     <Compile Include="ZBankManagement\DataLayer\Store.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsCallback.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsPresenterCallback.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsRequest.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsResponse.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsUseCase.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\IPresenterCallback.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\IUseCaseCallback.cs" />
@@ -294,10 +289,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\Main\CustomPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Main\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

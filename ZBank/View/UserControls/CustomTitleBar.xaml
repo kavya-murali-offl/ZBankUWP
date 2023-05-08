@@ -6,11 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    >
 
         <Grid
             x:Name="AppTitleBar"
-            Background="{ThemeResource ApplicationBackground}">
+            >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition
                     x:Name="LeftPaddingColumn"
@@ -29,7 +29,7 @@
                 Margin="8,0,8,0" />
             <TextBlock
                 x:Name="AppTitleTextBlock"
-                Text="ZBank"
+                Text="{x:Bind Title}"
                 Foreground="{ThemeResource ApplicationForeground}"
                 Grid.Column="1"
                 VerticalAlignment="Center"

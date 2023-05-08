@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
+    Unloaded="Page_UnLoaded"
     Background="{ThemeResource ApplicationBackground}">
     <Page.Resources>
         <DataTemplate
@@ -26,14 +27,9 @@
         <DataTemplate
             x:Key="NarrowTopDataTemplate"
             x:DataType="local:Navigation">
-            <StackPanel
-                ToolTipService.ToolTip="{x:Bind Text}"
-                ToolTipService.Placement="Bottom"
-                Style="{ThemeResource WithTextContainer}">
                 <FontIcon
                     Glyph="{x:Bind IconSource}"
                     Style="{StaticResource MenuIconStyle}" />
-            </StackPanel>
         </DataTemplate>
     
     </Page.Resources>
@@ -69,9 +65,6 @@
                         <Setter
                             Target="ShrinkButton.Visibility"
                             Value="Visible" />
-                        <!--<Setter
-                            Target="IconContainer.Orientation"
-                            Value="Horizontal" />-->
                         <Setter
                             Target="MySplitView.DisplayMode"
                             Value="CompactInline" />
@@ -118,7 +111,7 @@
                 Height="34" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <userControls:CustomTitleBar />
+        <userControls:CustomTitleBar Title="ZBank"/>
         <SplitView
             x:Name="MySplitView"
             Grid.Row="1"
@@ -201,8 +194,7 @@
                 <ScrollViewer>
                     <Frame
                         x:Name="ContentFrame"
-                        Background="{ThemeResource ApplicationPageBackground}"
-                        CornerRadius="8" />
+                        Background="{ThemeResource ApplicationPageBackground}" />
                 </ScrollViewer>
             </SplitView.Content>
 

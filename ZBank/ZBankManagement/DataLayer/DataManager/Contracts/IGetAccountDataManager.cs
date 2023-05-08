@@ -14,6 +14,6 @@ namespace BankManagementDB.Interface
     {
         void GetAllAccounts(string id);
 
-        void GetAllAccounts(GetAllAccountsRequest request, GetAllAccountsCallback callback);
+        void GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback);
     }
 }

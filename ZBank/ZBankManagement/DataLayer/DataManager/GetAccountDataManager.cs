@@ -29,14 +29,14 @@ namespace BankManagementDB.DataManager
             //Store.AccountsList = Store.AccountsList.Concat(savingsAccounts);
         }
 
-        public void GetAllAccounts(GetAllAccountsRequest request, GetAllAccountsCallback callback)
+        public void GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback)
         {
             try
             {
                 IEnumerable<Account> accountsList = new List<Account>();
                 if (request.AccountType == null)
                 {
-                    accountsList = DBHandler.GetAllAccounts(request.userID).Result;
+                    accountsList = DBHandler.GetAllAccounts(request.UserID).Result;
                     //IEnumerable<SavingsAccount> savingsAccounts = DBHandler.GetSavingsAccounts(request.userID).Result;
                     //IEnumerable<CurrentAccount> currentAccounts = DBHandler.GetCurrentAccounts(request.userID).Result;
                     //accountsList = accountsList.Concat(savingsAccounts);
