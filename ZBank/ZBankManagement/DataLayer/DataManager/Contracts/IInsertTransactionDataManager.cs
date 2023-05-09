@@ -1,9 +1,11 @@
-﻿using ZBank.Entities;
+﻿using BankManagementDB.Domain.UseCase;
+using ZBank.Entities;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertTransaction;
 
 namespace BankManagementDB.Interface
 {
     public interface IInsertTransactionDataManager
     {
-        bool InsertTransaction(Transaction transaction);
+        void InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback);
     }
 }

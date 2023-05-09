@@ -1,9 +1,11 @@
-﻿using ZBank.Entities;
+﻿using BankManagementDB.Domain.UseCase;
+using ZBank.Entities;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCard;
 
 namespace BankManagementDB.Interface
 {
     public interface IUpdateCardDataManager
     {
-        bool UpdateCard(Card card);
+        void UpdateCard(UpdateCardRequest request, IUseCaseCallback<UpdateCardResponse> callback);
     }
 }

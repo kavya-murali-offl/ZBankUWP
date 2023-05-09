@@ -9,10 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel
-        Margin="0,0,10,10"
-        Padding="10"
-        Background="{ThemeResource ApplicationPageBackground}">
-        
+      >
         <TextBlock
             FontWeight="Bold"
             FontSize="{StaticResource TextStyleLargeFontSize}"
@@ -36,5 +33,13 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+        <Button Style="{ThemeResource PrimaryButton}"
+               Command="{x:Bind ViewModel.AddAccountCommand}"
+                >
+            <Button.Content>
+                <TextBlock
+                    Text="Add Account" />
+            </Button.Content>
+        </Button>
     </StackPanel>
 </Page>

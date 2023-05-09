@@ -14,7 +14,6 @@ namespace ZBank.Entities.BusinessObjects
         [PrimaryKey]
         public string AccountNumber { get; set; }
 
-        public string Interest { get; set; }
-
+        public decimal Interest { get; set; }
     }
 }

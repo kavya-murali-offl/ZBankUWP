@@ -10,23 +10,47 @@ namespace ZBank.DatabaseHandler
 {
     public class DBHandler : IDBHandler
     {
-        private bool AreTablesCreated = false;
-
         public DBHandler(IDatabaseAdapter databaseAdapter)
         {
             DatabaseAdapter = databaseAdapter;
             CreateTables();
         }
-
         private IDatabaseAdapter DatabaseAdapter { get; set; }
+
+        // Rewritten
+
+        // Account
+        public async Task<IEnumerable<Account>> GetAllAccounts(string customerID)
+        {
+            List<Account> accountsList = new List<Account>();
+            var currentAccount = await DatabaseAdapter.Query<CurrentAccount>($"Select * from Account Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            var savingsAccount = await DatabaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            var termDepositAccounts = await DatabaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            accountsList.AddRange(currentAccount);
+            accountsList.AddRange(savingsAccount);
+            accountsList.AddRange(termDepositAccounts);
+            return accountsList;
+        }
+
+        public async Task<bool> InsertAccount<T>(T account)
+        {
+            await DatabaseAdapter.Insert(account as Account);
+            return await DatabaseAdapter.Insert(account);
+        }
+
+        // Old
+
 
         public async Task<bool> RunInTransaction(IList<Action> actions) => await DatabaseAdapter.RunInTransaction(actions);
 
 
         // Customer
 
-        public async Task<bool> InsertCustomer(Customer customer) => await DatabaseAdapter.Insert(customer);
-
+        public async Task<bool> InsertCustomer(Customer customer, CustomerCredentials credentials)
+        {
+            await DatabaseAdapter.Insert(credentials);
+            return await DatabaseAdapter.Insert(customer);
+        }
         public async Task<bool> UpdateCustomer(Customer customer) => await DatabaseAdapter.Update(customer);
 
         public Task<List<Customer>> GetCustomer(string phoneNumber) => DatabaseAdapter.GetAll<Customer>().Where(customer => customer.Phone.Equals(phoneNumber)).ToListAsync();
@@ -39,30 +63,13 @@ namespace ZBank.DatabaseHandler
 
         public async Task<bool> UpdateCredentials(CustomerCredentials customerCredentials) => await DatabaseAdapter.Update(customerCredentials);
 
-        // Account
-        public async Task<IEnumerable<Account>> GetAllAccounts(string customerID)
+
+
+        public async Task<bool> UpdateAccount<T>(T account)
         {
-            List<Account> accountsList = new List<Account>();    
-            var currentAccount = await DatabaseAdapter.Query<CurrentAccount>($"Select * from Account Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
-            var savingsAccount =  await DatabaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
-            var termDepositAccounts = await DatabaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
-            accountsList.AddRange(currentAccount);
-            accountsList.AddRange(savingsAccount);
-            accountsList.AddRange(termDepositAccounts);
-            return accountsList;
+            await DatabaseAdapter.Update<T>(account);
+            return await DatabaseAdapter.Update<Account>(account as Account);
         }
-
-        public async Task<IList<CurrentAccount>> GetCurrentAccounts(string userID) =>
-            await DatabaseAdapter.GetAll<CurrentAccount>().Where(x => x.UserID.Equals(userID)).OrderByDescending(x => x.CreatedOn).ToListAsync();
-
-        public async Task<IList<SavingsAccount>> GetSavingsAccounts(string userID) => await DatabaseAdapter.GetAll<SavingsAccount>().Where(x => x.UserID ==
-        userID).OrderByDescending(x => x.CreatedOn).ToListAsync();
-
-
-
-        public async Task<bool> InsertAccount(Account account) => await DatabaseAdapter.Insert(account);
-
-        public async Task<bool> UpdateAccount(Account account) => await DatabaseAdapter.Update(account);
 
         public async Task<bool> InsertCurrentAccount(CurrentAccountDTO account) => await DatabaseAdapter.Insert(account);
 
@@ -127,6 +134,5 @@ namespace ZBank.DatabaseHandler
             await DatabaseAdapter.CreateTable<CreditCardDTO>();
             await DatabaseAdapter.CreateTable<DebitCardDTO>();
         }
-
     }
 }

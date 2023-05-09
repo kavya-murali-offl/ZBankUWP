@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.View;
 
 namespace ZBank.ViewModel
 {
     public class DashboardViewModel : ViewModelBase
     {
+        public IView View;
 
         private readonly IList<string> _cardBackgrounds = new List<string>
         {
@@ -23,12 +25,13 @@ namespace ZBank.ViewModel
 
         private ObservableCollection<CardBObj> _cards { get; set; }
 
-        private ObservableCollection<TermDepositAccount> _deposits { get; set; }
+        private ObservableCollection<Account> _accounts { get; set; }
 
         private ObservableCollection<Beneficiary> _beneficiaries { get; set; }
 
-        public DashboardViewModel()
+        public DashboardViewModel(IView view)
         {
+            this.View = view;
 
             _transactions = new ObservableCollection<TransactionBObj>
             {
@@ -60,13 +63,13 @@ namespace ZBank.ViewModel
             }
         }
 
-        public ObservableCollection<TermDepositAccount> TermDeposits
+        public ObservableCollection<Account> Accounts
         {
-            get { return _deposits; }
+            get { return _accounts; }
             set
             {
-                _deposits = value;
-                OnPropertyChanged(nameof(TermDeposits));
+                _accounts = value;
+                OnPropertyChanged(nameof(Accounts));
             }
         }
 
@@ -86,6 +89,4 @@ namespace ZBank.ViewModel
             set { _cards = value; OnPropertyChanged(nameof(AllCards)); }
         }
     }
-
-
 }

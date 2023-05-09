@@ -9,6 +9,7 @@ namespace ZBank.DatabaseAdapter
 {
     public class SQLiteDatabaseAdapter : IDatabaseAdapter
     {
+
         public SQLiteDatabaseAdapter()
         {
             SQLiteConnectionString connectionString = GetConnectionString();

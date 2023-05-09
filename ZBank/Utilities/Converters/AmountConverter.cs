@@ -9,7 +9,7 @@ using ZBank.Entities;
 
 namespace ZBank.Utilities.Converters
 {
-    public class DashboardTransactionAmountConverter : DependencyObject, IValueConverter
+    public class AmountConverter : DependencyObject, IValueConverter
     {
 
         public TransactionType TransactionType
@@ -21,7 +21,7 @@ namespace ZBank.Utilities.Converters
         public static readonly DependencyProperty TransactionTypeProperty =
         DependencyProperty.Register("TransactionType",
                                     typeof(TransactionType),
-                                    typeof(DashboardTransactionAmountConverter),
+                                    typeof(AmountConverter),
                                     new PropertyMetadata(null));
 
 

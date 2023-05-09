@@ -1,5 +1,7 @@
-﻿using ZBank.DatabaseHandler;
+﻿using BankManagementDB.Domain.UseCase;
+using ZBank.DatabaseHandler;
 using ZBank.Entities;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertCard;
 
 namespace BankManagementDB.DataManager
 {
@@ -12,6 +14,9 @@ namespace BankManagementDB.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public bool InsertCard(Card card) => DBHandler.InsertCard(card).Result;
+        public void InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback)
+        {
+            bool result = DBHandler.InsertCard(request.CardToInsert).Result;
+        }
     }
 }

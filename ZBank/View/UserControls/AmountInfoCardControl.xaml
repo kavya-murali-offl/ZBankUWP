@@ -18,9 +18,9 @@
                 Padding="15">
                 <Grid.RowDefinitions>
                     <RowDefinition
-                        Height="*" />
+                        Height="Auto" />
                     <RowDefinition
-                        Height="*" />
+                        Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -33,17 +33,16 @@
                         HorizontalAlignment="Center"
                         Text="{x:Bind PrimaryTextHeading}"
                         Foreground="{ThemeResource ApplicationForeground}"
-                        FontSize="{StaticResource TextStyleLargeFontSize}"
+                        FontSize="18"
                         FontWeight="SemiBold" />
                     <TextBlock
                         Text="{x:Bind PrimaryTextContent}"
-                        FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                        FontSize="18"
                         Foreground="{ThemeResource ApplicationForeground}"
                         FontWeight="Bold"
                         HorizontalAlignment="Center"
                         Padding="5,10,5,10" />
                 </StackPanel>
-
                 <Grid
                     Grid.Row="1">
                     <StackPanel

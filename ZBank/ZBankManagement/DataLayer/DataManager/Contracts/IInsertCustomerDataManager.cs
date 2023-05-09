@@ -1,15 +1,10 @@
-﻿using ZBank.Entities;
-using ZBank.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertCustomer;
+using BankManagementDB.Domain.UseCase;
 
 namespace BankManagementDB.Interface
 {
     public interface IInsertCustomerDataManager
     {
-        bool InsertCustomer(Customer customer, CustomerCredentials customerCredentials);
+        void InsertCustomer(InsertCustomerRequest request, IUseCaseCallback<InsertCustomerResponse> callback);
     }
 }

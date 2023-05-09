@@ -27,15 +27,12 @@ namespace ZBank.ViewModel
             field = value;
             OnPropertyChanged(propertyName);
             return true;
-        
         }
 
         protected void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-      
     }
    
 

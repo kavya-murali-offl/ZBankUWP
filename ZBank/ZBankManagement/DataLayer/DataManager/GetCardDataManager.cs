@@ -4,6 +4,8 @@ using ZBank.Entities;
 using ZBank.DatabaseHandler;
 using System.Collections.Generic;
 using System.Linq;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using BankManagementDB.Domain.UseCase;
 
 namespace BankManagementDB.DataManager
 {
@@ -16,15 +18,17 @@ namespace BankManagementDB.DataManager
 
         private IDBHandler DBHandler { get;  set; }
 
-        public void GetAllCards(string customerID)
+        public void GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
         {
             IEnumerable<Card> cards = new List<Card>();
-            var creditCardsList = DBHandler.GetCreditCardByCustomerID(customerID).Result;
-            var debitCardsList = DBHandler.GetDebitCardByCustomerID(customerID).Result;
+            var creditCardsList = DBHandler.GetCreditCardByCustomerID(request.CustomerID).Result;
+            var debitCardsList = DBHandler.GetDebitCardByCustomerID(request.CustomerID).Result;
             cards = cards.Concat(creditCardsList);
             cards = cards.Concat(debitCardsList);
-            Store.CardsList = cards;
-        }
 
+            GetAllCardsResponse response = new GetAllCardsResponse();   
+            response.Cards = cards;
+            callback.OnSuccess(response);
+        }
     }
 }

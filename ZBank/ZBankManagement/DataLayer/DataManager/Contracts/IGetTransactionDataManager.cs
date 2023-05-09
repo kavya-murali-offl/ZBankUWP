@@ -1,5 +1,7 @@
 ﻿using ZBank.Entities;
 using System.Collections.Generic;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using BankManagementDB.Domain.UseCase;
 
 namespace BankManagementDB.Interface
 {
@@ -7,7 +9,7 @@ namespace BankManagementDB.Interface
     {
         IEnumerable<Transaction> GetTransactionsByCardNumber(string cardNumber);
 
-        IEnumerable<Transaction> GetTransactionsByAccountNumber(string accountID);
+        void GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
 
     }
 }

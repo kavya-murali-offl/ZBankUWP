@@ -16,7 +16,6 @@ namespace ZBank.ViewModel
 
         public TransactionViewModel()
         {
-
             _transactions = new ObservableCollection<TransactionBObj>
             {
                 new TransactionBObj(TransactionType.INCOME, ModeOfPayment.DIRECT, 11000, DateTime.Now, 3000, "Flipkart", "Shopping"),

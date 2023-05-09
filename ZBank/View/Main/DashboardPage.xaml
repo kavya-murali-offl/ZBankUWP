@@ -8,9 +8,7 @@
     xmlns:usercontrol="using:ZBank.View.UserControls"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
    >
-    <Grid
-        Margin="0,0,10,10"
-        Background="{ThemeResource ApplicationPageBackground}">
+    <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState
@@ -89,10 +87,8 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid
-            Background="{ThemeResource ApplicationBackgroundThemeBrush}"
             x:Name="RootGrid"
-            Padding="5"
-            CornerRadius="10">
+          >
       
             <Grid.ColumnDefinitions>
                 <ColumnDefinition
@@ -112,9 +108,9 @@
                 x:Name="LeftGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition
-                        Height="*" />
+                        Height="Auto" />
                     <RowDefinition
-                        Height="*" />
+                        Height="Auto" />
                     <RowDefinition
                         Height="2*" />
                 </Grid.RowDefinitions>
@@ -175,7 +171,7 @@
                             x:Name="Row3Column1"
                             MyTitle="Quick Transfer">
                             <usercontrol:CardControl.MyContent>
-                                <Grid>
+                                <Grid MinHeight="415">
                                     <Grid.RowDefinitions>
                                         <RowDefinition
                                             Height="*" />
@@ -186,12 +182,10 @@
                                         Padding="10,0,10,0"
                                         VerticalAlignment="Top"
                                         Orientation="Vertical">
-
                                         <TextBlock
                                             Margin="5,20,5,5"
                                             Text="Account Number"
                                             Style="{ThemeResource NormalSubText}" />
-
                                         <DropDownButton
                                             HorizontalAlignment="Stretch"
                                             CornerRadius="8"
@@ -248,13 +242,14 @@
                     <usercontrol:OneByTwoGrid.Column2Content>
                         <usercontrol:CardControl
                             Grid.Column="1"
+                            Padding="10,20,10,20"
                             MyTitle="Latest Transactions"
                             x:Name="Row3Column2">
                             <usercontrol:CardControl.MyContent>
                                 <ListView
-                                    Padding="0,5,0,5"
                                     MaxHeight="400"
-                                    ItemsSource="{x:Bind DashboardViewModel.LatestTransactions}"
+                                    Margin="0,10,0,10"
+                                    ItemsSource="{x:Bind ViewModel.LatestTransactions}"
                                     x:Name="TransactionsListView"
                                     SelectionMode="None">
                                     <ListView.ItemTemplate>
@@ -288,7 +283,7 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition
-                        Height="2*" />
+                        Height="*" />
                     <RowDefinition
                         Height="*" />
                     <RowDefinition
@@ -327,7 +322,7 @@
                                     VerticalContentAlignment="Top"
                                     HorizontalContentAlignment="Stretch"
                                     Grid.Column="1"
-                                    Margin="0,10,0,0"
+                                    Margin="0,8,0,0"
                                     SelectionMode="None"
                                     HorizontalAlignment="Stretch"
                                     x:Name="CardList">
@@ -345,7 +340,7 @@
                                         VerticalAlignment="Top">
                                         <Grid
                                             MinHeight="200"
-                                            MaxWidth="400"
+                                            MaxHeight="400"
                                             HorizontalAlignment="Stretch"
                                             Padding="15"
                                             CornerRadius="20">

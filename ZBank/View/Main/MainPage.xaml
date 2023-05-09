@@ -190,10 +190,15 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <ScrollViewer>
-                    <Frame
-                        x:Name="ContentFrame"
-                         />
-              </ScrollViewer>
+                    <Grid
+                        Margin="10"
+                        Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                        Padding="5"
+                        CornerRadius="10">
+                        <Frame
+                            x:Name="ContentFrame" />
+                    </Grid>
+                </ScrollViewer>
             </SplitView.Content>
 
         </SplitView>

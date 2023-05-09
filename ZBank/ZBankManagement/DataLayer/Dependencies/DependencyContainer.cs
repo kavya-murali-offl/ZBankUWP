@@ -33,16 +33,6 @@ namespace ZBank.Dependencies
             return serviceCollection;
         }
 
-        //private static IServiceCollection ConfigureServices(this IServiceCollection serviceCollection)
-        //{
-        //    Config = new ConfigurationBuilder()
-        //        .SetBasePath(Directory.GetCurrentDirectory())
-        //        .AddJsonFile("appsettings.json")
-        //        .Build();
-
-        //    return serviceCollection;
-        //}
-
         private static IServiceCollection ConfigureCardServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IGetCardDataManager, GetCardDataManager>();
@@ -56,8 +46,6 @@ namespace ZBank.Dependencies
 
         private static IServiceCollection ConfigureCustomerServices(this IServiceCollection serviceCollection)
         {
-            //serviceCollection.AddScoped<IGetCustomerCredentialsDataManager, GetCustomerCredentialsDataManager>();
-            serviceCollection.AddScoped<IInsertCredentialsDataManager, InsertCredentialsDataManager>();
             serviceCollection.AddScoped<IGetCustomerDataManager, GetCustomerDataManager>();
             serviceCollection.AddScoped<IInsertCustomerDataManager, InsertCustomerDataManager>();
             serviceCollection.AddScoped<IUpdateCustomerDataManager, UpdateCustomerDataManager>();

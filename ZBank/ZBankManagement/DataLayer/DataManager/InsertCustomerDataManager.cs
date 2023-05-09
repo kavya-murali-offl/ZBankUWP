@@ -1,6 +1,9 @@
-﻿using BankManagementDB.Interface;
+﻿using BankManagementDB.Domain.UseCase;
+using BankManagementDB.Interface;
 using ZBank.DatabaseHandler;
 using ZBank.Entities;
+using ZBank.Entity.EnumerationTypes;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertCustomer;
 
 namespace BankManagementDB.DataManager
 {
@@ -13,12 +16,30 @@ namespace BankManagementDB.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public bool InsertCustomer(Customer customer, CustomerCredentials customerCredentials){
-            if (DBHandler.InsertCredentials(customerCredentials).Result)
+        public void InsertCustomer(InsertCustomerRequest request, IUseCaseCallback<InsertCustomerResponse> callback){
+
+            CustomerCredentials customerCredentials = new CustomerCredentials()
             {
-                return DBHandler.InsertCustomer(customer).Result;
+                ID = request.CustomerToInsert.ID,
+                Password = request.Password,
+                Salt = ""
+            };
+
+            bool result = DBHandler.InsertCustomer(request.CustomerToInsert, customerCredentials).Result;
+
+            if (result)
+            {
+                InsertCustomerResponse response = new InsertCustomerResponse();
+                response.IsSuccess = result;
+                response.InsertedCustomer = request.CustomerToInsert;
+                callback.OnSuccess(response);
             }
-            return false;
+            else
+            {
+                ZBankError error = new ZBankError();
+                error.Type = ErrorType.UNKNOWN;
+                callback.OnFailure(error);
+            }
        }
     }
 }

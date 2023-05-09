@@ -151,7 +151,6 @@
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
-    <Compile Include="ViewModel\VMObjects\DispatcherContainer.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="View\IView.cs" />
     <Compile Include="View\Main\MainPage.xaml.cs">
@@ -160,7 +159,7 @@
     <Compile Include="Entity\Card.cs" />
     <Compile Include="Entity\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\Converters\DashboardTransactionAmountConverter.cs" />
+    <Compile Include="Utilities\Converters\AmountConverter.cs" />
     <Compile Include="Utilities\Converters\DateFormatter.cs" />
     <Compile Include="ViewModel\CardsViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
@@ -239,12 +238,9 @@
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetTransactionDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCredentialsDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCreditCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCurrentAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCustomerDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertDebitCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertSavingsAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertTransactionDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\TranferAmountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateAccountDataManager.cs" />
@@ -264,6 +260,14 @@
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\UseCaseBase.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ViewModelBase.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ZBankError.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllCards.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllTransactions.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertAccount.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertCard.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertCustomer.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertTransaction.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateAccount.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateCard.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

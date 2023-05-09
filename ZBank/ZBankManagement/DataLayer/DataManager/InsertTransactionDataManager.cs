@@ -1,6 +1,9 @@
 ﻿using BankManagementDB.Interface;
 using ZBank.Entities;
 using ZBank.DatabaseHandler;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertTransaction;
+using BankManagementDB.Domain.UseCase;
+using ZBank.Entity.EnumerationTypes;
 
 namespace BankManagementDB.DataManager
 {
@@ -13,15 +16,24 @@ namespace BankManagementDB.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public bool InsertTransaction(Transaction transaction)
+        public void InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback)
         {
-            bool success = DBHandler.InsertTransaction(transaction).Result;
+            bool success = DBHandler.InsertTransaction(request.TransactionToInsert).Result;
+
+            InsertTransactionResponse response = new InsertTransactionResponse();
+            response.IsSuccess = success;   
+
             if (success)
             {
-                //Store.TransactionsList ??= new List<Transaction>();
-                //Store.TransactionsList.Prepend(transaction);
+                response.InsertedTransaction = request.TransactionToInsert;
+                callback.OnSuccess(response);
             }
-            return success;
+            else
+            {
+                ZBankError error = new ZBankError();
+                error.Type = ErrorType.UNKNOWN;
+                callback.OnFailure(error);
+            }
         }
     }
 }

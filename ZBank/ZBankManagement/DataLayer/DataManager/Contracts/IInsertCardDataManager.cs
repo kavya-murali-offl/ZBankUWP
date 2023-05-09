@@ -1,10 +1,11 @@
-﻿using ZBank.Entities;
+﻿using BankManagementDB.Domain.UseCase;
+using ZBank.Entities;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertCard;
 
 namespace BankManagementDB.DataManager
 {
     public interface IInsertCardDataManager
     {
-        bool InsertCard(Card card);
-
+        void InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback);
     }
 }

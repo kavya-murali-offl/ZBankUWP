@@ -11,7 +11,7 @@ namespace ZBank.Entities.BusinessObjects
     public class CurrentAccountDTO 
     {
         [PrimaryKey] 
-        public int AccountNumber { get; set; }  
+        public string AccountNumber { get; set; }  
         
         public decimal Interest { get; set; }
     }

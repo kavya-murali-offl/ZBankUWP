@@ -1,6 +1,8 @@
 ﻿using BankManagementDB.Interface;
 using ZBank.Entities;
 using ZBank.DatabaseHandler;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateAccount;
+using BankManagementDB.Domain.UseCase;
 
 namespace BankManagementDB.DataManager
 {
@@ -13,6 +15,24 @@ namespace BankManagementDB.DataManager
         private IDBHandler DBHandler { get; set; }
 
 
-        public bool UpdateAccount(Account updatedAccount) => DBHandler.UpdateAccount(updatedAccount).Result;
+        public void UpdateAccount<T>(UpdateAccountRequest<T> request, IUseCaseCallback<UpdateAccountResponse<T>> callback)
+        {
+            bool result = DBHandler.UpdateAccount(request.UpdatedAccount).Result;
+
+            UpdateAccountResponse<T> response = new UpdateAccountResponse<T>();
+            response.IsSuccess = result;
+
+            if(result)
+            {
+                response.UpdatedAccount = request.UpdatedAccount;
+                callback.OnSuccess(response);
+            }
+            else
+            {
+                ZBankError error = new ZBankError();
+                error.Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN;
+                callback.OnFailure(error);  
+            }
+        }
     }
 }

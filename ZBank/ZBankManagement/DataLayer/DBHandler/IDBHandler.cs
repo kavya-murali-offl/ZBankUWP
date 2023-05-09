@@ -12,7 +12,7 @@ namespace ZBank.DatabaseHandler
         Task<bool> RunInTransaction(IList<Action> actions);
 
         // Customer
-        Task<bool> InsertCustomer(Customer customer);
+        Task<bool> InsertCustomer(Customer customer, CustomerCredentials credentials);
 
         Task<bool> UpdateCustomer(Customer customer);
 
@@ -31,17 +31,10 @@ namespace ZBank.DatabaseHandler
         // Account
         Task<IEnumerable<Account>> GetAllAccounts(string userID);
 
-        Task<IList<CurrentAccount>> GetCurrentAccounts(string userID);
 
-        Task<IList<SavingsAccount>> GetSavingsAccounts(string userID);
+        Task<bool> InsertAccount<T>(T account);
 
-        Task<bool> InsertAccount(Account account);
-
-        Task<bool> UpdateAccount(Account account);
-
-        Task<bool> InsertCurrentAccount(CurrentAccountDTO account);
-
-        Task<bool> InsertSavingsAccount(SavingsAccountDTO account);
+        Task<bool> UpdateAccount<T>(T account);
 
 
         // Debit Card

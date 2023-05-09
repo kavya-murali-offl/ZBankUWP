@@ -33,6 +33,9 @@ namespace ZBank.View.Main
             ViewModel = new AccountPageViewModel(this);
         }
 
-        public int a = 10;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
