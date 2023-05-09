@@ -8,90 +8,92 @@
     xmlns:usercontrol="using:ZBank.View.UserControls"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
    >
+    <Grid
+        Margin="0,0,10,10"
+        Background="{ThemeResource ApplicationPageBackground}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState
+                    x:Name="wideScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                            MinWindowWidth="1100" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="LeftGrid.(Grid.Row)"
+                            Value="0" />
+                        <Setter
+                            Target="LeftGrid.(Grid.RowSpan)"
+                            Value="2" />
+                        <Setter
+                            Target="LeftGrid.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="LeftGrid.(Grid.ColumnSpan)"
+                            Value="1" />
+                        <Setter
+                            Target="RightGrid.(Grid.Row)"
+                            Value="0" />
+                        <Setter
+                            Target="LeftGrid.(Grid.RowSpan)"
+                            Value="2" />
+                        <Setter
+                            Target="RightGrid.(Grid.Column)"
+                            Value="1" />
+                        <Setter
+                            Target="RightGrid.(Grid.ColumnSpan)"
+                            Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState
+                    x:Name="mediumScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                            MinWindowWidth="600" />
+                        <AdaptiveTrigger
+                            MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="LeftGrid.(Grid.ColumnSpan)"
+                            Value="2" />
+
+                        <Setter
+                            Target="LeftGrid.(Grid.Row)"
+                            Value="0" />
+                        <Setter
+                            Target="LeftGrid.(Grid.RowSpan)"
+                            Value="1" />
+                        <Setter
+                            Target="LeftGrid.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="LeftGrid.(Grid.ColumnSpan)"
+                            Value="2" />
+
+                        <Setter
+                            Target="RightGrid.(Grid.Row)"
+                            Value="1" />
+                        <Setter
+                            Target="LeftGrid.(Grid.RowSpan)"
+                            Value="1" />
+                        <Setter
+                            Target="RightGrid.(Grid.Column)"
+                            Value="0" />
+                        <Setter
+                            Target="RightGrid.(Grid.ColumnSpan)"
+                            Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid
             Background="{ThemeResource ApplicationBackgroundThemeBrush}"
             x:Name="RootGrid"
             Padding="5"
-            CornerRadius="10"
-            >
-
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup>
-                    <VisualState
-                        x:Name="wideScreen">
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger
-                                MinWindowWidth="1100" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter
-                                Target="LeftGrid.(Grid.Row)"
-                                Value="0" />
-                            <Setter
-                                Target="LeftGrid.(Grid.RowSpan)"
-                                Value="2" />
-                            <Setter
-                                Target="LeftGrid.(Grid.Column)"
-                                Value="0" />
-                            <Setter
-                                Target="LeftGrid.(Grid.ColumnSpan)"
-                                Value="1" />
-                            <Setter
-                                Target="RightGrid.(Grid.Row)"
-                                Value="0" />
-                            <Setter
-                                Target="LeftGrid.(Grid.RowSpan)"
-                                Value="2" />
-                            <Setter
-                                Target="RightGrid.(Grid.Column)"
-                                Value="1" />
-                            <Setter
-                                Target="RightGrid.(Grid.ColumnSpan)"
-                                Value="1" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState
-                        x:Name="mediumScreen">
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger
-                                MinWindowWidth="600" />
-                            <AdaptiveTrigger
-                                MinWindowWidth="0" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter
-                                Target="LeftGrid.(Grid.ColumnSpan)"
-                                Value="2" />
-
-                            <Setter
-                                Target="LeftGrid.(Grid.Row)"
-                                Value="0" />
-                            <Setter
-                                Target="LeftGrid.(Grid.RowSpan)"
-                                Value="1" />
-                            <Setter
-                                Target="LeftGrid.(Grid.Column)"
-                                Value="0" />
-                            <Setter
-                                Target="LeftGrid.(Grid.ColumnSpan)"
-                                Value="2" />
-
-                            <Setter
-                                Target="RightGrid.(Grid.Row)"
-                                Value="1" />
-                            <Setter
-                                Target="LeftGrid.(Grid.RowSpan)"
-                                Value="1" />
-                            <Setter
-                                Target="RightGrid.(Grid.Column)"
-                                Value="0" />
-                            <Setter
-                                Target="RightGrid.(Grid.ColumnSpan)"
-                                Value="2" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
+            CornerRadius="10">
+      
             <Grid.ColumnDefinitions>
                 <ColumnDefinition
                     Width="2*" />
@@ -114,7 +116,7 @@
                     <RowDefinition
                         Height="*" />
                     <RowDefinition
-                        Height="3*" />
+                        Height="2*" />
                 </Grid.RowDefinitions>
 
                 <usercontrol:OneByTwoGrid>
@@ -170,7 +172,6 @@
                     Grid.Row="2">
                     <usercontrol:OneByTwoGrid.Column1Content>
                         <usercontrol:CardControl
-                            MinHeight="410"
                             x:Name="Row3Column1"
                             MyTitle="Quick Transfer">
                             <usercontrol:CardControl.MyContent>
@@ -189,8 +190,7 @@
                                         <TextBlock
                                             Margin="5,20,5,5"
                                             Text="Account Number"
-                                            Style="{ThemeResource NormalSubText}"
-                                             />
+                                            Style="{ThemeResource NormalSubText}" />
 
                                         <DropDownButton
                                             HorizontalAlignment="Stretch"
@@ -200,8 +200,7 @@
                                         <TextBlock
                                             Margin="5,30,5,5"
                                             Text="Beneficiary"
-                                        Style="{ThemeResource NormalSubText}"
-                                             />
+                                            Style="{ThemeResource NormalSubText}" />
                                         <DropDownButton
                                             HorizontalAlignment="Stretch"
                                             CornerRadius="8"
@@ -211,16 +210,14 @@
                                         <TextBlock
                                             Margin="5,30,5,5"
                                             Text="Amount"
-                                            Style="{ThemeResource NormalSubText}"
-                                             />
+                                            Style="{ThemeResource NormalSubText}" />
                                         <TextBox />
 
 
                                         <TextBlock
                                             Margin="5,30,5,5"
                                             Text="Payment Method"
-                                            Style="{ThemeResource NormalSubText}"
-                                             />
+                                            Style="{ThemeResource NormalSubText}" />
                                         <DropDownButton
                                             HorizontalAlignment="Stretch"
                                             CornerRadius="8"
@@ -252,11 +249,11 @@
                         <usercontrol:CardControl
                             Grid.Column="1"
                             MyTitle="Latest Transactions"
-                            MinHeight="480"
                             x:Name="Row3Column2">
                             <usercontrol:CardControl.MyContent>
                                 <ListView
-                                    MaxHeight="390"
+                                    Padding="0,5,0,5"
+                                    MaxHeight="400"
                                     ItemsSource="{x:Bind DashboardViewModel.LatestTransactions}"
                                     x:Name="TransactionsListView"
                                     SelectionMode="None">
@@ -324,15 +321,13 @@
                         </StackPanel>
                     </usercontrol:CardControl.MyControls>
                     <usercontrol:CardControl.MyContent>
-                        <StackPanel
-                            Margin="0,10,0,0"
-                            Grid.Row="1"
-                            VerticalAlignment="Top">
+                       
                             <StackPanel>
                                 <ListView
                                     VerticalContentAlignment="Top"
                                     HorizontalContentAlignment="Stretch"
                                     Grid.Column="1"
+                                    Margin="0,10,0,0"
                                     SelectionMode="None"
                                     HorizontalAlignment="Stretch"
                                     x:Name="CardList">
@@ -414,27 +409,21 @@
                                 <Button
                                     MinWidth="200"
                                     HorizontalAlignment="Center"
-                                    Margin="10"
+                                    Margin="0,25,0,0"
                                     VerticalAlignment="Bottom"
                                     Style="{ThemeResource PrimaryButton}">
                                     <Button.Content>
-                                        <StackPanel
-                                            Orientation="Horizontal"
-                                            Padding="25,0,25,0">
                                             <TextBlock
                                                 VerticalAlignment="Center"
                                                 Text="Manage Card" />
-                                        </StackPanel>
                                     </Button.Content>
                                 </Button>
                             </StackPanel>
-                        </StackPanel>
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
 
                 <usercontrol:CardControl
                     Grid.Row="1"
-                    MinHeight="100"
                     MyTitle="Quick Actions">
                     <usercontrol:CardControl.MyContent>
                         <ScrollViewer
@@ -443,7 +432,8 @@
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
                                 <Button
-                                    Padding="7"
+                                    Padding="5"
+                                    Width="100"
                                     Style="{ThemeResource SecondaryButton}">
                                     <Button.Content>
                                         <StackPanel>
@@ -457,9 +447,9 @@
                                     </Button.Content>
                                 </Button>
                                 <Button
-                                    MinWidth="80"
+                                    Width="100"
                                     Style="{ThemeResource SecondaryButton}"
-                                    Padding="7">
+                                    Padding="5">
                                     <Button.Content>
                                         <StackPanel>
                                             <FontIcon
@@ -472,7 +462,7 @@
                                     </Button.Content>
                                 </Button>
                                 <Button
-                                    MinWidth="80"
+                                    Width="100"
                                     Padding="7"
                                     Style="{ThemeResource SecondaryButton}">
                                     <Button.Content>
@@ -493,10 +483,11 @@
 
                 <usercontrol:CardControl
                     Grid.Row="2"
-                    MinHeight="150"
                     MyTitle="Notifications">
                 </usercontrol:CardControl>
             </Grid>
+        </Grid>
     </Grid>
+
   
 </Page>

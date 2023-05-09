@@ -11,6 +11,9 @@ namespace BankManagementDB.Presentation.ViewModel
 
     public class ViewModelBase : INotifyPropertyChanged
     {
+
+        public bool IsBusy { get; set; } = false;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)

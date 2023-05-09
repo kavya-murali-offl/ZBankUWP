@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using ZBank.Entities;
 
 namespace BankManagementDB.Events
@@ -10,7 +11,9 @@ namespace BankManagementDB.Events
 
     public class AppEvents
     {
-        private AppEvents() { }
+        private AppEvents() { 
+        
+        }
 
         private static AppEvents instance = null;
 
@@ -28,7 +31,7 @@ namespace BankManagementDB.Events
 
         public event Action<bool> LoggedIn;
         public event Action<IEnumerable<Account>> AccountsLoaded;
-        public event Action ThemeChanged;
+        public event Action<ElementTheme> ThemeChanged;
 
         public void OnSuccessfulLogin(bool IsLoginSuccess){
             LoggedIn?.Invoke(IsLoginSuccess);
@@ -39,9 +42,9 @@ namespace BankManagementDB.Events
             AccountsLoaded?.Invoke(accounts);
         }
 
-        public void OnThemeChanged()
+        public void OnThemeChanged(ElementTheme theme)
         {
-            ThemeChanged?.Invoke();
+            ThemeChanged?.Invoke(theme);
         }
     }
 }

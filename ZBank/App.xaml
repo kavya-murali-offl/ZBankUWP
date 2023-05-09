@@ -9,8 +9,6 @@
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>
                 <ResourceDictionary
-                    Source="/Styles/_FontSizes.xaml" />
-                <ResourceDictionary
                     Source="ThemeControl/ThemeDictionary.xaml" />
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>

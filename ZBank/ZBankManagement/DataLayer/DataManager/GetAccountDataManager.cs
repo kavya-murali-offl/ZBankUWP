@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using ZBank.DatabaseHandler;
 using System.Linq;
 using ZBank.Entities.EnumerationType;
-using ZBank.ZBankManagement.UseCase.GetAllAccounts;
 using BankManagementDB.Domain.UseCase;
 using System;
 using ZBank.Entity.EnumerationTypes;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
 namespace BankManagementDB.DataManager
 {
@@ -37,10 +37,7 @@ namespace BankManagementDB.DataManager
                 if (request.AccountType == null)
                 {
                     accountsList = DBHandler.GetAllAccounts(request.UserID).Result;
-                    //IEnumerable<SavingsAccount> savingsAccounts = DBHandler.GetSavingsAccounts(request.userID).Result;
-                    //IEnumerable<CurrentAccount> currentAccounts = DBHandler.GetCurrentAccounts(request.userID).Result;
-                    //accountsList = accountsList.Concat(savingsAccounts);
-                    //accountsList = accountsList.Concat(currentAccounts);
+                
                 }
 
                 GetAllAccountsResponse response = new GetAllAccountsResponse()

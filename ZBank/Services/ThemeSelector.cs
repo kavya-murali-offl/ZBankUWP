@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankManagementDB.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,27 +22,17 @@ namespace ZBank.Config
         private static readonly ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
 
 
-        public static ElementTheme Theme { get; set; } = ElementTheme.Default;
+        public static ElementTheme Theme { get; set; } = ElementTheme.Dark;
 
         public static void InitializeTheme()
         {
             LoadCacheTheme();
-            SetThemeInSettings(Theme);
-            SetThemeAllWindows();
         }
 
-        public static void SwitchTheme()
+        public static void SwitchTheme(ElementTheme theme)
         {
-            if (Theme == ElementTheme.Light)
-            {
-                Theme = ElementTheme.Dark;
-            }
-            else
-            {
-                Theme = ElementTheme.Light;
-            }
-            SetThemeInSettings(Theme);
-
+            LocalSettings.Values[key] = theme.ToString();
+            Theme = theme;
         }
 
         public static string GetIcon()
@@ -51,7 +42,7 @@ namespace ZBank.Config
 
         private static void LoadCacheTheme()
         {
-            ElementTheme localTheme = ElementTheme.Default;
+            ElementTheme localTheme = ElementTheme.Dark;
 
             string themeName = (string)LocalSettings.Values[key];
 
@@ -60,46 +51,6 @@ namespace ZBank.Config
                 Enum.TryParse(themeName, out localTheme);
             }
             Theme = localTheme;
-        }
-
-        private static void SetThemeInSettings(ElementTheme theme)
-        {
-            LocalSettings.Values[key] = theme.ToString();
-        }
-
-        public static  void UpdateTitleBarTheme()
-        {
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-
-            if (Theme == ElementTheme.Light)
-            {
-                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
-            }
-            else
-            {
-                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
-            }
-
-            titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAccentColorDark3"];
-            titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
-        }
-
-        private static void SetThemeAllWindows()
-        {
-            //foreach (var view in CoreApplication.Views)
-            //{
-            //    await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            //    {
-            //        if (Window.Current.Content is FrameworkElement frameworkElement)
-            //        {
-            //            frameworkElement.RequestedTheme = Theme;
-
-            //            UpdateTitleBarTheme();
-            //        }
-            //    });
-            //}
         }
     }
 }

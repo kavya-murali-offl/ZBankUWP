@@ -1,24 +1,18 @@
 ﻿using BankManagementDB.Domain.UseCase;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 using ZBank.Entities;
-using ZBank.Entities.BusinessObjects;
-using ZBank.ViewModel.VMObjects;
-using ZBank.ZBankManagement.UseCase.GetAllAccounts;
+using ZBank.View;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
 namespace ZBank.ViewModel
 {
     public class AccountPageViewModel : ViewModelBase
     {
+        public IView View;
 
-        public AccountPageViewModel()
+        public AccountPageViewModel(IView view)
         {
+            View = view;
             LoadAllAccounts();
         }
         private ObservableCollection<Account> _accounts { get; set; }
@@ -47,12 +41,5 @@ namespace ZBank.ViewModel
 
             useCase.Execute(request, presenterCallback);
         }
-
-
-        //private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //        {
-        //            NotifyPropertyChanged("Items");
-        //        }
-        //    }
     }
 }

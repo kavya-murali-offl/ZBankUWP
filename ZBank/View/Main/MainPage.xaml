@@ -187,40 +187,16 @@
                             Style="{ThemeResource ProfileDropdownIcon}" />
                     </StackPanel>
                 </Grid>
-
-
             </SplitView.Pane>
             <SplitView.Content>
                 <ScrollViewer>
                     <Frame
                         x:Name="ContentFrame"
-                        Background="{ThemeResource ApplicationPageBackground}" />
-                </ScrollViewer>
+                         />
+              </ScrollViewer>
             </SplitView.Content>
 
         </SplitView>
     </Grid>
 
 </Page>
-
-<!--<StackPanel
-                        Grid.Row="1"
-                        x:Name="IconContainer">
-                        <ToggleButton
-                            x:Name="ThemeToggleButton"
-                            Style="{ThemeResource SecondaryToggleButton}"
-                            Loaded="ThemeToggleButton_Loaded"
-                            Command="{x:Bind SwitchThemeCommand}">
-                            <FontIcon
-                                Foreground="{ThemeResource ApplicationForeground}"
-                                FontSize="18"
-                                FontFamily="Segoe MDL2 Assets"
-                                Glyph="&#xE708;" />
-                        </ToggleButton>
-                        <Button
-                            Click="SettingsButton_Click"
-                            Style="{ThemeResource SecondaryMenuButton}">
-                            <FontIcon
-                                Glyph="&#xE713;" />
-                        </Button>
-                    </StackPanel>-->

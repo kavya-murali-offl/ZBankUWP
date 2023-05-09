@@ -1,5 +1,9 @@
-﻿using Windows.ApplicationModel.Core;
+﻿using BankManagementDB.Events;
+using System;
+using Windows.ApplicationModel.Core;
+using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -18,9 +22,8 @@ namespace ZBank.View.UserControls
         {
             this.InitializeComponent();
             LoadTitleBar();
+
         }
-
-
 
         public string Title
         {
@@ -39,7 +42,7 @@ namespace ZBank.View.UserControls
             Window.Current.CoreWindow.Activated += CoreWindow_Activated;
 
             Window.Current.SetTitleBar(AppTitleBar);
-            ThemeSelector.UpdateTitleBarTheme();
+            UpdateTitleBarTheme(ThemeSelector.Theme);
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
         }
 
@@ -71,6 +74,36 @@ namespace ZBank.View.UserControls
             {
                 AppTitleBar.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            AppEvents.Instance.ThemeChanged += UpdateTitleBarTheme;
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            AppEvents.Instance.ThemeChanged -= UpdateTitleBarTheme;
+        }
+
+        private void UpdateTitleBarTheme(ElementTheme Theme)
+        {
+                ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+
+                if (Theme == ElementTheme.Light)
+                {
+                    titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                    titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+                }
+                else
+                {
+                    titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
+                    titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
+                }
+
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAccentColorDark3"];
+                titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
+            
         }
     }
 }

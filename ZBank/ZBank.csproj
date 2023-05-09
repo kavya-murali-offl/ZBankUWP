@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CurrencyConverter.cs" />
+    <Compile Include="Entity\BusinessObjects\TermDepositAccountDTO.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\Beneficiary.cs" />
@@ -150,7 +151,9 @@
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
+    <Compile Include="ViewModel\VMObjects\DispatcherContainer.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
+    <Compile Include="View\IView.cs" />
     <Compile Include="View\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -255,13 +258,12 @@
     <Compile Include="ZBankManagement\DataLayer\Dependencies\DependencyContainer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\EventsArgs\LoginCustomerEventArgs.cs" />
     <Compile Include="ZBankManagement\DataLayer\Store.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsPresenterCallback.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts\GetAllAccountsUseCase.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\IPresenterCallback.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\IUseCaseCallback.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\UseCaseBase.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\ViewModelBase.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\ZBankError.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllAccounts.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\IPresenterCallback.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\IUseCaseCallback.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\UseCaseBase.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ViewModelBase.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ZBankError.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

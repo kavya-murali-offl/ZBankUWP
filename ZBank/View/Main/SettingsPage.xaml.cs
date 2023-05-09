@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,12 +28,43 @@ namespace ZBank.View.Main
         public SettingsPage()
         {
             this.InitializeComponent();
+            this.RequestedTheme = ThemeSelector.Theme;
+
+        }
+
+        public void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            AppEvents.Instance.ThemeChanged += ChangeTheme;
+        }
+
+        public void Page_UnLoaded(object sender, RoutedEventArgs e)
+        {
+            AppEvents.Instance.ThemeChanged -= ChangeTheme;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            AppEvents.Instance.OnThemeChanged();
+            ElementTheme updatedTheme;
+
+            if (this.RequestedTheme == ElementTheme.Light)
+            {
+                updatedTheme = ElementTheme.Dark;
+            }
+            else
+            {
+                updatedTheme = ElementTheme.Light;
+            }
+            AppEvents.Instance.OnThemeChanged(updatedTheme);
+            this.RequestedTheme = updatedTheme;
         }
 
+        private async void ChangeTheme(ElementTheme theme)
+        {
+            ThemeSelector.SwitchTheme(theme);
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
+            });
+        }
     }
 }

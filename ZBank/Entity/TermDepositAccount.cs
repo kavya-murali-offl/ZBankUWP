@@ -10,6 +10,8 @@ namespace ZBank.Entities
 
     public class TermDepositAccount : Account
     {
+
+        public TermDepositAccount() { } 
         public TermDepositAccount(decimal amount, int tenureInMonths, string fromAccountNumber) : base(amount)
         {
             TenureInMonths = tenureInMonths;

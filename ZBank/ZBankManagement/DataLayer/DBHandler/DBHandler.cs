@@ -4,11 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.DatabaseHandler
 {
     public class DBHandler : IDBHandler
     {
+        private bool AreTablesCreated = false;
+
         public DBHandler(IDatabaseAdapter databaseAdapter)
         {
             DatabaseAdapter = databaseAdapter;
@@ -37,9 +40,18 @@ namespace ZBank.DatabaseHandler
         public async Task<bool> UpdateCredentials(CustomerCredentials customerCredentials) => await DatabaseAdapter.Update(customerCredentials);
 
         // Account
-        public async Task<IEnumerable<Account>> GetAllAccounts(string customerID) =>
-         await DatabaseAdapter.Query<Account>($"Select * from Account where UserID = ?", customerID);
-       
+        public async Task<IEnumerable<Account>> GetAllAccounts(string customerID)
+        {
+            List<Account> accountsList = new List<Account>();    
+            var currentAccount = await DatabaseAdapter.Query<CurrentAccount>($"Select * from Account Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            var savingsAccount =  await DatabaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            var termDepositAccounts = await DatabaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            accountsList.AddRange(currentAccount);
+            accountsList.AddRange(savingsAccount);
+            accountsList.AddRange(termDepositAccounts);
+            return accountsList;
+        }
+
         public async Task<IList<CurrentAccount>> GetCurrentAccounts(string userID) =>
             await DatabaseAdapter.GetAll<CurrentAccount>().Where(x => x.UserID.Equals(userID)).OrderByDescending(x => x.CreatedOn).ToListAsync();
 
@@ -110,6 +122,7 @@ namespace ZBank.DatabaseHandler
             await DatabaseAdapter.CreateTable<Account>();
             await DatabaseAdapter.CreateTable<CurrentAccountDTO>();
             await DatabaseAdapter.CreateTable<SavingsAccountDTO>();
+            await DatabaseAdapter.CreateTable<TermDepositAccountDTO>();
             await DatabaseAdapter.CreateTable<Transaction>();
             await DatabaseAdapter.CreateTable<CreditCardDTO>();
             await DatabaseAdapter.CreateTable<DebitCardDTO>();

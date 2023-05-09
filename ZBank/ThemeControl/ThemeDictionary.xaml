@@ -239,7 +239,7 @@
             Value="{ThemeResource SystemAccentColorDark2}" />
         <Setter
             Property="FontSize"
-            Value="12" />
+            Value="14" />
         <Setter
             Property="MaxWidth"
             Value="300" />

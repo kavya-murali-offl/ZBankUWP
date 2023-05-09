@@ -26,7 +26,6 @@ namespace ZBank.View
                 { "Total Savings", 5000m },
                 { "Total Deposit", 10000m },
             };
-
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

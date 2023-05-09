@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -21,7 +22,7 @@ namespace ZBank.View.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class AccountsPage : Page
+    public sealed partial class AccountsPage : Page, IView
     {
 
         public AccountPageViewModel ViewModel { get; private set; }
@@ -29,7 +30,7 @@ namespace ZBank.View.Main
         public AccountsPage()
         {
             this.InitializeComponent();
-            ViewModel = new AccountPageViewModel();
+            ViewModel = new AccountPageViewModel(this);
         }
 
         public int a = 10;

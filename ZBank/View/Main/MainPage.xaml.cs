@@ -55,7 +55,7 @@ namespace ZBank
         private void LoadTheme()
         {
             ThemeSelector.InitializeTheme();
-            //((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
+            ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = ThemeSelector.Theme;
         }
 
         private void LoadData()
@@ -91,22 +91,13 @@ namespace ZBank
             AppEvents.Instance.ThemeChanged -= SwitchTheme;
         }
 
-        private void SwitchTheme()
+        private async void SwitchTheme(ElementTheme theme)
         {
-            ThemeSelector.SwitchTheme();
-
-            ((FrameworkElement)Window.Current.Content).RequestedTheme = ThemeSelector.Theme;
-
-            //if (ThemeSelector.Theme == ElementTheme.Light)
-            //{
-            //    await ThemeSelector.SetTheme(ElementTheme.Dark);
-            //}
-            //else
-            //{
-            //    await ThemeSelector.SetTheme(ElementTheme.Light);
-            //}
-
-            //SwitchIcon();
+            ThemeSelector.SwitchTheme(theme);
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
+            }); 
         }
 
 
@@ -165,7 +156,6 @@ namespace ZBank
 
                 newAppView.Title = "Settings";
                 var frame = new Frame();
-                frame.RequestedTheme = ThemeSelector.Theme;
                 frame.Navigate(typeof(SettingsPage));
                 newWindow.Content = frame;
 
@@ -192,8 +182,14 @@ namespace ZBank
             }
             else if (selectedItem.Text == "Switch Theme")
             {
-
-                SwitchTheme();
+                if (this.RequestedTheme == ElementTheme.Dark)
+                {
+                    AppEvents.Instance.OnThemeChanged(ElementTheme.Light);
+                }
+                else
+                {
+                    AppEvents.Instance.OnThemeChanged(ElementTheme.Dark);
+                }
             }
         }
 
