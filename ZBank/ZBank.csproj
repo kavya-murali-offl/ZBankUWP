@@ -238,14 +238,11 @@
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetTransactionDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCreditCardDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertCustomerDataManager.cs" />
-    <Compile Include="ZBankManagement\DataLayer\DataManager\InsertDebitCardDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertTransactionDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\TranferAmountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateCardDataManager.cs" />
-    <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateCreditCardDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\UpdateCustomerDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DBAdapter\IDatabaseAdapter.cs" />
     <Compile Include="ZBankManagement\DataLayer\DBAdapter\SQLiteDatabaseAdapter.cs" />
@@ -262,12 +259,14 @@
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ZBankError.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllCards.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllTransactions.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\LoginCustomer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertAccount.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertCard.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertCustomer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertTransaction.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateAccount.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateCard.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateCustomer.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

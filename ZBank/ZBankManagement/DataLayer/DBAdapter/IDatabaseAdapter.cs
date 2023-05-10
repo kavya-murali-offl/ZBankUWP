@@ -14,13 +14,15 @@ namespace ZBank.DatabaseAdapter
 
         AsyncTableQuery<T> GetAll<T>() where T : new();
 
+        Task<T> GetScalar<T>(string query, params object[] args);
+
         Task<bool> Insert<T>(T obj);
 
         Task<bool> Update<T>(T obj);
 
         Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new();
 
-        Task<bool> RunInTransaction(IList<Action> actions);
+        Task RunInTransaction(Action action);
 
     }
 }

@@ -2,6 +2,8 @@
 using ZBank.Entities;
 using System.Linq;
 using ZBank.DatabaseHandler;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.LoginCustomerUseCase;
+using BankManagementDB.Domain.UseCase;
 
 namespace BankManagementDB.DataManager
 {
@@ -12,7 +14,10 @@ namespace BankManagementDB.DataManager
             DBHandler = dBHandler;
         }
         private IDBHandler DBHandler { get; set; }
-        
-        public Customer GetCustomer(string phoneNumber) => DBHandler.GetCustomer(phoneNumber).Result.FirstOrDefault();
+
+        public void GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback)
+        {
+           Customer customer = DBHandler.GetCustomer(request.CustomerID).Result.FirstOrDefault();
+        }
     }
 }

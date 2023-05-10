@@ -26,22 +26,28 @@ namespace ZBank.DatabaseAdapter
 
         public async Task CreateTable<T>() where T : new() => await Connection.CreateTableAsync<T>();
 
-        public async Task<bool> Insert<T>(T instance) => await Connection.InsertOrReplaceAsync(instance, typeof(T)) > 0;
+        public async Task<bool> Insert<T>(T instance) => await Connection.InsertAsync(instance, typeof(T)) > 0;
 
         public async Task<bool> Update<T>(T instance) => await Connection.InsertOrReplaceAsync(instance, typeof(T)) > 0;
 
         public AsyncTableQuery<T> GetAll<T>() where T : new() => Connection.Table<T>();
+        
+        public async Task<T> GetScalar<T>(string query, params object[] args) => await Connection.ExecuteScalarAsync<T>(query, args);
 
         public async Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new() => await Connection.QueryAsync<T>(query, args);
 
-        public async Task<bool> RunInTransaction(IList<Action> actions)
+        public async Task RunInTransaction(Action action)
         {
-            await Connection.RunInTransactionAsync(tran =>
+            try
             {
-                foreach (Action action in actions)
+                await Connection.RunInTransactionAsync(tran =>
+                {
                     action();
-            });
-            return true;
+                });
+            }catch(Exception err)
+            {
+                throw (err);
+            }
         }
     }
 }

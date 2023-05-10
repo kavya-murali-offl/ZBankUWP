@@ -21,10 +21,6 @@ namespace BankManagementDB.DataManager
         public void GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
         {
             IEnumerable<Card> cards = new List<Card>();
-            var creditCardsList = DBHandler.GetCreditCardByCustomerID(request.CustomerID).Result;
-            var debitCardsList = DBHandler.GetDebitCardByCustomerID(request.CustomerID).Result;
-            cards = cards.Concat(creditCardsList);
-            cards = cards.Concat(debitCardsList);
 
             GetAllCardsResponse response = new GetAllCardsResponse();   
             response.Cards = cards;

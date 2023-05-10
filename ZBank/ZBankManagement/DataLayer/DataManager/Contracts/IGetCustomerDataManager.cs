@@ -1,10 +1,13 @@
-﻿using ZBank.Entities;
+﻿using BankManagementDB.Domain.UseCase;
+using ZBank.Entities;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.LoginCustomerUseCase;
 
 namespace BankManagementDB.Interface
 {
     public interface IGetCustomerDataManager
     {
-        Customer GetCustomer(string phoneNumber);
+        void GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback);
 
     }
 }

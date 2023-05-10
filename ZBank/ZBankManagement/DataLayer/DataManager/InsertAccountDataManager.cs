@@ -1,6 +1,7 @@
 ﻿using BankManagementDB.Domain.UseCase;
 using BankManagementDB.Interface;
 using LiveCharts.Events;
+using System;
 using System.Security.Principal;
 using ZBank.DatabaseHandler;
 using ZBank.Entities;
@@ -23,13 +24,48 @@ namespace BankManagementDB.DataManager
 
         public void InsertAccount(InsertAccountRequest request, IUseCaseCallback<InsertAccountResponse> callback)
         {
-            bool result =  DBHandler.InsertAccount(request.AccountToInsert).Result;
+            bool result = false;
 
-            InsertAccountResponse response = new InsertAccountResponse();
-            response.IsSuccess = result;
+            try
+            {
+                if (request.AccountToInsert is CurrentAccount)
+                {
+                    CurrentAccount account = request.AccountToInsert as CurrentAccount;
 
+                    CurrentAccountDTO dtoAccount = new CurrentAccountDTO();
+                    dtoAccount.AccountNumber = account.AccountNumber;
+                    dtoAccount.Interest = account.InterestRate;
+
+                    DBHandler.InsertAccount(dtoAccount, request.AccountToInsert);
+                }
+                //}
+                //else if (request.AccountToInsert is SavingsAccount)
+                //{
+                //    SavingsAccount account = request.AccountToInsert as SavingsAccount;
+
+                //    SavingsAccountDTO dtoAccount = new SavingsAccountDTO();
+                //    dtoAccount.AccountNumber = account.AccountNumber;
+                //    dtoAccount.Interest = account.InterestRate;
+
+                //    DBHandler.InsertAccount(dtoAccount, request.AccountToInsert);
+                //}
+                //else if (request.AccountToInsert is TermDepositAccount)
+                //{
+                //    TermDepositAccountDTO dtoAccount = new TermDepositAccountDTO();
+                //    dtoAccount.AccountNumber = request.AccountToInsert.AccountNumber;
+                //    DBHandler.InsertAccount(dtoAccount, request.AccountToInsert);
+                //}
+                //result = true;
+            }
+            catch(Exception err)
+            {
+                result = false;
+            }
+            
             if (result)
             {
+                InsertAccountResponse response = new InsertAccountResponse();
+                response.IsSuccess = result;
                 response.InsertedAccount = request.AccountToInsert;
                 callback.OnSuccess(response);
             }
@@ -45,29 +81,4 @@ namespace BankManagementDB.DataManager
 }
 
 
-//if (request.Account is CurrentAccount)
-//{
-//    CurrentAccount account = request.Account as CurrentAccount;
 
-//    CurrentAccountDTO dtoAccount = new CurrentAccountDTO();
-//    dtoAccount.AccountNumber = account.AccountNumber;
-//    dtoAccount.Interest = account.InterestRate;
-
-//    result = DBHandler.InsertAccount(dtoAccount, account).Result;
-//}
-//else if (request.Account is SavingsAccount)
-//{
-//    SavingsAccount account = request.Account as SavingsAccount;
-
-//    SavingsAccountDTO dtoAccount = new SavingsAccountDTO();
-//    dtoAccount.AccountNumber = account.AccountNumber;
-//    dtoAccount.Interest = account.InterestRate;
-
-//    result = DBHandler.InsertAccount(dtoAccount, request.Account).Result;
-//}
-//else if (request.Account is TermDepositAccount)
-//{
-//    TermDepositAccountDTO dtoAccount = new TermDepositAccountDTO();
-//    dtoAccount.AccountNumber = request.Account.AccountNumber;
-//    result = DBHandler.InsertAccount(dtoAccount, request.Account).Result;
-//}

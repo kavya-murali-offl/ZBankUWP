@@ -9,8 +9,6 @@ namespace ZBank.DatabaseHandler
     public interface IDBHandler
     {
 
-        Task<bool> RunInTransaction(IList<Action> actions);
-
         // Customer
         Task<bool> InsertCustomer(Customer customer, CustomerCredentials credentials);
 
@@ -21,18 +19,15 @@ namespace ZBank.DatabaseHandler
         
         // Customer Credentials
 
-        Task<List<CustomerCredentials>> GetCredentials(string customerID);
-
-        Task<bool> InsertCredentials(CustomerCredentials customerCredentials);
+        Task<CustomerCredentials> GetCredentials(string customerID);
 
         Task<bool> UpdateCredentials(CustomerCredentials customerCredentials);
-
 
         // Account
         Task<IEnumerable<Account>> GetAllAccounts(string userID);
 
 
-        Task<bool> InsertAccount<T>(T account);
+        Task InsertAccount<T>(T dtoAccount, Account account);
 
         Task<bool> UpdateAccount<T>(T account);
 
@@ -45,14 +40,6 @@ namespace ZBank.DatabaseHandler
         Task<bool> UpdateDebitCard(DebitCardDTO card);
 
 
-
-        // Credit Card
-        Task<IEnumerable<CreditCard>> GetCreditCardByCustomerID(string customerID);
-
-
-        Task<bool> InsertCreditCard(CreditCardDTO creditCard);
-
-        Task<bool> UpdateCreditCard(CreditCardDTO creditCard);
 
         // Card
         Task<bool> InsertCard(Card card);
@@ -68,7 +55,6 @@ namespace ZBank.DatabaseHandler
 
         Task<bool> InsertTransaction(Transaction transaction);
 
-        Task<bool> UpdateTransaction(Transaction transaction);
 
         // Create Table
 

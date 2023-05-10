@@ -14,7 +14,6 @@ namespace BankManagementDB.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public bool PerformTransaction(IList<Action> actions) =>
-             DBHandler.RunInTransaction(actions).Result;
+        public bool PerformTransaction(IList<Action> actions) => false;
     }
 }

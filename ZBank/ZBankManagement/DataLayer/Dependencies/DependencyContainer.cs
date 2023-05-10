@@ -37,10 +37,7 @@ namespace ZBank.Dependencies
         {
             serviceCollection.AddScoped<IGetCardDataManager, GetCardDataManager>();
             serviceCollection.AddScoped<IInsertCardDataManager, InsertCardDataManager>();
-            serviceCollection.AddScoped<IInsertCreditCardDataManager, InsertCreditCardDataManager>();
-            serviceCollection.AddScoped<IInsertDebitCardDataManager, InsertDebitCardDataManager>();
             serviceCollection.AddScoped<IUpdateCardDataManager, UpdateCardDataManager>();
-            serviceCollection.AddScoped<IUpdateCreditCardDataManager, UpdateCreditCardDataManager>();
             return serviceCollection;
         }
 

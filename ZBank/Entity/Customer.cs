@@ -23,6 +23,6 @@ namespace ZBank.Entities
 
         //public override string ToString() => Formatter.FormatString(Resources.DisplayCustomer, Name, Age, Email, Phone, LastLoggedOn); 
            
-        public object Clone() => this.MemberwiseClone();
+        public object Clone() => MemberwiseClone();
     }
 }

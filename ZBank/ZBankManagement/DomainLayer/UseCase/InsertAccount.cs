@@ -8,6 +8,7 @@ using ZBank.Entities;
 using ZBank.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -72,8 +73,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             {
                 await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    var accounts = AccountPageViewModel.Accounts.Prepend(response.InsertedAccount);
-                    AccountPageViewModel.Accounts = new ObservableCollection<Account>(accounts);
+                    if (AccountPageViewModel.Accounts != null)
+                    {
+                        var accounts = AccountPageViewModel.Accounts.Prepend(response.InsertedAccount);
+                        AccountPageViewModel.Accounts = new ObservableCollection<Account>(accounts);
+                    }
                 });
             }
 

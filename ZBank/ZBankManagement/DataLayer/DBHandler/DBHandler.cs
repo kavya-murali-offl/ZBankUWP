@@ -23,8 +23,8 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<Account>> GetAllAccounts(string customerID)
         {
             List<Account> accountsList = new List<Account>();
-            var currentAccount = await DatabaseAdapter.Query<CurrentAccount>($"Select * from Account Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
-            var savingsAccount = await DatabaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            var currentAccount = await DatabaseAdapter.Query<CurrentAccount>($"Select * from Account Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
+            var savingsAccount = await DatabaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
             var termDepositAccounts = await DatabaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
             accountsList.AddRange(currentAccount);
             accountsList.AddRange(savingsAccount);
@@ -32,17 +32,15 @@ namespace ZBank.DatabaseHandler
             return accountsList;
         }
 
-        public async Task<bool> InsertAccount<T>(T account)
+        public async Task InsertAccount<T>(T dtoAccount, Account account)
         {
-            await DatabaseAdapter.Insert(account as Account);
-            return await DatabaseAdapter.Insert(account);
+                Action action = async delegate ()
+                {
+                    await DatabaseAdapter.Insert(dtoAccount);
+                    await DatabaseAdapter.Insert(account);
+                };
+                await DatabaseAdapter.RunInTransaction(action);
         }
-
-        // Old
-
-
-        public async Task<bool> RunInTransaction(IList<Action> actions) => await DatabaseAdapter.RunInTransaction(actions);
-
 
         // Customer
 
@@ -57,7 +55,9 @@ namespace ZBank.DatabaseHandler
 
         // Customer Credentials
 
-        public async Task<List<CustomerCredentials>> GetCredentials(string customerID) => await DatabaseAdapter.GetAll<CustomerCredentials>().Where(x => x.ID == customerID).ToListAsync();
+        public async Task<CustomerCredentials> GetCredentials(string customerID) {
+           return await DatabaseAdapter.GetScalar<CustomerCredentials>($"Select * from CustomerCredentials Where CustomerCredentials.CustomerID = ?", customerID);
+        }
 
         public async Task<bool> InsertCredentials(CustomerCredentials customerCredentials) => await DatabaseAdapter.Insert(customerCredentials);
 
@@ -70,14 +70,6 @@ namespace ZBank.DatabaseHandler
             await DatabaseAdapter.Update<T>(account);
             return await DatabaseAdapter.Update<Account>(account as Account);
         }
-
-        public async Task<bool> InsertCurrentAccount(CurrentAccountDTO account) => await DatabaseAdapter.Insert(account);
-
-        public async Task<bool> UpdateSavingsAccount(SavingsAccountDTO account) => await DatabaseAdapter.Update(account);
-
-        public async Task<bool> InsertSavingsAccount(SavingsAccountDTO account) => await DatabaseAdapter.Insert(account);
-
-        public async Task<bool> UpdateCurrentAccount(CurrentAccountDTO account) => await DatabaseAdapter.Update(account);
 
         //Card
 
@@ -110,14 +102,11 @@ namespace ZBank.DatabaseHandler
 
 
         // Transaction
-
         public async Task<IEnumerable<Transaction>> GetTransactionByAccountNumber(string accountNumber) => await DatabaseAdapter.GetAll<Transaction>().Where(x => x.OwnerAccount.Equals(accountNumber) || x.OtherAccount.Equals(accountNumber)).OrderByDescending(x => x.RecordedOn).ToListAsync();
 
         public async Task<IEnumerable<Transaction>> GetTransactionByCardNumber(string cardNumber) => await DatabaseAdapter.GetAll<Transaction>().Where(x => x.CardNumber == cardNumber).OrderByDescending(x => x.RecordedOn).ToListAsync();
 
         public async Task<bool> InsertTransaction(Transaction transaction) => await DatabaseAdapter.Insert(transaction);
-
-        public async Task<bool> UpdateTransaction(Transaction transaction) => await DatabaseAdapter.Update(transaction);
 
         // Create tables
 
