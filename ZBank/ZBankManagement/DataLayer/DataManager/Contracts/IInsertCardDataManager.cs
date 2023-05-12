@@ -1,8 +1,8 @@
-﻿using BankManagementDB.Domain.UseCase;
+﻿using ZBankManagement.Domain.UseCase;
 using ZBank.Entities;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertCard;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public interface IInsertCardDataManager
     {

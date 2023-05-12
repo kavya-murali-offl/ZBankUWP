@@ -24,30 +24,59 @@ namespace ZBank.DatabaseAdapter
             return new SQLiteConnectionString(databasePath, true, key: "pass");
         }
 
-        public async Task CreateTable<T>() where T : new() => await Connection.CreateTableAsync<T>();
-
-        public async Task<bool> Insert<T>(T instance) => await Connection.InsertAsync(instance, typeof(T)) > 0;
-
-        public async Task<bool> Update<T>(T instance) => await Connection.InsertOrReplaceAsync(instance, typeof(T)) > 0;
-
-        public AsyncTableQuery<T> GetAll<T>() where T : new() => Connection.Table<T>();
-        
-        public async Task<T> GetScalar<T>(string query, params object[] args) => await Connection.ExecuteScalarAsync<T>(query, args);
-
-        public async Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new() => await Connection.QueryAsync<T>(query, args);
-
-        public async Task RunInTransaction(Action action)
+        public async Task CreateTable<T>() where T : new()
         {
             try
             {
-                await Connection.RunInTransactionAsync(tran =>
-                {
-                    action();
-                });
-            }catch(Exception err)
-            {
-                throw (err);
+                await Connection.CreateTableAsync<T>();
+            }catch(Exception ex) { 
+                throw ex;
             }
         }
-    }
+
+        public Task<int> Insert<T>(T instance, Type insertType=null)
+        {
+
+                if(insertType == null)
+                {
+                    return Connection.InsertAsync(instance);
+                }
+                else
+                {
+                    return Connection.InsertAsync(instance, insertType);
+                }
+        }
+
+        public Task<int> Update<T>(T instance)
+        {
+             return Connection.InsertOrReplaceAsync(instance, typeof(T));
+        }
+
+        public AsyncTableQuery<T> GetAll<T>() where T : new()
+        {
+                return Connection.Table<T>();
+        }
+
+        public async Task<T> GetScalar<T>(string query, params object[] args)
+        {
+                return await Connection.ExecuteScalarAsync<T>(query, args);
+        }
+
+        public async Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new() => await Connection.QueryAsync<T>(query, args);
+
+        public Task RunInTransaction(Action action)
+        {
+          
+                return Connection.RunInTransactionAsync(tran =>
+                {
+                    try
+                    {
+                        action?.Invoke();
+                    }
+                    catch (Exception ex)
+                    {
+                    } 
+                });
+            }
+        }
 }

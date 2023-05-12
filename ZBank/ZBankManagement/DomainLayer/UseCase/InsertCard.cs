@@ -1,5 +1,5 @@
-﻿using BankManagementDB.DataManager;
-using BankManagementDB.Domain.UseCase;
+﻿using ZBankManagement.DataManager;
+using ZBankManagement.Domain.UseCase;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,18 +13,15 @@ using ZBank.ViewModel;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class InsertCard
-    {
-        public class InsertCardUseCase : UseCaseBase<InsertCardRequest, InsertCardResponse>
+        public class InsertCardUseCase : UseCaseBase<InsertCardResponse>
         {
-            private readonly IInsertCardDataManager InsertCardDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertCardDataManager>();
+            private readonly IInsertCardDataManager _insertCardDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertCardDataManager>();
+            private readonly IPresenterCallback<InsertCardResponse> _presenterCallback;
+            private readonly InsertCardRequest _request;
 
-            private IPresenterCallback<InsertCardResponse> PresenterCallback;
-
-            protected override void Action(InsertCardRequest request, IPresenterCallback<InsertCardResponse> presenterCallback)
+            protected override void Action()
             {
-                PresenterCallback = presenterCallback;
-                InsertCardDataManager.InsertCard(request, new InsertCardCallback(this));
+                _insertCardDataManager.InsertCard(_request, new InsertCardCallback(this));
             }
 
             private class InsertCardCallback : IUseCaseCallback<InsertCardResponse>
@@ -38,12 +35,12 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
                 public void OnSuccess(InsertCardResponse response)
                 {
-                    UseCase.PresenterCallback.OnSuccess(response);
+                    UseCase._presenterCallback.OnSuccess(response);
                 }
 
                 public void OnFailure(ZBankError error)
                 {
-                    UseCase.PresenterCallback.OnFailure(error);
+                    UseCase._presenterCallback.OnFailure(error);
                 }
             }
         }
@@ -63,25 +60,14 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public class InsertCardPresenterCallback : IPresenterCallback<InsertCardResponse>
         {
-            private AccountPageViewModel AccountPageViewModel { get; set; }
 
-            public InsertCardPresenterCallback(AccountPageViewModel accountPageViewModel)
+            public void OnSuccess(InsertCardResponse response)
             {
-                AccountPageViewModel = accountPageViewModel;
-            }
-
-            public async void OnSuccess(InsertCardResponse response)
-            {
-                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-
-                });
             }
 
             public void OnFailure(ZBankError response)
             {
 
             }
-        }
     }
 }

@@ -1,12 +1,12 @@
-﻿using BankManagementDB.Interface;
+﻿using ZBankManagement.Interface;
 using ZBank.Entities;
 using ZBank.DatabaseHandler;
 using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCard;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBank.Entity.EnumerationTypes;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public class UpdateCardDataManager : IUpdateCardDataManager
     {
@@ -20,8 +20,8 @@ namespace BankManagementDB.DataManager
 
         public void UpdateCard(UpdateCardRequest request, IUseCaseCallback<UpdateCardResponse> callback)
         {
-            bool result = DBHandler.UpdateCard(request.UpdatedCard).Result;
-            if(result)
+            int rowsModified = DBHandler.UpdateCard(request.UpdatedCard).Result;
+            if(rowsModified > 0)
             {
                 UpdateCardResponse response = new UpdateCardResponse();
                 response.UpdatedCard = request.UpdatedCard;

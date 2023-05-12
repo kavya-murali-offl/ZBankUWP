@@ -1,30 +1,26 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Core;
 using ZBank.Dependencies;
 using ZBank.Entities;
-using ZBank.ViewModel;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class UpdateCustomer
-    {
-        public class UpdateCustomerUseCase : UseCaseBase<UpdateCustomerRequest, UpdateCustomerResponse>
+        public class UpdateCustomerUseCase : UseCaseBase<UpdateCustomerResponse>
         {
-            private readonly IUpdateCustomerDataManager UpdateCustomerDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IUpdateCustomerDataManager>();
+            private readonly IUpdateCustomerDataManager _updateCustomerDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IUpdateCustomerDataManager>();
+            private readonly UpdateCustomerRequest _request;
+            private readonly IPresenterCallback<UpdateCustomerResponse> _presenterCallback;
 
-            private IPresenterCallback<UpdateCustomerResponse> PresenterCallback;
-
-            protected override void Action(UpdateCustomerRequest request, IPresenterCallback<UpdateCustomerResponse> presenterCallback)
+            public UpdateCustomerUseCase(UpdateCustomerRequest request, IPresenterCallback<UpdateCustomerResponse> presenterCallback)
             {
-                PresenterCallback = presenterCallback;
-                UpdateCustomerDataManager.UpdateCustomer(request, new UpdateCustomerCallback(this));
+                _presenterCallback = presenterCallback;
+                _request = request;
+            }
+
+            protected override void Action()
+            {
+                _updateCustomerDataManager.UpdateCustomer(_request, new UpdateCustomerCallback(this));
             }
 
             private class UpdateCustomerCallback : IUseCaseCallback<UpdateCustomerResponse>
@@ -39,12 +35,12 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
                 public void OnSuccess(UpdateCustomerResponse response)
                 {
-                    UseCase.PresenterCallback.OnSuccess(response);
+                    UseCase._presenterCallback.OnSuccess(response);
                 }
 
                 public void OnFailure(ZBankError error)
                 {
-                    UseCase.PresenterCallback.OnFailure(error);
+                    UseCase._presenterCallback.OnFailure(error);
                 }
             }
         }
@@ -64,7 +60,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public class UpdateCustomerPresenterCallback : IPresenterCallback<UpdateCustomerResponse>
         {
 
-            public async void OnSuccess(UpdateCustomerResponse response)
+            public void OnSuccess(UpdateCustomerResponse response)
             {
             }
 
@@ -73,5 +69,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             }
         }
-    }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankManagementDB.Presentation.ViewModel
+namespace ZBankManagement.Presentation.ViewModel
 {
 
     public class ViewModelBase : INotifyPropertyChanged

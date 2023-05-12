@@ -1,49 +1,46 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Core;
 using ZBank.Dependencies;
 using ZBank.Entities;
-using ZBank.ViewModel;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class InsertCustomer
-    {
-        public class InsertCustomerUseCase : UseCaseBase<InsertCustomerRequest, InsertCustomerResponse>
+        public class InsertCustomerUseCase : UseCaseBase<InsertCustomerResponse>
         {
-            private readonly IInsertCustomerDataManager InsertCustomerDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertCustomerDataManager>();
+            private readonly IInsertCustomerDataManager _insertCustomerDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertCustomerDataManager>();
+            private readonly InsertCustomerRequest _request;
+            private readonly IPresenterCallback<InsertCustomerResponse> _presenterCallback;
 
-            private IPresenterCallback<InsertCustomerResponse> PresenterCallback;
-
-            protected override void Action(InsertCustomerRequest request, IPresenterCallback<InsertCustomerResponse> presenterCallback)
+            public InsertCustomerUseCase(InsertCustomerRequest request, IPresenterCallback<InsertCustomerResponse> presenterCallback)
             {
-                PresenterCallback = presenterCallback;
-                InsertCustomerDataManager.InsertCustomer(request, new InsertCustomerCallback(this));
+                _presenterCallback = presenterCallback;
+                _request = request;
+            }
+
+
+            protected override void Action()
+            {
+                _insertCustomerDataManager.InsertCustomer(_request, new InsertCustomerCallback(this));
             }
 
             private class InsertCustomerCallback : IUseCaseCallback<InsertCustomerResponse>
             {
-                private readonly InsertCustomerUseCase UseCase;
+                private readonly InsertCustomerUseCase _useCase;
 
                 public InsertCustomerCallback(InsertCustomerUseCase useCase)
                 {
-                    UseCase = useCase;
+                    _useCase = useCase;
                 }
 
                 public void OnSuccess(InsertCustomerResponse response)
                 {
-                    UseCase.PresenterCallback.OnSuccess(response);
+                    _useCase._presenterCallback.OnSuccess(response);
                 }
 
                 public void OnFailure(ZBankError error)
                 {
-                    UseCase.PresenterCallback.OnFailure(error);
+                    _useCase._presenterCallback.OnFailure(error);
                 }
             }
         }
@@ -64,19 +61,9 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public class InsertCustomerPresenterCallback : IPresenterCallback<InsertCustomerResponse>
         {
-            private AccountPageViewModel AccountPageViewModel { get; set; }
 
-            public InsertCustomerPresenterCallback(AccountPageViewModel accountPageViewModel)
+            public void OnSuccess(InsertCustomerResponse response)
             {
-                AccountPageViewModel = accountPageViewModel;
-            }
-
-            public async void OnSuccess(InsertCustomerResponse response)
-            {
-                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    
-                });
             }
 
             public void OnFailure(ZBankError response)
@@ -84,5 +71,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             }
         }
-    }
 }

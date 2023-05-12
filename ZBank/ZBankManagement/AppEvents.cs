@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using ZBank.Entities;
 
-namespace BankManagementDB.Events
+namespace ZBankManagement.Events
 {
 
     public class AppEvents

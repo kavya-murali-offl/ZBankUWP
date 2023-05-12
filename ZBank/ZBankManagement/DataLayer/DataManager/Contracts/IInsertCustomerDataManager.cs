@@ -1,7 +1,7 @@
-﻿using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertCustomer;
-using BankManagementDB.Domain.UseCase;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IInsertCustomerDataManager
     {

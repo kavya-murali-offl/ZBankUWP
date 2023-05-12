@@ -1,9 +1,9 @@
 ﻿using ZBank.Entities;
 using System.Collections.Generic;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IGetTransactionDataManager
     {

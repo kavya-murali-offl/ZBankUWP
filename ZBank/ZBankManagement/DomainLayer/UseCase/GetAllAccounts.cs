@@ -1,5 +1,5 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,39 +17,47 @@ using Windows.UI.Core;
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
 
-    public class GetAllAccountsUseCase : UseCaseBase<GetAllAccountsRequest, GetAllAccountsResponse>
+    public class GetAllAccountsUseCase : UseCaseBase<GetAllAccountsResponse>
     {
-        private readonly IGetAccountDataManager GetAccountDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetAccountDataManager>();
 
-        private IPresenterCallback<GetAllAccountsResponse> PresenterCallback;
+        private readonly IGetAccountDataManager _getAccountDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetAccountDataManager>();
+        private readonly IPresenterCallback<GetAllAccountsResponse> _presenterCallback;
+        private readonly GetAllAccountsRequest _request;
 
-        protected override void Action(GetAllAccountsRequest request, IPresenterCallback<GetAllAccountsResponse> presenterCallback)
+        public GetAllAccountsUseCase(GetAllAccountsRequest request, IPresenterCallback<GetAllAccountsResponse> presenterCallback) {
+            _presenterCallback = presenterCallback;
+            _request = request;
+        }
+        
+
+        protected override void Action()
         {
-            PresenterCallback = presenterCallback;
-            GetAccountDataManager.GetAllAccounts(request, new GetAllAccountsCallback(this));
+            _getAccountDataManager.GetAllAccounts(_request, new GetAllAccountsCallback(this));
         }
 
         private class GetAllAccountsCallback : IUseCaseCallback<GetAllAccountsResponse>
         {
 
-            GetAllAccountsUseCase UseCase;
+            private readonly GetAllAccountsUseCase _useCase;
 
             public GetAllAccountsCallback(GetAllAccountsUseCase useCase)
             {
-                UseCase = useCase;
+                _useCase = useCase;
             }
 
             public void OnSuccess(GetAllAccountsResponse response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+                _useCase._presenterCallback.OnSuccess(response);
             }
 
             public void OnFailure(ZBankError error)
             {
-                UseCase.PresenterCallback.OnFailure(error);
+                _useCase._presenterCallback.OnFailure(error);
             }
         }
     }
+
+
 
     public class GetAllAccountsRequest
     {
@@ -58,10 +66,13 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public string UserID { get; set; }
     }
 
+
     public class GetAllAccountsResponse
     {
         public IEnumerable<Account> Accounts { get; set; }
     }
+
+
     public class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
     {
         private AccountPageViewModel AccountPageViewModel { get; set; }
@@ -81,7 +92,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public void OnFailure(ZBankError response)
         {
-
+            // Notify view
         }
     }
 }

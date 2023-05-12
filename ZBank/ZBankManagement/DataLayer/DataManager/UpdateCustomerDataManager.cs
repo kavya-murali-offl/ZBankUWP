@@ -1,10 +1,9 @@
-﻿using BankManagementDB.Interface;
-using ZBank.Entities;
+﻿using ZBankManagement.Interface;
 using ZBank.DatabaseHandler;
-using BankManagementDB.Domain.UseCase;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCustomer;
+using ZBankManagement.Domain.UseCase;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public class UpdateCustomerDataManager : IUpdateCustomerDataManager
     {
@@ -15,10 +14,9 @@ namespace BankManagementDB.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public bool UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback)
+        public void UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback)
         {
-            bool success = DBHandler.UpdateCustomer(request.CustomerToUpdate).Result;
-            return success;
+            int rowsModified = DBHandler.UpdateCustomer(request.CustomerToUpdate).Result;
         }
     }
 }

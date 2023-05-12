@@ -1,56 +1,56 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Core;
 using ZBank.Dependencies;
-using ZBank.Entities.EnumerationType;
 using ZBank.Entities;
 using ZBank.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class GetAllTransactionsUseCase : UseCaseBase<GetAllTransactionsRequest, GetAllTransactionsResponse>
+    public class GetAllTransactionsUseCase : UseCaseBase<GetAllTransactionsResponse>
     {
-        private readonly IGetTransactionDataManager GetTransactionDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetTransactionDataManager>();
 
-        private IPresenterCallback<GetAllTransactionsResponse> PresenterCallback;
+        private readonly IGetTransactionDataManager _getTransactionDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetTransactionDataManager>();
+        private readonly IPresenterCallback<GetAllTransactionsResponse> _presenterCallback;
+        private readonly GetAllTransactionsRequest _request;
 
-        protected override void Action(GetAllTransactionsRequest request, IPresenterCallback<GetAllTransactionsResponse> presenterCallback)
+        public GetAllTransactionsUseCase(GetAllTransactionsRequest request, IPresenterCallback<GetAllTransactionsResponse> presenterCallback)
         {
-            PresenterCallback = presenterCallback;
-            GetTransactionDataManager.GetTransactionsByAccountNumber(request, new GetAllTransactionsCallback(this));
+            _presenterCallback = presenterCallback;
+            _request = request;
+        }
+
+        protected override void Action()
+        {
+            _getTransactionDataManager.GetTransactionsByAccountNumber(_request, new GetAllTransactionsCallback(this));
         }
 
         private class GetAllTransactionsCallback : IUseCaseCallback<GetAllTransactionsResponse>
         {
-
-            GetAllTransactionsUseCase UseCase;
+            private readonly GetAllTransactionsUseCase _useCase;
 
             public GetAllTransactionsCallback(GetAllTransactionsUseCase useCase)
             {
-                UseCase = useCase;
+                _useCase = useCase;
             }
 
             public void OnSuccess(GetAllTransactionsResponse response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+                _useCase._presenterCallback.OnSuccess(response);
             }
 
             public void OnFailure(ZBankError error)
             {
-                UseCase.PresenterCallback.OnFailure(error);
+                _useCase._presenterCallback.OnFailure(error);
             }
         }
     }
 
     public class GetAllTransactionsRequest
     {
-
         public string AccountNumber { get; set; }
     }
 
@@ -58,20 +58,13 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
         public IEnumerable<Transaction> Transactions { get; set; }
     }
+
+
     public class GetAllTransactionsPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
     {
-        private AccountPageViewModel AccountPageViewModel { get; set; }
 
-        public GetAllTransactionsPresenterCallback(AccountPageViewModel accountPageViewModel)
+        public void OnSuccess(GetAllTransactionsResponse response)
         {
-            AccountPageViewModel = accountPageViewModel;
-        }
-
-        public async void OnSuccess(GetAllTransactionsResponse response)
-        {
-            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-            });
         }
 
         public void OnFailure(ZBankError response)

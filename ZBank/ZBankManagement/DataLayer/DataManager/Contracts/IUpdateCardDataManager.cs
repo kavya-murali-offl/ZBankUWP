@@ -1,8 +1,8 @@
-﻿using BankManagementDB.Domain.UseCase;
+﻿using ZBankManagement.Domain.UseCase;
 using ZBank.Entities;
 using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCard;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IUpdateCardDataManager
     {

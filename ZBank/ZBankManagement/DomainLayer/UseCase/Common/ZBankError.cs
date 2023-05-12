@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entity.EnumerationTypes;
 
-namespace BankManagementDB.Domain.UseCase
+namespace ZBankManagement.Domain.UseCase
 {
     public class ZBankError
     {

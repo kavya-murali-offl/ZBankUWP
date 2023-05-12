@@ -1,10 +1,10 @@
-﻿using BankManagementDB.Interface;
+﻿using ZBankManagement.Interface;
 using ZBank.Entities;
 using ZBank.DatabaseHandler;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateAccount;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public  class UpdateAccountDataManager : IUpdateAccountDataManager
     {
@@ -15,15 +15,14 @@ namespace BankManagementDB.DataManager
         private IDBHandler DBHandler { get; set; }
 
 
-        public void UpdateAccount<T>(UpdateAccountRequest<T> request, IUseCaseCallback<UpdateAccountResponse<T>> callback)
+        public void UpdateAccount(UpdateAccountRequest request, IUseCaseCallback<UpdateAccountResponse> callback)
         {
-            bool result = DBHandler.UpdateAccount(request.UpdatedAccount).Result;
+            int rowsModified = DBHandler.UpdateAccount(request.UpdatedAccount).Result;
 
-            UpdateAccountResponse<T> response = new UpdateAccountResponse<T>();
-            response.IsSuccess = result;
-
-            if(result)
+            if(rowsModified > 0)
             {
+                UpdateAccountResponse response = new UpdateAccountResponse();
+                response.IsSuccess = rowsModified > 0;
                 response.UpdatedAccount = request.UpdatedAccount;
                 callback.OnSuccess(response);
             }

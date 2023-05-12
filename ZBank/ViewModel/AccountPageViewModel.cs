@@ -1,4 +1,4 @@
-﻿using BankManagementDB.Domain.UseCase;
+﻿using ZBankManagement.Domain.UseCase;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -6,7 +6,6 @@ using ZBank.Entities;
 using ZBank.View;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertAccount;
 
 namespace ZBank.ViewModel
 {
@@ -31,7 +30,7 @@ namespace ZBank.ViewModel
                {
                     AccountNumber = "test1",
                     IFSCCode = "ZBNK1233",
-                    AccountName = "xxx",
+                    AccountName = "xxxxxxx",
                     AccountStatus = AccountStatus.ACTIVE,
                     OpenedOn = DateTime.Now,
                     Currency = Currency.INR,
@@ -39,12 +38,11 @@ namespace ZBank.ViewModel
                     UserID="1111"
                }
             };
-
+            
             IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
 
-            UseCaseBase<InsertAccountRequest, InsertAccountResponse> useCase = new InsertAccountUseCase();
-
-            useCase.Execute(request, presenterCallback);
+            UseCaseBase<InsertAccountResponse> useCase = new InsertAccountUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         private ObservableCollection<Account> _accounts { get; set; }
@@ -68,10 +66,8 @@ namespace ZBank.ViewModel
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
-
-            UseCaseBase<GetAllAccountsRequest, GetAllAccountsResponse> useCase = new GetAllAccountsUseCase();
-
-            useCase.Execute(request, presenterCallback);
+            UseCaseBase<GetAllAccountsResponse> useCase = new GetAllAccountsUseCase(request, presenterCallback);
+            useCase.Execute();
         }
     }
 }

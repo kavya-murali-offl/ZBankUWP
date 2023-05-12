@@ -10,9 +10,9 @@ namespace ZBank.DatabaseHandler
     {
 
         // Customer
-        Task<bool> InsertCustomer(Customer customer, CustomerCredentials credentials);
+        Task<int> InsertCustomer(Customer customer, CustomerCredentials credentials);
 
-        Task<bool> UpdateCustomer(Customer customer);
+        Task<int> UpdateCustomer(Customer customer);
 
         Task<List<Customer>> GetCustomer(string phoneNumber);
 
@@ -21,30 +21,22 @@ namespace ZBank.DatabaseHandler
 
         Task<CustomerCredentials> GetCredentials(string customerID);
 
-        Task<bool> UpdateCredentials(CustomerCredentials customerCredentials);
+        Task<int> UpdateCredentials(CustomerCredentials customerCredentials);
 
         // Account
         Task<IEnumerable<Account>> GetAllAccounts(string userID);
 
 
-        Task InsertAccount<T>(T dtoAccount, Account account);
+        Task InsertAccount(Account account, Type type=null);
 
-        Task<bool> UpdateAccount<T>(T account);
-
-
-        // Debit Card
-        Task<IEnumerable<DebitCard>> GetDebitCardByCustomerID(string customerID);
-
-        Task<bool> InsertDebitCard(DebitCardDTO card);
-
-        Task<bool> UpdateDebitCard(DebitCardDTO card);
+        Task<int> UpdateAccount<T>(T account);
 
 
 
         // Card
-        Task<bool> InsertCard(Card card);
+        Task<int> InsertCard(Card card);
 
-        Task<bool> UpdateCard(Card card);
+        Task<int> UpdateCard(Card card);
 
 
         // Transaction
@@ -53,7 +45,7 @@ namespace ZBank.DatabaseHandler
 
         Task<IEnumerable<Transaction>> GetTransactionByCardNumber(string cardNumber);
 
-        Task<bool> InsertTransaction(Transaction transaction);
+        Task<int> InsertTransaction(Transaction transaction);
 
 
         // Create Table

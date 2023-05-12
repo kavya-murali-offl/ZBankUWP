@@ -1,5 +1,5 @@
 ﻿
-namespace BankManagementDB.Domain.UseCase
+namespace ZBankManagement.Domain.UseCase
 {
     public interface IUseCaseCallback<T>
     {

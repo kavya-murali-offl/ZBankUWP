@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities.EnumerationType;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IGetAccountDataManager
     {

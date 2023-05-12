@@ -1,12 +1,7 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Core;
 using ZBank.Dependencies;
 using ZBank.Entities;
@@ -14,55 +9,57 @@ using ZBank.ViewModel;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class UpdateAccount
-    {
-        public class UpdateAccountUseCase<T> : UseCaseBase<UpdateAccountRequest<T>, UpdateAccountResponse<T>>
+        public class UpdateAccountUseCase : UseCaseBase<UpdateAccountResponse>
         {
-            private readonly IUpdateAccountDataManager UpdateAccountDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IUpdateAccountDataManager>();
+            private readonly IUpdateAccountDataManager _updateAccountDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IUpdateAccountDataManager>();
+            private readonly IPresenterCallback<UpdateAccountResponse> _presenterCallback;
+            private readonly UpdateAccountRequest _request;
 
-            private IPresenterCallback<UpdateAccountResponse<T>> PresenterCallback;
-
-            protected override void Action(UpdateAccountRequest<T> request, IPresenterCallback<UpdateAccountResponse<T>> presenterCallback)
+            public UpdateAccountUseCase(UpdateAccountRequest request, IPresenterCallback<UpdateAccountResponse> presenterCallback)
             {
-                PresenterCallback = presenterCallback;
-                UpdateAccountDataManager.UpdateAccount<T>(request, new UpdateAccountCallback(this));
+                _presenterCallback = presenterCallback;
+                _request = request;
+
+            }
+            protected override void Action()
+            {
+                _updateAccountDataManager.UpdateAccount(_request, new UpdateAccountCallback(this));
             }
 
-            private class UpdateAccountCallback : IUseCaseCallback<UpdateAccountResponse<T>>
+            private class UpdateAccountCallback : IUseCaseCallback<UpdateAccountResponse>
             {
 
-                UpdateAccountUseCase<T> UseCase;
+                private readonly UpdateAccountUseCase _useCase;
 
-                public UpdateAccountCallback(UpdateAccountUseCase<T> useCase)
+                public UpdateAccountCallback(UpdateAccountUseCase useCase)
                 {
-                    UseCase = useCase;
+                    _useCase = useCase;
                 }
 
-                public void OnSuccess(UpdateAccountResponse<T> response)
+                public void OnSuccess(UpdateAccountResponse response)
                 {
-                    UseCase.PresenterCallback.OnSuccess(response);
+                    _useCase._presenterCallback.OnSuccess(response);
                 }
 
                 public void OnFailure(ZBankError error)
                 {
-                    UseCase.PresenterCallback.OnFailure(error);
+                    _useCase._presenterCallback.OnFailure(error);
                 }
             }
         }
 
-        public class UpdateAccountRequest<T>
+        public class UpdateAccountRequest
         {
-            public T UpdatedAccount { get; set; }
+            public Account UpdatedAccount { get; set; }
         }
 
-        public class UpdateAccountResponse<T>
+        public class UpdateAccountResponse
         {
             public bool IsSuccess { get; set; }
-
-            public T UpdatedAccount { get; set; }
+            public Account UpdatedAccount { get; set; }
         }
 
-        public class UpdateAccountPresenterCallback<T> : IPresenterCallback<UpdateAccountResponse<T>>
+        public class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>
         {
             private AccountPageViewModel AccountPageViewModel { get; set; }
 
@@ -71,7 +68,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 AccountPageViewModel = accountPageViewModel;
             }
 
-            public async void OnSuccess(UpdateAccountResponse<T> response)
+            public async void OnSuccess(UpdateAccountResponse response)
             {
                 await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -84,4 +81,3 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             }
         }
     }
-}

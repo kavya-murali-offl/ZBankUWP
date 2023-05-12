@@ -1,5 +1,5 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using System;
 using System.Linq;
 using Windows.UI.Core;
@@ -9,41 +9,45 @@ using ZBank.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Windows.UI.Notifications;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class InsertAccount
-    {
-        public class InsertAccountUseCase : UseCaseBase<InsertAccountRequest, InsertAccountResponse>
+        public class InsertAccountUseCase : UseCaseBase<InsertAccountResponse>
         {
-            private readonly IInsertAccountDataManager InsertAccountDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertAccountDataManager>();
+            private readonly IInsertAccountDataManager _insertAccountDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertAccountDataManager>();
+            private readonly IPresenterCallback<InsertAccountResponse> _presenterCallback;
+            private readonly InsertAccountRequest _request;
 
-            private IPresenterCallback<InsertAccountResponse> PresenterCallback;
-
-            protected override void Action(InsertAccountRequest request, IPresenterCallback<InsertAccountResponse> presenterCallback)
+            public InsertAccountUseCase(InsertAccountRequest request, IPresenterCallback<InsertAccountResponse> presenterCallback)
             {
-                PresenterCallback = presenterCallback;
-                InsertAccountDataManager.InsertAccount(request, new InsertAccountCallback(this));
+                _presenterCallback = presenterCallback;
+                _request = request;
+            }
+
+            protected override void Action()
+            {
+                _insertAccountDataManager.InsertAccount(_request, new InsertAccountCallback(this));
             }
 
             private class InsertAccountCallback : IUseCaseCallback<InsertAccountResponse>
             {
 
-                InsertAccountUseCase UseCase;
+                private InsertAccountUseCase _useCase;
 
                 public InsertAccountCallback(InsertAccountUseCase useCase)
                 {
-                    UseCase = useCase;
+                    _useCase = useCase;
                 }
 
                 public void OnSuccess(InsertAccountResponse response)
                 {
-                    UseCase.PresenterCallback.OnSuccess(response);
+                    _useCase._presenterCallback.OnSuccess(response);
                 }
 
                 public void OnFailure(ZBankError error)
                 {
-                    UseCase.PresenterCallback.OnFailure(error);
+                    _useCase._presenterCallback.OnFailure(error);
                 }
             }
         }
@@ -81,10 +85,9 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 });
             }
 
-            public void OnFailure(ZBankError response)
+            public void OnFailure(ZBankError error)
             {
-
+                
             }
         }
-    }
 }

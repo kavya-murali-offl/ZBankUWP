@@ -1,7 +1,7 @@
 ﻿using ZBank.Entities.EnumerationType;
 using ZBank.Entities;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IAccountFactory
     {

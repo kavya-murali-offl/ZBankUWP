@@ -1,16 +1,16 @@
-﻿using BankManagementDB.Data;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Data;
+using ZBankManagement.Interface;
 using ZBank.Entities;
 using System.Collections.Generic;
 using ZBank.DatabaseHandler;
 using System.Linq;
 using ZBank.Entities.EnumerationType;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
 using System;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public class GetAccountDataManager : IGetAccountDataManager
     {

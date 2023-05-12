@@ -1,13 +1,13 @@
-﻿using BankManagementDB.Data;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Data;
+using ZBankManagement.Interface;
 using ZBank.Entities;
 using ZBank.DatabaseHandler;
 using System.Collections.Generic;
 using System.Linq;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public class GetCardDataManager : IGetCardDataManager
     {

@@ -1,11 +1,11 @@
-﻿using BankManagementDB.Interface;
+﻿using ZBankManagement.Interface;
 using ZBank.Entities;
 using ZBank.DatabaseHandler;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertTransaction;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
 using ZBank.Entity.EnumerationTypes;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public class InsertTransactionDataManager : IInsertTransactionDataManager
     {
@@ -18,13 +18,12 @@ namespace BankManagementDB.DataManager
 
         public void InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback)
         {
-            bool success = DBHandler.InsertTransaction(request.TransactionToInsert).Result;
+            int rowsModified = DBHandler.InsertTransaction(request.TransactionToInsert).Result;
 
-            InsertTransactionResponse response = new InsertTransactionResponse();
-            response.IsSuccess = success;   
 
-            if (success)
+            if (rowsModified > 0)
             {
+                InsertTransactionResponse response = new InsertTransactionResponse();
                 response.InsertedTransaction = request.TransactionToInsert;
                 callback.OnSuccess(response);
             }

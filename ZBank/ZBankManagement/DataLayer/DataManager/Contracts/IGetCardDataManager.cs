@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
-using BankManagementDB.Domain.UseCase;
+using ZBankManagement.Domain.UseCase;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IGetCardDataManager
     {

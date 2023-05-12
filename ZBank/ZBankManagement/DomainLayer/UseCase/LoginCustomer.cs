@@ -1,136 +1,130 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Core;
 using ZBank.Dependencies;
 using ZBank.Entities;
-using ZBank.ViewModel;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.LoginCustomerUseCase;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class LoginCustomerUseCase : UseCaseBase<LoginCustomerRequest, LoginCustomerResponse>
+    public class LoginCustomerUseCase : UseCaseBase<LoginCustomerResponse>
     {
-        private readonly IGetCustomerCredentialsDataManager GetCustomerCredentialsDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetCustomerCredentialsDataManager>();
+        private readonly ILoginCustomerDataManager _loginCustomerDataManager = DependencyContainer.ServiceProvider.GetRequiredService<ILoginCustomerDataManager>();
+        private readonly LoginCustomerRequest _request;
+        private readonly IPresenterCallback<LoginCustomerResponse> _presenterCallback;
 
-        private IPresenterCallback<LoginCustomerResponse> PresenterCallback;
-        private LoginCustomerRequest Request;
+        public LoginCustomerUseCase(LoginCustomerRequest request, IPresenterCallback<LoginCustomerResponse> presenterCallback) { 
+            _presenterCallback = presenterCallback;
+            _request = request;
+        }
 
-        protected override void Action(LoginCustomerRequest request, IPresenterCallback<LoginCustomerResponse> presenterCallback)
+        protected override void Action()
         {
-            PresenterCallback = presenterCallback;
-            Request = request;
-
             GetCredentialsRequest credentialsRequest = new GetCredentialsRequest();
-            credentialsRequest.CustomerID = request.CustomerID;
-            GetCustomerCredentialsDataManager.GetCredentials(credentialsRequest, new GetCustomerCredentialsCallback(this));
+            credentialsRequest.CustomerID = _request.CustomerID;
+            _loginCustomerDataManager.GetCredentials(credentialsRequest, new GetCustomerCredentialsCallback(this));
         }
 
-        public class GetCredentialsRequest
+        private bool CheckPassword(string correctPassword)
         {
-            public string CustomerID { get; set; }
-        }
 
-        public class GetCustomerRequest
-        {
-            public string CustomerID { get; set; }
-        }
+            // TODO Hashing
+            if(correctPassword == _request.Password)
+            {
 
-
-        public class GetCredentialsResponse
-        {
-            public CustomerCredentials CustomerCredentials { get; set; }
-        }
-
-        public class GetCustomerResponse
-        {
-            public Customer Customer { get; set; }
+            }
+            return false;
         }
 
 
         private class GetCustomerCredentialsCallback : IUseCaseCallback<GetCredentialsResponse>
         {
-            private readonly LoginCustomerUseCase UseCase;
+            private readonly LoginCustomerUseCase _useCase;
 
             public GetCustomerCredentialsCallback(LoginCustomerUseCase useCase)
             {
-                UseCase = useCase;
+                _useCase = useCase;
             }
-
-            private readonly IGetCustomerDataManager GetCustomerDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetCustomerDataManager>();
 
             public void OnSuccess(GetCredentialsResponse response)
             {
-                if(response.CustomerCredentials.Password == UseCase.Request.Password)
+                if (_useCase.CheckPassword(response.CustomerCredentials.Password))
                 {
                     GetCustomerRequest getCustomerRequest = new GetCustomerRequest();
-                    getCustomerRequest.CustomerID = UseCase.Request.CustomerID;
-                    GetCustomerDataManager.GetCustomer(getCustomerRequest, new GetCustomerCallback(UseCase));
+                    getCustomerRequest.CustomerID = response.CustomerCredentials.ID;
+                    _useCase._loginCustomerDataManager.GetCustomer(getCustomerRequest, new GetCustomerCallback(_useCase));
+                }
+                else
+                {
+                    ZBankError error = new ZBankError();
+                    error.Message = "Invalid Credentials";
+                    _useCase._presenterCallback.OnFailure(error);
                 }
             }
 
             public void OnFailure(ZBankError error)
             {
-                UseCase.PresenterCallback.OnFailure(error);
+                _useCase._presenterCallback.OnFailure(error);
+            }
+        }
+
+        public class GetCustomerCallback : IUseCaseCallback<GetCustomerResponse>
+        {
+            private readonly LoginCustomerUseCase _useCase;
+
+            public GetCustomerCallback(LoginCustomerUseCase useCase)
+            {
+                _useCase = useCase;
+            }
+
+            public void OnSuccess(GetCustomerResponse response)
+            {
+
+                LoginCustomerResponse loginResponse = new LoginCustomerResponse();
+                loginResponse.LoginedCustomer = response.Customer;
+                loginResponse.IsLoggedIn = true;
+                _useCase._presenterCallback.OnSuccess(loginResponse);
+            }
+
+            public void OnFailure(ZBankError error)
+            {
+                _useCase._presenterCallback.OnFailure(error);
+                // Notify failure
             }
         }
     }
 
-    public class GetCustomerCallback : IUseCaseCallback<GetCustomerResponse>
+
+    public class GetCredentialsRequest
     {
-        public LoginCustomerUseCase UseCase;
+        public string CustomerID { get; set; }
+    }
 
-        public GetCustomerCallback(LoginCustomerUseCase useCase) { 
-                UseCase = useCase;  
-        }
+    public class GetCustomerRequest
+    {
+        public string CustomerID { get; set; }
+    }
 
-        public void OnSuccess(GetCustomerResponse response)
-        {
-            //UseCase..OnSuccess(response);  
-        }
 
-        public void OnFailure(ZBankError error)
-        {
+    public class GetCredentialsResponse
+    {
+        public CustomerCredentials CustomerCredentials { get; set; }
+    }
 
-        }
+    public class GetCustomerResponse
+    {
+        public Customer Customer { get; set; }
     }
 
     public class LoginCustomerRequest
-    {
-        public string CustomerID { get; set; }
-        public string Password { get; set; }
+        {
+            public string CustomerID { get; set; }
+            public string Password { get; set; }
+        }
 
-    }
 
     public class LoginCustomerResponse
     {
         public bool IsLoggedIn { get; set; }
-
         public Customer LoginedCustomer { get; set; }
-
-        public class LoginCustomerPresenterCallback : IPresenterCallback<LoginCustomerResponse>
-        {
-            private AccountPageViewModel AccountPageViewModel { get; set; }
-
-            public LoginCustomerPresenterCallback(AccountPageViewModel accountPageViewModel)
-            {
-                AccountPageViewModel = accountPageViewModel;
-            }
-
-            public void OnSuccess(LoginCustomerResponse response)
-            {
-
-            }
-
-            public void OnFailure(ZBankError response)
-            {
-
-            }
-        }
     }
 }

@@ -1,5 +1,5 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,38 +14,40 @@ using ZBank.ViewModel;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class InsertTransaction
-    {
-        public class InsertTransactionUseCase : UseCaseBase<InsertTransactionRequest, InsertTransactionResponse>
+        public class InsertTransactionUseCase : UseCaseBase<InsertTransactionResponse>
         {
             private readonly IInsertTransactionDataManager InsertTransactionDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertTransactionDataManager>();
+            private readonly IPresenterCallback<InsertTransactionResponse> _presenterCallback;
+            private readonly InsertTransactionRequest _request;
 
-            private IPresenterCallback<InsertTransactionResponse> PresenterCallback;
-
-            protected override void Action(InsertTransactionRequest request, IPresenterCallback<InsertTransactionResponse> presenterCallback)
+            public InsertTransactionUseCase(InsertTransactionRequest request, IPresenterCallback<InsertTransactionResponse> presenterCallback)
             {
-                PresenterCallback = presenterCallback;
-                InsertTransactionDataManager.InsertTransaction(request, new InsertTransactionCallback(this));
+                _presenterCallback = presenterCallback;
+                _request = request;
+            }
+
+            protected override void Action()
+            {
+                InsertTransactionDataManager.InsertTransaction(_request, new InsertTransactionCallback(this));
             }
 
             private class InsertTransactionCallback : IUseCaseCallback<InsertTransactionResponse>
             {
-
-                InsertTransactionUseCase UseCase;
+                readonly InsertTransactionUseCase _useCase;
 
                 public InsertTransactionCallback(InsertTransactionUseCase useCase)
                 {
-                    UseCase = useCase;
+                    _useCase = useCase;
                 }
 
                 public void OnSuccess(InsertTransactionResponse response)
                 {
-                    UseCase.PresenterCallback.OnSuccess(response);
+                    _useCase._presenterCallback.OnSuccess(response);
                 }
 
                 public void OnFailure(ZBankError error)
                 {
-                    UseCase.PresenterCallback.OnFailure(error);
+                    _useCase._presenterCallback.OnFailure(error);
                 }
             }
         }
@@ -83,5 +85,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             }
         }
-    }
 }

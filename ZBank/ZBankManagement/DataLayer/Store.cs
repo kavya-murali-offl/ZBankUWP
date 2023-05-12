@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BankManagementDB.Data
+namespace ZBankManagement.Data
 {
     public class Store
     {

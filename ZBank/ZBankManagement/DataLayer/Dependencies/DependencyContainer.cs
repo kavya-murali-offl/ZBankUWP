@@ -1,7 +1,7 @@
 ﻿
-using BankManagementDB.DataManager;
-using BankManagementDB.Events;
-using BankManagementDB.Interface;
+using ZBankManagement.DataManager;
+using ZBankManagement.Events;
+using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using ZBank.DatabaseAdapter;
 using ZBank.DatabaseHandler;
@@ -43,7 +43,7 @@ namespace ZBank.Dependencies
 
         private static IServiceCollection ConfigureCustomerServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<IGetCustomerDataManager, GetCustomerDataManager>();
+            serviceCollection.AddScoped<ILoginCustomerDataManager, LoginCustomerDataManager>();
             serviceCollection.AddScoped<IInsertCustomerDataManager, InsertCustomerDataManager>();
             serviceCollection.AddScoped<IUpdateCustomerDataManager, UpdateCustomerDataManager>();
             return serviceCollection;

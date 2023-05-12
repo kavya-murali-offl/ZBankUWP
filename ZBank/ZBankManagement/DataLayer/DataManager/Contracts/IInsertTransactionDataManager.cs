@@ -1,8 +1,8 @@
-﻿using BankManagementDB.Domain.UseCase;
+﻿using ZBankManagement.Domain.UseCase;
 using ZBank.Entities;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertTransaction;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IInsertTransactionDataManager
     {

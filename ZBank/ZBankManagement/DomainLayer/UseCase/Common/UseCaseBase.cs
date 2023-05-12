@@ -3,21 +3,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 
-namespace BankManagementDB.Domain.UseCase
+namespace ZBankManagement.Domain.UseCase
 {
-    public abstract class UseCaseBase<TRequest, TResponse>
+    public abstract class UseCaseBase<TResponse>
     {
 
-        protected virtual bool GetIfAvailableInCache(TRequest request, IPresenterCallback<TResponse> presenterCallback)
+        IPresenterCallback<TResponse> _presenterCallback;   
+
+        protected virtual bool GetIfAvailableInCache()
         {
             return false;
         }
 
 
-        public void Execute(TRequest request, IPresenterCallback<TResponse> presenterCallback)
+        public void Execute()
         {
 
-            if (GetIfAvailableInCache(request, presenterCallback)) return;
+            if (GetIfAvailableInCache()) return;
 
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(5000);
 
@@ -25,7 +27,7 @@ namespace BankManagementDB.Domain.UseCase
             {
                 try
                 {
-                    Action(request, presenterCallback);
+                    Action();
                 }
                 catch (TaskCanceledException taskCancelledException)
                 {
@@ -34,11 +36,11 @@ namespace BankManagementDB.Domain.UseCase
                 catch (Exception ex)
                 {
                     ZBankError errObj = new ZBankError();
-                    presenterCallback?.OnFailure(errObj);
+                    _presenterCallback?.OnFailure(errObj);
                 }
             }, cancellationTokenSource.Token);
         }
 
-        protected abstract void Action(TRequest request, IPresenterCallback<TResponse> presenterCallback);
+        protected abstract void Action();
     }
 }

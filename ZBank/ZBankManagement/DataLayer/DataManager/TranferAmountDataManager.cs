@@ -1,9 +1,9 @@
-﻿using BankManagementDB.Interface;
+﻿using ZBankManagement.Interface;
 using System;
 using System.Collections.Generic;
 using ZBank.DatabaseHandler;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public class TranferAmountDataManager : ITransferAmountDataManager
     {

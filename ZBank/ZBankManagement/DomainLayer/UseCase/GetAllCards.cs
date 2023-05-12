@@ -1,5 +1,5 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,36 +13,40 @@ using ZBank.ViewModel;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
-    public class GetAllCardsUseCase : UseCaseBase<GetAllCardsRequest, GetAllCardsResponse>
+    public class GetAllCardsUseCase : UseCaseBase<GetAllCardsResponse>
     {
-        private readonly IGetCardDataManager GetCardDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetCardDataManager>();
+        private readonly IGetCardDataManager _getCardDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetCardDataManager>();
+        private readonly IPresenterCallback<GetAllCardsResponse> _presenterCallback;
+        private readonly GetAllCardsRequest _request;
 
-        private IPresenterCallback<GetAllCardsResponse> PresenterCallback;
-
-        protected override void Action(GetAllCardsRequest request, IPresenterCallback<GetAllCardsResponse> presenterCallback)
+        public GetAllCardsUseCase(GetAllCardsRequest request, IPresenterCallback<GetAllCardsResponse> presenterCallback)
         {
-            PresenterCallback = presenterCallback;
-            GetCardDataManager.GetAllCards(request, new GetAllCardsCallback(this));
+            _presenterCallback = presenterCallback;
+            _request = request;
+        }
+
+        protected override void Action()
+        {
+            _getCardDataManager.GetAllCards(_request, new GetAllCardsCallback(this));
         }
 
         private class GetAllCardsCallback : IUseCaseCallback<GetAllCardsResponse>
         {
-
-            GetAllCardsUseCase UseCase;
+            private readonly GetAllCardsUseCase _useCase;
 
             public GetAllCardsCallback(GetAllCardsUseCase useCase)
             {
-                UseCase = useCase;
+                _useCase = useCase;
             }
 
             public void OnSuccess(GetAllCardsResponse response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+                _useCase._presenterCallback.OnSuccess(response);
             }
 
             public void OnFailure(ZBankError error)
             {
-                UseCase.PresenterCallback.OnFailure(error);
+                _useCase._presenterCallback.OnFailure(error);
             }
         }
     }
@@ -53,24 +57,18 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public string CustomerID { get; set; }
     }
 
+
     public class GetAllCardsResponse
     {
         public IEnumerable<Card> Cards { get; set; }
     }
+
+
     public class GetAllCardsPresenterCallback : IPresenterCallback<GetAllCardsResponse>
     {
-        private AccountPageViewModel AccountPageViewModel { get; set; }
 
-        public GetAllCardsPresenterCallback(AccountPageViewModel accountPageViewModel)
+        public void OnSuccess(GetAllCardsResponse response)
         {
-            AccountPageViewModel = accountPageViewModel;
-        }
-
-        public async void OnSuccess(GetAllCardsResponse response)
-        {
-            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-            });
         }
 
         public void OnFailure(ZBankError response)

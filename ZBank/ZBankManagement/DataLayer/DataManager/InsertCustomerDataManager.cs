@@ -1,11 +1,11 @@
-﻿using BankManagementDB.Domain.UseCase;
-using BankManagementDB.Interface;
+﻿using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Interface;
 using ZBank.DatabaseHandler;
 using ZBank.Entities;
 using ZBank.Entity.EnumerationTypes;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.InsertCustomer;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.DataManager
+namespace ZBankManagement.DataManager
 {
     public class InsertCustomerDataManager : IInsertCustomerDataManager
     {
@@ -25,12 +25,12 @@ namespace BankManagementDB.DataManager
                 Salt = ""
             };
 
-            bool result = DBHandler.InsertCustomer(request.CustomerToInsert, customerCredentials).Result;
+            int rowsModified = DBHandler.InsertCustomer(request.CustomerToInsert, customerCredentials).Result;
 
-            if (result)
+            if (rowsModified > 0)
             {
                 InsertCustomerResponse response = new InsertCustomerResponse();
-                response.IsSuccess = result;
+                response.IsSuccess = rowsModified > 0;
                 response.InsertedCustomer = request.CustomerToInsert;
                 callback.OnSuccess(response);
             }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
 using ZBank.Entity.BusinessObjects;
+using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.DatabaseHandler
 {
@@ -32,24 +33,34 @@ namespace ZBank.DatabaseHandler
             return accountsList;
         }
 
-        public async Task InsertAccount<T>(T dtoAccount, Account account)
+        public async Task InsertAccount(Account account, Type dtoType=null)
         {
-                Action action = async delegate ()
+            try
+            {
+
+                await DatabaseAdapter.RunInTransaction(async() =>
                 {
-                    await DatabaseAdapter.Insert(dtoAccount);
-                    await DatabaseAdapter.Insert(account);
-                };
-                await DatabaseAdapter.RunInTransaction(action);
+                   await DatabaseAdapter.Insert(account).ConfigureAwait(false);
+                   await DatabaseAdapter.Insert(account as CurrentAccount, typeof(CurrentAccountDTO)).ConfigureAwait(false);
+                }).ConfigureAwait(false);
+
+            }    catch(Exception ex) { 
+                ZBankError error = new ZBankError();
+                error.Message = ex.Message; 
+            }   
+            
         }
 
         // Customer
 
-        public async Task<bool> InsertCustomer(Customer customer, CustomerCredentials credentials)
+        public Task<int> InsertCustomer(Customer customer, CustomerCredentials credentials)
         {
-            await DatabaseAdapter.Insert(credentials);
-            return await DatabaseAdapter.Insert(customer);
+
+            //DatabaseAdapter.Insert(credentials);
+            return DatabaseAdapter.Insert(customer);
         }
-        public async Task<bool> UpdateCustomer(Customer customer) => await DatabaseAdapter.Update(customer);
+
+        public Task<int> UpdateCustomer(Customer customer) => DatabaseAdapter.Update(customer);
 
         public Task<List<Customer>> GetCustomer(string phoneNumber) => DatabaseAdapter.GetAll<Customer>().Where(customer => customer.Phone.Equals(phoneNumber)).ToListAsync();
 
@@ -59,54 +70,38 @@ namespace ZBank.DatabaseHandler
            return await DatabaseAdapter.GetScalar<CustomerCredentials>($"Select * from CustomerCredentials Where CustomerCredentials.CustomerID = ?", customerID);
         }
 
-        public async Task<bool> InsertCredentials(CustomerCredentials customerCredentials) => await DatabaseAdapter.Insert(customerCredentials);
+        public Task<int> InsertCredentials(CustomerCredentials customerCredentials) => DatabaseAdapter.Insert(customerCredentials);
 
-        public async Task<bool> UpdateCredentials(CustomerCredentials customerCredentials) => await DatabaseAdapter.Update(customerCredentials);
+        public Task<int> UpdateCredentials(CustomerCredentials customerCredentials) => DatabaseAdapter.Update(customerCredentials);
 
 
 
-        public async Task<bool> UpdateAccount<T>(T account)
+        public async Task<int> UpdateAccount<T>(T account)
         {
             await DatabaseAdapter.Update<T>(account);
-            return await DatabaseAdapter.Update<Account>(account as Account);
+            return DatabaseAdapter.Update(account as Account).Result;
         }
 
         //Card
 
-        public async Task<bool> InsertCard(Card card) => await DatabaseAdapter.Insert(card);
+        public Task<int> InsertCard(Card card) => DatabaseAdapter.Insert(card); 
 
-        public async Task<bool> UpdateCard(Card card)  => await DatabaseAdapter.Update(card);
+        public Task<int> UpdateCard(Card card)  => DatabaseAdapter.Update(card) ;
 
 
         // Credit Card
-
-        public async Task<bool> InsertCreditCard(CreditCardDTO creditCard)
-        {
-            return await DatabaseAdapter.Insert(creditCard);
-        }
-
-        public async Task<bool> UpdateCreditCard(CreditCardDTO creditCard) => await DatabaseAdapter.Update(creditCard);
 
         public async Task<IEnumerable<CreditCard>> GetCreditCardByCustomerID(string customerID) =>
              await DatabaseAdapter.Query<CreditCard>($"Select * from Card Inner Join CreditCard on Card.ID = CreditCard.ID where CustomerID = ?", customerID);
 
 
-        // Debit Card
-
-        public async Task<bool> InsertDebitCard(DebitCardDTO creditCard) => await DatabaseAdapter.Insert(creditCard);
-
-        public async Task<bool> UpdateDebitCard(DebitCardDTO creditCard) => await DatabaseAdapter.Update(creditCard);
-
-        public async Task<IEnumerable<DebitCard>> GetDebitCardByCustomerID(string customerID) =>
-           await DatabaseAdapter.Query<DebitCard>($"Select * from Card  Inner Join DebitCard on Card.ID = DebitCard.ID where CustomerID = ?", customerID);
-
-
         // Transaction
+
         public async Task<IEnumerable<Transaction>> GetTransactionByAccountNumber(string accountNumber) => await DatabaseAdapter.GetAll<Transaction>().Where(x => x.OwnerAccount.Equals(accountNumber) || x.OtherAccount.Equals(accountNumber)).OrderByDescending(x => x.RecordedOn).ToListAsync();
 
         public async Task<IEnumerable<Transaction>> GetTransactionByCardNumber(string cardNumber) => await DatabaseAdapter.GetAll<Transaction>().Where(x => x.CardNumber == cardNumber).OrderByDescending(x => x.RecordedOn).ToListAsync();
 
-        public async Task<bool> InsertTransaction(Transaction transaction) => await DatabaseAdapter.Insert(transaction);
+        public Task<int> InsertTransaction(Transaction transaction) => DatabaseAdapter.Insert(transaction);
 
         // Create tables
 

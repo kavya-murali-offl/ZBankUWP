@@ -1,11 +1,11 @@
-﻿using BankManagementDB.Domain.UseCase;
+﻿using ZBankManagement.Domain.UseCase;
 using ZBank.Entities;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCustomer;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
 
-namespace BankManagementDB.Interface
+namespace ZBankManagement.Interface
 {
     public interface IUpdateCustomerDataManager
     {
-        bool UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback);
+        void UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback);
     }
 }

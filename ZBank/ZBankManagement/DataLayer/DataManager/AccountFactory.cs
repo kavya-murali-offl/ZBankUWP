@@ -1,8 +1,9 @@
 ﻿using ZBank.Entities.EnumerationType;
 using ZBank.Entities;
-using BankManagementDB.Interface;
+using ZBankManagement.Interface;
+using System;
 
-namespace BankManagementDB.Controller
+namespace ZBankManagement.Controller
 {
     public class AccountFactory : IAccountFactory
     {
@@ -32,7 +33,5 @@ namespace BankManagementDB.Controller
                     return null;
             }
         }
-
-
     }
 }

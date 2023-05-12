@@ -1,4 +1,4 @@
-﻿using BankManagementDB.Events;
+﻿using ZBankManagement.Events;
 using System;
 using Windows.ApplicationModel.Core;
 using Windows.UI;

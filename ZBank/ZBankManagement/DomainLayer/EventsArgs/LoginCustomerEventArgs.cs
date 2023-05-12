@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankManagementDB.Domain.EventsArgs
+namespace ZBankManagement.Domain.EventsArgs
 {
     public class LoginCustomerEventArgs : PropertyChangedEventArgs
     {
