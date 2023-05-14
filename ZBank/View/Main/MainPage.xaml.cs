@@ -26,7 +26,8 @@ using ZBank.ViewModel.VMObjects;
 using System.Windows.Input;
 using Windows.Media.Devices;
 using System.ComponentModel;
-using ZBankManagement.Events;
+using ZBank.ZBankManagement;
+using ZBank.ZBankManagement.AppEvents;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -83,12 +84,12 @@ namespace ZBank
         {
             LoadTheme();
             SelectedItem = TopNavigationList.FirstOrDefault();
-            AppEvents.Instance.ThemeChanged += SwitchTheme;
+            ViewNotifier.Instance.ThemeChanged += SwitchTheme;
         }
 
         public void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            AppEvents.Instance.ThemeChanged -= SwitchTheme;
+            ViewNotifier.Instance.ThemeChanged -= SwitchTheme;
         }
 
         private async void SwitchTheme(ElementTheme theme)
@@ -184,11 +185,11 @@ namespace ZBank
             {
                 if (this.RequestedTheme == ElementTheme.Dark)
                 {
-                    AppEvents.Instance.OnThemeChanged(ElementTheme.Light);
+                    ViewNotifier.Instance.OnThemeChanged(ElementTheme.Light);
                 }
                 else
                 {
-                    AppEvents.Instance.OnThemeChanged(ElementTheme.Dark);
+                    ViewNotifier.Instance.OnThemeChanged(ElementTheme.Dark);
                 }
             }
         }

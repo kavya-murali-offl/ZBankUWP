@@ -7,7 +7,6 @@ namespace ZBankManagement.Domain.UseCase
 {
     public abstract class UseCaseBase<TResponse>
     {
-
         IPresenterCallback<TResponse> _presenterCallback;   
 
         protected virtual bool GetIfAvailableInCache()

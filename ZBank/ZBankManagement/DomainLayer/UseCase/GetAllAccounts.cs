@@ -13,6 +13,8 @@ using System.Collections.ObjectModel;
 using Microsoft.Extensions.DependencyInjection;
 using ZBank.ViewModel.VMObjects;
 using Windows.UI.Core;
+using ZBank.ZBankManagement.AppEvents;
+using ZBank.ZBankManagement.AppEvents.AppEventArgs;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -86,7 +88,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
             await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                AccountPageViewModel.Accounts = new ObservableCollection<Account>(response.Accounts);
+                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                {
+                    AccountsList = new ObservableCollection<Account>(response.Accounts)
+                };
+                ViewNotifier.Instance.OnAccountsListUpdated(args);
             });
         }
 

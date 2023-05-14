@@ -16,7 +16,7 @@ namespace ZBank.DatabaseAdapter
 
         Task<T> GetScalar<T>(string query, params object[] args);
 
-        Task<int> Insert<T>(T obj, Type dtoType=null);
+        Task<int> Insert<T>(T obj, Type insertionType=null);
 
         Task<int> Update<T>(T obj);
 

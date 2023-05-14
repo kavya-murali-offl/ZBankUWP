@@ -9,6 +9,8 @@ using ZBankManagement.Domain.UseCase;
 using System;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace ZBankManagement.DataManager
 {
@@ -18,16 +20,8 @@ namespace ZBankManagement.DataManager
         {
             DBHandler = dBHandler;
         }
-        private IDBHandler DBHandler { get; set; }
 
-        public void GetAllAccounts(string customerId)
-        {
-            //IList<SavingsAccount> savingsAccounts = DBHandler.GetSavingsAccounts(customerId).Result;
-            //IList<CurrentAccount> currentAccounts = DBHandler.GetCurrentAccounts(customerId).Result;
-            //Store.AccountsList = new List<Account>();
-            //Store.AccountsList = Store.AccountsList.Concat(currentAccounts);
-            //Store.AccountsList = Store.AccountsList.Concat(savingsAccounts);
-        }
+        private IDBHandler DBHandler { get; set; }
 
         public void GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback)
         {

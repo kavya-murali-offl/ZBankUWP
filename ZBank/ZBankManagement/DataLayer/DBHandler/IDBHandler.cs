@@ -3,9 +3,10 @@ using ZBank.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ZBank.DatabaseAdapter;
 
 namespace ZBank.DatabaseHandler
-    {
+ {
     public interface IDBHandler
     {
 
@@ -27,7 +28,7 @@ namespace ZBank.DatabaseHandler
         Task<IEnumerable<Account>> GetAllAccounts(string userID);
 
 
-        Task InsertAccount(Account account, Type type=null);
+        Task InsertAccount(Account account);
 
         Task<int> UpdateAccount<T>(T account);
 
@@ -48,8 +49,18 @@ namespace ZBank.DatabaseHandler
         Task<int> InsertTransaction(Transaction transaction);
 
 
-        // Create Table
+        // Beneficiary
 
-        void CreateTables();
+        Task<IEnumerable<Beneficiary>> GetBeneficiaries(string customerID);
+
+        Task<int> AddBeneficiary(Beneficiary beneficiary);
+
+        Task<int> UpdateBeneficiary(Beneficiary beneficiaryToUpdate);
+
+        // Reset password
+
+        Task<int> ResetPassword(CustomerCredentials credentials);
+
+
     }
 }

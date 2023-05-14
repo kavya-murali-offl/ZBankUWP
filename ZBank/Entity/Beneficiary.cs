@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ZBank.Entities
 {
+    [Table("Beneficiary")]
     public class Beneficiary
     {
-        public Beneficiary(string accountNumber, string name, string ifscCode) { 
-            AccountNumber = accountNumber;
-            Name = name;
-            IFSCCode = ifscCode;
-        }
+        [PrimaryKey]
+        public string ID { get; set; }
+
+        public string UserID { get; set; }
 
         public string AccountNumber { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using ZBankManagement.Events;
-using System;
+﻿using System;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.Core;
@@ -8,6 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using ZBank.Config;
+using ZBank.ZBankManagement.AppEvents;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -78,12 +78,12 @@ namespace ZBank.View.UserControls
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            AppEvents.Instance.ThemeChanged += UpdateTitleBarTheme;
+            ViewNotifier.Instance.ThemeChanged += UpdateTitleBarTheme;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            AppEvents.Instance.ThemeChanged -= UpdateTitleBarTheme;
+            ViewNotifier.Instance.ThemeChanged -= UpdateTitleBarTheme;
         }
 
         private void UpdateTitleBarTheme(ElementTheme Theme)

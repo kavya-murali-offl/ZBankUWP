@@ -1,10 +1,12 @@
 ﻿
 using ZBankManagement.DataManager;
-using ZBankManagement.Events;
 using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using ZBank.DatabaseAdapter;
 using ZBank.DatabaseHandler;
+using ZBank.ZBankManagement.DataLayer.DBHandler;
+using ZBank.ZBankManagement;
+using ZBank.ZBankManagement.AppEvents;
 
 namespace ZBank.Dependencies
 {
@@ -30,6 +32,7 @@ namespace ZBank.Dependencies
         {
             serviceCollection.AddSingleton<IDatabaseAdapter, SQLiteDatabaseAdapter>();
             serviceCollection.AddSingleton<IDBHandler, DBHandler>();
+            serviceCollection.AddSingleton<IDBInitializationHandler, DBInitializationHandler>();
             return serviceCollection;
         }
 
@@ -44,7 +47,7 @@ namespace ZBank.Dependencies
         private static IServiceCollection ConfigureCustomerServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<ILoginCustomerDataManager, LoginCustomerDataManager>();
-            serviceCollection.AddScoped<IInsertCustomerDataManager, InsertCustomerDataManager>();
+            //serviceCollection.AddScoped<IInsertCustomerDataManager, InsertCustomerDataManager>();
             serviceCollection.AddScoped<IUpdateCustomerDataManager, UpdateCustomerDataManager>();
             return serviceCollection;
         }
@@ -54,8 +57,7 @@ namespace ZBank.Dependencies
             serviceCollection.AddScoped<IInsertAccountDataManager, InsertAccountDataManager>();
             serviceCollection.AddScoped<IGetAccountDataManager, GetAccountDataManager>();
             serviceCollection.AddScoped<IUpdateAccountDataManager, UpdateAccountDataManager>();
-            //serviceCollection.AddSingleton<IAccountFactory, AccountFactory>();
-            serviceCollection.AddSingleton<AppEvents>();
+            serviceCollection.AddSingleton<ViewNotifier>();
             return serviceCollection;
         }
     

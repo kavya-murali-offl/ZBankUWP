@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using ZBank.Entities;
+using ZBank.ZBankManagement.AppEvents.AppEventArgs;
+
+namespace ZBank.ZBankManagement.AppEvents
+{
+    public class ViewNotifier
+    {
+        public Action AccountInserted;
+        public void OnAccountInserted()
+        {
+            AccountInserted?.Invoke();
+        }
+
+        public event Action<bool> LoggedIn;
+        public void OnSuccessfulLogin(bool IsLoginSuccess)
+        {
+            LoggedIn?.Invoke(IsLoginSuccess);
+        }
+
+        public event Action<AccountsListUpdatedArgs> AccountsListUpdated;
+        public void OnAccountsListUpdated(AccountsListUpdatedArgs args)
+        {
+            AccountsListUpdated?.Invoke(args);
+        }
+
+        public event Action<ElementTheme> ThemeChanged;
+        public void OnThemeChanged(ElementTheme theme)
+        {
+            ThemeChanged?.Invoke(theme);
+        }
+
+        private ViewNotifier() { }
+
+        private static ViewNotifier instance = null;
+
+        public static ViewNotifier Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ViewNotifier();
+                }
+                return instance;
+            }
+        }
+    }
+}

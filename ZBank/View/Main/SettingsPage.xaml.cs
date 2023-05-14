@@ -1,5 +1,4 @@
-﻿using ZBankManagement.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +14,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.Config;
+using ZBank.ZBankManagement;
+using ZBank.ZBankManagement.AppEvents;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,12 +35,12 @@ namespace ZBank.View.Main
 
         public void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            AppEvents.Instance.ThemeChanged += ChangeTheme;
+            ViewNotifier.Instance.ThemeChanged += ChangeTheme;
         }
 
         public void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            AppEvents.Instance.ThemeChanged -= ChangeTheme;
+            ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -54,7 +55,7 @@ namespace ZBank.View.Main
             {
                 updatedTheme = ElementTheme.Light;
             }
-            AppEvents.Instance.OnThemeChanged(updatedTheme);
+            ViewNotifier.Instance.OnThemeChanged(updatedTheme);
             this.RequestedTheme = updatedTheme;
         }
 

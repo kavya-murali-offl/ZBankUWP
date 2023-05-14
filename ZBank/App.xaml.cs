@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 using ZBank.Config;
 using ZBank.Dependencies;
 using ZBank.ViewModel;
+using ZBank.ZBankManagement;
 
 namespace ZBank
 {
@@ -74,6 +75,7 @@ namespace ZBank
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+            AppInitialization.GetInstance().InitializeDB();
         }
 
         /// <summary>

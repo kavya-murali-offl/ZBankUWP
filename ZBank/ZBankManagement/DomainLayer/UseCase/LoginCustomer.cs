@@ -3,6 +3,8 @@ using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using ZBank.Dependencies;
 using ZBank.Entities;
+using System.Security.Cryptography;
+using System;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -24,17 +26,20 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             _loginCustomerDataManager.GetCredentials(credentialsRequest, new GetCustomerCredentialsCallback(this));
         }
 
-        private bool CheckPassword(string correctPassword)
+        private bool CheckPassword(string hashedCorrectPassword, string salt)
         {
-
-            // TODO Hashing
-            if(correctPassword == _request.Password)
-            {
-
-            }
-            return false;
+            return hashedCorrectPassword == HashPassword(_request.Password, salt);
         }
 
+        private string HashPassword(string password, string salt)
+        {
+            var saltBytes = Convert.FromBase64String(salt);
+
+            using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, saltBytes, 10101))
+            {
+                return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(70));
+            }
+        }
 
         private class GetCustomerCredentialsCallback : IUseCaseCallback<GetCredentialsResponse>
         {
@@ -47,7 +52,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public void OnSuccess(GetCredentialsResponse response)
             {
-                if (_useCase.CheckPassword(response.CustomerCredentials.Password))
+                if (_useCase.CheckPassword(response.CustomerCredentials.Password, response.CustomerCredentials.Salt))
                 {
                     GetCustomerRequest getCustomerRequest = new GetCustomerRequest();
                     getCustomerRequest.CustomerID = response.CustomerCredentials.ID;
@@ -55,8 +60,10 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 }
                 else
                 {
-                    ZBankError error = new ZBankError();
-                    error.Message = "Invalid Credentials";
+                    ZBankError error = new ZBankError
+                    {
+                        Message = "Invalid Credentials"
+                    };
                     _useCase._presenterCallback.OnFailure(error);
                 }
             }
@@ -66,6 +73,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 _useCase._presenterCallback.OnFailure(error);
             }
         }
+
 
         public class GetCustomerCallback : IUseCaseCallback<GetCustomerResponse>
         {
