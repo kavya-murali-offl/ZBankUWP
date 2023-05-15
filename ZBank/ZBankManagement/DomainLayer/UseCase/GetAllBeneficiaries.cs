@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
@@ -15,12 +16,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
 
         private readonly IGetBeneficiaryDataManager _getBeneficiaryDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetBeneficiaryDataManager>();
-        private readonly IPresenterCallback<GetAllBeneficiariesResponse> _presenterCallback;
         private readonly GetAllBeneficiariesRequest _request;
 
-        public GetAllBeneficiariesUseCase(GetAllBeneficiariesRequest request, IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback)
+        public GetAllBeneficiariesUseCase(GetAllBeneficiariesRequest request, IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback) 
+            : base(presenterCallback, request.Token)
         {
-            _presenterCallback = presenterCallback;
             _request = request;
         }
 
@@ -42,17 +42,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public void OnSuccess(GetAllBeneficiariesResponse response)
             {
-                _useCase._presenterCallback.OnSuccess(response);
+                _useCase.PresenterCallback.OnSuccess(response);
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
-                _useCase._presenterCallback.OnFailure(error);
+                _useCase.PresenterCallback.OnFailure(error);
             }
         }
     }
 
-    public class GetAllBeneficiariesRequest
+    public class GetAllBeneficiariesRequest : RequestObjectBase
     {
         public string UserID { get; set; }
     }
@@ -67,14 +67,12 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
     {
 
-
         public void OnSuccess(GetAllBeneficiariesResponse response)
         {
         }
 
-        public void OnFailure(ZBankError response)
+        public void OnFailure(ZBankException response)
         {
-            // Notify view
         }
     }
 }

@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
     public class UpdateBeneficiaryUseCase : UseCaseBase<UpdateBeneficiaryResponse>
     {
         private readonly IUpdateBeneficiaryDataManager _updateBeneficiaryDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IUpdateBeneficiaryDataManager>();
-        private readonly IPresenterCallback<UpdateBeneficiaryResponse> _presenterCallback;
         private readonly UpdateBeneficiaryRequest _request;
 
         public UpdateBeneficiaryUseCase(UpdateBeneficiaryRequest request, IPresenterCallback<UpdateBeneficiaryResponse> presenterCallback)
+            : base(presenterCallback, request.Token)
         {
-            _presenterCallback = presenterCallback;
             _request = request;
         }
 
@@ -31,7 +31,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         private class UpdateBeneficiaryCallback : IUseCaseCallback<UpdateBeneficiaryResponse>
         {
 
-            private UpdateBeneficiaryUseCase _useCase;
+            private readonly UpdateBeneficiaryUseCase _useCase;
 
             public UpdateBeneficiaryCallback(UpdateBeneficiaryUseCase useCase)
             {
@@ -40,17 +40,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public void OnSuccess(UpdateBeneficiaryResponse response)
             {
-                _useCase._presenterCallback.OnSuccess(response);
+                _useCase.PresenterCallback.OnSuccess(response);
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
-                _useCase._presenterCallback.OnFailure(error);
+                _useCase.PresenterCallback.OnFailure(error);
             }
         }
     }
 
-    public class UpdateBeneficiaryRequest
+    public class UpdateBeneficiaryRequest : RequestObjectBase
     {
         public Beneficiary BeneficiaryToUpdate { get; set; }
     }
@@ -59,18 +59,16 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
         public bool IsSuccess { get; set; }
 
-        public Beneficiary UpdateedBeneficiary { get; set; }
+        public Beneficiary UpdatedBeneficiary { get; set; }
     }
 
     public class UpdateBeneficiaryPresenterCallback : IPresenterCallback<UpdateBeneficiaryResponse>
     {
-
-
         public void OnSuccess(UpdateBeneficiaryResponse response)
         {
         }
 
-        public void OnFailure(ZBankError error)
+        public void OnFailure(ZBankException error)
         {
 
         }

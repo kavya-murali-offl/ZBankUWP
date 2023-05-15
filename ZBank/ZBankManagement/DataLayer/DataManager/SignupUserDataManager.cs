@@ -36,7 +36,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             }
             catch (Exception err)
             {
-                ZBankError error = new ZBankError();
+                ZBankException error = new ZBankException();
                 error.Message = err.Message;
                 error.Type = ErrorType.DATABASE_ERROR;
                 callback.OnFailure(error);

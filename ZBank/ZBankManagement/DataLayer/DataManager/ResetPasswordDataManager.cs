@@ -33,7 +33,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             }
             else
             {
-                ZBankError error = new ZBankError();
+                ZBankException error = new ZBankException();
                 error.Message = "Error in fetching data";
                 error.Type = ErrorType.UNKNOWN;
             }

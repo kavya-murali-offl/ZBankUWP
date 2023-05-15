@@ -7,6 +7,7 @@ using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -14,12 +15,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
 
         private readonly IGetTransactionDataManager _getTransactionDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetTransactionDataManager>();
-        private readonly IPresenterCallback<GetAllTransactionsResponse> _presenterCallback;
         private readonly GetAllTransactionsRequest _request;
 
         public GetAllTransactionsUseCase(GetAllTransactionsRequest request, IPresenterCallback<GetAllTransactionsResponse> presenterCallback)
+            : base(presenterCallback, request.Token)
         {
-            _presenterCallback = presenterCallback;
             _request = request;
         }
 
@@ -39,17 +39,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public void OnSuccess(GetAllTransactionsResponse response)
             {
-                _useCase._presenterCallback.OnSuccess(response);
+                _useCase.PresenterCallback.OnSuccess(response);
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
-                _useCase._presenterCallback.OnFailure(error);
+                _useCase.PresenterCallback.OnFailure(error);
             }
         }
     }
 
-    public class GetAllTransactionsRequest
+    public class GetAllTransactionsRequest : RequestObjectBase
     {
         public string AccountNumber { get; set; }
     }
@@ -67,9 +67,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
         }
 
-        public void OnFailure(ZBankError response)
+        public void OnFailure(ZBankException response)
         {
-
         }
     }
 }

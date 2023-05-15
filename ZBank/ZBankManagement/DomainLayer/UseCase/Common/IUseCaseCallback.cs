@@ -1,10 +1,10 @@
 ﻿
 namespace ZBankManagement.Domain.UseCase
 {
-    public interface IUseCaseCallback<T>
+    public interface IUseCaseCallback<TResponse>
     {
-        void OnSuccess(T result);
+        void OnSuccess(TResponse result);
 
-        void OnFailure(ZBankError error);
+        void OnFailure(ZBankException error);
     }
 }

@@ -37,5 +37,15 @@ namespace ZBank.View.Main
         {
 
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnPageLoaded();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnPageUnLoaded();
+        }
     }
 }

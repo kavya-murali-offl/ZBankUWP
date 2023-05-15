@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Domain.UseCase
 {
-    public interface IPresenterCallback<T>
+    public interface IPresenterCallback<TResponse>
     {
-        void OnSuccess(T result);
+        void OnSuccess(TResponse result);
 
-        void OnFailure(ZBankError exception);
+        void OnFailure(ZBankException exception);
 
     }
 }

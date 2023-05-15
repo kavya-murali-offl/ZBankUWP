@@ -7,6 +7,7 @@ using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBank.ZBankManagement.Services;
 using ZBank.ZBankManagement.Services.Contracts;
 using ZBankManagement.Domain.UseCase;
@@ -16,13 +17,12 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class SignupUserUseCase : UseCaseBase<SignupUserResponse>
     {
         private readonly ISignupUserDataManager _signupUserDataManager = DependencyContainer.ServiceProvider.GetRequiredService<ISignupUserDataManager>();
-        private readonly IPresenterCallback<SignupUserResponse> _presenterCallback;
         private readonly SignupUserRequest _request;
         private readonly IPasswordHasherService _passwordHasherService;
 
         public SignupUserUseCase(SignupUserRequest request, IPresenterCallback<SignupUserResponse> presenterCallback)
+            : base(presenterCallback, request.Token)
         {
-            _presenterCallback = presenterCallback;
             _request = request;
             _passwordHasherService = new PasswordHasherService();
         }
@@ -40,6 +40,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         private CustomerCredentials GenerateCredentialsForCustomer()
         {
             string salt = _passwordHasherService.GenerateSalt();
+
             return new CustomerCredentials()
             {
                 ID = _request.Customer.ID,
@@ -47,12 +48,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 Salt = salt
             };
         }
-       
 
         private class SignupUserCallback : IUseCaseCallback<SignupUserResponse>
         {
 
-            private SignupUserUseCase _useCase;
+            private readonly SignupUserUseCase _useCase;
 
             public SignupUserCallback(SignupUserUseCase useCase)
             {
@@ -61,24 +61,24 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public void OnSuccess(SignupUserResponse response)
             {
-                _useCase._presenterCallback.OnSuccess(response);
+                _useCase.PresenterCallback.OnSuccess(response);
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
-                _useCase._presenterCallback.OnFailure(error);
+                _useCase.PresenterCallback.OnFailure(error);
             }
         }
     }
 
-    public class InsertCustomerRequest
+    public class InsertCustomerRequest 
     {
         public Customer Customer { get; set; }
 
         public CustomerCredentials CustomerCredentials { get; set; }
     }
 
-    public class SignupUserRequest
+    public class SignupUserRequest : RequestObjectBase
     {
         public Customer Customer { get; set; }
 
@@ -94,28 +94,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class SignupUserPresenterCallback : IPresenterCallback<SignupUserResponse>
     {
-        private AccountPageViewModel AccountPageViewModel { get; set; }
 
         public SignupUserPresenterCallback(AccountPageViewModel accountPageViewModel)
         {
-            AccountPageViewModel = accountPageViewModel;
         }
 
         public async void OnSuccess(SignupUserResponse response)
         {
-            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if (AccountPageViewModel.Accounts != null)
-                {
-                    //var accounts = AccountPageViewModel.Accounts.Prepend(response.InsertedAccount);
-                    //AccountPageViewModel.Accounts = new ObservableCollection<Account>(accounts);
-                }
-            });
         }
 
-        public void OnFailure(ZBankError error)
+        public void OnFailure(ZBankException error)
         {
-
         }
     }
 }

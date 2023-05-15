@@ -5,6 +5,7 @@ using ZBank.Dependencies;
 using ZBank.Entities;
 using System.Security.Cryptography;
 using System;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -12,10 +13,9 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
         private readonly ILoginCustomerDataManager _loginCustomerDataManager = DependencyContainer.ServiceProvider.GetRequiredService<ILoginCustomerDataManager>();
         private readonly LoginCustomerRequest _request;
-        private readonly IPresenterCallback<LoginCustomerResponse> _presenterCallback;
 
-        public LoginCustomerUseCase(LoginCustomerRequest request, IPresenterCallback<LoginCustomerResponse> presenterCallback) { 
-            _presenterCallback = presenterCallback;
+        public LoginCustomerUseCase(LoginCustomerRequest request, IPresenterCallback<LoginCustomerResponse> presenterCallback) 
+        : base(presenterCallback, request.Token) { 
             _request = request;
         }
 
@@ -60,17 +60,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 }
                 else
                 {
-                    ZBankError error = new ZBankError
+                    ZBankException error = new ZBankException
                     {
                         Message = "Invalid Credentials"
                     };
-                    _useCase._presenterCallback.OnFailure(error);
+                    _useCase.PresenterCallback.OnFailure(error);
                 }
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
-                _useCase._presenterCallback.OnFailure(error);
+                _useCase.PresenterCallback.OnFailure(error);
             }
         }
 
@@ -88,15 +88,14 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             {
 
                 LoginCustomerResponse loginResponse = new LoginCustomerResponse();
-                loginResponse.LoginedCustomer = response.Customer;
+                loginResponse.LoggedInCustomer = response.Customer;
                 loginResponse.IsLoggedIn = true;
-                _useCase._presenterCallback.OnSuccess(loginResponse);
+                _useCase.PresenterCallback.OnSuccess(loginResponse);
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
-                _useCase._presenterCallback.OnFailure(error);
-                // Notify failure
+                _useCase.PresenterCallback.OnFailure(error);
             }
         }
     }
@@ -123,8 +122,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public Customer Customer { get; set; }
     }
 
-    public class LoginCustomerRequest
-        {
+    public class LoginCustomerRequest : RequestObjectBase
+        { 
             public string CustomerID { get; set; }
             public string Password { get; set; }
         }
@@ -133,6 +132,6 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class LoginCustomerResponse
     {
         public bool IsLoggedIn { get; set; }
-        public Customer LoginedCustomer { get; set; }
+        public Customer LoggedInCustomer { get; set; }
     }
 }

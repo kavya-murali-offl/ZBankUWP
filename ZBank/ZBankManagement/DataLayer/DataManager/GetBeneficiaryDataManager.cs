@@ -35,7 +35,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             }
             catch (Exception ex)
             {
-                ZBankError error = new ZBankError()
+                ZBankException error = new ZBankException()
                 {
                     Type = ErrorType.UNKNOWN,
                     Message = ex.Message,

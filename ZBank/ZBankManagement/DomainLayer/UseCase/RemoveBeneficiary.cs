@@ -9,18 +9,18 @@ using Windows.UI.Core;
 using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
     public class RemoveBeneficiaryUseCase : UseCaseBase<RemoveBeneficiaryResponse>
     {
         private readonly IDeleteBeneficiaryDataManager _deleteBeneficiaryDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IDeleteBeneficiaryDataManager>();
-        private readonly IPresenterCallback<RemoveBeneficiaryResponse> _presenterCallback;
         private readonly RemoveBeneficiaryRequest _request;
 
         public RemoveBeneficiaryUseCase(RemoveBeneficiaryRequest request, IPresenterCallback<RemoveBeneficiaryResponse> presenterCallback)
+            : base(presenterCallback, request.Token)
         {
-            _presenterCallback = presenterCallback;
             _request = request;
         }
 
@@ -41,17 +41,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public void OnSuccess(RemoveBeneficiaryResponse response)
             {
-                _useCase._presenterCallback.OnSuccess(response);
+                _useCase.PresenterCallback.OnSuccess(response);
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
-                _useCase._presenterCallback.OnFailure(error);
+                _useCase.PresenterCallback.OnFailure(error);
             }
         }
     }
 
-    public class RemoveBeneficiaryRequest
+    public class RemoveBeneficiaryRequest : RequestObjectBase
     {
         public Beneficiary BeneficiaryToRemove { get; set; }
     }
@@ -60,7 +60,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
         public bool IsSuccess { get; set; }
 
-        public Beneficiary RemoveedBeneficiary { get; set; }
+        public Beneficiary RemovedBeneficiary { get; set; }
     }
 
     public class RemoveBeneficiaryPresenterCallback : IPresenterCallback<RemoveBeneficiaryResponse>
@@ -71,7 +71,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
         }
 
-        public void OnFailure(ZBankError error)
+        public void OnFailure(ZBankException error)
         {
 
         }

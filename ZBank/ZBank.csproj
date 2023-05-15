@@ -252,6 +252,7 @@
     <Compile Include="ZBankManagement\DataLayer\Dependencies\DependencyContainer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\EventsArgs\LoginCustomerEventArgs.cs" />
     <Compile Include="ZBankManagement\DataLayer\Store.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\RequestObjectBase.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllBeneficiaries.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\LogoutCustomer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\RemoveBeneficiary.cs" />
@@ -260,8 +261,7 @@
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\IPresenterCallback.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\IUseCaseCallback.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\UseCaseBase.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ViewModelBase.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ZBankError.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\ZBankException.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllCards.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllTransactions.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\LoginCustomer.cs" />

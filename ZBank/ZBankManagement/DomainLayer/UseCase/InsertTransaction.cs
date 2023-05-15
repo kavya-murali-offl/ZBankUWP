@@ -11,18 +11,18 @@ using Windows.UI.Core;
 using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ViewModel;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
         public class InsertTransactionUseCase : UseCaseBase<InsertTransactionResponse>
         {
             private readonly IInsertTransactionDataManager InsertTransactionDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertTransactionDataManager>();
-            private readonly IPresenterCallback<InsertTransactionResponse> _presenterCallback;
             private readonly InsertTransactionRequest _request;
 
             public InsertTransactionUseCase(InsertTransactionRequest request, IPresenterCallback<InsertTransactionResponse> presenterCallback)
+            : base(presenterCallback, request.Token)
             {
-                _presenterCallback = presenterCallback;
                 _request = request;
             }
 
@@ -42,17 +42,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
                 public void OnSuccess(InsertTransactionResponse response)
                 {
-                    _useCase._presenterCallback.OnSuccess(response);
+                    _useCase.PresenterCallback.OnSuccess(response);
                 }
 
-                public void OnFailure(ZBankError error)
+                public void OnFailure(ZBankException error)
                 {
-                    _useCase._presenterCallback.OnFailure(error);
+                    _useCase.PresenterCallback.OnFailure(error);
                 }
             }
         }
 
-        public class InsertTransactionRequest
+        public class InsertTransactionRequest : RequestObjectBase
         {
             public Transaction TransactionToInsert { get; set; }
         }
@@ -80,7 +80,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 });
             }
 
-            public void OnFailure(ZBankError response)
+            public void OnFailure(ZBankException response)
             {
 
             }

@@ -16,11 +16,9 @@ namespace ZBankManagement.DataManager
 {
     public class InsertAccountDataManager : IInsertAccountDataManager
     {
-        private readonly ILogger _logger;
 
-        public InsertAccountDataManager(IDBHandler dbHandler, ILogger logger)
+        public InsertAccountDataManager(IDBHandler dbHandler)
         {
-            _logger = logger;
             DBHandler = dbHandler;
         }
 
@@ -37,15 +35,13 @@ namespace ZBankManagement.DataManager
                     InsertedAccount = request.AccountToInsert
                 };
                 callback.OnSuccess(response);
-                _logger.LogInformation("Account inserted successfully");
             }
             catch(Exception err)
             {
-                ZBankError error = new ZBankError();
+                ZBankException error = new ZBankException();
                 error.Message = err.Message;
                 error.Type = ErrorType.DATABASE_ERROR;
                 callback.OnFailure(error);
-                _logger.LogError(err.Message);
             }
         }
     }

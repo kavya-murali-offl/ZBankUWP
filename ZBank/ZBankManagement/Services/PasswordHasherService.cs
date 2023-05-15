@@ -10,7 +10,7 @@ namespace ZBank.ZBankManagement.Services
 {
     public class PasswordHasherService : IPasswordHasherService
     {
-        private int _saltBytes = 100;
+        private readonly int _saltBytes = 100;
 
         public string HashPassword(string password, string salt)
         {

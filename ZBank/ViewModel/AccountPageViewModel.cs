@@ -6,6 +6,8 @@ using ZBank.Entities;
 using ZBank.View;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBank.ZBankManagement.AppEvents;
+using ZBank.ZBankManagement.AppEvents.AppEventArgs;
 
 namespace ZBank.ViewModel
 {
@@ -18,17 +20,27 @@ namespace ZBank.ViewModel
         public AccountPageViewModel(IView view)
         {
             View = view;
-            LoadAllAccounts();
             AddAccountCommand = new RelayCommand(InsertAccount);
+        }
+
+        public void OnPageLoaded()
+        {
+            ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            LoadAllAccounts();
+        }
+
+        public void OnPageUnLoaded()
+        {
+            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
         }
 
         public void InsertAccount(object parameter)
         {
             InsertAccountRequest request = new InsertAccountRequest()
             {
-               AccountToInsert = new CurrentAccount()
+               AccountToInsert = new SavingsAccount()
                {
-                    AccountNumber = "test1",
+                    AccountNumber = "test2",
                     IFSCCode = "ZBNK1233",
                     AccountName = "xxxxxxx",
                     AccountStatus = AccountStatus.ACTIVE,
@@ -68,6 +80,11 @@ namespace ZBank.ViewModel
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
             UseCaseBase<GetAllAccountsResponse> useCase = new GetAllAccountsUseCase(request, presenterCallback);
             useCase.Execute();
+        }
+
+        private void UpdateAccountsList(AccountsListUpdatedArgs args)
+        {
+            Accounts = args.AccountsList;
         }
     }
 }

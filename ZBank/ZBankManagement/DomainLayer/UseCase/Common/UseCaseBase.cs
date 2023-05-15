@@ -7,7 +7,14 @@ namespace ZBankManagement.Domain.UseCase
 {
     public abstract class UseCaseBase<TResponse>
     {
-        IPresenterCallback<TResponse> _presenterCallback;   
+        public readonly IPresenterCallback<TResponse> PresenterCallback;
+        private readonly CancellationToken _cancellationToken;
+
+        protected UseCaseBase(IPresenterCallback<TResponse> callback, CancellationToken token)
+        {
+            PresenterCallback = callback;
+            _cancellationToken = token;
+        }
 
         protected virtual bool GetIfAvailableInCache()
         {
@@ -19,8 +26,6 @@ namespace ZBankManagement.Domain.UseCase
         {
 
             if (GetIfAvailableInCache()) return;
-
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(5000);
 
             Task.Run(() =>
             {
@@ -34,10 +39,10 @@ namespace ZBankManagement.Domain.UseCase
                 }
                 catch (Exception ex)
                 {
-                    ZBankError errObj = new ZBankError();
-                    _presenterCallback?.OnFailure(errObj);
+                    ZBankException errObj = new ZBankException();
+                    PresenterCallback?.OnFailure(errObj);
                 }
-            }, cancellationTokenSource.Token);
+            }, _cancellationToken);
         }
 
         protected abstract void Action();

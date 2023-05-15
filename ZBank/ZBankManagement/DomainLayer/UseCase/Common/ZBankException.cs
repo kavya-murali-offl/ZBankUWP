@@ -7,10 +7,9 @@ using ZBank.Entity.EnumerationTypes;
 
 namespace ZBankManagement.Domain.UseCase
 {
-    public class ZBankError
+    public class ZBankException
     {
         public ErrorType Type { get; set; }
         public string Message { get; set; }
     }
-
 }

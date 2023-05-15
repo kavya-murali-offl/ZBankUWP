@@ -7,5 +7,7 @@ namespace ZBankManagement.Interface
     public interface IUpdateCustomerDataManager
     {
         void UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback);
+
+        void LogoutCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback);
     }
 }

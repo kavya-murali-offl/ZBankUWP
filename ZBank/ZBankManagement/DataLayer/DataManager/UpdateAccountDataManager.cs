@@ -28,7 +28,7 @@ namespace ZBankManagement.DataManager
             }
             else
             {
-                ZBankError error = new ZBankError();
+                ZBankException error = new ZBankException();
                 error.Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN;
                 callback.OnFailure(error);  
             }

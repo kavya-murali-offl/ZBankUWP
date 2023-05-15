@@ -11,18 +11,18 @@ using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
         public class InsertBeneficiaryUseCase : UseCaseBase<InsertBeneficiaryResponse>
         {
             private readonly IInsertBeneficiaryDataManager _insertBeneficiaryDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertBeneficiaryDataManager>();
-            private readonly IPresenterCallback<InsertBeneficiaryResponse> _presenterCallback;
             private readonly InsertBeneficiaryRequest _request;
 
-            public InsertBeneficiaryUseCase(InsertBeneficiaryRequest request, IPresenterCallback<InsertBeneficiaryResponse> presenterCallback)
+            public InsertBeneficiaryUseCase(InsertBeneficiaryRequest request, IPresenterCallback<InsertBeneficiaryResponse> presenterCallback) 
+            : base(presenterCallback, request.Token)
             {
-                _presenterCallback = presenterCallback;
                 _request = request;
             }
 
@@ -43,17 +43,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
                 public void OnSuccess(InsertBeneficiaryResponse response)
                 {
-                    _useCase._presenterCallback.OnSuccess(response);
+                    _useCase.PresenterCallback.OnSuccess(response);
                 }
 
-                public void OnFailure(ZBankError error)
+                public void OnFailure(ZBankException error)
                 {
-                    _useCase._presenterCallback.OnFailure(error);
+                    _useCase.PresenterCallback.OnFailure(error);
                 }
             }
         }
 
-        public class InsertBeneficiaryRequest
+        public class InsertBeneficiaryRequest : RequestObjectBase
         {
             public Beneficiary BeneficiaryToInsert { get; set; }
         }
@@ -72,7 +72,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             {
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
 
             }

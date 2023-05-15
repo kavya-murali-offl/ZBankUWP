@@ -10,18 +10,19 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Windows.UI.Notifications;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
+using ZBank.ZBankManagement.AppEvents.AppEventArgs;
+using ZBank.ZBankManagement.AppEvents;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
         public class InsertAccountUseCase : UseCaseBase<InsertAccountResponse>
         {
             private readonly IInsertAccountDataManager _insertAccountDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInsertAccountDataManager>();
-            private readonly IPresenterCallback<InsertAccountResponse> _presenterCallback;
             private readonly InsertAccountRequest _request;
 
-            public InsertAccountUseCase(InsertAccountRequest request, IPresenterCallback<InsertAccountResponse> presenterCallback)
+            public InsertAccountUseCase(InsertAccountRequest request, IPresenterCallback<InsertAccountResponse> presenterCallback) : base(presenterCallback, request.Token)
             {
-                _presenterCallback = presenterCallback;
                 _request = request;
             }
 
@@ -42,17 +43,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
                 public void OnSuccess(InsertAccountResponse response)
                 {
-                    _useCase._presenterCallback.OnSuccess(response);
+                    _useCase.PresenterCallback.OnSuccess(response);
                 }
 
-                public void OnFailure(ZBankError error)
+                public void OnFailure(ZBankException error)
                 {
-                    _useCase._presenterCallback.OnFailure(error);
+                    _useCase.PresenterCallback.OnFailure(error);
                 }
             }
         }
 
-        public class InsertAccountRequest
+        public class InsertAccountRequest : RequestObjectBase
         {
             public Account AccountToInsert { get; set; }
         }
@@ -79,13 +80,16 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 {
                     if (AccountPageViewModel.Accounts != null)
                     {
-                        var accounts = AccountPageViewModel.Accounts.Prepend(response.InsertedAccount);
-                        AccountPageViewModel.Accounts = new ObservableCollection<Account>(accounts);
+                        AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                        {
+                            AccountsList = new ObservableCollection<Account>(AccountPageViewModel.Accounts.Append(response.InsertedAccount))   
+                        };
+                        ViewNotifier.Instance.OnAccountsListUpdated(args);
                     }
                 });
             }
 
-            public void OnFailure(ZBankError error)
+            public void OnFailure(ZBankException error)
             {
                 
             }

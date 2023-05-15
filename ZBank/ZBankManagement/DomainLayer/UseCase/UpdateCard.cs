@@ -3,6 +3,7 @@ using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using ZBank.Dependencies;
 using ZBank.Entities;
+using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -12,12 +13,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
             private readonly IUpdateCardDataManager _updateCardDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IUpdateCardDataManager>();
             private readonly UpdateCardRequest _request;
-            private readonly IPresenterCallback<UpdateCardResponse> _presenterCallback;
 
             public UpdateCardUseCase(UpdateCardRequest request, IPresenterCallback<UpdateCardResponse> presenterCallback)
+                : base(presenterCallback, request.Token)
             {
                 _request = request;
-                _presenterCallback = presenterCallback;
             }
 
             protected override void Action()
@@ -37,17 +37,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
                 public void OnSuccess(UpdateCardResponse response)
                 {
-                    _useCase._presenterCallback.OnSuccess(response);
+                    _useCase.PresenterCallback.OnSuccess(response);
                 }
 
-                public void OnFailure(ZBankError error)
+                public void OnFailure(ZBankException error)
                 {
-                    _useCase._presenterCallback.OnFailure(error);
+                    _useCase.PresenterCallback.OnFailure(error);
                 }
             }
         }
 
-        public class UpdateCardRequest
+        public class UpdateCardRequest : RequestObjectBase
         {
             public Card UpdatedCard { get; set; }
         }
@@ -66,7 +66,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             {
             }
 
-            public void OnFailure(ZBankError response)
+            public void OnFailure(ZBankException response)
             {
 
             }

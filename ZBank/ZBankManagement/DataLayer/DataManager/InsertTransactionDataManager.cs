@@ -29,7 +29,7 @@ namespace ZBankManagement.DataManager
             }
             else
             {
-                ZBankError error = new ZBankError();
+                ZBankException error = new ZBankException();
                 error.Type = ErrorType.UNKNOWN;
                 callback.OnFailure(error);
             }
