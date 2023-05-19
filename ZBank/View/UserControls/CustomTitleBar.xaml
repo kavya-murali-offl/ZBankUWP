@@ -10,31 +10,27 @@
     Unloaded="Page_Unloaded"
     >
 
+        <Grid x:Name="AppTitleBar">
+
         <Grid
-            x:Name="AppTitleBar"
-            >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    x:Name="LeftPaddingColumn"
-                    Width="0" />
-                <ColumnDefinition />
-                <ColumnDefinition
-                    x:Name="RightPaddingColumn"
-                    Width="0" />
-            </Grid.ColumnDefinitions>
+            HorizontalAlignment="Left"
+            CornerRadius="3"
+            Width="120"
+            Height="30"
+            Margin="10,3,10,0">
             <Image
-                Source="Assets/StoreLogo.png"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Width="20"
-                Height="20"
-                Margin="8,0,8,0" />
-            <TextBlock
+                Source="/Assets/banklogo.png" 
+                Stretch="UniformToFill"
+                />
+        </Grid>
+        
+        <!--<TextBlock
+                FontWeight="Bold"
                 x:Name="AppTitleTextBlock"
                 Text="{x:Bind Title}"
                 Foreground="{ThemeResource ApplicationForeground}"
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Margin="35,0,0,0" />
-        </Grid>
+                Margin="50,0,0,0" />-->
+    </Grid>
 </Page>

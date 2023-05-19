@@ -24,7 +24,7 @@ namespace ZBank.View.UserControls
 {
     public sealed partial class DashboardTransactionGrid : UserControl
     {
-        public TransactionBObj TransactionBObj { get { return this.DataContext as TransactionBObj; } }
+        public TransactionBObj TransactionBObj { get { return DataContext as TransactionBObj; } }
 
         public DashboardTransactionGrid()
         {

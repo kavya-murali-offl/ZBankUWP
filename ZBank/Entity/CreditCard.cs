@@ -1,17 +1,13 @@
 ﻿using System;
 using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
+using ZBankManagement.Utility;
 
 namespace ZBank.Entities
 {
     public class CreditCard : Card
     {
-        public CreditCard() { }
-
-        public CreditCard(string cardNumber, CardType type) : base(cardNumber, type){
-        
-        }
-
-        public CreditCardProvider CreditCardType { get; set; }
+        public CreditCardProvider CreditCardProvider { get; set; }
 
         public decimal TotalOutstanding { get; set; }
 
@@ -21,6 +17,10 @@ namespace ZBank.Entities
 
         public decimal CreditLimit { get; set; }
 
+        public void SetBusinessObject(CreditCard creditCard)
+        {
+            CardBObj = Mapper.Map<CreditCard, CardBObj>(creditCard);
+        }
     }
 
     public enum CreditCardProvider

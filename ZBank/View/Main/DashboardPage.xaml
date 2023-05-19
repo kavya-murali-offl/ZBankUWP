@@ -7,7 +7,23 @@
     mc:Ignorable="d"
     xmlns:usercontrol="using:ZBank.View.UserControls"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
-   >
+    xmlns:model="using:ZBank.Entities"
+    xmlns:converter="using:ZBank.Converters"
+    xmlns:converter1="using:ZBank.Utilities.Converters"
+    Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded">
+    <Page.Resources>
+        <converter:CurrencyConverter
+            x:Name="CurrencyConverter" />
+        <converter1:WidthConverter
+            x:Name="WidthConverter" />
+        <DataTemplate
+            x:Key="FlyoutItemTemplate"
+            x:DataType="model:Beneficiary">
+            <TextBlock
+                Text="{x:Bind AccountNumber}" />
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
@@ -86,10 +102,16 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <usercontrol:PageHeader  />
         <Grid
-            x:Name="RootGrid"
-          >
-      
+            Grid.Row="1"
+            x:Name="RootGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition
                     Width="2*" />
@@ -119,23 +141,13 @@
                     <usercontrol:OneByTwoGrid.Column1Content>
                         <usercontrol:AmountInfoCardUserControl
                             x:Name="Row1Column1"
-                            PrimaryTextHeading="Total Balance"
-                            PrimaryTextContent="₹10,0000"
-                            SecondaryTextHeading1="Total Savings"
-                            SecondaryTextHeading2="Total Deposits"
-                            SecondaryContent1="₹10,000"
-                            SecondaryContent2="₹20,000" />
+                            Card="{x:Bind ViewModel.DashboardModel.BalanceCard, Mode=OneWay}" />
                     </usercontrol:OneByTwoGrid.Column1Content>
                     <usercontrol:OneByTwoGrid.Column2Content>
                         <usercontrol:AmountInfoCardUserControl
                             x:Name="Row1Column2"
                             Grid.Column="1"
-                            PrimaryTextHeading="Net Profit / Month"
-                            PrimaryTextContent="₹10,000"
-                            SecondaryTextHeading1="Income / Month"
-                            SecondaryTextHeading2="Expense / Month"
-                            SecondaryContent1="₹10,000"
-                            SecondaryContent2="₹20,000" />
+                            Card="{x:Bind ViewModel.DashboardModel.IncomeExpenseCard, Mode=OneWay}" />
                     </usercontrol:OneByTwoGrid.Column2Content>
                 </usercontrol:OneByTwoGrid>
 
@@ -144,23 +156,13 @@
                     <usercontrol:OneByTwoGrid.Column1Content>
                         <usercontrol:AmountInfoCardUserControl
                             x:Name="Row2Column1"
-                            PrimaryTextHeading="Deposits"
-                            PrimaryTextContent="2"
-                            SecondaryTextHeading1="Active Deposits"
-                            SecondaryTextHeading2="Closed Deposits"
-                            SecondaryContent1="1"
-                            SecondaryContent2="2" />
+                            Card="{x:Bind ViewModel.DashboardModel.BeneficiariesCard, Mode=OneWay}" />
                     </usercontrol:OneByTwoGrid.Column1Content>
 
                     <usercontrol:OneByTwoGrid.Column2Content>
                         <usercontrol:AmountInfoCardUserControl
                             x:Name="Row2Column2"
-                            PrimaryTextHeading="Beneficiaries"
-                            PrimaryTextContent="10"
-                            SecondaryTextHeading1="Within Bank"
-                            SecondaryTextHeading2="Outside Bank"
-                            SecondaryContent1="10"
-                            SecondaryContent2="20" />
+                            Card="{x:Bind ViewModel.DashboardModel.DepositCard, Mode=OneWay}" />
                     </usercontrol:OneByTwoGrid.Column2Content>
                 </usercontrol:OneByTwoGrid>
 
@@ -169,87 +171,152 @@
                     <usercontrol:OneByTwoGrid.Column1Content>
                         <usercontrol:CardControl
                             x:Name="Row3Column1"
+                            MinHeight="300"
+                            Height="Auto"
+                            MaxHeight="500"
                             MyTitle="Quick Transfer">
+                            <usercontrol:CardControl.MyControls>
+                                <Button Padding="15,5,15,5" Style="{ThemeResource SecondaryButton}"
+                                    VerticalAlignment="Center"
+                                    x:Name="ResetButton"
+                                        Click="ResetButton_Click"
+                                    HorizontalAlignment="Right">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <FontIcon
+                                                FontSize="12"
+                                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                                Glyph="&#xE149;" />
+                                            <TextBlock
+                                                Margin="5,0,0,0"
+                                                Text="Reset" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </usercontrol:CardControl.MyControls>
                             <usercontrol:CardControl.MyContent>
-                                <Grid MinHeight="415">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition
-                                            Height="*" />
-                                        <RowDefinition
-                                            Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <StackPanel
-                                        Padding="10,0,10,0"
-                                        VerticalAlignment="Top"
-                                        Orientation="Vertical">
-                                        <TextBlock
-                                            Margin="5,20,5,5"
-                                            Text="Account Number"
-                                            Style="{ThemeResource NormalSubText}" />
-                                        <DropDownButton
-                                            HorizontalAlignment="Stretch"
-                                            CornerRadius="8"
-                                            Content="Select Account" />
+                                <StackPanel
+                                    VerticalAlignment="Top">
+                                    <TextBlock
+                                        Margin="5,10,5,5"
+                                        Text="Account"
+                                        Style="{ThemeResource NormalSubText}" />
+                                    <DropDownButton
+                                        x:Name="AccountsDropdownButton"
+                                        MaxWidth="400"
+                                        HorizontalAlignment="Stretch"
+                                        CornerRadius="8">
+                                        <DropDownButton.Content>
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                x:Name="AccountsText"
+                                                Text="Select Account" />
+                                        </DropDownButton.Content>
+                                        <DropDownButton.Flyout>
+                                            <Flyout
+                                                Placement="Bottom"
+                                                FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                                                <ListView
+                                                    x:Name="AccountsList"
+                                                    SelectionChanged="AccountsList_SelectionChanged"
+                                                    ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate
+                                                            x:DataType="model:Account">
+                                                            <TextBlock
+                                                                Text="{x:Bind}" />
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                            </Flyout>
+                                        </DropDownButton.Flyout>
+                                    </DropDownButton>
 
-                                        <TextBlock
-                                            Margin="5,30,5,5"
-                                            Text="Beneficiary"
-                                            Style="{ThemeResource NormalSubText}" />
-                                        <DropDownButton
-                                            HorizontalAlignment="Stretch"
-                                            CornerRadius="8"
-                                            Content="Select Beneficiary" />
-
-
-                                        <TextBlock
-                                            Margin="5,30,5,5"
-                                            Text="Amount"
-                                            Style="{ThemeResource NormalSubText}" />
-                                        <TextBox />
-
-
-                                        <TextBlock
-                                            Margin="5,30,5,5"
-                                            Text="Payment Method"
-                                            Style="{ThemeResource NormalSubText}" />
-                                        <DropDownButton
-                                            HorizontalAlignment="Stretch"
-                                            CornerRadius="8"
-                                            Content="Select Payment Method" />
-
-
-                                    </StackPanel>
-                                    <StackPanel
-                                        Padding="10,0,10,20"
-                                        Grid.Row="1"
-                                        VerticalAlignment="Center"
-                                        MaxWidth="400">
-                                        <Button
-                                            Margin="0,30,0,0"
-                                            Style="{ThemeResource PrimaryButton}"
-                                            VerticalAlignment="Bottom"
-                                            HorizontalAlignment="Stretch">
-                                            <Button.Content>
-                                                <TextBlock
-                                                    Text="Send" />
-                                            </Button.Content>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
+                                    <TextBlock
+                                        Margin="5,20,5,5"
+                                        Text="Beneficiary"
+                                        Style="{ThemeResource NormalSubText}" />
+                                    
+                                    <DropDownButton
+                                        Click="BeneficiaryButton_Click"
+                                        x:Name="BeneficiaryButton"
+                                        MaxWidth="400"
+                                        HorizontalAlignment="Stretch"
+                                        CornerRadius="8">
+                                        <DropDownButton.Content>
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                x:Name="BeneficiaryText"
+                                                Text="Select Beneficiary" />
+                                        </DropDownButton.Content>
+                                        <DropDownButton.Flyout>
+                                            <Flyout
+                                                Placement="Bottom"
+                                                FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                                                <ListView
+                                                    x:Name="BeneficiaryList"
+                                                    SelectionChanged="BeneficiaryList_SelectionChanged"
+                                                    ItemsSource="{x:Bind ViewModel.DashboardModel.AllBeneficiaries, Mode=OneWay}">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate
+                                                            x:DataType="model:Beneficiary">
+                                                            <TextBlock
+                                                                Text="{x:Bind}" />
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                            </Flyout>
+                                        </DropDownButton.Flyout>
+                                    </DropDownButton>
+                                    
+                                    <TextBlock
+                                        Margin="5,20,5,5"
+                                        Text="Amount"
+                                        Style="{ThemeResource NormalSubText}" />
+                                    
+                                    <TextBox InputScope="CurrencyAmountAndSymbol" 
+                                             x:Name="AmountTextBox"
+                                             Text="{x:Bind EnteredAmount, Mode=TwoWay}"
+                                             TextChanging="AmountTextBox_TextChanging" 
+                                             PlaceholderText="Enter Amount in INR"/>
+                                    
+                                    <TextBlock
+                                        Margin="5,20,5,5"
+                                        Text="Payment Method"
+                                        Style="{ThemeResource NormalSubText}" />
+                                    
+                                    <DropDownButton
+                                        HorizontalAlignment="Stretch"
+                                        CornerRadius="8"
+                                        Content="Select Payment Method" />
+                                    
+                                    <Button
+                                        Margin="0,40,0,0"
+                                        Style="{ThemeResource PrimaryButton}"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Stretch">
+                                        <Button.Content>
+                                            <TextBlock
+                                                Text="Send" />
+                                        </Button.Content>
+                                    </Button>
+                                    
+                                </StackPanel>
                             </usercontrol:CardControl.MyContent>
                         </usercontrol:CardControl>
                     </usercontrol:OneByTwoGrid.Column1Content>
                     <usercontrol:OneByTwoGrid.Column2Content>
                         <usercontrol:CardControl
+                            MinHeight="440"
                             Grid.Column="1"
-                            Padding="10,20,10,20"
+                            Padding="10"
                             MyTitle="Latest Transactions"
                             x:Name="Row3Column2">
                             <usercontrol:CardControl.MyContent>
                                 <ListView
-                                    MaxHeight="400"
+                                    MaxHeight="345"
                                     Margin="0,10,0,10"
-                                    ItemsSource="{x:Bind ViewModel.LatestTransactions}"
+                                    ItemsSource="{x:Bind ViewModel.DashboardModel.LatestTransactions, Mode=OneWay}"
                                     x:Name="TransactionsListView"
                                     SelectionMode="None">
                                     <ListView.ItemTemplate>
@@ -298,6 +365,7 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right">
                             <Button
+                                Click="BackButton_Click"
                                 Style="{ThemeResource SecondaryButton}">
                                 <Button.Content>
                                     <FontIcon
@@ -306,6 +374,7 @@
                                 </Button.Content>
                             </Button>
                             <Button
+                                Click="NextButton_Click"
                                 Style="{ThemeResource SecondaryButton}">
                                 <Button.Content>
                                     <FontIcon
@@ -316,104 +385,162 @@
                         </StackPanel>
                     </usercontrol:CardControl.MyControls>
                     <usercontrol:CardControl.MyContent>
-                       
-                            <StackPanel>
-                                <ListView
-                                    VerticalContentAlignment="Top"
-                                    HorizontalContentAlignment="Stretch"
-                                    Grid.Column="1"
-                                    Margin="0,8,0,0"
-                                    SelectionMode="None"
-                                    HorizontalAlignment="Stretch"
-                                    x:Name="CardList">
-                                    <ListView.ItemContainerStyle>
-                                        <Style
-                                            TargetType="ListViewItem">
-                                            <Setter
-                                                Property="HorizontalContentAlignment"
-                                                Value="Stretch" />
+                        <Grid
+                            MinHeight="200"
+                            MaxWidth="400"
+                            MaxHeight="400"
+                            HorizontalAlignment="Stretch"
+                            Padding="15"
+                            CornerRadius="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition
+                                    Height="*" />
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition
+                                    Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.Background>
+                                <ImageBrush
+                                    ImageSource="{x:Bind ViewModel.OnViewCard.BackgroundImage, Mode=OneWay}"
+                                    Stretch="UniformToFill"></ImageBrush>
+                            </Grid.Background>
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                FontWeight="Bold"
+                                VerticalAlignment="Center"
+                                Foreground="Azure"
+                                Text="{x:Bind ViewModel.OnViewCard.TypeString, Mode=OneWay}" />
+                            <Image
+                                MaxHeight="40"
+                                HorizontalAlignment="Right"
+                                Source="{x:Bind ViewModel.OnViewCard.ProviderLogo, Mode=OneWay}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontWeight="Bold"
+                                Foreground="Azure"
+                                FontSize="23"
+                                Padding="0,10,0,10"
+                                Text="{x:Bind ViewModel.OnViewCard.CardNumber, Mode=OneWay}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Left"
+                                FontWeight="SemiBold"
+                                Foreground="Azure"
+                                FontSize="16"
+                                Padding="0,5,0,0"
+                                Text="{x:Bind ViewModel.OnViewCard.CustomTextKey, Mode=OneWay}" />
+                            <TextBlock
+                                Grid.Row="3"
+                                HorizontalAlignment="Left"
+                                FontWeight="Bold"
+                                Foreground="Azure"
+                                FontSize="18"
+                                Padding="0,0,0,0"
+                                Text="{x:Bind ViewModel.OnViewCard.CustomTextValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
+                        </Grid>
 
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
+                        <!--<StackPanel>
+                            <ListView
+                                VerticalContentAlignment="Top"
+                                HorizontalContentAlignment="Stretch"
+                                Grid.Column="1"
+                                Margin="0,8,0,0"
+                                SelectionMode="None"
+                                HorizontalAlignment="Stretch"
+                                x:Name="CardList">
+                                <ListView.ItemContainerStyle>
+                                    <Style
+                                        TargetType="ListViewItem">
+                                        <Setter
+                                            Property="HorizontalContentAlignment"
+                                            Value="Stretch" />
 
-                                    <ListViewItem
-                                        VerticalAlignment="Top">
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                                <ListViewItem
+                                    VerticalAlignment="Top">
+                                    <Grid
+                                        MinHeight="200"
+                                        MaxHeight="400"
+                                        HorizontalAlignment="Stretch"
+                                        Padding="15"
+                                        CornerRadius="20">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition
+                                                Height="Auto" />
+                                            <RowDefinition
+                                                Height="*" />
+                                            <RowDefinition
+                                                Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.Background>
+                                            <ImageBrush
+                                                ImageSource="/Assets/CardBackgrounds/card1.jpg"
+                                                Stretch="UniformToFill"></ImageBrush>
+                                        </Grid.Background>
+                                        <StackPanel
+                                            Grid.Row="0">
+                                            <TextBlock
+                                                FontWeight="Bold"
+                                                VerticalAlignment="Top"
+                                                Foreground="Azure"
+                                                Text="CREDIT" />
+                                        </StackPanel>
+
                                         <Grid
-                                            MinHeight="200"
-                                            MaxHeight="400"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="15"
-                                            CornerRadius="20">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition
-                                                    Height="Auto" />
-                                                <RowDefinition
-                                                    Height="*" />
-                                                <RowDefinition
-                                                    Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.Background>
-                                                <ImageBrush
-                                                    ImageSource="/Assets/CardBackgrounds/card1.jpg"
-                                                    Stretch="UniformToFill"></ImageBrush>
-                                            </Grid.Background>
-                                            <StackPanel
-                                                Grid.Row="0">
+                                            Grid.Row="1">
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Foreground="Azure"
+                                                FontSize="23"
+                                                Padding="0,10,0,10"
+                                                Text="****   ****   ****   1234" />
+                                        </Grid>
+                                        <Grid
+                                            Grid.Row="2"
+                                            VerticalAlignment="Bottom">
+                                            <StackPanel>
                                                 <TextBlock
-                                                    FontWeight="Bold"
-                                                    VerticalAlignment="Top"
-                                                    Foreground="Azure"
-                                                    Text="CREDIT" />
-                                            </StackPanel>
-
-                                            <Grid
-                                                Grid.Row="1">
-                                                <TextBlock
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontWeight="Bold"
+                                                    HorizontalAlignment="Left"
+                                                    FontWeight="SemiBold"
                                                     Foreground="Azure"
                                                     FontSize="16"
-                                                    Padding="0,10,0,10"
-                                                    Text="****  ****  ****  1234" />
-                                            </Grid>
-                                            <Grid
-                                                Grid.Row="2"
-                                                VerticalAlignment="Bottom">
-                                                <StackPanel>
-                                                    <TextBlock
-                                                        HorizontalAlignment="Left"
-                                                        FontWeight="SemiBold"
-                                                        Foreground="Azure"
-                                                        FontSize="12"
-                                                        Padding="0,5,0,0"
-                                                        Text="Available Credit Limit" />
-                                                    <TextBlock
-                                                        HorizontalAlignment="Left"
-                                                        FontWeight="Bold"
-                                                        Foreground="Azure"
-                                                        FontSize="12"
-                                                        Padding="0,0,0,0"
-                                                        Text="₹200000,00" />
-                                                </StackPanel>
-                                            </Grid>
-
+                                                    Padding="0,5,0,0"
+                                                    Text="Available Credit Limit" />
+                                                <TextBlock
+                                                    HorizontalAlignment="Left"
+                                                    FontWeight="Bold"
+                                                    Foreground="Azure"
+                                                    FontSize="18"
+                                                    Padding="0,0,0,0"
+                                                    Text="₹200000,00" />
+                                            </StackPanel>
                                         </Grid>
-                                    </ListViewItem>
-                                </ListView>
-                                <Button
-                                    MinWidth="200"
-                                    HorizontalAlignment="Center"
-                                    Margin="0,25,0,0"
-                                    VerticalAlignment="Bottom"
-                                    Style="{ThemeResource PrimaryButton}">
-                                    <Button.Content>
-                                            <TextBlock
-                                                VerticalAlignment="Center"
-                                                Text="Manage Card" />
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
+
+                                    </Grid>
+                                </ListViewItem>
+                            </ListView>
+                            <Button
+                                MinWidth="200"
+                                HorizontalAlignment="Center"
+                                Margin="0,25,0,0"
+                                VerticalAlignment="Bottom"
+                                Style="{ThemeResource PrimaryButton}">
+                                <Button.Content>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Text="Manage Card" />
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>-->
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
 
@@ -484,5 +611,5 @@
         </Grid>
     </Grid>
 
-  
+
 </Page>

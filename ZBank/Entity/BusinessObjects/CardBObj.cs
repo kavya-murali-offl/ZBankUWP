@@ -4,42 +4,76 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
+using ZBank.Entity.Constants;
+using ZBank.Utilities.Helpers;
 
 namespace ZBank.Entities.BusinessObjects
 {
+   
     public class CardBObj
     {
-        public CardBObj(string cardNumber, CardType type, string background)
+
+        public readonly IList<string> _cardBackgrounds = new List<string>
         {
-            CardNumber = cardNumber.Trim();
-            CreatedOn = DateTime.Now;
-            Pin = "1111";
-            ExpiryMonth = "12";
-            ExpiryYear = "1992";
-            Type = type;
-            BackgroundImage = background;
+            "/Assets/CardBackgrounds/card1.jpg",
+            "/Assets/CardBackgrounds/card2.jpg",
+            "/Assets/CardBackgrounds/card3.jpg",
+            "/Assets/CardBackgrounds/card4.jpg",
+        };
+
+        public static int bgIndex = 0;
+
+        public void SetDefaultValues()
+        {
+            if (bgIndex >= _cardBackgrounds.Count)
+            {
+                bgIndex = 0;
+            }
+
+            BackgroundImage = _cardBackgrounds[bgIndex];
+            bgIndex++;
+
+            if (Type == CardType.DEBIT)
+            {
+                TypeString = "DEBIT";
+                CustomTextKey = "";
+                CustomTextValue = "";
+                ProviderLogo = Constants.ZBankLogo;
+            }
+            else if (Type == CardType.CREDIT)
+            {
+                TypeString = "CREDIT";
+                CustomTextKey = "Available Credit Limit";
+                CustomTextValue = (CreditLimit - TotalOutstanding);
+                ProviderLogo = LogoHelper.GetCardProviderPath(CreditCardProvider);
+            }
         }
 
-        public string ID { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public string Pin { get; set; }
+        public string AccountNumber { get; set; }
 
         public string CardNumber { get; set; }
 
-        public string AccountID { get; set; }
+        public string CustomTextKey { get; set; }
 
-        public string CustomerID { get; set; }
+        public decimal CreditLimit { get; set; }
 
-        public string CVV { get; set; }
+        public decimal TotalOutstanding { get; set; }
 
-        public string ExpiryMonth { get; set; }
+        public CreditCardProvider CreditCardProvider { get; set; }
 
-        public string ExpiryYear { get; set; }
-
+        public string TypeString { get; set; }
         public CardType Type { get; set; }
 
+        public decimal MinimumOutstanding { get; set; }
+
+        public decimal Interest { get; set; }
+
+
+        public object CustomTextValue { get; set; }
+
         public string BackgroundImage { get; set; }
+
+        public string ProviderLogo { get; set; }
+
     }
 }

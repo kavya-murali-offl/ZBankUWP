@@ -2,6 +2,7 @@
 using ZBank.Entities;
 using ZBank.Entity.BusinessObjects;
 using ZBank.DatabaseAdapter;
+using ZBank.Entity;
 
 namespace ZBank.ZBankManagement.DataLayer.DBHandler
 {
@@ -26,6 +27,9 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             _databaseAdapter.CreateTable<Transaction>();
             _databaseAdapter.CreateTable<CreditCardDTO>();
             _databaseAdapter.CreateTable<DebitCardDTO>();
+            _databaseAdapter.CreateTable<Bank>();
+            _databaseAdapter.CreateTable<Branch>();
         }
+
     }
 }

@@ -8,6 +8,6 @@ namespace ZBankManagement.Interface
 {
     public interface ITransferAmountDataManager
     {
-        bool PerformTransaction(IList<Action> actions);
+        //void UpdateBalance(IList<Action> actions);
     }
 }

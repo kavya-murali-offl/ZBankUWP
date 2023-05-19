@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Dependencies;
 using ZBank.Entities;
+using ZBank.ViewModel;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBankManagement.Domain.UseCase;
@@ -66,6 +67,20 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
     {
+
+        public void OnSuccess(GetAllBeneficiariesResponse response)
+        {
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
+    }
+
+    public class GetAllBeneficiariesInDashboardPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+    {
+
+        private readonly DashboardViewModel _dashboardViewModel;
 
         public void OnSuccess(GetAllBeneficiariesResponse response)
         {

@@ -4,7 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 using ZBank.View;
+using ZBank.ZBankManagement.AppEvents;
+using ZBank.ZBankManagement.AppEvents.AppEventArgs;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ViewModel
 {
@@ -12,55 +17,121 @@ namespace ZBank.ViewModel
     {
         public IView View;
 
-        private readonly IList<string> _cardBackgrounds = new List<string>
+        private CardBObj _onViewCard { get; set; }
+
+        private int _onViewCardIndex { get; set; } = 0;
+
+        public CardBObj OnViewCard
         {
-            "/Assets/CardBackgrounds/card1.webp",
-            "/Assets/CardBackgrounds/card2.webp",
-            "/Assets/CardBackgrounds/card3.webp",
-            "/Assets/CardBackgrounds/card4.webp",
-        };
+            get { return _onViewCard; }
+            set
+            {
+                _onViewCard = value;
+                OnPropertyChanged(nameof(OnViewCard));
+            }
+        }
+
+        public void OnLoaded()
+        {
+            ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            ViewNotifier.Instance.DashboardDataChanged += RefreshData;
+            LoadAllAccounts();
+            LoadContent();
+        }
+
+        public void UpdateOnViewCard()
+        {
+            if(_onViewCardIndex < 0)
+            {
+
+            }
+            else
+            {
+                OnViewCard = DashboardModel.AllCards.ElementAt(_onViewCardIndex);
+            }
+        }
+
+        public void OnNextCard()
+        {
+            _onViewCardIndex++;
+            if(_onViewCardIndex >= DashboardModel.AllCards.Count)
+            {
+                _onViewCardIndex = 0;
+            }
+            UpdateOnViewCard();
+        }
+
+        public void OnPreviousCard()
+        {
+            _onViewCardIndex--;
+            if (_onViewCardIndex < 0)
+            {
+                _onViewCardIndex = DashboardModel.AllCards.Count - 1;
+            }
+            UpdateOnViewCard();
+        }
+
+        private DashboardDataModel model;
+
+        public DashboardDataModel DashboardModel
+        {
+            get { return model; }
+            set
+            {
+                model = value;
+                OnPropertyChanged(nameof(DashboardModel));   
+            }
+        }
+
+        public void RefreshData(DashboardDataUpdatedArgs args)
+        {
+            DashboardModel = args.DashboardModel;
+            _onViewCardIndex = 0;
+            UpdateOnViewCard();
+        }
+
+        public void LoadContent()
+        {
+            GetDashboardDataRequest request = new GetDashboardDataRequest()
+            {
+                UserID = "1111"
+            };
+
+            IPresenterCallback<GetDashboardDataResponse> presenterCallback = new GetDashboardDataPresenterCallback(this);
+            UseCaseBase<GetDashboardDataResponse> useCase = new GetDashboardDataUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
 
 
-        private ObservableCollection<TransactionBObj> _transactions { get; set; }
+        public void OnUnLoaded()
+        {
+            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+            ViewNotifier.Instance.DashboardDataChanged -= RefreshData;
+        }
 
-        private ObservableCollection<CardBObj> _cards { get; set; }
+        public void UpdateAccountsList(AccountsListUpdatedArgs args)
+        {
+            Accounts = args.AccountsList;
+        }
 
         private ObservableCollection<Account> _accounts { get; set; }
 
-        private ObservableCollection<Beneficiary> _beneficiaries { get; set; }
+        public void LoadAllAccounts()
+        {
+            GetAllAccountsRequest request = new GetAllAccountsRequest()
+            {
+                AccountType = null,
+                UserID = "1111"
+            };
+
+            IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsInDashboardPresenterCallback(this);
+            UseCaseBase<GetAllAccountsResponse> useCase = new GetAllAccountsUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
 
         public DashboardViewModel(IView view)
         {
             this.View = view;
-
-            _transactions = new ObservableCollection<TransactionBObj>
-            {
-                new TransactionBObj(TransactionType.INCOME, ModeOfPayment.DIRECT, 11000, DateTime.Now, 3000, "Flipkart", "Shopping"),
-                new TransactionBObj(TransactionType.EXPENSE, ModeOfPayment.DIRECT, 2000, DateTime.Now, 3000, "Paytm", "Shopping"),
-                new TransactionBObj(TransactionType.EXPENSE, ModeOfPayment.DIRECT, 1000, DateTime.Now, 3000, "Income", "Shopping"),
-                new TransactionBObj(TransactionType.EXPENSE, ModeOfPayment.DIRECT, 4000, DateTime.Now, 3000, "Flipkart", "Shopping"),
-                new TransactionBObj(TransactionType.INCOME, ModeOfPayment.DIRECT, 2000, DateTime.Now, 3000, "Flipkart", "Shopping"),
-                new TransactionBObj(TransactionType.INCOME, ModeOfPayment.DIRECT, 2000, DateTime.Now, 3000, "Flipkart", "Shopping"),
-                new TransactionBObj(TransactionType.INCOME, ModeOfPayment.DIRECT, 2000, DateTime.Now, 3000, "Flipkart", "Shopping"),
-                new TransactionBObj(TransactionType.INCOME, ModeOfPayment.DIRECT, 2000, DateTime.Now, 3000, "Flipkart", "Shopping")
-            };
-
-            _cards = new ObservableCollection<CardBObj>
-            {
-               new CardBObj("11111111", CardType.DEBIT, _cardBackgrounds.ElementAt(0)),
-               new CardBObj("22222222", CardType.CREDIT, _cardBackgrounds.ElementAt(1)),
-               new CardBObj("33333333", CardType.DEBIT, _cardBackgrounds.ElementAt(2)),
-               new CardBObj("44444444", CardType.CREDIT, _cardBackgrounds.ElementAt(3)),
-            };
-        }
-
-        public ObservableCollection<TransactionBObj> LatestTransactions
-        {
-            get { return _transactions; }
-            set { 
-                _transactions = value; 
-                OnPropertyChanged(nameof(LatestTransactions));
-            }
         }
 
         public ObservableCollection<Account> Accounts
@@ -72,21 +143,7 @@ namespace ZBank.ViewModel
                 OnPropertyChanged(nameof(Accounts));
             }
         }
-
-        public ObservableCollection<Beneficiary> Beneficiaries
-        {
-            get { return _beneficiaries; }
-            set
-            {
-                _beneficiaries = value;
-                OnPropertyChanged(nameof(Beneficiaries));
-            }
-        }
-
-        public ObservableCollection<CardBObj> AllCards
-        {
-            get { return _cards; }
-            set { _cards = value; OnPropertyChanged(nameof(AllCards)); }
-        }
     }
+
+
 }

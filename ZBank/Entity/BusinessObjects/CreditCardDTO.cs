@@ -13,9 +13,16 @@ namespace ZBank.Entities.BusinessObjects
     {
 
         [PrimaryKey]
-        public string ID { get; set; }
+        public string CardNumber { get; set; }
 
         public CreditCardProvider Provider { get; set; }
 
+        public decimal TotalOutstanding { get; set; }
+
+        public decimal MinimumOutstanding { get; set; }
+
+        public decimal Interest { get; set; }
+
+        public decimal CreditLimit { get; set; }
     }
 }

@@ -9,7 +9,7 @@
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>
                 <ResourceDictionary
-                    Source="ThemeControl/ThemeDictionary.xaml" />
+                    Source="Styles/_Styles.xaml" />
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
     </Application.Resources>

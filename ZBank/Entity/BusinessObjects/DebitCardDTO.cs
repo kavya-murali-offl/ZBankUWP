@@ -13,8 +13,8 @@ namespace ZBank.Entities.BusinessObjects
     {
 
         [PrimaryKey]
-        public string ID { get; set; }
+        public string CardNumber { get; set; }
 
-        public string AccountID { get; set; }
+        public string AccountNumber { get; set; }
     }
 }

@@ -6,13 +6,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:converter="using:ZBank.Utilities.Converters"
+    xmlns:converter1="using:ZBank.Converters"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <UserControl.Resources>
         <converter:DateFormatter
             x:Name="DateFormatConverter" />
-
+        <converter1:CurrencyConverter
+            x:Name="CurrencyConverter" />
     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Stretch" Width="Auto">
@@ -48,7 +50,7 @@
                 Padding="10">
                 <TextBlock
                     Grid.Column="1"
-                    Text="{x:Bind TransactionBObj.OtherAccount}"
+                    Text="{x:Bind TransactionBObj.OtherAccount?.Name}"
                     Style="{ThemeResource BoldNormalText}" />
                 <TextBlock
                     Grid.Column="1"
@@ -69,7 +71,7 @@
                     FontSize="17"
                     HorizontalAlignment="Right"
                     TextAlignment="Right"
-                    Text="{x:Bind TransactionBObj.Amount}"
+                    Text="{x:Bind TransactionBObj.Amount, Converter={StaticResource CurrencyConverter}}"
                     Style="{ThemeResource BoldNormalText}" />
                 <TextBlock
                     x:Name="Balance"
@@ -77,7 +79,7 @@
                     HorizontalAlignment="Right"
                     TextAlignment="Right"
                     Foreground="Gray"
-                    Text="{x:Bind TransactionBObj.Balance}"
+                    Text="{x:Bind TransactionBObj.Balance, Converter={StaticResource CurrencyConverter}}"
                     Style="{ThemeResource BoldNormalText}" />
 
         </StackPanel>

@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
+using ZBankManagement.Utility;
 
 namespace ZBank.Entities
 {
     public class DebitCard : Card
     {
 
-        public DebitCard() { }  
-        public DebitCard(string cardNumber, CardType type) : base(cardNumber, type)
-        {
+        public string AccountNumber { get; set; }
 
+        public void SetBusinessObject(DebitCard card)
+        {
+            CardBObj = Mapper.Map<DebitCard, CardBObj>(card);
         }
-        public string AccountID { get; set; }
     }
 }

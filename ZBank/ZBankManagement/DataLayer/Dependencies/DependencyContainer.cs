@@ -7,6 +7,8 @@ using ZBank.DatabaseHandler;
 using ZBank.ZBankManagement.DataLayer.DBHandler;
 using ZBank.ZBankManagement;
 using ZBank.ZBankManagement.AppEvents;
+using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
+using ZBank.ZBankManagement.DataLayer.DataManager;
 
 namespace ZBank.Dependencies
 {
@@ -57,6 +59,7 @@ namespace ZBank.Dependencies
             serviceCollection.AddScoped<IInsertAccountDataManager, InsertAccountDataManager>();
             serviceCollection.AddScoped<IGetAccountDataManager, GetAccountDataManager>();
             serviceCollection.AddScoped<IUpdateAccountDataManager, UpdateAccountDataManager>();
+            serviceCollection.AddScoped<IGetDashboardDataDataManager, GetDashboardDataDataManager>();
             serviceCollection.AddSingleton<ViewNotifier>();
             return serviceCollection;
         }

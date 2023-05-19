@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBank.Entities.BusinessObjects;
 
 namespace ZBankManagement.DataManager
 {
@@ -13,17 +14,16 @@ namespace ZBankManagement.DataManager
     {
         public GetCardDataManager(IDBHandler dBHandler)
         {
-            DBHandler = dBHandler;
+            _dBHandler = dBHandler;
         }
 
-        private IDBHandler DBHandler { get;  set; }
+        private IDBHandler _dBHandler { get;  set; }
 
         public void GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
         {
-            IEnumerable<Card> cards = new List<Card>();
+            IEnumerable<Card> cards = _dBHandler.GetAllCards(request.CustomerID).Result;
 
-            GetAllCardsResponse response = new GetAllCardsResponse();   
-            response.Cards = cards;
+            GetAllCardsResponse response = new GetAllCardsResponse();  
             callback.OnSuccess(response);
         }
     }

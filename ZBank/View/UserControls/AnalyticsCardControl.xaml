@@ -1,0 +1,105 @@
+﻿<UserControl
+    x:Class="ZBank.View.UserControls.AmountInfoCardUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank.View.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:converter="using:ZBank.Converters"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <converter:CurrencyConverter
+            x:Name="CurrencyConverter" />
+    </UserControl.Resources>
+    <Grid
+        Margin="5"
+        VerticalAlignment="Stretch"
+        Background="{ThemeResource ApplicationBackground}"
+        HorizontalAlignment="Stretch"
+        CornerRadius="8"
+        Padding="15">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            HorizontalAlignment="Center"
+            Text="{x:Bind Card.PrimaryKey, Mode=OneWay}"
+            Foreground="{ThemeResource ApplicationForeground}"
+            FontSize="18"
+            MinWidth="100"
+            MaxWidth="250"
+            TextTrimming="CharacterEllipsis"
+            TextAlignment="Center"
+            FontWeight="SemiBold" />
+        <TextBlock
+            Grid.Row="1"
+            MinWidth="100"
+            MaxWidth="250"
+            TextTrimming="CharacterEllipsis"
+            TextAlignment="Center"
+            Text="{x:Bind Card.PrimaryValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}"
+            FontSize="18"
+            Foreground="{ThemeResource ApplicationForeground}"
+            FontWeight="Bold"
+            HorizontalAlignment="Center"
+            Padding="5,10,5,10" />
+
+
+        <TextBlock
+            Grid.Row="2"
+            MinWidth="100"
+            MaxWidth="250"
+            TextTrimming="CharacterEllipsis"
+            TextAlignment="Center"
+            FontWeight="SemiBold"
+            HorizontalAlignment="Left"
+            Text="{x:Bind Card.SecondaryKey1, Mode=OneWay}"
+            Foreground="{ThemeResource ApplicationForeground}"
+            FontSize="16" />
+        <TextBlock
+            Grid.Row="3"
+            Text="{x:Bind Card.SecondaryValue1, Mode=OneWay, Converter={StaticResource CurrencyConverter}}"
+            FontSize="{StaticResource TextStyleLargeFontSize}"
+            Foreground="{ThemeResource ApplicationForeground}"
+            FontWeight="SemiBold"
+            MinWidth="100"
+            MaxWidth="250"
+            TextAlignment="Center"
+            TextTrimming="CharacterEllipsis"
+            HorizontalAlignment="Left"
+            Padding="5,10,5,10" />
+
+        <TextBlock
+            Grid.Row="2"
+            MinWidth="100"
+            MaxWidth="250"
+            TextTrimming="CharacterEllipsis"
+            TextAlignment="Center"
+            FontWeight="SemiBold"
+            HorizontalAlignment="Right"
+            Text="{x:Bind Card.SecondaryKey2, Mode=OneWay}"
+            Foreground="{ThemeResource ApplicationForeground}"
+            FontSize="16" />
+        <TextBlock
+            Grid.Row="3"
+            Text="{x:Bind Card.SecondaryValue2, Mode=OneWay, Converter={StaticResource CurrencyConverter}}"
+            FontSize="{StaticResource TextStyleLargeFontSize}"
+            Foreground="{ThemeResource ApplicationForeground}"
+            FontWeight="SemiBold"
+            MinWidth="100"
+            MaxWidth="250"
+            TextTrimming="CharacterEllipsis"
+            TextAlignment="Center"
+            HorizontalAlignment="Right"
+            Padding="5,10,5,10" />
+    </Grid>
+</UserControl>

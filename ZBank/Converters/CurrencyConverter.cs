@@ -12,16 +12,11 @@ namespace ZBank.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if((bool)parameter == true)
-            {
-                decimal decimalValue = decimal.Parse(value.ToString());
-                if (decimalValue is decimal)
+                if (value is decimal)
                 {
-                    var currencySymbol = parameter as string ?? CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
-                    return ((decimal)decimalValue).ToString("C");
+                    return ((decimal)value).ToString("C");
                 }
-            }
-            return value;
+            return value.ToString();
 
         }
 

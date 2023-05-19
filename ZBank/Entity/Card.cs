@@ -5,32 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using ZBank.Entities.BusinessObjects;
 
 namespace ZBank.Entities
 {
     [Table("Card")]
     public class Card
     {
-        public Card() { }
-        public Card(string cardNumber, CardType cardType) {
-            CardNumber = cardNumber;
-            Type = cardType;
-            CreatedOn = DateTime.Now;
-            Pin = "1111";
-            ExpiryMonth = "12";
-            ExpiryYear = "1992";
-        }
 
         [PrimaryKey]
-        public string ID { get; set; }
+        public string CardNumber { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
         public string Pin { get; set; }
 
         public CardType Type { get; set; }
-
-        public string CardNumber { get; set; }
 
         public string CustomerID { get; set; }
 
@@ -39,6 +29,9 @@ namespace ZBank.Entities
         public string ExpiryMonth { get; set; }
 
         public string ExpiryYear { get; set; }
+
+        [Ignore]
+        public CardBObj CardBObj { get; set; }
     }
 
     public enum CardType

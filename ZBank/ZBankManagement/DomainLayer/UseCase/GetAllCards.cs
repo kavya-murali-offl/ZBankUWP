@@ -6,6 +6,7 @@ using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
+using ZBank.Entities.BusinessObjects;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -60,7 +61,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class GetAllCardsPresenterCallback : IPresenterCallback<GetAllCardsResponse>
     {
-
+        
         public void OnSuccess(GetAllCardsResponse response)
         {
         }

@@ -10,6 +10,7 @@ namespace ZBankManagement.Domain.UseCase
     public class ZBankException
     {
         public ErrorType Type { get; set; }
+
         public string Message { get; set; }
     }
 }

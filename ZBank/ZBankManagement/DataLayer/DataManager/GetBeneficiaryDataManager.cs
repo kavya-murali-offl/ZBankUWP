@@ -21,7 +21,6 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             DBHandler = dBHandler;
         }
 
-
         public void GetAllBeneficiariesByUserID(GetAllBeneficiariesRequest request, IUseCaseCallback<GetAllBeneficiariesResponse> callback)
         {
             try

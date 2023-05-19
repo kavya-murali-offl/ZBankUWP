@@ -14,6 +14,10 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public bool PerformTransaction(IList<Action> actions) => false;
+
+        public void UpdateAccountBalance()
+        {
+
+        }
     }
 }

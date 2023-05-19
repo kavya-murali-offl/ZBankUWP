@@ -22,5 +22,11 @@ namespace ZBank.Entities
         public string ProfilePicture { get; set; }
 
         public string IFSCCode { get; set; }
+
+        // Ignore
+        public override string ToString()
+        {
+            return AccountNumber + " - " + Name;
+        }
     }
 }

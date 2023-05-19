@@ -28,17 +28,7 @@ namespace ZBank.ViewModel
         };
 
 
-        public void LoadCards(){
-
-           _cards = new ObservableCollection<Card>()
-            {
-                new Card("111111", CardType.DEBIT),
-                new Card("222222", CardType.CREDIT),
-                new Card("2333333", CardType.DEBIT),
-            };
-
-        }
-
+        
         private ObservableCollection<Card> AllCards
         {
             get { return _cards; }

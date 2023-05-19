@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZBank.Entities.EnumerationType;
 
 namespace ZBank.Entities
 {
@@ -40,5 +41,9 @@ namespace ZBank.Entities
         public Currency Currency { get; set; }
 
         public decimal Amount { get; set; }
+
+        public AccountType AccountType { get; set; }
+
+        public override string ToString() => AccountNumber + " - " + AccountType.ToString();
     }
 }

@@ -120,7 +120,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CurrencyConverter.cs" />
+    <Compile Include="Entity\Bank.cs" />
+    <Compile Include="Entity\Branch.cs" />
+    <Compile Include="Entity\BusinessObjects\DashboardDataModel.cs" />
     <Compile Include="Entity\BusinessObjects\TermDepositAccountDTO.cs" />
+    <Compile Include="Entity\Constants\Constants.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\Beneficiary.cs" />
@@ -148,6 +152,8 @@
     <Compile Include="Entity\SavingsAccount.cs" />
     <Compile Include="Entity\TermDepositAccount.cs" />
     <Compile Include="Entity\RecurringDepositAccount.cs" />
+    <Compile Include="Utilities\Converters\WidthConverter.cs" />
+    <Compile Include="Utilities\Helpers\LogoHelper.cs" />
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
@@ -172,17 +178,14 @@
     <Compile Include="View\Main\DashboardPage.xaml.cs">
       <DependentUpon>DashboardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Main\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Main\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Main\TransactionsPage.xaml.cs">
       <DependentUpon>TransactionsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\AmountInfoCardControl.xaml.cs">
-      <DependentUpon>AmountInfoCardControl.xaml</DependentUpon>
+    <Compile Include="View\UserControls\AnalyticsCardControl.xaml.cs">
+      <DependentUpon>AnalyticsCardControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\CardControl.xaml.cs">
       <DependentUpon>CardControl.xaml</DependentUpon>
@@ -205,10 +208,14 @@
     <Compile Include="View\UserControls\OneByTwoGrid.xaml.cs">
       <DependentUpon>OneByTwoGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\PageHeader.xaml.cs">
+      <DependentUpon>PageHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\Toast.xaml.cs">
       <DependentUpon>Toast.xaml</DependentUpon>
     </Compile>
     <Compile Include="ZBankManagement\AppEvents\AppEventArgs\AccountsListUpdatedArgs.cs" />
+    <Compile Include="ZBankManagement\AppEvents\AppEventArgs\DashboardDataUpdatedArgs.cs" />
     <Compile Include="ZBankManagement\AppInitialization.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\AccountFactory.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IAccountFactory.cs" />
@@ -216,6 +223,7 @@
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetBeneficiaryDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetCardDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetDashboardDataDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertBeneficiaryDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\ILoginCustomerDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetTransactionDataManager.cs" />
@@ -232,6 +240,7 @@
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetCardDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetBeneficiaryDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\GetDashboardDataDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\LoginCustomerDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetTransactionDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\InsertAccountDataManager.cs" />
@@ -250,10 +259,10 @@
     <Compile Include="ZBankManagement\DataLayer\DBHandler\IDBHandler.cs" />
     <Compile Include="ZBankManagement\DataLayer\DBHandler\IDBInitializationHandler.cs" />
     <Compile Include="ZBankManagement\DataLayer\Dependencies\DependencyContainer.cs" />
-    <Compile Include="ZBankManagement\DomainLayer\EventsArgs\LoginCustomerEventArgs.cs" />
     <Compile Include="ZBankManagement\DataLayer\Store.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\RequestObjectBase.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllBeneficiaries.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetDashboardData.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\LogoutCustomer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\RemoveBeneficiary.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertBeneficiary.cs" />
@@ -270,6 +279,7 @@
     <Compile Include="ZBankManagement\DomainLayer\UseCase\InsertTransaction.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\ResetPassword.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\SignupUser.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\TransferAmount.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateAccount.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateBeneficiary.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\UpdateCard.cs" />
@@ -289,10 +299,16 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\banklogo.png" />
     <Content Include="Assets\CardBackgrounds\card1.jpg" />
     <Content Include="Assets\CardBackgrounds\card2.jpg" />
     <Content Include="Assets\CardBackgrounds\card3.jpg" />
     <Content Include="Assets\CardBackgrounds\card4.jpg" />
+    <Content Include="Assets\CardLogo\banklogo.png" />
+    <Content Include="Assets\CardLogo\mastercard.png" />
+    <Content Include="Assets\CardLogo\rupay.jpg" />
+    <Content Include="Assets\CardLogo\visa.png" />
+    <Content Include="Assets\LogoMain.png" />
     <Content Include="Assets\Pro pic.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -345,10 +361,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Main\Home.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Main\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -357,7 +369,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\AmountInfoCardControl.xaml">
+    <Page Include="View\UserControls\AnalyticsCardControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -386,6 +398,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\OneByTwoGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\PageHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

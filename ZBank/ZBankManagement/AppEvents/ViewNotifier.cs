@@ -11,6 +11,14 @@ namespace ZBank.ZBankManagement.AppEvents
 {
     public class ViewNotifier
     {
+
+        public event Action<DashboardDataUpdatedArgs> DashboardDataChanged;
+        public void OnDashboardDataChanged(DashboardDataUpdatedArgs args)
+        {
+            DashboardDataChanged?.Invoke(args);
+        }
+
+
         public Action AccountInserted;
         public void OnAccountInserted()
         {

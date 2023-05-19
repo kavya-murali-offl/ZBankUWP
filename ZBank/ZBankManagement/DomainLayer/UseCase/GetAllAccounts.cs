@@ -2,9 +2,6 @@
 using ZBankManagement.Interface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZBank.Dependencies;
 using ZBank.Entities.EnumerationType;
 using ZBank.Entities;
@@ -60,7 +57,6 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllAccountsRequest : RequestObjectBase
     {
         public AccountType? AccountType { get; set; }
-
         public string UserID { get; set; }
     }
 
@@ -94,7 +90,34 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public void OnFailure(ZBankException response)
         {
+        }
+    }
+
+    public class GetAllAccountsInDashboardPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+    {
+        private DashboardViewModel DashboardViewModel { get; set; }
+
+        public GetAllAccountsInDashboardPresenterCallback(DashboardViewModel dashboardViewModel)
+        {
+            DashboardViewModel = dashboardViewModel;
+        }
+
+        public async void OnSuccess(GetAllAccountsResponse response)
+        {
+            await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                {
+                    AccountsList = new ObservableCollection<Account>(response.Accounts)
+                };
+                ViewNotifier.Instance.OnAccountsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
             // Notify view
         }
     }
+
 }
