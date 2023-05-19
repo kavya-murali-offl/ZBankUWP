@@ -50,17 +50,17 @@ namespace ZBank.View.UserControls
         {
             if (args.WindowActivationState == CoreWindowActivationState.Deactivated)
             {
-                //AppTitleTextBlock.Foreground =
-                //(SolidColorBrush)(Application.Current.Resources["ApplicationForeground"]);
-                //AppTitleBar.Background =
-                //(SolidColorBrush)(Application.Current.Resources["ApplicationBackgroundThemeBrush"]);
+                AppTitleTextBlock.Foreground =
+                (SolidColorBrush)(Application.Current.Resources["ApplicationForeground"]);
+                AppTitleBar.Background =
+                (SolidColorBrush)(Application.Current.Resources["ApplicationBackgroundThemeBrush"]);
             }
             else
             {
-               // AppTitleTextBlock.Foreground =
-               //    (SolidColorBrush)(Application.Current.Resources["ApplicationForeground"]);
-               // AppTitleBar.Background =
-               //(SolidColorBrush)(Application.Current.Resources["ApplicationBackground"]);
+                AppTitleTextBlock.Foreground =
+                   (SolidColorBrush)(Application.Current.Resources["ApplicationForeground"]);
+                AppTitleBar.Background =
+               (SolidColorBrush)(Application.Current.Resources["ApplicationBackground"]);
             }
         }
 

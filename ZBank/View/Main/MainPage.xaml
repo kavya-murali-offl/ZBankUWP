@@ -131,7 +131,6 @@
                             Height="Auto" />
                     </Grid.RowDefinitions>
 
-
                     <StackPanel
                         Grid.Row="0">
                         <ListView
@@ -171,21 +170,33 @@
                             ItemsSource="{x:Bind BottomNavigationList}"
                             IsItemClickEnabled="True" />
                     </StackPanel>
-                    <StackPanel
+                    <Grid
                         HorizontalAlignment="Center"
                         Grid.Row="2"
-                        Style="{ThemeResource ItemContainer}">
+                        Width="Auto"
+                      >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         <PersonPicture
+                            HorizontalAlignment="Left"
                             Margin="7,10,5,10"
                             Style="{ThemeResource ProfilePicture}"
                             ProfilePicture="/Assets/Pro pic.jpg" />
                         <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            HorizontalTextAlignment="Left"
                             Text="Kavya Murali"
                             Style="{ThemeResource ProfileNameText}" />
                         <FontIcon
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
                             Glyph="&#xE70D;"
                             Style="{ThemeResource ProfileDropdownIcon}" />
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>

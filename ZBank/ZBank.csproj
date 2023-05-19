@@ -184,6 +184,12 @@
     <Compile Include="View\Main\TransactionsPage.xaml.cs">
       <DependentUpon>TransactionsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\AccountInfoFrame.xaml.cs">
+      <DependentUpon>AccountInfoFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\AllAccountsGridFrame.xaml.cs">
+      <DependentUpon>AllAccountsGridFrame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\AnalyticsCardControl.xaml.cs">
       <DependentUpon>AnalyticsCardControl.xaml</DependentUpon>
     </Compile>
@@ -366,6 +372,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Main\TransactionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\AccountInfoFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\AllAccountsGridFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

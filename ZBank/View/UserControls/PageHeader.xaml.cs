@@ -38,25 +38,15 @@ namespace ZBank.View.UserControls
         }
 
 
-        private string _themeIcon { get; set; }
 
-        public string ThemeIcon
+        public string Title
         {
-                get { return _themeIcon; }
-                set
-                { 
-                    _themeIcon = value;
-                    OnPropertyChanged(nameof(ThemeIcon));
-                }
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(PageHeader), new PropertyMetadata(null));
 
 
         private async void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -101,7 +91,7 @@ namespace ZBank.View.UserControls
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
             });
-            ThemeIcon = ThemeSelector.GetIcon();
+            ThemeIcon.Glyph = ThemeSelector.GetIcon();
         }
 
         private void SwitchThemeButton_Click(object sender, RoutedEventArgs e)
@@ -123,13 +113,12 @@ namespace ZBank.View.UserControls
             if (ThemeSelector.Theme == ElementTheme.Dark)
             {
                 SwitchThemeButton.IsChecked = true;
-                ThemeIcon = ThemeSelector.DarkThemeIcon;
             }
             else
             {
                 SwitchThemeButton.IsChecked = false;
-                ThemeIcon = ThemeSelector.LightThemeIcon;
             }
+            ThemeIcon.Glyph = ThemeSelector.GetIcon();
         }
 
         private void NotificationsButton_Click(object sender, RoutedEventArgs e)

@@ -10,14 +10,12 @@
     Unloaded="Page_UnLoaded">
 <!--Make it draggable-->
         <Grid
-            Background="{ThemeResource ApplicationBackground}"
             CornerRadius="8"
-            Padding="10,5,10,5"
-            Margin="5">
+            Padding="10,5,10,5">
             <TextBlock
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Text="Dashboard"
+                Text="{x:Bind Title, Mode=OneWay}"
                 FontSize="20"
                 HorizontalTextAlignment="Center"
                 TextAlignment="Center"
@@ -36,13 +34,16 @@
                 Padding="8"
                 Margin="5,0,5,0">
                 <FontIcon
-                    Glyph="{x:Bind ThemeIcon, Mode=OneWay}"
+                    x:Name="ThemeIcon"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
                     FontSize="18" />
             </ToggleButton>
                 
             <Button
                 Click="NotificationsButton_Click"
                 x:Name="NotificationsButton"
+                CornerRadius="10"
+                Padding="8"
                 Style="{ThemeResource IconButton}">
                 <Button.Content>
                     <FontIcon
@@ -54,6 +55,8 @@
             <Button
                 x:Name="SettingsButton"
                 Margin="5,0,5,0"
+                CornerRadius="10"
+                Padding="8"
                 Click="SettingsButton_Click"
                 Style="{ThemeResource IconButton}">
                 <Button.Content>

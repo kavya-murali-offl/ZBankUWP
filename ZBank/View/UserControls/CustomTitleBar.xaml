@@ -9,28 +9,27 @@
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded"
     >
-
         <Grid x:Name="AppTitleBar">
-
-        <Grid
-            HorizontalAlignment="Left"
-            CornerRadius="3"
-            Width="120"
-            Height="30"
-            Margin="10,3,10,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
             <Image
+                Margin="10,0,0,0"
+                HorizontalAlignment="Left"
+                Width="25"
+                Height="25"
                 Source="/Assets/banklogo.png" 
                 Stretch="UniformToFill"
                 />
-        </Grid>
         
-        <!--<TextBlock
+            <TextBlock
                 FontWeight="Bold"
                 x:Name="AppTitleTextBlock"
-                Text="{x:Bind Title}"
+                Text="{x:Bind Title, Mode=OneWay}"
                 Foreground="{ThemeResource ApplicationForeground}"
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Margin="50,0,0,0" />-->
+                Margin="50,0,0,0" />
     </Grid>
 </Page>

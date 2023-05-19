@@ -6,43 +6,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:usercontrols="using:ZBank.View.UserControls"
+    xmlns:converter="using:ZBank.Converters"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
-    Unloaded="Page_Unloaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <StackPanel
-      >
-        <TextBlock
-            FontWeight="Bold"
-            FontSize="{StaticResource TextStyleLargeFontSize}"
-            Text="Accounts" />
-        <ListView
-            ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}"
-            SelectionMode="None">
-            <ListView.ItemTemplate>
-                <DataTemplate
-                    x:DataType="model:Account">
-                    <TextBlock
-                        Text="{x:Bind AccountNumber, Mode=OneWay}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style
-                    TargetType="ListViewItem">
-                    <Setter
-                        Property="HorizontalContentAlignment"
-                        Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
-        <Button Style="{ThemeResource PrimaryButton}"
-               Command="{x:Bind ViewModel.AddAccountCommand}"
-                >
-            <Button.Content>
-                <TextBlock
-                    Text="Add Account" />
-            </Button.Content>
-        </Button>
-    </StackPanel>
+    Unloaded="Page_Unloaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <usercontrols:PageHeader
+            Title="My Accounts" />
+        <Frame
+            Grid.Row="1"
+            x:Name="AccountPageFrame"/>
+    </Grid>
 </Page>

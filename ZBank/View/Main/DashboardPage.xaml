@@ -108,7 +108,7 @@
             <RowDefinition
                 Height="*" />
         </Grid.RowDefinitions>
-        <usercontrol:PageHeader  />
+        <usercontrol:PageHeader  Title="Dashboard"/>
         <Grid
             Grid.Row="1"
             x:Name="RootGrid">

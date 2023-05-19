@@ -27,12 +27,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<Account> accountsList = new List<Account>();
-                if (request.AccountType == null)
-                {
-                    accountsList = DBHandler.GetAllAccounts(request.UserID).Result;
-                
-                }
+                IEnumerable<Account> accountsList = DBHandler.GetAllAccounts(request.UserID).Result;
 
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {

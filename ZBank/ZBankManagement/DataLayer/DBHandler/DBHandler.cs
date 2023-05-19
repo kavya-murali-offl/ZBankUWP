@@ -46,7 +46,7 @@ namespace ZBank.DatabaseHandler
             List<Account> accountsList = new List<Account>();
             var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
             var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
-            var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", customerID);
+            var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
             accountsList.AddRange(currentAccount);
             accountsList.AddRange(savingsAccount);
             accountsList.AddRange(termDepositAccounts);
