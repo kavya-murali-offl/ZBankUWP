@@ -11,8 +11,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Windows.UI.Notifications;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
-using ZBank.ZBankManagement.AppEvents.AppEventArgs;
-using ZBank.ZBankManagement.AppEvents;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {

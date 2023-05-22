@@ -1,33 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using ZBank.Config;
 using ZBank.View;
-using Windows.UI;
 using Windows.UI.ViewManagement;
-using System.Net.NetworkInformation;
 using Windows.ApplicationModel.Core;
 using ZBank.View.Main;
-using Windows.ApplicationModel.Store;
 using ZBank.ViewModel;
-using ZBank.ViewModel.VMObjects;
-using System.Windows.Input;
-using Windows.Media.Devices;
-using System.ComponentModel;
-using ZBank.ZBankManagement;
-using ZBank.ZBankManagement.AppEvents;
+using ZBank.AppEvents;
+using ZBank.AppEvents.AppEventArgs;
+using System.Security.AccessControl;
+using System.Runtime.InteropServices;
+using Windows.UI.Xaml.Navigation;
+using System.Linq;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -35,22 +21,36 @@ using ZBank.ZBankManagement.AppEvents;
 namespace ZBank
 {
 
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, IView
     {
-
-        public IList<Navigation> TopNavigationList { get; private set; }
-
-        public IList<Navigation> BottomNavigationList { get; private set; }
-
-        public Navigation SelectedItem;
-
-        public MainViewModel ViewModel;
-
+        public MainViewModel ViewModel { get; private set; }
 
         public MainPage()
         {
             this.InitializeComponent();
-            LoadData();
+            ViewModel = new MainViewModel(this);
+        }
+
+        public void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadTheme();
+            LoadToggleButton();
+            ViewNotifier.Instance.ThemeChanged += SwitchTheme;
+            ViewNotifier.Instance.FrameContentChanged += ChangeFrame;
+            ContentFrame.Navigated += OnNavigated;
+        }
+
+
+        public void Page_UnLoaded(object sender, RoutedEventArgs e)
+        {
+            ViewNotifier.Instance.ThemeChanged -= SwitchTheme;
+            ViewNotifier.Instance.FrameContentChanged -= ChangeFrame;
+            ContentFrame.Navigated += OnNavigated;
+        }
+        
+        public void OnNavigated(object sender, NavigationEventArgs e)
+        {
+            ViewModel.UpdateSelectedPage(ContentFrame.CurrentSourcePageType);
         }
 
         private void LoadTheme()
@@ -59,55 +59,10 @@ namespace ZBank
             ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = ThemeSelector.Theme;
         }
 
-        private void LoadData()
-        {
-            TopNavigationList = new List<Navigation>
-            {
-                new Navigation("Dashboard", "\uEA8A"),
-                new Navigation("Accounts", "\uE910"),
-                new Navigation("Cards", "\uE8C7"),
-                new Navigation("Transactions", "\uE8AB"),
-            };
-            BottomNavigationList = new List<Navigation>
-            {
-                new Navigation("Switch Theme", ThemeSelector.GetIcon()),
-                new Navigation("Settings", "\uE713"),
-            };
-        }
-
-        private void SwitchIcon()
-        {
-            BottomNavigationList.ElementAt(0).IconSource = ThemeSelector.GetIcon();
-        }
-
-        public void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadTheme();
-            SelectedItem = TopNavigationList.FirstOrDefault();
-            ViewNotifier.Instance.ThemeChanged += SwitchTheme;
-        }
-
-        public void Page_UnLoaded(object sender, RoutedEventArgs e)
-        {
-            ViewNotifier.Instance.ThemeChanged -= SwitchTheme;
-        }
-
-        private async void SwitchTheme(ElementTheme theme)
-        {
-            ThemeSelector.SwitchTheme(theme);
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
-            }); 
-        }
-
-
         private void OnShrinkClicked(object sender, RoutedEventArgs e)
         {
             MySplitView.IsPaneOpen = false;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
-            BottomListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
-            BottomListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
             ShrinkButton.Visibility = Visibility.Collapsed;
             ExpandButton.Visibility = Visibility.Visible;
@@ -115,12 +70,8 @@ namespace ZBank
 
         private void OnExpandClicked(object sender, RoutedEventArgs e)
         {
-
-            // Call GoToState to switch to "State2"
             MySplitView.IsPaneOpen = true;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
-            BottomListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
-            BottomListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
             ExpandButton.Visibility = Visibility.Collapsed;
             ShrinkButton.Visibility = Visibility.Visible;
@@ -129,22 +80,55 @@ namespace ZBank
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Navigation selectedItem = TopListView.SelectedItem as Navigation;
+            ViewModel.NavigationChanged(selectedItem);
+        }
 
-            if (selectedItem.Text == "Transactions")
+        public void ChangeFrame(FrameContentChangedArgs args)
+        {
+            ContentFrame.Navigate(args.PageType, args.Params);
+        }
+
+        private void TopListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            TopListView.SelectedIndex = 0;
+        }
+
+        private async void SwitchTheme(ElementTheme theme)
+        {
+            ThemeSelector.SwitchTheme(theme);
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                ContentFrame.Navigate(typeof(TransactionsPage));
-            }
-            else if (selectedItem.Text == "Accounts")
+                ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
+            });
+            ThemeIcon.Glyph = ThemeSelector.GetIcon();
+        }
+
+        private void SwitchThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ThemeSelector.Theme == ElementTheme.Dark)
             {
-                ContentFrame.Navigate(typeof(AccountsPage));
+                ViewNotifier.Instance.OnThemeChanged(ElementTheme.Light);
             }
             else
             {
-                ContentFrame.Navigate(typeof(DashboardPage));
+                ViewNotifier.Instance.OnThemeChanged(ElementTheme.Dark);
             }
         }
 
-        private async void SettingsWindowOpen()
+        private void LoadToggleButton()
+        {
+            if (ThemeSelector.Theme == ElementTheme.Dark)
+            {
+                SwitchThemeButton.IsChecked = true;
+            }
+            else
+            {
+                SwitchThemeButton.IsChecked = false;
+            }
+            ThemeIcon.Glyph = ThemeSelector.GetIcon();
+        }
+
+        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             var currentAV = ApplicationView.GetForCurrentView();
             var newAV = CoreApplication.CreateNewView();
@@ -169,34 +153,26 @@ namespace ZBank
             });
         }
 
-        private void TopListView_Loaded(object sender, RoutedEventArgs e)
+
+        private void NotificationsButton_Click(object sender, RoutedEventArgs e)
         {
-            TopListView.SelectedIndex = 0;
+
         }
 
-        private void BottomListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            Navigation selectedItem = e.ClickedItem as Navigation;
-            if (selectedItem.Text == "Settings")
+            if (ContentFrame.CanGoForward)
             {
-                SettingsWindowOpen();
-            }
-            else if (selectedItem.Text == "Switch Theme")
-            {
-                if (this.RequestedTheme == ElementTheme.Dark)
-                {
-                    ViewNotifier.Instance.OnThemeChanged(ElementTheme.Light);
-                }
-                else
-                {
-                    ViewNotifier.Instance.OnThemeChanged(ElementTheme.Dark);
-                }
+                ContentFrame.GoForward();
             }
         }
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (ContentFrame.CanGoBack)
+            {
+                ContentFrame.GoBack();
+            }
         }
     }
 
@@ -205,13 +181,13 @@ namespace ZBank
         public Navigation(string text, string iconSource, bool isToggled = false)
         {
             Text = text;
+            Tag = text;
             IconSource = iconSource;
-            IsToggled = isToggled;
         }
 
         public string Text { get; set; }
 
-        public bool IsToggled { get; set; }
+        public string Tag { get; set; }
 
         public string IconSource { get; set; }
 

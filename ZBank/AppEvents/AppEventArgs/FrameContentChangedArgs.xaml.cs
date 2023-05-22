@@ -12,40 +12,19 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace ZBank.View.UserControls
+namespace ZBank.AppEvents.AppEventArgs
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class AllAccountsGridFrame : Page, IView
+    public sealed partial class FrameContentChangedArgs : Page
     {
-
-        public AllAccountsGridFrame()
+        public FrameContentChangedArgs()
         {
             this.InitializeComponent();
-            ViewModel = new AccountPageViewModel(this);
-        }
-
-        public AccountPageViewModel ViewModel { get; private set; }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel.OnPageLoaded();
-        }
-
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel.OnPageUnLoaded();
         }
     }
 }

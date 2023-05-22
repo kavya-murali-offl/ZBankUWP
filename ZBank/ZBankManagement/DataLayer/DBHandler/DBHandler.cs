@@ -134,7 +134,5 @@ namespace ZBank.DatabaseHandler
         {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions WHERE OwnerAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
         }
-
-
     }
 }

@@ -115,8 +115,7 @@
     <Grid Background="{ThemeResource ApplicationBackground}"
           Margin="5"
           Padding="10"
-          CornerRadius="8"
-          >
+          CornerRadius="8">
         <GridView
             Margin="0,10,0,0"
             SelectionMode="None"

@@ -10,17 +10,126 @@
     mc:Ignorable="d"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition
-                Height="Auto" />
-            <RowDefinition
-                Height="*" />
-        </Grid.RowDefinitions>
-        <usercontrols:PageHeader
-            Title="My Accounts" />
-        <Frame
-            Grid.Row="1"
-            x:Name="AccountPageFrame"/>
-    </Grid>
+    <Page.Resources>
+        <converter:CurrencyConverter
+            x:Key="CurrencyConverter" />
+        <DataTemplate
+            x:Key="AccountGridTemplate"
+            x:DataType="model:Account">
+            <Grid
+                MinHeight="200"
+                MinWidth="320"
+                Margin="5"
+                CornerRadius="15,20,10,10"
+                BorderThickness="0.25"
+                BorderBrush="{ThemeResource SystemAccentColorLight3}"
+                Background="{ThemeResource ApplicationBackground}">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Background="BlueViolet"
+                    MaxWidth="200"
+                    Height="30"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
+                    CornerRadius="0,0,15,0">
+                    <TextBlock
+                        Foreground="{ThemeResource SystemChromeWhiteColor}"
+                        FontSize="13"
+                        HorizontalAlignment="Right"
+                        Padding="10,5,10,5"
+                        Text="{Binding AccountType}" />
+                </StackPanel>
+                <Button
+                    x:Name="ViewAccountButton"
+                    Padding="15"
+                    Margin="0"
+                    Click="ViewAccountButton_Click"
+                    BorderThickness="0"
+                    CornerRadius="0,0,0,20"
+                    Style="{ThemeResource PrimaryNavigationButton}"
+                    HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Right">
+                    <FontIcon
+                        Glyph="&#xE26B;" />
+                </Button>
+
+                <TextBlock
+                    Margin="0,10,0,5"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1"
+                    FontWeight="SemiBold"
+                    Foreground="{ThemeResource SystemBaseHighColor}"
+                    FontSize="20"
+                    Text="{Binding AccountNumber}" />
+
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    Margin="0,5,0,0"
+                    Grid.Row="2"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="Status:"
+                        Style="{ThemeResource NormalSubText}" />
+                    <StackPanel
+                        Margin="10,0,10,0"
+                        Background="Green"
+                        CornerRadius="4"
+                        Padding="5,5,5,5">
+                        <TextBlock
+                            Foreground="{ThemeResource SystemChromeWhiteColor}"
+                            FontSize="12"
+                            VerticalAlignment="Center"
+                            Text="{Binding AccountStatus}" />
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="3"
+                    FontSize="20"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}" />
+                <Button
+                    Margin="0,10,0,20"
+                    HorizontalAlignment="Center"
+                    Grid.Row="4"
+                    Style="{ThemeResource PrimaryButton}">
+                    <Button.Content>
+                        <TextBlock
+                            Text="View Balance" />
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+        <Grid
+            Margin="5"
+            Padding="10"
+            CornerRadius="8">
+            <GridView
+                Margin="0,10,0,0"
+                SelectionMode="None"
+                Grid.Row="1"
+                ItemTemplate="{StaticResource AccountGridTemplate}"
+                ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid
+                            MaximumRowsOrColumns="3"
+                            Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+        </Grid>
 </Page>

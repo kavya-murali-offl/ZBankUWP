@@ -6,8 +6,8 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using ZBank.AppEvents;
 using ZBank.Config;
-using ZBank.ZBankManagement.AppEvents;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ZBank.AppEvents;
+using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 using ZBank.View;
-using ZBank.ZBankManagement.AppEvents;
-using ZBank.ZBankManagement.AppEvents.AppEventArgs;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 
@@ -41,7 +41,7 @@ namespace ZBank.ViewModel
 
         public void UpdateOnViewCard()
         {
-            if(_onViewCardIndex < 0)
+            if(_onViewCardIndex < 0 || _onViewCardIndex >= DashboardModel.AllCards.Count)
             {
 
             }

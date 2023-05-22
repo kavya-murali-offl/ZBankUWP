@@ -4,13 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
-using ZBank.ZBankManagement.AppEvents.AppEventArgs;
 
-namespace ZBank.ZBankManagement.AppEvents
+namespace ZBank.AppEvents
 {
     public class ViewNotifier
     {
+        public event Action<FrameContentChangedArgs> FrameContentChanged;
+        public void OnFrameContentChanged(FrameContentChangedArgs args)
+        {
+            FrameContentChanged?.Invoke(args);
+        }
+
 
         public event Action<DashboardDataUpdatedArgs> DashboardDataChanged;
         public void OnDashboardDataChanged(DashboardDataUpdatedArgs args)

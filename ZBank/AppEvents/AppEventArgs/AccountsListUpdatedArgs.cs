@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
 
-namespace ZBank.ZBankManagement.AppEvents.AppEventArgs
+namespace ZBank.AppEvents.AppEventArgs
 {
     public class AccountsListUpdatedArgs
     {

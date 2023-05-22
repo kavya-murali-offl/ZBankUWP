@@ -9,9 +9,9 @@ using ZBank.ViewModel;
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Core;
-using ZBank.ZBankManagement.AppEvents;
-using ZBank.ZBankManagement.AppEvents.AppEventArgs;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {

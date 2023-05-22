@@ -17,10 +17,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Entities;
 using ZBank.View.Main;
-using ZBank.ZBankManagement.AppEvents;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,8 +36,6 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
             LoadToggleButton();
         }
-
-
 
         public string Title
         {

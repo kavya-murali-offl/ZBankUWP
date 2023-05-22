@@ -77,8 +77,8 @@
 
     <AcrylicBrush 
         x:Key="CardBackgroundAcrylicBrush"
-        TintColor="{ThemeResource SystemAccentColorLight1}"
-        TintOpacity="0.2"
+        TintColor="{ThemeResource SystemAltHighColor}"
+        TintOpacity="0.9"
         />
     <Style
         x:Key="CustomFlyoutStyle"
@@ -253,6 +253,140 @@
             Property="FontSize"
             Value="40" />
     </Style>
+
+    <Style
+        TargetType="Button"
+        x:Name="FrameNavButton">
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource SystemBaseHighColor}" />
+        <Setter
+            Property="Background"
+            Value="{ThemeResource SystemAltHighColor}" />
+        <Setter
+            Property="BorderThickness"
+            Value="0" />
+        <Setter
+            Property="Padding"
+            Value="7" />
+        <Setter
+            Property="CornerRadius"
+            Value="20" />
+        <Setter
+            Property="Margin"
+            Value="0,0,5,0" />
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="Button">
+                    <ContentPresenter
+                        x:Name="ContentPresenter"
+                        Background="{TemplateBinding Background}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        AutomationProperties.AccessibilityView="Raw">
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup
+                                x:Name="CommonStates">
+                                <VisualState
+                                    x:Name="Normal">
+                                    <Storyboard>
+                                        <PointerUpThemeAnimation
+                                            Storyboard.TargetName="ContentPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState
+                                    x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemBaseLowColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="BorderThickness">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="0" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAccentColorLight1}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <PointerUpThemeAnimation
+                                            Storyboard.TargetName="ContentPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+
+                                <VisualState
+                                    x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAltLowColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemBaseHighColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <PointerDownThemeAnimation
+                                            Storyboard.TargetName="ContentPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+
+                                <VisualState
+                                    x:Name="Disabled">
+
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAltLowColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAltLowColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+
+                            </VisualStateGroup>
+
+                        </VisualStateManager.VisualStateGroups>
+                    </ContentPresenter>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style
         TargetType="Button"
         x:Name="PrimaryNavigationButton">

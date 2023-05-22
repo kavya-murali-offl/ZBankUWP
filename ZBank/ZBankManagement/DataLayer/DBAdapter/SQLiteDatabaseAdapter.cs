@@ -33,7 +33,7 @@ namespace ZBank.DatabaseAdapter
         {
             var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             string databasePath = Path.Combine(localFolder.Path, "BankDB.db3");
-            return new SQLiteConnectionString(databasePath, true, key: "pass");
+            return new SQLiteConnectionString(databasePath, true);
         }
 
         public async Task CreateTable<T>() where T : new()

@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Core;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.Entities;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
@@ -26,21 +17,39 @@ namespace ZBank.View.Main
     public sealed partial class AccountsPage : Page, IView
     {
 
-        public AccountPageViewModel ViewModel { get; private set; }
+        public AccountPageViewModel ViewModel { get; set; }
 
         public AccountsPage()
         {
             this.InitializeComponent();
+            ViewModel = new AccountPageViewModel(this);
+            DataContext = ViewModel;
         }
-
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            AccountPageFrame.Navigate(typeof(AllAccountsGridFrame));
+            ViewModel.OnPageLoaded();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            ViewModel.OnPageUnLoaded();
+        }
+
+        private void ViewAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            Account account = ((FrameworkElement)sender).DataContext as Account;
+
+            IDictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("SelectedAccount", account);
+
+            FrameContentChangedArgs args = new FrameContentChangedArgs()
+            {
+                PageType = typeof(AccountInfoFrame),
+                Params = parameters
+            };
+
+            ViewNotifier.Instance.OnFrameContentChanged(args);
         }
     }
 }

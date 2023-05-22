@@ -8,9 +8,9 @@ using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using ZBank.Entities;
-using ZBank.ZBankManagement.AppEvents.AppEventArgs;
-using ZBank.ZBankManagement.AppEvents;
 using ZBank.Entity.BusinessObjects;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {

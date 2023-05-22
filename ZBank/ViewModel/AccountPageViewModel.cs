@@ -6,21 +6,22 @@ using ZBank.Entities;
 using ZBank.View;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
-using ZBank.ZBankManagement.AppEvents;
-using ZBank.ZBankManagement.AppEvents.AppEventArgs;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
 
 namespace ZBank.ViewModel
 {
     public class AccountPageViewModel : ViewModelBase
     {
         public IView View;
-
         public ICommand AddAccountCommand { get; set; } 
+        public ICommand GoToAccountInfoPageCommand { get; set; } 
 
         public AccountPageViewModel(IView view)
         {
             View = view;
             AddAccountCommand = new RelayCommand(InsertAccount);
+            GoToAccountInfoPageCommand = new RelayCommand(GoToAccountInfoPage);
         }
 
         public void OnPageLoaded()
@@ -32,6 +33,11 @@ namespace ZBank.ViewModel
         public void OnPageUnLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+        }
+
+        public void GoToAccountInfoPage(object parameter)
+        {
+            var paras = parameter;
         }
 
         public void InsertAccount(object parameter)

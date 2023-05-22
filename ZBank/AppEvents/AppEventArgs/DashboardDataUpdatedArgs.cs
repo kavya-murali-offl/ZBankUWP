@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entity.BusinessObjects;
 
-namespace ZBank.ZBankManagement.AppEvents.AppEventArgs
+namespace ZBank.AppEvents.AppEventArgs
 {
     public class DashboardDataUpdatedArgs
     {

@@ -119,14 +119,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\CurrencyConverter.cs" />
+    <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
+    <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Entity\Bank.cs" />
     <Compile Include="Entity\Branch.cs" />
     <Compile Include="Entity\BusinessObjects\DashboardDataModel.cs" />
     <Compile Include="Entity\BusinessObjects\TermDepositAccountDTO.cs" />
     <Compile Include="Entity\Constants\Constants.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
-    <Compile Include="Converters\LocalizationConverter.cs" />
+    <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\Beneficiary.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CreditCardDTO.cs" />
@@ -220,8 +221,8 @@
     <Compile Include="View\UserControls\Toast.xaml.cs">
       <DependentUpon>Toast.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ZBankManagement\AppEvents\AppEventArgs\AccountsListUpdatedArgs.cs" />
-    <Compile Include="ZBankManagement\AppEvents\AppEventArgs\DashboardDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\AccountsListUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\DashboardDataUpdatedArgs.cs" />
     <Compile Include="ZBankManagement\AppInitialization.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\AccountFactory.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IAccountFactory.cs" />
@@ -297,7 +298,7 @@
     <Compile Include="ZBankManagement\Utils\Mapper.cs" />
     <Compile Include="ZBankManagement\Utils\RandomGenerator.cs" />
     <Compile Include="ZBankManagement\Utils\Validator.cs" />
-    <Compile Include="ZBankManagement\AppEvents\ViewNotifier.cs" />
+    <Compile Include="AppEvents\ViewNotifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
