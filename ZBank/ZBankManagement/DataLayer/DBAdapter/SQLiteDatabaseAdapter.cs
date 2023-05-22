@@ -31,8 +31,7 @@ namespace ZBank.DatabaseAdapter
 
         private SQLiteConnectionString GetConnectionString()
         {
-            var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            string databasePath = Path.Combine(localFolder.Path, "BankDB.db3");
+            string databasePath = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "BankDb.db3");
             return new SQLiteConnectionString(databasePath, true);
         }
 

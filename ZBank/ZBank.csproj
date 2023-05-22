@@ -452,7 +452,9 @@
     <PRIResource Include="Resources\Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Bank.db3" />
+    <Content Include="Assets\BankDB.db3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
