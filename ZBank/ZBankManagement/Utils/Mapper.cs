@@ -5,6 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
+using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
 
 namespace ZBankManagement.Utility
 {
@@ -31,5 +35,24 @@ namespace ZBankManagement.Utility
 
             return entityObject;
         }
+
+        public static TransactionBObj GetTransactionBObj(Transaction transaction) 
+        {
+            TransactionBObj transactionBObj = Map<Transaction, TransactionBObj>(transaction);
+            if (transaction.TransactionType == TransactionType.EXPENSE)
+            {
+                transactionBObj.BorderColor = "#be3232";
+                transactionBObj.BackgroundColor = "#f5e1dd";
+                transactionBObj.ArrowIcon = "\uEDDC";
+            }
+            else if (transaction.TransactionType == TransactionType.INCOME)
+            {
+                transactionBObj.BackgroundColor = "#eafde8";
+                transactionBObj.BorderColor = "#058365";
+                transactionBObj.ArrowIcon = "\uEDDB";
+            }
+            return transactionBObj;
+        }
+
     }
 }

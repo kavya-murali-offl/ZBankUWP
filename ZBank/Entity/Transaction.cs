@@ -32,12 +32,8 @@ namespace ZBank.Entities
         public string Description { get; set; }
 
         public string CardNumber { get; set; }
-
-        [Ignore]
-        public TransactionBObj TransactionBObj { get; set; }    
-
-
     }
+
     public enum TransactionType
     {
         EXPENSE, INCOME

@@ -9,7 +9,7 @@ using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 using ZBank.Entities.EnumerationType;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 
 namespace ZBank.ViewModel
 {

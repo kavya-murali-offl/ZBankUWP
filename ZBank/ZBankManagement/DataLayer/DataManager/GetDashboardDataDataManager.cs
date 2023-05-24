@@ -8,7 +8,6 @@ using ZBank.DatabaseHandler;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entities.EnumerationType;
-using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
@@ -31,7 +30,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             try
             {
                 DashboardDataModel dashboardModel = DashboardDataModel.Instance;
-                IEnumerable<AccountDTO> accountsList = _handler.GetAllAccounts(request.UserID).Result;
+                IEnumerable<Account> accountsList = _handler.GetAllAccounts(request.UserID).Result;
                 dashboardModel.BalanceCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Balance",
@@ -56,7 +55,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
                 dashboardModel.AllBeneficiaries = new ObservableCollection<Beneficiary>(beneficiaries);
 
-                List<TransactionBObj> transactions = new List<TransactionBObj>();
+                List<Transaction> transactions = new List<Transaction>();
                 foreach(var account in accountsList)
                 {
                     var list = _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber).Result;
@@ -87,30 +86,15 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 };
 
                 IEnumerable<Card> cardsList = _handler.GetAllCards(request.UserID).Result;
-                foreach(var card in cardsList)
-                {
-                    if(card is CreditCard)
-                    {
-                        CreditCard creditCard = (CreditCard)card;
-                        creditCard.SetBusinessObject(creditCard);
-                        creditCard.CardBObj.SetDefaultValues();
-                    }
+                dashboardModel.AllCards = new ObservableCollection<Card>(cardsList);
 
-                    else
-                    {
-                        DebitCard debitCard = (DebitCard)card;
-                        debitCard.SetBusinessObject(debitCard);
-                        debitCard.CardBObj.SetDefaultValues();
-                    }
-                }
-                IEnumerable<CardBObj> cardBObjList = cardsList.Select(crd => crd.CardBObj);
-                dashboardModel.AllCards = new ObservableCollection<CardBObj>(cardBObjList);
-
-                transactions.ForEach(tx => {
-                    tx.OtherAccount = beneficiaries.Where(ben => ben.AccountNumber == tx.OtherAccountNumber).FirstOrDefault();
-                    tx.SetBusinessObject();
+                IEnumerable<TransactionBObj> transactionBObjs = transactions.Select(tx => {
+                    var bobj = Mapper.GetTransactionBObj(tx);
+                    bobj.OtherAccount = beneficiaries.FirstOrDefault(ben => ben.AccountNumber == tx.OtherAccountNumber);
+                    return bobj;
                 });
-                dashboardModel.LatestTransactions = new ObservableCollection<TransactionBObj>(transactions);
+                
+                dashboardModel.LatestTransactions = new ObservableCollection<TransactionBObj>(transactionBObjs);
 
                 // To do  Observable to IEnumerable
                 GetDashboardDataResponse response = new GetDashboardDataResponse

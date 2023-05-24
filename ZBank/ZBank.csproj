@@ -133,7 +133,6 @@
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\Beneficiary.cs" />
-    <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CreditCardDTO.cs" />
     <Compile Include="Entity\BusinessObjects\CurrentAccountDTO.cs" />
     <Compile Include="Entity\BusinessObjects\DebitCardDTO.cs" />
@@ -163,6 +162,18 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
+    <Compile Include="View\DataTemplates\CardViewTemplate.xaml.cs">
+      <DependentUpon>CardViewTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml.cs">
+      <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml.cs">
+      <DependentUpon>SavingsAccountInfoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\TermDepositAccountInfoTemplate.xaml.cs">
+      <DependentUpon>TermDepositAccountInfoTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\IView.cs" />
     <Compile Include="View\Main\CardsPage.xaml.cs">
       <DependentUpon>CardsPage.xaml</DependentUpon>
@@ -339,6 +350,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\DataTemplates\CardViewTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\TermDepositAccountInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Main\CardsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

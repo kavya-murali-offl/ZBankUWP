@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:usercontrols="using:ZBank.View.UserControls"
     mc:Ignorable="d"
-    xmlns:model="using:ZBank.Entity.BusinessObjects"
+    xmlns:model="using:ZBank.Entities.BusinessObjects"
     xmlns:converters="using:ZBank.Utilities.Converters"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded">

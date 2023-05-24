@@ -11,7 +11,8 @@ using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
+using ZBankManagement.Utility;
 
 namespace ZBankManagement.DataManager
 {
@@ -29,7 +30,12 @@ namespace ZBankManagement.DataManager
             try
             {
                 IEnumerable<Account> accountsList = DBHandler.GetAllAccounts(request.UserID).Result;
-
+                foreach(Account account in accountsList) { 
+                    var transactions = DBHandler.GetTransactionByAccountNumber(account.AccountNumber).Result;
+                    account.Transactions = transactions.Select(tx => Mapper.GetTransactionBObj(tx));
+                    account.Branch = DBHandler.GetBranchByIfscCode(account.IFSCCode).Result.FirstOrDefault();
+                    account.LinkedCard = DBHandler.GetCardByAccountNumber(account.AccountNumber).Result.FirstOrDefault();
+                }
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {
                     Accounts = accountsList

@@ -23,7 +23,6 @@ namespace ZBank.Entities
 
         public string IFSCCode { get; set; }
 
-        // Ignore
         public override string ToString()
         {
             return AccountNumber + " - " + Name;

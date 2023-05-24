@@ -99,8 +99,8 @@ namespace ZBank
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
+                ThemeIcon.Glyph = ThemeSelector.GetIcon();
             });
-            ThemeIcon.Glyph = ThemeSelector.GetIcon();
         }
 
         private void SwitchThemeButton_Click(object sender, RoutedEventArgs e)

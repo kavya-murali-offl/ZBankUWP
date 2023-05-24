@@ -14,9 +14,5 @@ namespace ZBank.Entities
 
         public string AccountNumber { get; set; }
 
-        public void SetBusinessObject(DebitCard card)
-        {
-            CardBObj = Mapper.Map<DebitCard, CardBObj>(card);
-        }
     }
 }

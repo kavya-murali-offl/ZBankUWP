@@ -4,19 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
+using ZBank.Entity;
 
-namespace ZBank.Entity.BusinessObjects
+namespace ZBank.Entities.BusinessObjects
 {
     public class Account : AccountDTO
     {
+        public Branch Branch { get; set; }
 
-        public Branch BranchID { get; set; }
+        public DebitCard LinkedCard { get; set; }
 
-        public Branch BankID { get; set; }
-
-        public Branch BranchName { get; set; }
-
-        public IEnumerable<Transaction> Transactions { get; set; }
+        public IEnumerable<TransactionBObj> Transactions { get; set; }
 
         public override string ToString() => AccountNumber + " - " + AccountType.ToString();
     }

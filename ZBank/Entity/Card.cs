@@ -30,8 +30,6 @@ namespace ZBank.Entities
 
         public string ExpiryYear { get; set; }
 
-        [Ignore]
-        public CardBObj CardBObj { get; set; }
     }
 
     public enum CardType

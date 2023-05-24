@@ -8,7 +8,7 @@ using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using ZBank.Entities;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 

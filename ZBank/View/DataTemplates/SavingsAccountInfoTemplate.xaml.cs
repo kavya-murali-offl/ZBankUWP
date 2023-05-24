@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.ServiceModel.Channels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -15,18 +12,23 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using ZBank.Entities.BusinessObjects;
 using ZBank.Entities;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace ZBank.View.UserControls
+namespace ZBank.View.DataTemplates
 {
-    public sealed partial class DashboardTransactionGrid : UserControl
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class SavingsAccountInfoTemplate : UserControl
     {
-        public DashboardTransactionGrid()
+        public SavingsAccount SavingsAccount { get; set; } 
+        
+        public SavingsAccountInfoTemplate()
         {
             this.InitializeComponent();
+            SavingsAccount = this.DataContext as SavingsAccount;
         }
     }
 }

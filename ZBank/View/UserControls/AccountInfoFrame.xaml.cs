@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.Entities;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -26,10 +26,7 @@ namespace ZBank.View.UserControls
     public sealed partial class AccountInfoFrame : Page
     {
         public Account SelectedAccount { get; set; }    
-        public SavingsAccount SelectedSavingsAccount { get; set; }    
-        public CurrentAccount SelectedCurrentAccount { get; set; }    
-        public TermDepositAccount SelectedDepositAccount { get; set; }    
-
+        
         public AccountInfoFrame()
         {
             this.InitializeComponent(); 
@@ -43,13 +40,20 @@ namespace ZBank.View.UserControls
 
                 if (SelectedAccount is SavingsAccount)
                 {
-                    SelectedSavingsAccount = SelectedAccount as SavingsAccount;
-                    AccountContentControl.ContentTemplate = (DataTemplate)this.Resources["SavingsAccountTemplate"];
+                    AccountInfoContentControl.ContentTemplate = (DataTemplate)this.Resources["SavingsAccountTemplate"];
                 }
+                else if(SelectedAccount is CurrentAccount)
+                {
+                    AccountInfoContentControl.ContentTemplate = (DataTemplate)this.Resources["CurrentAccountTemplate"];
+
+                }
+                else if (SelectedAccount is TermDepositAccount)
+                {
+                    AccountInfoContentControl.ContentTemplate = (DataTemplate)this.Resources["DepositAccountTemplate"];
+                }
+                AccountInfoContentControl.DataContext = SelectedAccount;
             }
-
         }
-
     }
 
     public class AccountInfoPageParams

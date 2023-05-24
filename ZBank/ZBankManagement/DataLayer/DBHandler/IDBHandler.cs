@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
 using ZBank.Entity;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 
 namespace ZBank.DatabaseHandler
  {
@@ -15,6 +15,8 @@ namespace ZBank.DatabaseHandler
         //Branch 
 
         Task<List<Branch>> GetBranchDetails();
+
+        Task<IEnumerable<Branch>> GetBranchByIfscCode(string ifscCode);
 
         // Customer
         Task<int> InsertCustomer(Customer customer, CustomerCredentials credentials);
@@ -47,17 +49,17 @@ namespace ZBank.DatabaseHandler
 
         Task<int> UpdateCard(Card card);
 
+        Task<IEnumerable<DebitCard>> GetCardByAccountNumber(string accountNumber);
 
         // Transaction
 
-        Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber);
+        Task<IEnumerable<Transaction>> GetTransactionByAccountNumber(string accountNumber);
 
-        Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber);
+        Task<IEnumerable<Transaction>> GetLatestMonthTransactionByAccountNumber(string accountNumber);
 
-        Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber);
+        Task<IEnumerable<Transaction>> GetTransactionByCardNumber(string cardNumber);
 
         Task<int> InsertTransaction(Transaction transaction);
-
 
         // Beneficiary
 

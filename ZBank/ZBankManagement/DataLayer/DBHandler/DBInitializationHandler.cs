@@ -1,6 +1,6 @@
 ﻿using ZBank.Entities.BusinessObjects;
 using ZBank.Entities;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 using ZBank.DatabaseAdapter;
 using ZBank.Entity;
 

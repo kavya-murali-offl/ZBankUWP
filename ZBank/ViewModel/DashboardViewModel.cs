@@ -6,7 +6,6 @@ using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
-using ZBank.Entity.BusinessObjects;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
@@ -17,11 +16,11 @@ namespace ZBank.ViewModel
     {
         public IView View;
 
-        private CardBObj _onViewCard { get; set; }
+        private Card _onViewCard { get; set; }
 
         private int _onViewCardIndex { get; set; } = 0;
 
-        public CardBObj OnViewCard
+        public Card OnViewCard
         {
             get { return _onViewCard; }
             set

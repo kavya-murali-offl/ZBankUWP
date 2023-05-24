@@ -31,16 +31,16 @@
             </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Padding="0,0,0,0">
             <Ellipse
-                Stroke="{x:Bind TransactionBObj.BorderColor}"
+                Stroke="{Binding BorderColor}"
                 Width="35"
                 Height="35"
-                Fill="{x:Bind TransactionBObj.BackgroundColor}"
+                Fill="{Binding BackgroundColor}"
                 StrokeThickness="1">
             </Ellipse>
             <FontIcon
-                Foreground="{x:Bind TransactionBObj.BorderColor}"
+                Foreground="{Binding BorderColor}"
                 FontSize="10"
-                Glyph="{x:Bind TransactionBObj.ArrowIcon}" />
+                Glyph="{Binding ArrowIcon}" />
         </Grid>
         <StackPanel
             Margin="0,0,10,0"
@@ -49,13 +49,13 @@
                 Padding="10">
                 <TextBlock
                     Grid.Column="1"
-                    Text="{x:Bind TransactionBObj.OtherAccount?.Name}"
+                    Text="{Binding OtherAccount.Name}"
                     Style="{ThemeResource BoldNormalText}" />
                 <TextBlock
                     Grid.Column="1"
                     Foreground="Gray"
                     FontSize="12"
-                Text="{x:Bind TransactionBObj.RecordedOn, 
+                Text="{Binding RecordedOn, 
                     Converter={StaticResource DateFormatConverter}}"
                     Style="{ThemeResource NormalSubText}" />
             </StackPanel>
@@ -70,7 +70,7 @@
                     FontSize="17"
                     HorizontalAlignment="Right"
                     TextAlignment="Right"
-                    Text="{x:Bind TransactionBObj.Amount, Converter={StaticResource CurrencyConverter}}"
+                    Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                     Style="{ThemeResource BoldNormalText}" />
                 <TextBlock
                     x:Name="Balance"
@@ -78,11 +78,10 @@
                     HorizontalAlignment="Right"
                     TextAlignment="Right"
                     Foreground="Gray"
-                    Text="{x:Bind TransactionBObj.Balance, Converter={StaticResource CurrencyConverter}}"
+                    Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
                     Style="{ThemeResource BoldNormalText}" />
 
         </StackPanel>
-        
     </Grid>
 
               

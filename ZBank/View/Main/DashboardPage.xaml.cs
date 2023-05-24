@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238

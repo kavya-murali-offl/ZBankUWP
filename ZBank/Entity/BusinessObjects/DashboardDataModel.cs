@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 
-namespace ZBank.Entity.BusinessObjects
+namespace ZBank.Entities.BusinessObjects
 {
     public class DashboardDataModel
     {
@@ -34,7 +34,7 @@ namespace ZBank.Entity.BusinessObjects
 
         public DashboardCardModel IncomeExpenseCard { get; set; }
 
-        public ObservableCollection<CardBObj> AllCards { get; set; }
+        public ObservableCollection<Card> AllCards { get; set; }
 
         public ObservableCollection<Beneficiary> AllBeneficiaries { get; set; }
 

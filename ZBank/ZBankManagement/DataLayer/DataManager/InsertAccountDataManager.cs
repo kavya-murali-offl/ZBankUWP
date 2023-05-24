@@ -6,7 +6,7 @@ using System.Security.Principal;
 using ZBank.DatabaseHandler;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using System.Threading.Tasks;

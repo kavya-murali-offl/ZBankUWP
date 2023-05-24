@@ -11,7 +11,7 @@ namespace ZBank.Utilities.Helpers
     public class LogoHelper
     {
 
-        public static string GetCardProviderPath(CreditCardProvider provider)
+        public static string GetCardProviderPath(CreditCardProvider? provider=null)
         {
             switch(provider)
             {

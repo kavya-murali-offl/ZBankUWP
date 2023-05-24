@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
-using ZBank.Entity.BusinessObjects;
 using ZBankManagement.Domain.UseCase;
 using System.Threading;
 using ZBankManagement.Utility;
@@ -12,6 +11,7 @@ using ZBankManagement.Controller;
 using System.Security.Principal;
 using ZBank.Entity;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace ZBank.DatabaseHandler
 {
@@ -40,27 +40,36 @@ namespace ZBank.DatabaseHandler
             return _databaseAdapter.GetAll<Branch>().ToListAsync();
         }
 
+        public Task<IEnumerable<Branch>> GetBranchByIfscCode(string ifscCode)
+        {
+            return _databaseAdapter.Query<Branch>("Select * from Branch where IfscCode = ?", ifscCode);
+        }
+
+        
+        public Task<IEnumerable<DebitCard>> GetCardByAccountNumber(string accountNumber)
+        {
+            return _databaseAdapter.Query<DebitCard>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where AccountNumber = ?", accountNumber);
+        }
 
         // Account
         public async Task<IEnumerable<Account>> GetAllAccounts(string customerID)
         {
-            List<Account> accountsList = new List<Account>();
-            var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
-                $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
-                $"Inner Join Branch on Account.IFSCCode = Branch.IfscCode " +
-                $"where UserID = ?", "1111");
-            var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
-            var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
-            accountsList.AddRange(currentAccount);
-            accountsList.AddRange(savingsAccount);
-            accountsList.AddRange(termDepositAccounts);
-
-            foreach(var account in accountsList)
+            try
             {
-                account.Transactions = await _databaseAdapter
-                    .Query<TransactionBObj>("Select * from Transactions where AccountNumber = ?", account.AccountNumber);
+                List<Account> accountsList = new List<Account>();
+                var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
+                    $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
+                    $"where UserID = ?", "1111");
+                var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
+                var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
+                accountsList.AddRange(currentAccount);
+                accountsList.AddRange(savingsAccount);
+                accountsList.AddRange(termDepositAccounts);
+                return accountsList;
             }
-            return accountsList;
+            catch(Exception ex) { }
+            return null;
+            
         }
 
         public async Task InsertAccount(Account account)
@@ -134,13 +143,22 @@ namespace ZBank.DatabaseHandler
 
         // Transaction
 
-        public async Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber) => await _databaseAdapter.GetAll<TransactionBObj>().Where(x => x.OwnerAccountNumber.Equals(accountNumber) || x.OtherAccountNumber.Equals(accountNumber)).OrderByDescending(x => x.RecordedOn).ToListAsync();
+        public async Task<IEnumerable<Transaction>> GetTransactionByAccountNumber(string accountNumber) =>
+            await 
+            _databaseAdapter.GetAll<Transaction>()
+            .Where(x => x.OwnerAccountNumber.Equals(accountNumber))
+            .OrderByDescending(x => x.RecordedOn)
+            .ToListAsync();
 
-        public async Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber) => await _databaseAdapter.GetAll<TransactionBObj>().Where(x => x.CardNumber == cardNumber).OrderByDescending(x => x.RecordedOn).ToListAsync();
+        public async Task<IEnumerable<Transaction>> GetTransactionByCardNumber(string cardNumber) =>
+            await _databaseAdapter.GetAll<Transaction>()
+            .Where(x => x.CardNumber == cardNumber)
+            .OrderByDescending(x => x.RecordedOn)
+            .ToListAsync();
 
         public Task<int> InsertTransaction(Transaction transaction) => _databaseAdapter.Insert(transaction);
 
-       public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
+       public async Task<IEnumerable<Transaction>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
         {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions WHERE OwnerAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
         }

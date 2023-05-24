@@ -4,7 +4,7 @@ using ZBankManagement.Interface;
 using System;
 using System.Security.Principal;
 using ZBank.Entities.BusinessObjects;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 using ZBankManagement.Utility;
 
 namespace ZBankManagement.Controller

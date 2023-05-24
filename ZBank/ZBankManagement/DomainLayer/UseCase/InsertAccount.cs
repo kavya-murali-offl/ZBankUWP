@@ -13,7 +13,7 @@ using Windows.UI.Notifications;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
-using ZBank.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {

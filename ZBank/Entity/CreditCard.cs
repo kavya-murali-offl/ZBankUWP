@@ -17,10 +17,6 @@ namespace ZBank.Entities
 
         public decimal CreditLimit { get; set; }
 
-        public void SetBusinessObject(CreditCard creditCard)
-        {
-            CardBObj = Mapper.Map<CreditCard, CardBObj>(creditCard);
-        }
     }
 
     public enum CreditCardProvider
