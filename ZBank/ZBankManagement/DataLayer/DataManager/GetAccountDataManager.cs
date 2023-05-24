@@ -11,6 +11,7 @@ using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBankManagement.DataManager
 {

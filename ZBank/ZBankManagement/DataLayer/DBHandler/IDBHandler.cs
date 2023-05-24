@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
 using ZBank.Entity;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.DatabaseHandler
  {

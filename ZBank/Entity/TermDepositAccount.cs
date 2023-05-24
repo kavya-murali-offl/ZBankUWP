@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZBank.Entity.BusinessObjects;
+using ZBank.Entity.EnumerationTypes;
 
 namespace ZBank.Entities
 {
@@ -11,18 +13,16 @@ namespace ZBank.Entities
     public class TermDepositAccount : Account
     {
 
-        public TermDepositAccount() { } 
-        public TermDepositAccount(decimal amount, int tenureInMonths, string fromAccountNumber) : base(amount)
-        {
-            TenureInMonths = tenureInMonths;
-            InterestRate = GetFDInterestRate(tenureInMonths);
-            MaturityAmount = MaturityAmountCalculator(amount, tenureInMonths);
-            MaturityDate = MaturityDateCalculator(DateTime.Now, tenureInMonths);
-            FromAccountNumber = fromAccountNumber;
-            RepaymentAccountNumber = "11111";
-        }
+        //public TermDepositAccount(decimal amount, int tenureInMonths, string fromAccountNumber) : base(amount)
+        //{
+        //    TenureInMonths = tenureInMonths;
+        //    InterestRate = GetFDInterestRate(tenureInMonths);
+        //    MaturityAmount = MaturityAmountCalculator(amount, tenureInMonths);
+        //    MaturityDate = MaturityDateCalculator(DateTime.Now, tenureInMonths);
+        //    FromAccountNumber = fromAccountNumber;
+        //    RepaymentAccountNumber = "11111";
+        //}
     
-
         public decimal InterestRate { get; private set; }
 
         public decimal MaturityAmount { get; set; }
@@ -33,7 +33,7 @@ namespace ZBank.Entities
 
         public string RepaymentAccountNumber { get; set; }
 
-        public FixedDepositType FDType { get; set; }
+        public DepositType FDType { get; set; }
 
         public DateTime MaturityDate { get; set; }
 
@@ -60,26 +60,5 @@ namespace ZBank.Entities
                 default: return 0;
             }
         }
-    }
-
-    public enum FixedDepositType
-    {
-        Cumulative = 0,
-        Monthly = 1,
-        Quarterly = 2,
-        HalfYearly = 3,
-        Annual = 4
-    }
-
-    public enum AccountStatus
-    {
-        ACTIVE, 
-        CLOSED
-    }
-
-    public enum Currency
-    {
-        [Description("₹")]
-        INR = 0
     }
 }

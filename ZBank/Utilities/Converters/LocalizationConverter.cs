@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
-namespace ZBank.Converters
+namespace ZBank.Utilities.Converters
 {
     public class LocalizationConverter : IValueConverter
     {

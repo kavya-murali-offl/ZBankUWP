@@ -19,7 +19,7 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             _databaseAdapter.CreateTable<Customer>();
             _databaseAdapter.CreateTable<CustomerCredentials>();
             _databaseAdapter.CreateTable<Card>();
-            _databaseAdapter.CreateTable<Account>();
+            _databaseAdapter.CreateTable<AccountDTO>();
             _databaseAdapter.CreateTable<Beneficiary>();
             _databaseAdapter.CreateTable<CurrentAccountDTO>();
             _databaseAdapter.CreateTable<SavingsAccountDTO>();

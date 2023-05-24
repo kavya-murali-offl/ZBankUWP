@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     xmlns:model="using:ZBank.Entities"
     xmlns:usercontrols="using:ZBank.View.UserControls"
-    xmlns:converter="using:ZBank.Converters"
+    xmlns:converter="using:ZBank.Utilities.Converters"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded">
 

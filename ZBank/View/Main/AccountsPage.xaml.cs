@@ -4,6 +4,7 @@ using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
+using ZBank.Entity.BusinessObjects;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
@@ -40,8 +41,10 @@ namespace ZBank.View.Main
         {
             Account account = ((FrameworkElement)sender).DataContext as Account;
 
-            IDictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("SelectedAccount", account);
+            AccountInfoPageParams parameters = new AccountInfoPageParams()
+            {
+                SelectedAccount = account,
+            };
 
             FrameContentChangedArgs args = new FrameContentChangedArgs()
             {

@@ -8,14 +8,13 @@
     xmlns:usercontrol="using:ZBank.View.UserControls"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
     xmlns:model="using:ZBank.Entities"
-    xmlns:converter="using:ZBank.Converters"
-    xmlns:converter1="using:ZBank.Utilities.Converters"
+    xmlns:converter="using:ZBank.Utilities.Converters"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded">
     <Page.Resources>
         <converter:CurrencyConverter
-            x:Name="CurrencyConverter" />
-        <converter1:WidthConverter
+            x:Key="CurrencyConverter" />
+        <converter:WidthConverter
             x:Name="WidthConverter" />
         <DataTemplate
             x:Key="FlyoutItemTemplate"

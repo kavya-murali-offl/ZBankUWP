@@ -27,11 +27,11 @@
         <DataTemplate
             x:Key="NarrowTopDataTemplate"
             x:DataType="local:Navigation">
-                <FontIcon
-                    Glyph="{x:Bind IconSource}"
-                    Style="{StaticResource MenuIconStyle}" />
+            <FontIcon
+                Glyph="{x:Bind IconSource}"
+                Style="{StaticResource MenuIconStyle}" />
         </DataTemplate>
-    
+
     </Page.Resources>
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -86,7 +86,7 @@
                         <Setter
                             Target="ShrinkButton.Visibility"
                             Value="Collapsed" />
-                         
+
                         <Setter
                             Target="MySplitView.DisplayMode"
                             Value="CompactOverlay" />
@@ -99,7 +99,8 @@
                 Height="34" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <userControls:CustomTitleBar Title="ZBank"/>
+        <userControls:CustomTitleBar
+            Title="ZBank" />
         <SplitView
             x:Name="MySplitView"
             Grid.Row="1"
@@ -120,6 +121,7 @@
                     <StackPanel
                         Grid.Row="0">
                         <ListView
+                            SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=OneWay}"
                             Margin="0,10,0,0"
                             x:Name="TopListView"
                             Loaded="TopListView_Loaded"
@@ -146,15 +148,16 @@
                                 Style="{ThemeResource ShrinkIcon}" />
                         </Button>
                     </StackPanel>
-                   
+
                     <Grid
                         HorizontalAlignment="Center"
                         Grid.Row="1"
-                        Width="Auto"
-                      >
+                        Width="Auto">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition
+                                Width="Auto" />
+                            <ColumnDefinition
+                                Width="*" />
                         </Grid.ColumnDefinitions>
                         <PersonPicture
                             HorizontalAlignment="Left"
@@ -177,116 +180,119 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <ScrollViewer>
+                <Grid
+                    Margin="10"
+                    Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                    Padding="5"
+                    CornerRadius="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="*" />
+                    </Grid.RowDefinitions>
                     <Grid
-                        Margin="10"
-                        Background="{ThemeResource ApplicationBackgroundThemeBrush}"
-                        Padding="5"
-                        CornerRadius="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid
-                            CornerRadius="8"
-                            Padding="10,5,10,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="Auto" />
-                                <ColumnDefinition
-                                    Width="Auto" />
-                                <ColumnDefinition
-                                    Width="*" />
-                                <ColumnDefinition
-                                    Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        CornerRadius="8"
+                        Padding="10,5,10,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="Auto" />
+                            <ColumnDefinition
+                                Width="Auto" />
+                            <ColumnDefinition
+                                Width="*" />
+                            <ColumnDefinition
+                                Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            Grid.Column="0"
+                            Style="{ThemeResource FrameNavButton}"
+                            x:Name="BackButton"
+                            IsEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
+                            Click="BackButton_Click">
+                            <Button.Content>
+                                <FontIcon
+                                    HorizontalAlignment="Center"
+                                    Glyph="&#xE973;" />
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            Style="{ThemeResource FrameNavButton}"
+                            Grid.Column="1"
+                            Click="NextButton_Click"
+                            IsEnabled="{x:Bind ContentFrame.CanGoForward, Mode=OneWay}"
+                            x:Name="NextButton">
+                            <Button.Content>
+                                <FontIcon
+                                    HorizontalAlignment="Center"
+                                    Glyph="&#xE974;" />
+                            </Button.Content>
+                        </Button>
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind ViewModel.SelectedItem.Text, Mode=OneWay}"
+                            FontSize="20"
+                            HorizontalTextAlignment="Center"
+                            TextAlignment="Center"
+                            FontWeight="Bold" />
+                        <StackPanel
+                            Grid.Column="3"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+
+                            <ToggleButton
+                                x:Name="SwitchThemeButton"
+                                Click="SwitchThemeButton_Click"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                CornerRadius="10"
+                                Padding="8"
+                                Margin="5,0,5,0">
+                                <FontIcon
+                                    x:Name="ThemeIcon"
+                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                    FontSize="18" />
+                            </ToggleButton>
+
                             <Button
-                                Grid.Column="0"
-                                Style="{ThemeResource FrameNavButton}"
-                                x:Name="BackButton"
-                                Click="BackButton_Click"
-                                >
+                                Click="NotificationsButton_Click"
+                                x:Name="NotificationsButton"
+                                CornerRadius="10"
+                                Padding="8"
+                                Style="{ThemeResource IconButton}">
                                 <Button.Content>
                                     <FontIcon
-                                        HorizontalAlignment="Center"
-                                        Glyph="&#xE96F;" />
+                                        Glyph="&#xEA8F;"
+                                        FontSize="18"
+                                        Style="{StaticResource MenuIconStyle}" />
                                 </Button.Content>
                             </Button>
                             <Button
-                                Style="{ThemeResource FrameNavButton}"
-                                Grid.Column="1"
-                                Click="NextButton_Click"
-                                x:Name="NextButton">
+                                x:Name="SettingsButton"
+                                Margin="5,0,5,0"
+                                CornerRadius="10"
+                                Padding="8"
+                                Click="SettingsButton_Click"
+                                Style="{ThemeResource IconButton}">
                                 <Button.Content>
                                     <FontIcon
-                                        HorizontalAlignment="Center"
-                                        Glyph="&#xE970;" />
+                                        FontSize="18"
+                                        Glyph="&#xE713;"
+                                        Style="{StaticResource MenuIconStyle}" />
                                 </Button.Content>
                             </Button>
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Grid.Column="2"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind ViewModel.SelectedItem.Text, Mode=OneWay}"
-                                FontSize="20"
-                                HorizontalTextAlignment="Center"
-                                TextAlignment="Center"
-                                FontWeight="Bold" />
-                            <StackPanel
-                                Grid.Column="3"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal">
 
-                                <ToggleButton
-                                    x:Name="SwitchThemeButton"
-                                    Click="SwitchThemeButton_Click"
-                                    BorderThickness="0"
-                                    Background="Transparent"
-                                    CornerRadius="10"
-                                    Padding="8"
-                                    Margin="5,0,5,0">
-                                    <FontIcon
-                                        x:Name="ThemeIcon"
-                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                        FontSize="18" />
-                                </ToggleButton>
-
-                                <Button
-                                    Click="NotificationsButton_Click"
-                                    x:Name="NotificationsButton"
-                                    CornerRadius="10"
-                                    Padding="8"
-                                    Style="{ThemeResource IconButton}">
-                                    <Button.Content>
-                                        <FontIcon
-                                            Glyph="&#xEA8F;"
-                                            FontSize="18"
-                                            Style="{StaticResource MenuIconStyle}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button
-                                    x:Name="SettingsButton"
-                                    Margin="5,0,5,0"
-                                    CornerRadius="10"
-                                    Padding="8"
-                                    Click="SettingsButton_Click"
-                                    Style="{ThemeResource IconButton}">
-                                    <Button.Content>
-                                        <FontIcon
-                                            FontSize="18"
-                                            Glyph="&#xE713;"
-                                            Style="{StaticResource MenuIconStyle}" />
-                                    </Button.Content>
-                                </Button>
-
-                            </StackPanel>
-                        </Grid>
-                        <Frame
-                            Grid.Row="1"
-                            x:Name="ContentFrame" />
+                        </StackPanel>
                     </Grid>
-                </ScrollViewer>
+                    <ScrollViewer
+                        Grid.Row="1">
+                        <Frame
+                            x:Name="ContentFrame" />
+                    </ScrollViewer>
+                </Grid>
             </SplitView.Content>
 
         </SplitView>

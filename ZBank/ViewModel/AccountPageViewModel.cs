@@ -8,6 +8,8 @@ using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
+using ZBank.Entities.EnumerationType;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.ViewModel
 {
@@ -44,17 +46,17 @@ namespace ZBank.ViewModel
         {
             InsertAccountRequest request = new InsertAccountRequest()
             {
-               AccountToInsert = new SavingsAccount()
-               {
-                    AccountNumber = "test2",
-                    IFSCCode = "ZBNK1233",
-                    AccountName = "xxxxxxx",
-                    AccountStatus = AccountStatus.ACTIVE,
-                    OpenedOn = DateTime.Now,
-                    Currency = Currency.INR,
-                    Amount = 100,
-                    UserID="1111"
-               }
+               //AccountToInsert = new SavingsAccount()
+               //{
+               //     AccountNumber = "test2",
+               //     IFSCCode = "ZBNK1233",
+               //     AccountName = "xxxxxxx",
+               //     AccountStatus = AccountStatus.ACTIVE,
+               //     OpenedOn = DateTime.Now,
+               //     Currency = Currency.INR,
+               //     Amount = 100,
+               //     UserID="1111"
+               //}
             };
             
             IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);

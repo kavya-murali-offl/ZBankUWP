@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.AppEvents.AppEventArgs
 {

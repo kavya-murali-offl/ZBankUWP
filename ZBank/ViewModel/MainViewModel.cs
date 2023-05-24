@@ -14,6 +14,7 @@ using ZBank.View.Main;
 using ZBank.View;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
+using ZBank.View.UserControls;
 
 namespace ZBank.ViewModel
 {
@@ -38,48 +39,48 @@ namespace ZBank.ViewModel
             View = view;
             TopNavigationList = new List<Navigation>
             {
-                new Navigation("Dashboard", "\uEA8A"),
-                new Navigation("Accounts", "\uE910"),
-                new Navigation("Cards", "\uE8C7"),
-                new Navigation("Transactions", "\uE8AB"),
+                new Navigation("Dashboard", "\uEA8A", typeof(DashboardPage)),
+                new Navigation("Accounts", "\uE910", typeof(AccountsPage), typeof(AccountInfoFrame)),
+                new Navigation("Cards", "\uE8C7", typeof(CardsPage)),
+                new Navigation("Transactions", "\uE8AB", typeof(TransactionsPage)),
             };
             SelectedItem = TopNavigationList.FirstOrDefault();
-
         }
 
         public void UpdateSelectedPage(Type pageType)
         {
-            SelectedItem = TopNavigationList.Where(list => list.PageType == pageType).FirstOrDefault();
+            SelectedItem = TopNavigationList.Where(item => item.PageTypes.Contains(pageType)).FirstOrDefault();
         }
 
         public void NavigationChanged(Navigation navigation)
         {
             SelectedItem = navigation;
-            Type pageType = null;
             object pageParams = null;
+            Type pageType = GetPageType(SelectedItem.Tag);
 
-            if (SelectedItem.Tag == "Transactions")
-            {
-                pageType = typeof(TransactionsPage);
-            }
-            else if (SelectedItem.Tag == "Accounts")
-            {
-                pageType = typeof(AccountsPage);
-            }
-            else if (SelectedItem.Tag == "Cards")
-            {
-                pageType = typeof(AccountsPage);
-            }
-            else
-            {
-                pageType = typeof(DashboardPage);
-            }
             FrameContentChangedArgs args = new FrameContentChangedArgs()
             {
                 PageType = pageType,
                 Params = pageParams
             };
             ViewNotifier.Instance.OnFrameContentChanged(args);
+        }
+
+        public Type GetPageType(string tag)
+        {
+            switch (tag)
+            {
+                case "Dashboard":
+                    return typeof(DashboardPage);
+                case "Accounts":
+                    return typeof(AccountsPage);
+                case "Cards":
+                    return typeof(CardsPage);
+                case "Transactions":
+                    return typeof(TransactionsPage);
+                default:
+                    return typeof(DashboardPage);
+            }
         }
     }
 }

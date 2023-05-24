@@ -120,13 +120,17 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
-    <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
+    <Compile Include="Entity\Account.cs" />
+    <Compile Include="Entity\EnumerationTypes\Currency.cs" />
+    <Compile Include="Entity\EnumerationTypes\DepositType.cs" />
+    <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
     <Compile Include="Entity\Bank.cs" />
     <Compile Include="Entity\Branch.cs" />
     <Compile Include="Entity\BusinessObjects\DashboardDataModel.cs" />
     <Compile Include="Entity\BusinessObjects\TermDepositAccountDTO.cs" />
     <Compile Include="Entity\Constants\Constants.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
+    <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\Beneficiary.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
@@ -136,7 +140,7 @@
     <Compile Include="Entity\BusinessObjects\Notification.cs" />
     <Compile Include="Entity\BusinessObjects\SavingsAccountDTO.cs" />
     <Compile Include="Entity\BusinessObjects\TransactionBObj.cs" />
-    <Compile Include="Entity\Account.cs" />
+    <Compile Include="Entity\BusinessObjects\AccountDTO.cs" />
     <Compile Include="Entity\CreditCard.cs" />
     <Compile Include="Entity\CurrentAccount.cs" />
     <Compile Include="Entity\Customer.cs" />
@@ -160,6 +164,9 @@
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="View\IView.cs" />
+    <Compile Include="View\Main\CardsPage.xaml.cs">
+      <DependentUpon>CardsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -332,6 +339,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\Main\CardsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Main\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -449,7 +460,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Resources\Strings\en-US\Resources.resw" />
+    <PRIResource Include="Resources\Strings\en-US\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\BankDB.db3">

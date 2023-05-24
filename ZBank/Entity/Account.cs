@@ -1,48 +1,22 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZBank.Entities.EnumerationType;
+using ZBank.Entities;
 
-namespace ZBank.Entities
+namespace ZBank.Entity.BusinessObjects
 {
-    [Table("Account")]
-    public class Account
+    public class Account : AccountDTO
     {
-        public Account() { }
 
-        public Account(decimal amount) {
-            AccountNumber = "1111111111111111111";
-            IFSCCode = "ZBNK1233";
-            AccountName = "xxx";
-            AccountStatus = AccountStatus.ACTIVE;
-            OpenedOn = DateTime.Now;
-            Currency = Currency.INR;
-            Amount = amount;
-        }
+        public Branch BranchID { get; set; }
 
-        [PrimaryKey]
-        public string AccountNumber { get; set; }
+        public Branch BankID { get; set; }
 
-        public string IFSCCode { get; set; }
+        public Branch BranchName { get; set; }
 
-        public string AccountName { get; set; }
-
-        public string UserID { get; set; }
-
-        public string CreatedOn { get; set; }
-
-        public AccountStatus AccountStatus { get; set; }
-
-        public DateTime OpenedOn { get; set; }
-
-        public Currency Currency { get; set; }
-
-        public decimal Amount { get; set; }
-
-        public AccountType AccountType { get; set; }
+        public IEnumerable<Transaction> Transactions { get; set; }
 
         public override string ToString() => AccountNumber + " - " + AccountType.ToString();
     }

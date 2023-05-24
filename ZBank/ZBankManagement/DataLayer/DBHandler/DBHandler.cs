@@ -11,6 +11,7 @@ using ZBankManagement.Utility;
 using ZBankManagement.Controller;
 using System.Security.Principal;
 using ZBank.Entity;
+using System.Linq;
 
 namespace ZBank.DatabaseHandler
 {
@@ -44,19 +45,28 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<Account>> GetAllAccounts(string customerID)
         {
             List<Account> accountsList = new List<Account>();
-            var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
+            var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
+                $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
+                $"Inner Join Branch on Account.IFSCCode = Branch.IfscCode " +
+                $"where UserID = ?", "1111");
             var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
             var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber where UserID = ?", "1111");
             accountsList.AddRange(currentAccount);
             accountsList.AddRange(savingsAccount);
             accountsList.AddRange(termDepositAccounts);
+
+            foreach(var account in accountsList)
+            {
+                account.Transactions = await _databaseAdapter
+                    .Query<TransactionBObj>("Select * from Transactions where AccountNumber = ?", account.AccountNumber);
+            }
             return accountsList;
         }
 
         public async Task InsertAccount(Account account)
         {
             object dtoObject = AccountFactory.GetDTOObject(account);
-            await _databaseAdapter.Insert(account, typeof(Account));
+            await _databaseAdapter.Insert(account, typeof(AccountDTO));
             await _databaseAdapter.Insert(dtoObject);
         }
 
@@ -106,7 +116,7 @@ namespace ZBank.DatabaseHandler
         public async Task<int> UpdateAccount<T>(T account)
         {
             await _databaseAdapter.Update<T>(account);
-            return _databaseAdapter.Update(account as Account).Result;
+            return _databaseAdapter.Update(account as AccountDTO).Result;
         }
 
         //Card

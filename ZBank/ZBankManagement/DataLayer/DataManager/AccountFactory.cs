@@ -40,7 +40,6 @@ namespace ZBankManagement.Controller
 
         public static object GetDTOObject(Account account)
         {
-
             switch (account)
             {
                 case CurrentAccount _:

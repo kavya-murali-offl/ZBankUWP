@@ -31,7 +31,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             try
             {
                 DashboardDataModel dashboardModel = DashboardDataModel.Instance;
-                IEnumerable<Account> accountsList = _handler.GetAllAccounts(request.UserID).Result;
+                IEnumerable<AccountDTO> accountsList = _handler.GetAllAccounts(request.UserID).Result;
                 dashboardModel.BalanceCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Balance",
@@ -81,9 +81,9 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     PrimaryKey = "Total Deposits",
                     PrimaryValue = deposits.Count(),
                     SecondaryKey1 = "Active Deposits",
-                    SecondaryValue1 = deposits.Where(dep => dep.AccountStatus == Entities.AccountStatus.ACTIVE).Count(),
+                    SecondaryValue1 = deposits.Where(dep => dep.AccountStatus == AccountStatus.ACTIVE).Count(),
                     SecondaryKey2 = "Closed Deposits",
-                    SecondaryValue2 = deposits.Where(dep => dep.AccountStatus == Entities.AccountStatus.CLOSED).Count()
+                    SecondaryValue2 = deposits.Where(dep => dep.AccountStatus == AccountStatus.CLOSED).Count()
                 };
 
                 IEnumerable<Card> cardsList = _handler.GetAllCards(request.UserID).Result;

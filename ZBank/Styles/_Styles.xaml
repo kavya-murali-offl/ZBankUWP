@@ -268,7 +268,7 @@
             Value="0" />
         <Setter
             Property="Padding"
-            Value="7" />
+            Value="5" />
         <Setter
             Property="CornerRadius"
             Value="20" />
@@ -313,21 +313,14 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemBaseLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="BorderThickness">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="0" />
+                                                Value="{ThemeResource SystemAltMediumColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="ContentPresenter"
                                             Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemAccentColorLight1}" />
+                                                Value="{ThemeResource SystemBaseMediumColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
@@ -342,14 +335,14 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
+                                                Value="{ThemeResource SystemAltHighColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="ContentPresenter"
                                             Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemBaseHighColor}" />
+                                                Value="{ThemeResource SystemBaseLowColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <PointerDownThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
@@ -358,21 +351,20 @@
 
                                 <VisualState
                                     x:Name="Disabled">
-
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="ContentPresenter"
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
+                                                Value="{ThemeResource ButtonDisabledBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="ContentPresenter"
                                             Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
+                                                Value="{ThemeResource BackButtonDisabledForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

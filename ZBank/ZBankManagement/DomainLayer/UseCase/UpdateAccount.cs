@@ -50,13 +50,13 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public class UpdateAccountRequest : RequestObjectBase
         {
-            public Account UpdatedAccount { get; set; }
+            public AccountDTO UpdatedAccount { get; set; }
         }
 
         public class UpdateAccountResponse
         {
             public bool IsSuccess { get; set; }
-            public Account UpdatedAccount { get; set; }
+            public AccountDTO UpdatedAccount { get; set; }
         }
 
         public class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>

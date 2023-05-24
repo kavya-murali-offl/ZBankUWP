@@ -20,7 +20,6 @@ using System.Linq;
 
 namespace ZBank
 {
-
     public sealed partial class MainPage : Page, IView
     {
         public MainViewModel ViewModel { get; private set; }
@@ -37,6 +36,7 @@ namespace ZBank
             LoadToggleButton();
             ViewNotifier.Instance.ThemeChanged += SwitchTheme;
             ViewNotifier.Instance.FrameContentChanged += ChangeFrame;
+            ContentFrame.Navigate(typeof(DashboardPage));
             ContentFrame.Navigated += OnNavigated;
         }
 
@@ -47,7 +47,7 @@ namespace ZBank
             ViewNotifier.Instance.FrameContentChanged -= ChangeFrame;
             ContentFrame.Navigated += OnNavigated;
         }
-        
+
         public void OnNavigated(object sender, NavigationEventArgs e)
         {
             ViewModel.UpdateSelectedPage(ContentFrame.CurrentSourcePageType);
@@ -178,11 +178,12 @@ namespace ZBank
 
     public class Navigation
     {
-        public Navigation(string text, string iconSource, bool isToggled = false)
+        public Navigation(string text, string iconSource, params Type[] pageTypes)
         {
             Text = text;
             Tag = text;
             IconSource = iconSource;
+            PageTypes = pageTypes;
         }
 
         public string Text { get; set; }
@@ -191,7 +192,6 @@ namespace ZBank
 
         public string IconSource { get; set; }
 
-        public Type PageType { get; set; }
+        public Type[] PageTypes { get; set; }
     }
-
 }

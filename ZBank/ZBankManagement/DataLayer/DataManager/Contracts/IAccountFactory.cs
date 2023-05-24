@@ -1,5 +1,6 @@
 ﻿using ZBank.Entities.EnumerationType;
 using ZBank.Entities;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBankManagement.Interface
 {
