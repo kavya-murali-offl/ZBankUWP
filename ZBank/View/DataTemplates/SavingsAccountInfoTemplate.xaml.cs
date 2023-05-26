@@ -23,12 +23,26 @@ namespace ZBank.View.DataTemplates
     /// </summary>
     public sealed partial class SavingsAccountInfoTemplate : UserControl
     {
-        public SavingsAccount SavingsAccount { get; set; } 
-        
         public SavingsAccountInfoTemplate()
         {
             this.InitializeComponent();
-            SavingsAccount = this.DataContext as SavingsAccount;
+        }
+
+        public SavingsAccount SelectedAccount
+        {
+            get { return (SavingsAccount)GetValue(SelectedAccountProperty); }
+            set { SetValue(SelectedAccountProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedAccountProperty =
+            DependencyProperty.Register("SelectedAccount", typeof(SavingsAccount), typeof(SavingsAccountInfoTemplate), new PropertyMetadata(null));
+
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //ViewOrNoCardTemplate.DataContext = this;
+           
+            //ViewOrNoCardTemplate.Content = ((DataTemplate)Resources["ViewCardTemplate"]).LoadContent();
         }
     }
 }

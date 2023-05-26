@@ -8,6 +8,11 @@ using ZBank.Entities;
 using ZBank.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
+using System.Collections.ObjectModel;
+using ZBank.Entities.BusinessObjects;
+using ZBankManagement.Utility;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -51,20 +56,40 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class GetAllTransactionsRequest : RequestObjectBase
     {
+        public string CustomerID { get; set; }
+
         public string AccountNumber { get; set; }
     }
 
     public class GetAllTransactionsResponse
     {
         public IEnumerable<Transaction> Transactions { get; set; }
+
+        public IEnumerable<Beneficiary> Beneficiaries { get; set; }
     }
 
 
     public class GetAllTransactionsPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
     {
+        public TransactionViewModel ViewModel { get; set; }
 
-        public void OnSuccess(GetAllTransactionsResponse response)
+        public GetAllTransactionsPresenterCallback(TransactionViewModel viewModel)
         {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllTransactionsResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
+                {
+                    TransactionList = response.Transactions,
+                    BeneficiariesList = response.Beneficiaries
+                };
+
+                ViewNotifier.Instance.OnTransactionsListUpdated(args);
+            });
         }
 
         public void OnFailure(ZBankException response)
@@ -72,3 +97,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         }
     }
 }
+

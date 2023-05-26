@@ -11,20 +11,6 @@ namespace ZBank.Entities.BusinessObjects
 {
     public class DashboardDataModel
     {
-        private static DashboardDataModel _instance;
-        private DashboardDataModel() { }
-
-        public static DashboardDataModel Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new DashboardDataModel();
-                }
-                return _instance;
-            }
-        }
 
         public DashboardCardModel BalanceCard { get; set; }
 
@@ -39,6 +25,8 @@ namespace ZBank.Entities.BusinessObjects
         public ObservableCollection<Beneficiary> AllBeneficiaries { get; set; }
 
         public ObservableCollection<TransactionBObj> LatestTransactions { get; set; }
+
+        public ObservableCollection<Account> AllAccounts { get; set; }
     }
 
     public class DashboardCardModel

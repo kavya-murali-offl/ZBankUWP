@@ -11,6 +11,7 @@ using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
+using System.Collections.Generic;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -60,7 +61,14 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class GetDashboardDataResponse
     {
-        public DashboardDataModel DashboardModel { get; set; }
+        public IEnumerable<Card> AllCards { get; set; }
+        public IEnumerable<Beneficiary> Beneficiaries { get; set; }
+        public IEnumerable<Transaction> LatestTransactions { get; set; }
+        public DashboardCardModel BeneficiariesCard { get; set; }
+        public DashboardCardModel DepositCard { get; set; }
+        public DashboardCardModel IncomeExpenseCard { get; set; }
+        public DashboardCardModel BalanceCard { get; set; }
+        public IEnumerable<Account> Accounts { get; set; }
     }
 
 
@@ -77,10 +85,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
             await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-            DashboardDataUpdatedArgs args = new DashboardDataUpdatedArgs()
-            {
-                DashboardModel = response.DashboardModel
-            };
+                DashboardDataUpdatedArgs args = new DashboardDataUpdatedArgs()
+                {
+                    AllCards = response.AllCards,
+                    DepositCard = response.DepositCard,
+                    AllBeneficiaries = response.Beneficiaries,
+                    BeneficiariesCard = response.BeneficiariesCard,
+                    AllAccounts = response.Accounts,
+                    BalanceCard = response.BalanceCard,
+                    IncomeExpenseCard = response.IncomeExpenseCard,
+                    LatestTransactions = response.LatestTransactions,
+                };
 
                 ViewNotifier.Instance.OnDashboardDataChanged(args);
             });

@@ -12,7 +12,7 @@ namespace ZBank.Entities.BusinessObjects
     {
         public Branch Branch { get; set; }
 
-        public DebitCard LinkedCard { get; set; }
+        public Card LinkedCard { get; set; }
 
         public IEnumerable<TransactionBObj> Transactions { get; set; }
 

@@ -9,6 +9,7 @@ using ZBank.Entities.BusinessObjects;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Utility;
 
 namespace ZBank.ViewModel
 {
@@ -32,9 +33,7 @@ namespace ZBank.ViewModel
 
         public void OnLoaded()
         {
-            ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.DashboardDataChanged += RefreshData;
-            LoadAllAccounts();
             LoadContent();
         }
 
@@ -42,12 +41,9 @@ namespace ZBank.ViewModel
         {
             if(_onViewCardIndex < 0 || _onViewCardIndex >= DashboardModel.AllCards.Count)
             {
-
+                _onViewCardIndex = 0;
             }
-            else
-            {
-                OnViewCard = DashboardModel.AllCards.ElementAt(_onViewCardIndex);
-            }
+            OnViewCard = DashboardModel.AllCards.ElementAt(_onViewCardIndex);
         }
 
         public void OnNextCard()
@@ -84,7 +80,25 @@ namespace ZBank.ViewModel
 
         public void RefreshData(DashboardDataUpdatedArgs args)
         {
-            DashboardModel = args.DashboardModel;
+            IEnumerable<TransactionBObj> transactionBObjs = args?.LatestTransactions.Select(tx =>
+            {
+                var bobj = Mapper.GetTransactionBObj(tx);
+                bobj.OtherAccount = args.AllBeneficiaries.FirstOrDefault(ben => ben.AccountNumber == tx.OtherAccountNumber);
+                return bobj;
+            });
+
+            DashboardModel = new DashboardDataModel()
+            {
+                AllBeneficiaries = new ObservableCollection<Beneficiary>(args.AllBeneficiaries),
+                AllCards = new ObservableCollection<Card>(args.AllCards),
+                LatestTransactions = new ObservableCollection<TransactionBObj>(transactionBObjs),
+                BalanceCard = args.BalanceCard,
+                DepositCard = args.DepositCard,
+                IncomeExpenseCard = args.IncomeExpenseCard,
+                BeneficiariesCard = args.BeneficiariesCard,
+                AllAccounts = new ObservableCollection<Account>(args.AllAccounts)
+            };
+            
             _onViewCardIndex = 0;
             UpdateOnViewCard();
         }
@@ -104,44 +118,15 @@ namespace ZBank.ViewModel
 
         public void OnUnLoaded()
         {
-            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.DashboardDataChanged -= RefreshData;
-        }
-
-        public void UpdateAccountsList(AccountsListUpdatedArgs args)
-        {
-            Accounts = args.AccountsList;
-        }
-
-        private ObservableCollection<Account> _accounts { get; set; }
-
-        public void LoadAllAccounts()
-        {
-            GetAllAccountsRequest request = new GetAllAccountsRequest()
-            {
-                AccountType = null,
-                UserID = "1111"
-            };
-
-            IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsInDashboardPresenterCallback(this);
-            UseCaseBase<GetAllAccountsResponse> useCase = new GetAllAccountsUseCase(request, presenterCallback);
-            useCase.Execute();
         }
 
         public DashboardViewModel(IView view)
         {
-            this.View = view;
+            View = view;
         }
 
-        public ObservableCollection<Account> Accounts
-        {
-            get { return _accounts; }
-            set
-            {
-                _accounts = value;
-                OnPropertyChanged(nameof(Accounts));
-            }
-        }
+     
     }
 
 

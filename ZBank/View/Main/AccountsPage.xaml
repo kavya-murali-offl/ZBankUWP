@@ -22,11 +22,13 @@
                 MinHeight="200"
                 MinWidth="320"
                 Margin="5"
-                CornerRadius="15,20,10,10"
-                BorderThickness="0.25"
+                CornerRadius="15,15,20,20"
+                BorderThickness="0"
                 BorderBrush="{ThemeResource SystemAccentColorLight3}"
                 Background="{ThemeResource ApplicationBackground}">
                 <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
                     <RowDefinition
                         Height="Auto" />
                     <RowDefinition
@@ -43,8 +45,8 @@
                     MaxWidth="200"
                     Height="30"
                     VerticalAlignment="Top"
-                    HorizontalAlignment="Left"
-                    CornerRadius="0,0,15,0">
+                    HorizontalAlignment="Right"
+                    CornerRadius="0,0,0,15">
                     <TextBlock
                         Foreground="{ThemeResource SystemChromeWhiteColor}"
                         FontSize="13"
@@ -52,19 +54,6 @@
                         Padding="10,5,10,5"
                         Text="{Binding AccountType}" />
                 </StackPanel>
-                <Button
-                    x:Name="ViewAccountButton"
-                    Padding="15"
-                    Margin="0"
-                    Click="ViewAccountButton_Click"
-                    BorderThickness="0"
-                    CornerRadius="0,0,0,20"
-                    Style="{ThemeResource PrimaryNavigationButton}"
-                    HorizontalAlignment="Right"
-                    HorizontalContentAlignment="Right">
-                    <FontIcon
-                        Glyph="&#xE26B;" />
-                </Button>
 
                 <TextBlock
                     Margin="0,10,0,5"
@@ -102,7 +91,7 @@
                     Margin="10"
                     HorizontalAlignment="Center"
                     Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}" />
-                <Button
+                <!--<Button
                     Margin="0,10,0,20"
                     HorizontalAlignment="Center"
                     Grid.Row="4"
@@ -111,6 +100,31 @@
                         <TextBlock
                             Text="View Balance" />
                     </Button.Content>
+                </Button>-->
+
+                <Button
+                    Padding="15"
+                    x:Name="ViewAccountButton"
+                    Margin="0,15,0,0"
+                    Grid.Row="5"
+                    Click="ViewAccountButton_Click"
+                    BorderThickness="0"
+                    CornerRadius="0,0,0,0"
+                    Style="{ThemeResource PrimaryNavigationButton}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock 
+                                Margin="10,0,10,0"
+                                Text="View Details" />
+                            <FontIcon
+                                FontSize="16"
+                                VerticalAlignment="Center"
+                                Glyph="&#xE26B;" />
+                        </StackPanel>
+                    </Button.Content>
+                    
                 </Button>
             </Grid>
         </DataTemplate>

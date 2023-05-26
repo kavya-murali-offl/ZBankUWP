@@ -11,6 +11,21 @@ namespace ZBank.AppEvents.AppEventArgs
 {
     public class DashboardDataUpdatedArgs
     {
-        public DashboardDataModel DashboardModel;
+
+        public DashboardCardModel BalanceCard { get; set; }
+
+        public DashboardCardModel BeneficiariesCard { get; set; }
+
+        public DashboardCardModel DepositCard { get; set; }
+
+        public DashboardCardModel IncomeExpenseCard { get; set; }
+
+        public IEnumerable<Card> AllCards { get; set; }
+
+        public IEnumerable<Beneficiary> AllBeneficiaries { get; set; }
+
+        public IEnumerable<Transaction> LatestTransactions { get; set; }
+
+        public IEnumerable<Account> AllAccounts { get; set; }
     }
 }

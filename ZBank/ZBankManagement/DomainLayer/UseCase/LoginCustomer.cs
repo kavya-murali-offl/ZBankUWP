@@ -21,8 +21,10 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            GetCredentialsRequest credentialsRequest = new GetCredentialsRequest();
-            credentialsRequest.CustomerID = _request.CustomerID;
+            GetCredentialsRequest credentialsRequest = new GetCredentialsRequest
+            {
+                CustomerID = _request.CustomerID
+            };
             _loginCustomerDataManager.GetCredentials(credentialsRequest, new GetCustomerCredentialsCallback(this));
         }
 
@@ -54,8 +56,10 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             {
                 if (_useCase.CheckPassword(response.CustomerCredentials.Password, response.CustomerCredentials.Salt))
                 {
-                    GetCustomerRequest getCustomerRequest = new GetCustomerRequest();
-                    getCustomerRequest.CustomerID = response.CustomerCredentials.ID;
+                    GetCustomerRequest getCustomerRequest = new GetCustomerRequest
+                    {
+                        CustomerID = response.CustomerCredentials.ID
+                    };
                     _useCase._loginCustomerDataManager.GetCustomer(getCustomerRequest, new GetCustomerCallback(_useCase));
                 }
                 else
@@ -87,9 +91,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             public void OnSuccess(GetCustomerResponse response)
             {
 
-                LoginCustomerResponse loginResponse = new LoginCustomerResponse();
-                loginResponse.LoggedInCustomer = response.Customer;
-                loginResponse.IsLoggedIn = true;
+                LoginCustomerResponse loginResponse = new LoginCustomerResponse
+                {
+                    LoggedInCustomer = response.Customer,
+                    IsLoggedIn = true
+                };
                 _useCase.PresenterCallback.OnSuccess(loginResponse);
             }
 
@@ -98,6 +104,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 _useCase.PresenterCallback.OnFailure(error);
             }
         }
+
+        
     }
 
 

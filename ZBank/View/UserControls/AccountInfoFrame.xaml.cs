@@ -20,7 +20,7 @@ using ZBank.ViewModel;
 
 namespace ZBank.View.UserControls
 {
-    /// <summary>
+    /// <summary
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class AccountInfoFrame : Page
@@ -37,21 +37,26 @@ namespace ZBank.View.UserControls
             if(e.Parameter is AccountInfoPageParams) { 
                 var parameters = (e.Parameter) as AccountInfoPageParams;
                 SelectedAccount = parameters.SelectedAccount;
+                DataTemplate template = null;
 
                 if (SelectedAccount is SavingsAccount)
                 {
-                    AccountInfoContentControl.ContentTemplate = (DataTemplate)this.Resources["SavingsAccountTemplate"];
+                    template = Resources["SavingsAccountTemplate"] as DataTemplate;
                 }
-                else if(SelectedAccount is CurrentAccount)
+                else if (SelectedAccount is CurrentAccount)
                 {
-                    AccountInfoContentControl.ContentTemplate = (DataTemplate)this.Resources["CurrentAccountTemplate"];
-
+                    template = Resources["CurrentAccountTemplate"] as DataTemplate;
                 }
                 else if (SelectedAccount is TermDepositAccount)
                 {
-                    AccountInfoContentControl.ContentTemplate = (DataTemplate)this.Resources["DepositAccountTemplate"];
+                    template = Resources["DepositAccountTemplate"] as DataTemplate;
                 }
-                AccountInfoContentControl.DataContext = SelectedAccount;
+
+                if(template != null)
+                {
+                    AccountInfoContentControl.DataContext = this;
+                    AccountInfoContentControl.Content = template.LoadContent();
+                }
             }
         }
     }

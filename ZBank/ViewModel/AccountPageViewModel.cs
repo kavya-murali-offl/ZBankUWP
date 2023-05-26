@@ -92,7 +92,7 @@ namespace ZBank.ViewModel
 
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
-            Accounts = args.AccountsList;
+            Accounts = new ObservableCollection<Account>(args.AccountsList);
         }
     }
 }

@@ -23,6 +23,9 @@
             <TextBlock
                 Text="{x:Bind AccountNumber}" />
         </DataTemplate>
+        <DataTemplate x:Key="OnViewCardTemplate">
+        
+        </DataTemplate>
     </Page.Resources>
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -216,7 +219,7 @@
                                                 <ListView
                                                     x:Name="AccountsList"
                                                     SelectionChanged="AccountsList_SelectionChanged"
-                                                    ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
+                                                    ItemsSource="{x:Bind ViewModel.DashboardModel.AllAccounts, Mode=OneWay}">
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate
                                                             x:DataType="modelBObj:Account">
@@ -380,8 +383,10 @@
                     <usercontrol:CardControl.MyContent>
                         <TextBlock
                             Text="" />
-                        <!--<templates:CardViewTemplate
-                            DataContext="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />-->
+                        <!--<templates:ViewOrNoCardTemplate
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            SelectedCard="{Binding ViewModel.OnViewCard, Mode=TwoWay}" />-->
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
 

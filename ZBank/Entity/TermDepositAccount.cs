@@ -33,6 +33,9 @@ namespace ZBank.Entities
 
         public string RepaymentAccountNumber { get; set; }
 
+        public decimal MinimumBalance { get; set; }
+
+
         public DepositType FDType { get; set; }
 
         public DateTime MaturityDate { get; set; }

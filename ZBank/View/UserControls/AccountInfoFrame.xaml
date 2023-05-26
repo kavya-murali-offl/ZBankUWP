@@ -13,39 +13,46 @@
         <converter:CurrencyConverter
             x:Key="CurrencyConverter" />
         <DataTemplate x:Name="SavingsAccountTemplate">
-            <templates:SavingsAccountInfoTemplate />
+            <templates:SavingsAccountInfoTemplate
+                SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
         </DataTemplate>
         <DataTemplate
-            x:Name="CurrentAccountTemplate">
-            <templates:CurrentAccountInfoTemplate />
+            x:Key="CurrentAccountTemplate">
+            <templates:CurrentAccountInfoTemplate
+                SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
         </DataTemplate>
         <DataTemplate
-            x:Name="DepositAccountTemplate">
-            <templates:TermDepositAccountInfoTemplate />
+            x:Key="DepositAccountTemplate">
+            <templates:TermDepositAccountInfoTemplate
+               />
         </DataTemplate>
     </Page.Resources>
-    <Grid
-        Padding="10">
+    <Grid>
         <local:OneByTwoGrid Grid.Row="2">
             <local:OneByTwoGrid.Column1Content>
-                <ContentControl
-                    HorizontalContentAlignment="Stretch"
-                    x:Name="AccountInfoContentControl"/>
+                    <ContentControl
+                        VerticalContentAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        x:Name="AccountInfoContentControl" />
             </local:OneByTwoGrid.Column1Content>
             <local:OneByTwoGrid.Column2Content>
-                <Grid>
+                <Grid
+                    VerticalAlignment="Stretch"
+                    Margin="5"
+                    Background="{ThemeResource ApplicationBackground}"
+                    Padding="10"
+                    CornerRadius="8">
                     <Grid.RowDefinitions>
                         <RowDefinition
                             Height="Auto" />
                         <RowDefinition
-                            Height="Auto" /><RowDefinition
-                            Height="Auto" />
+                            Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel
                         Padding="30,10,30,10"
                         CornerRadius="4"
                         Background="Green"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Right">
                         <TextBlock
                             FontSize="18"
                             HorizontalAlignment="Center"
@@ -60,11 +67,15 @@
                             Text="{x:Bind SelectedAccount.Amount, Converter={StaticResource CurrencyConverter}}" />
                     </StackPanel>
                     <TextBlock
-                        Grid.Row="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        FontSize="19"
+                        Margin="10"
                         Text="Transactions" />
                     <ListView
-                        Grid.Row="2"
-                        ItemsSource="{x:Bind SelectedAccount.Transactions}">
+                        Grid.Row="1"
+                        ItemsSource="{x:Bind SelectedAccount.Transactions, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate
                                 x:DataType="modelBObj:TransactionBObj">

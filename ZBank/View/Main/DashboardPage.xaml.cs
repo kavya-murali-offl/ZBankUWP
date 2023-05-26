@@ -10,7 +10,6 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
-using ZBank.Entities.BusinessObjects;
 using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -38,6 +37,8 @@ namespace ZBank.View
         {
             this.InitializeComponent();
             ViewModel = new DashboardViewModel(this);
+            //OnViewCardContent.DataContext = this;
+            //OnViewCardContent.Content = (Resources["OnViewCardTemplate"] as DataTemplate).LoadContent();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -57,6 +58,7 @@ namespace ZBank.View
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnLoaded();
+           
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -73,9 +75,9 @@ namespace ZBank.View
         private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView item = null;
-            if (sender is ListView)
+            if (sender is ListView view)
             {
-                 item = (ListView)sender;
+                 item = view;
             }
             if(item.SelectedIndex >= 0)
             {
@@ -93,13 +95,13 @@ namespace ZBank.View
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView item = null;
-            if (sender is ListView)
+            if (sender is ListView view)
             {
-                item = (ListView)sender;
+                item = view;
             }
             if(item.SelectedIndex >= 0)
             {
-                var accountsList = ViewModel.Accounts;
+                var accountsList = ViewModel.DashboardModel.AllAccounts;
                 SelectedAccount = accountsList[item.SelectedIndex];
                 AccountsText.Text = accountsList[item.SelectedIndex]?.ToString();
             }

@@ -29,9 +29,8 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                DashboardDataModel dashboardModel = DashboardDataModel.Instance;
                 IEnumerable<Account> accountsList = _handler.GetAllAccounts(request.UserID).Result;
-                dashboardModel.BalanceCard = new DashboardCardModel
+                var BalanceCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Balance",
                     PrimaryValue = accountsList.Sum(acc => acc.Amount),
@@ -43,7 +42,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
                 IEnumerable<Beneficiary> beneficiaries = _handler.GetBeneficiaries(request.UserID).Result;
                 IEnumerable<string> ifscCodes = _handler.GetBranchDetails().Result.Where(brn => brn.BankID == "1").Select(brn => brn.IfscCode);
-                dashboardModel.BeneficiariesCard = new DashboardCardModel
+                var BeneficiariesCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Beneficiaries",
                     PrimaryValue = beneficiaries.Count(),
@@ -53,7 +52,6 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = beneficiaries.Where(ben => !ifscCodes.Contains(ben.IFSCCode)).Count()
                 };
 
-                dashboardModel.AllBeneficiaries = new ObservableCollection<Beneficiary>(beneficiaries);
 
                 List<Transaction> transactions = new List<Transaction>();
                 foreach(var account in accountsList)
@@ -64,7 +62,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 var income = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.INCOME).Sum(tran => tran.Amount);
                 var expense = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.EXPENSE).Sum(tran => tran.Amount);
 
-                dashboardModel.IncomeExpenseCard = new DashboardCardModel
+                var IncomeExpenseCard = new DashboardCardModel
                 {
                     PrimaryKey = "Net Profit / Month",
                     PrimaryValue = (income - expense),
@@ -75,7 +73,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 };
 
                 var deposits = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT);
-                dashboardModel.DepositCard = new DashboardCardModel
+                var DepositCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Deposits",
                     PrimaryValue = deposits.Count(),
@@ -85,21 +83,18 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = deposits.Where(dep => dep.AccountStatus == AccountStatus.CLOSED).Count()
                 };
 
-                IEnumerable<Card> cardsList = _handler.GetAllCards(request.UserID).Result;
-                dashboardModel.AllCards = new ObservableCollection<Card>(cardsList);
+                IEnumerable<Card> AllCards = _handler.GetAllCards(request.UserID).Result;
 
-                IEnumerable<TransactionBObj> transactionBObjs = transactions.Select(tx => {
-                    var bobj = Mapper.GetTransactionBObj(tx);
-                    bobj.OtherAccount = beneficiaries.FirstOrDefault(ben => ben.AccountNumber == tx.OtherAccountNumber);
-                    return bobj;
-                });
-                
-                dashboardModel.LatestTransactions = new ObservableCollection<TransactionBObj>(transactionBObjs);
-
-                // To do  Observable to IEnumerable
                 GetDashboardDataResponse response = new GetDashboardDataResponse
                 {
-                    DashboardModel = dashboardModel
+                    AllCards = AllCards,
+                    DepositCard = DepositCard,
+                    Beneficiaries = beneficiaries,
+                    BeneficiariesCard = BeneficiariesCard,
+                    Accounts = accountsList,
+                    BalanceCard  = BalanceCard,
+                    IncomeExpenseCard = IncomeExpenseCard,
+                    LatestTransactions = transactions
                 };
 
                 callback.OnSuccess(response);   

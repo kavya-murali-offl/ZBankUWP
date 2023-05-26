@@ -5,42 +5,62 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZBank.AppEvents;
+using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
+using ZBank.View;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ViewModel
 {
-    public class CardsViewModel
+    public class CardsViewModel : ViewModelBase
     {
 
-        private ObservableCollection<Card> _cards { get; set; }
+        public IView View;
 
-        public CardsViewModel() { 
-        
-        
+        public CardsViewModel(IView view)
+        {
+            View = view;
+            LoadAllCards();
+        }
+        public void OnPageLoaded()
+        {
+            ViewNotifier.Instance.CardsPageDataUpdated += UpdateCardsList;
+            LoadAllCards();
         }
 
-        private readonly IList<string> _cardBackgrounds = new List<string>
+        public void OnPageUnLoaded()
         {
-            "/Assets/CardBackgrounds/card1.webp",
-            "/Assets/CardBackgrounds/card2.webp",
-            "/Assets/CardBackgrounds/card3.webp",
-            "/Assets/CardBackgrounds/card4.webp",
-        };
+            ViewNotifier.Instance.CardsPageDataUpdated -= UpdateCardsList;
+        }
 
 
-        
         private ObservableCollection<Card> AllCards
         {
-            get { return _cards; }
-            set { _cards = value; OnPropertyChanged("_cards"); }
+            get { return _allCards; }
+            set { _allCards = value; OnPropertyChanged(nameof(AllCards)); }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private ObservableCollection<Card> _allCards { get; set; }
 
-        private void OnPropertyChanged(string propertyName)
+
+        public void LoadAllCards()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            GetAllCardsRequest request = new GetAllCardsRequest()
+            {
+                CustomerID = "1111"
+            };
+
+            IPresenterCallback<GetAllCardsResponse> presenterCallback = new GetAllCardsPresenterCallback(this);
+            UseCaseBase<GetAllCardsResponse> useCase = new GetAllCardsUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
+        private void UpdateCardsList(CardPageDataUpdatedArgs args)
+        {
+            AllCards = new ObservableCollection<Card>(args.CardsList);
+        }
     }
 }

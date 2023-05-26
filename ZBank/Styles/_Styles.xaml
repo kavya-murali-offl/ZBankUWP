@@ -368,12 +368,9 @@
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-
                             </VisualStateGroup>
-
                         </VisualStateManager.VisualStateGroups>
                     </ContentPresenter>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -384,28 +381,16 @@
         x:Name="PrimaryNavigationButton">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource SystemChromeWhiteColor}" />
+            Value="{ThemeResource SystemBaseMediumColor}" />
         <Setter
             Property="Background"
-            Value="{ThemeResource SystemAccentColorDark2}" />
+            Value="{ThemeResource SystemBaseLowColor}" />
         <Setter
             Property="FontSize"
             Value="14" />
         <Setter
-            Property="MaxWidth"
-            Value="300" />
-        <Setter
-            Property="BorderThickness"
-            Value="1" />
-        <Setter
-            Property="BorderBrush"
-            Value="{ThemeResource SystemAccentColorDark2}" />
-        <Setter
             Property="CornerRadius"
             Value="6" />
-        <Setter
-            Property="Margin"
-            Value="6,0,6,0" />
         <Setter
             Property="Template">
             <Setter.Value>
@@ -444,7 +429,7 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
+                                                Value="{ThemeResource SystemBaseMediumLowColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                        
                                         <ObjectAnimationUsingKeyFrames
@@ -452,7 +437,7 @@
                                             Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemAccentColorDark1}" />
+                                                Value="{ThemeResource SystemAltMediumColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
@@ -467,14 +452,14 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
+                                                Value="{ThemeResource SystemBaseMediumColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="ContentPresenter"
                                             Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemAccentColorDark1}" />
+                                                Value="{ThemeResource SystemAltLowColor}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <PointerDownThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />

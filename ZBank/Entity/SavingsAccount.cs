@@ -10,5 +10,8 @@ namespace ZBank.Entities
     public class SavingsAccount : Account
     {
         public decimal InterestRate { get; set; }
+
+        public decimal MinimumBalance { get; set; }
+
     }
 }

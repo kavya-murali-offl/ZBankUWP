@@ -2,9 +2,9 @@
 using ZBank.Entities;
 using System.Linq;
 using ZBank.DatabaseHandler;
-using static ZBank.ZBankManagement.DomainLayer.UseCase.LoginCustomerUseCase;
 using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using System;
 
 namespace ZBankManagement.DataManager
 {
@@ -18,12 +18,47 @@ namespace ZBankManagement.DataManager
 
         public void GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback)
         {
-           Customer customer = DBHandler.GetCustomer(request.CustomerID).Result.FirstOrDefault();
-        }
+            try{
+                Customer customer = DBHandler.GetCustomer(request.CustomerID).Result.FirstOrDefault();
+
+                GetCustomerResponse response = new GetCustomerResponse()
+                {
+                    Customer = customer,
+                };
+
+                callback.OnSuccess(response);
+            }
+            catch(Exception e)
+            {
+                ZBankException exception = new ZBankException()
+                {
+                    Message = e.Message,
+                    Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN
+                };
+
+                callback.OnFailure(exception);
+            }
+        
+        } 
 
         public void GetCredentials(GetCredentialsRequest request, IUseCaseCallback<GetCredentialsResponse> callback)
         {
-            CustomerCredentials credentials = DBHandler.GetCredentials(request.CustomerID).Result;
+            try
+            {
+                CustomerCredentials credentials = DBHandler.GetCredentials(request.CustomerID).Result;
+                GetCredentialsResponse response = new GetCredentialsResponse()
+                {
+                    CustomerCredentials = credentials,
+                };
+
+                callback.OnSuccess(response);
+
+            }
+            catch (Exception e)
+            {
+                ZBankException exception = new ZBankException() { Message = e.Message, Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN };
+                callback.OnFailure(exception);
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,12 +24,21 @@ namespace ZBank.View.DataTemplates
     /// </summary>
     public sealed partial class CurrentAccountInfoTemplate : UserControl
     {
-        public CurrentAccount CurrentAccount { get; set; }
 
         public CurrentAccountInfoTemplate()
         {
             this.InitializeComponent();
-            CurrentAccount = this.DataContext as CurrentAccount;
         }
+
+        public CurrentAccount SelectedAccount
+        {
+            get { return (CurrentAccount)GetValue(SelectedAccountProperty); }
+            set { SetValue(SelectedAccountProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedAccountProperty =
+            DependencyProperty.Register("SelectedAccount", typeof(CurrentAccount), typeof(CurrentAccountInfoTemplate), new PropertyMetadata(null));
+
+       
     }
 }

@@ -172,8 +172,8 @@
                 FontWeight="Bold"
                 FontSize="19"
                 Margin="10,0,0,0" />
-            <local:CardViewTemplate
-                DataContext="{x:Bind }" />
+            <!--<local:CardViewTemplate
+                DataContext="{x:Bind }" />-->
         </Grid>
     </Grid>
 </Page>

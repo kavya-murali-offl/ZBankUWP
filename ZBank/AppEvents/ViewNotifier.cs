@@ -11,6 +11,25 @@ namespace ZBank.AppEvents
 {
     public class ViewNotifier
     {
+
+        public event Action<BeneficiaryListUpdatedArgs> BeneficiaryListUpdated;
+        public void OnBeneficiaryListUpdated(BeneficiaryListUpdatedArgs args)
+        {
+            BeneficiaryListUpdated?.Invoke(args);
+        }
+
+        public event Action<CardPageDataUpdatedArgs> CardsPageDataUpdated;
+        public void OnCardsPageDataUpdated(CardPageDataUpdatedArgs args)
+        {
+            CardsPageDataUpdated?.Invoke(args);
+        }
+
+        public event Action<TransactionPageDataUpdatedArgs> TransactionListUpdated;
+        public void OnTransactionsListUpdated(TransactionPageDataUpdatedArgs args)
+        {
+            TransactionListUpdated?.Invoke(args);
+        }
+
         public event Action<FrameContentChangedArgs> FrameContentChanged;
         public void OnFrameContentChanged(FrameContentChangedArgs args)
         {
@@ -24,12 +43,6 @@ namespace ZBank.AppEvents
             DashboardDataChanged?.Invoke(args);
         }
 
-
-        public Action AccountInserted;
-        public void OnAccountInserted()
-        {
-            AccountInserted?.Invoke();
-        }
 
         public event Action<bool> LoggedIn;
         public void OnSuccessfulLogin(bool IsLoginSuccess)

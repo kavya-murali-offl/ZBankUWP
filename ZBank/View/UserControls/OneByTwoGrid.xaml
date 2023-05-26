@@ -95,38 +95,28 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition
-                Height="Auto" />
+                Height="*" />
             <RowDefinition
-                Height="Auto" />
+                Height="*" />
         </Grid.RowDefinitions>
-        <Button
+        
+        <ContentControl
             x:Name="Column1"
+            Content="{x:Bind Column1Content, Mode=OneWay}"
             HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Content="{x:Bind Column1Content, Mode=OneWay}">
-            <Button.Template>
-                <ControlTemplate
-                    TargetType="Button">
-                    <ContentPresenter
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" />
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+            />
 
-        <Button
+        <ContentControl
             x:Name="Column2"
+            Content="{x:Bind Column2Content, Mode=OneWay}"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Content="{x:Bind Column2Content, Mode=OneWay}">
-            <Button.Template>
-                <ControlTemplate
-                    TargetType="Button">
-                    <ContentPresenter
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" />
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            VerticalAlignment="Stretch" />
+
+        
     </Grid>
 </UserControl>

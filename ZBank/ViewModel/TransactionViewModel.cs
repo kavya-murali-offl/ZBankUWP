@@ -7,23 +7,73 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entities;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.Domain.UseCase;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.View;
+using ZBank.AppEvents;
+using ZBankManagement.Utility;
 
 namespace ZBank.ViewModel
 {
-    public class TransactionViewModel
+    public class TransactionViewModel : ViewModelBase
     {
 
-        public TransactionViewModel()
+        public IView View;
+
+        public void LoadAllTransactionsData()
         {
-            
+            GetAllTransactionsRequest request = new GetAllTransactionsRequest()
+            {
+                CustomerID = "1111"
+            };
+
+            IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsPresenterCallback(this);
+            UseCaseBase<GetAllTransactionsResponse> useCase = new GetAllTransactionsUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
+        public void OnPageLoaded()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            ViewNotifier.Instance.TransactionListUpdated += UpdateTransactionsData;
+            LoadAllTransactionsData();
+        }
+
+        public void OnPageUnLoaded()
+        {
+            ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactionsData;
+        }
+
+        public TransactionViewModel(IView view)
+        {
+            View = view;
+        }
+
+        private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
+        {
+            var list = args.TransactionList
+               .Select(transaction =>
+               {
+                   TransactionBObj transactionBObj = Mapper.GetTransactionBObj(transaction);
+                   transactionBObj.OtherAccount = args.BeneficiariesList.FirstOrDefault(ben => ben.AccountNumber == transaction.OtherAccountNumber);
+                   return transactionBObj;
+               });
+
+            InViewTransactions = new ObservableCollection<TransactionBObj>(list);
+        }
+
+
+        private ObservableCollection<TransactionBObj> _inViewTransactions { get; set; }
+
+        public ObservableCollection<TransactionBObj> InViewTransactions
+        {
+            get { return _inViewTransactions; }
+            set
+            {
+                _inViewTransactions = value;
+                OnPropertyChanged(nameof(InViewTransactions));
+            }
         }
 
     }

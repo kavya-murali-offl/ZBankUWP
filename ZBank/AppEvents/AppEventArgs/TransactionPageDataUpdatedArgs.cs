@@ -9,8 +9,10 @@ using ZBank.Entities.BusinessObjects;
 
 namespace ZBank.AppEvents.AppEventArgs
 {
-    public class AccountsListUpdatedArgs
+    public class TransactionPageDataUpdatedArgs
     {
-       public IEnumerable<Account> AccountsList;
+        public IEnumerable<Transaction> TransactionList { get; set; }
+        public IEnumerable<Beneficiary> BeneficiariesList { get; set; }
+
     }
 }

@@ -7,6 +7,12 @@ using ZBank.Entities;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBank.Entities.BusinessObjects;
+using System.Collections.ObjectModel;
+using System;
+using Windows.UI.Core;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
+using Windows.UI.Popups;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -61,13 +67,30 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class GetAllCardsPresenterCallback : IPresenterCallback<GetAllCardsResponse>
     {
-        
-        public void OnSuccess(GetAllCardsResponse response)
+        private readonly CardsViewModel ViewModel;
+
+        public GetAllCardsPresenterCallback(CardsViewModel viewModel)
         {
+            ViewModel = viewModel;
         }
 
-        public void OnFailure(ZBankException response)
+        public async void OnSuccess(GetAllCardsResponse response)
         {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                CardPageDataUpdatedArgs args = new CardPageDataUpdatedArgs()
+                {
+                    CardsList = new ObservableCollection<Card>(response.Cards)
+                };
+                ViewNotifier.Instance.OnCardsPageDataUpdated(args);
+            });
+        }
+
+        public async void OnFailure(ZBankException exception)
+        {
+            var dialog = new MessageDialog(exception.Message);
+            await dialog.ShowAsync();
+
         }
     }
 }

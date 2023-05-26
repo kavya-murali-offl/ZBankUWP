@@ -119,7 +119,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppEvents\AppEventArgs\BenefiiciaryListUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\CardPageDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
     <Compile Include="Entity\Account.cs" />
     <Compile Include="Entity\EnumerationTypes\Currency.cs" />
     <Compile Include="Entity\EnumerationTypes\DepositType.cs" />
@@ -173,6 +176,9 @@
     </Compile>
     <Compile Include="View\DataTemplates\TermDepositAccountInfoTemplate.xaml.cs">
       <DependentUpon>TermDepositAccountInfoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\ViewOrNoCardTemplate.xaml.cs">
+      <DependentUpon>ViewOrNoCardTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IView.cs" />
     <Compile Include="View\Main\CardsPage.xaml.cs">
@@ -363,6 +369,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DataTemplates\TermDepositAccountInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\ViewOrNoCardTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using ZBank.DatabaseHandler;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBank.Entity.EnumerationTypes;
+using System;
 
 namespace ZBankManagement.DataManager
 {
@@ -19,12 +21,28 @@ namespace ZBankManagement.DataManager
 
         public void GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback)
         {
-            IEnumerable<Transaction> result = DBHandler.GetTransactionByAccountNumber(request.AccountNumber).Result;
-          
-            GetAllTransactionsResponse response = new GetAllTransactionsResponse();
-            response.Transactions = result;
+            try
+            {
+                IEnumerable<Transaction> transactionList = DBHandler.GetTransactionByAccountNumber(request.AccountNumber).Result;
+                IEnumerable<Beneficiary> beneficiaries = DBHandler.GetBeneficiaries(request.CustomerID).Result;
 
-            callback.OnSuccess(response);
+                GetAllTransactionsResponse response = new GetAllTransactionsResponse
+                {
+                    Transactions = transactionList,
+                    Beneficiaries = beneficiaries
+                };
+
+                callback.OnSuccess(response);
+            }
+           catch(Exception ex)
+            {
+                ZBankException error = new ZBankException()
+                {
+                    Type = ErrorType.UNKNOWN,
+                    Message = ex.Message,
+                };
+                callback.OnFailure(error);
+            }
         }
 
         public IEnumerable<Transaction> GetTransactionsByCardNumber(string cardNumber) => DBHandler.GetTransactionByCardNumber(cardNumber).Result;

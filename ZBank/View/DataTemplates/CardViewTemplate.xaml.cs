@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using ZBank.Entities;
 using ZBank.Entity.Constants;
 using ZBank.Utilities.Helpers;
+using ZBank.View.Main;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -22,59 +23,40 @@ namespace ZBank.View.DataTemplates
 {
     public sealed partial class CardViewTemplate : UserControl
     {
-        public Card Card { get; set; }
-        public string BackgroundImage { get; set; }
-        public string ProviderLogo { get; set; }
+       
         public decimal AvailableCreditLimit { get; set; }
+
+
+        public Card SelectedCard
+        {
+            get { return (Card)GetValue(SelectedCardProperty); }
+            set { SetValue(SelectedCardProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedCard.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedCardProperty =
+            DependencyProperty.Register("SelectedCard", typeof(Card), typeof(CardViewTemplate), new PropertyMetadata(null));
+
 
         public CardViewTemplate()
         {
             this.InitializeComponent();
-            Card = DataContext as Card;  
-            if(Card != null)
-                 SetDefaultValues();
         }
 
-        public readonly IList<string> _cardBackgrounds = new List<string>
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            "/Assets/CardBackgrounds/card1.jpg",
-            "/Assets/CardBackgrounds/card2.jpg",
-            "/Assets/CardBackgrounds/card3.jpg",
-            "/Assets/CardBackgrounds/card4.jpg",
-        };
-
-        public int bgIndex = 0;
-
-        public void SetDefaultValues()
-        {
-            if (bgIndex >= _cardBackgrounds.Count)
-            {
-                bgIndex = 0;
-            }
-
-            BackgroundImage = _cardBackgrounds[0];
-            bgIndex++;
-            if (Card == null)
-            {
-                //CardSpecificTemplate.Content = this.Resources["NoCardsToShow"] as DataTemplate;
-                //CardSpecificTemplate.DataContext = null;
-            }
-            else { 
-                if (Card.Type == CardType.DEBIT)
+            if(SelectedCard != null) {
+                if (SelectedCard is DebitCard)
                 {
-                    DebitCard debitCard = Card as DebitCard;
-                    ProviderLogo = LogoHelper.GetCardProviderPath();
+                    CardSpecificContent.Content = (Resources["DebitCardTemplate"] as DataTemplate).LoadContent();
                 }
-                else if (Card.Type == CardType.CREDIT)
+                else if (SelectedCard is CreditCard)
                 {
-                    CreditCard creditCard = Card as CreditCard;
-                    ProviderLogo = LogoHelper.GetCardProviderPath(creditCard.CreditCardProvider);
+                    CreditCard creditCard = SelectedCard as CreditCard;
                     AvailableCreditLimit = (creditCard.CreditLimit - creditCard.TotalOutstanding);
-                    CardSpecificTemplate.Content = this.Resources["CreditCardTemplate"] as DataTemplate;
-                    CardSpecificTemplate.DataContext = creditCard;
+                    CardSpecificContent.Content = (Resources["CreditCardTemplate"] as DataTemplate).LoadContent();
                 }
             }
-           
         }
     }
 }

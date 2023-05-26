@@ -7,7 +7,7 @@ using System.Linq;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 using ZBank.Entities.BusinessObjects;
-
+using System;
 namespace ZBankManagement.DataManager
 {
     public class GetCardDataManager : IGetCardDataManager
@@ -21,10 +21,24 @@ namespace ZBankManagement.DataManager
 
         public void GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
         {
-            IEnumerable<Card> cards = _dBHandler.GetAllCards(request.CustomerID).Result;
+            try
+            {
+                IEnumerable<Card> cards = _dBHandler.GetAllCards(request.CustomerID).Result;
 
-            GetAllCardsResponse response = new GetAllCardsResponse();  
-            callback.OnSuccess(response);
+                GetAllCardsResponse response = new GetAllCardsResponse();
+                response.Cards = cards;
+                callback.OnSuccess(response);
+            }
+            catch(Exception ex) {
+                ZBankException exception = new ZBankException()
+                {
+                    Message = ex.Message,
+                    Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN
+                };
+
+                callback.OnFailure(exception);  
+            }
+          
         }
     }
 }

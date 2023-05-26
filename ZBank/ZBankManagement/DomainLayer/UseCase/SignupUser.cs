@@ -95,7 +95,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class SignupUserPresenterCallback : IPresenterCallback<SignupUserResponse>
     {
 
-        public SignupUserPresenterCallback(AccountPageViewModel accountPageViewModel)
+        public SignupUserPresenterCallback()
         {
         }
 
