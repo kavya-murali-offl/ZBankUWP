@@ -59,12 +59,6 @@
                             Target="TopListView.ItemContainerStyle"
                             Value="{StaticResource WideMenuListItemStyle}" />
                         <Setter
-                            Target="ExpandButton.Visibility"
-                            Value="Collapsed" />
-                        <Setter
-                            Target="ShrinkButton.Visibility"
-                            Value="Visible" />
-                        <Setter
                             Target="MySplitView.DisplayMode"
                             Value="CompactInline" />
                     </VisualState.Setters>
@@ -86,12 +80,6 @@
                             Target="TopListView.ItemContainerStyle"
                             Value="{StaticResource NarrowMenuListItemStyle}" />
                         <Setter
-                            Target="ExpandButton.Visibility"
-                            Value="Visible" />
-                        <Setter
-                            Target="ShrinkButton.Visibility"
-                            Value="Collapsed" />
-                        <Setter
                             Target="MySplitView.DisplayMode"
                             Value="CompactOverlay" />
                     </VisualState.Setters>
@@ -106,11 +94,12 @@
         <userControls:CustomTitleBar
             Title="ZBank" />
         <SplitView
+            PointerReleased="Content_PointerReleased"
             x:Name="MySplitView"
             Grid.Row="1"
             PaneBackground="{ThemeResource ApplicationBackground}"
             CompactPaneLength="50"
-            OpenPaneLength="NaN">
+            OpenPaneLength="200">
             <SplitView.Pane>
                 <Grid
                     Style="{ThemeResource InnerGrid}"
@@ -121,9 +110,13 @@
                         <RowDefinition
                             Height="Auto" />
                     </Grid.RowDefinitions>
-
-                    <StackPanel>
-                        <ListView
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="*" />
+                        <ColumnDefinition
+                            Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                     <ListView
                             SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=OneWay}"
                             Margin="0,10,0,0"
                             ItemClick="TopListView_ItemClick"
@@ -132,35 +125,6 @@
                             ItemsSource="{x:Bind ViewModel.TopNavigationList}"
                             SelectionChanged="Navigation_SelectionChanged"
                             IsItemClickEnabled="True" />
-                        <Button
-                            x:Name="ExpandButton"
-                            Click="OnExpandClicked"
-                            Style="{ThemeResource ExpandButton}">
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    Content="Expand"
-                                    Placement="Bottom" />
-                            </ToolTipService.ToolTip>
-                            <FontIcon
-                                FontSize="18"
-                                FontFamily="Segoe Fluent Icons"
-                                Glyph="&#xE126;" />
-                        </Button>
-                        <Button
-                            x:Name="ShrinkButton"
-                            Click="OnShrinkClicked"
-                            Style="{ThemeResource ExpandButton}">
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    Content="Collapse"
-                                    Placement="Bottom" />
-                            </ToolTipService.ToolTip>
-                            <FontIcon
-                                Glyph="&#xE127;"
-                                Style="{ThemeResource ShrinkIcon}" />
-                        </Button>
-                    </StackPanel>
-
                     <Grid
                         HorizontalAlignment="Center"
                         Grid.Row="1"
@@ -196,146 +160,165 @@
                             Style="{ThemeResource ProfileDropdownIcon}" />
                     </Grid>
                 </Grid>
+
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid
-                    Margin="0,10,10,10"
-                    Background="{ThemeResource ApplicationBackgroundThemeBrush}"
-                    Padding="5"
-                    CornerRadius="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="*" />
-                    </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="Auto" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                        <Border
+                            PointerExited="ResizeBorder_PointerExited"
+                            x:Name="ResizeBorder"
+                            PointerEntered="ResizeBorder_PointerEntered"
+                            PointerPressed="MySplitView_PointerPressed"
+                            Margin="0,18,0,18"
+                            Background="Transparent"
+                            Width="2" />
                     <Grid
-                        CornerRadius="8"
-                        Padding="10,5,10,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="Auto" />
-                            <ColumnDefinition
-                                Width="Auto" />
-                            <ColumnDefinition
-                                Width="*" />
-                            <ColumnDefinition
-                                Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Button
-                            Grid.Column="0"
-                            Style="{ThemeResource FrameNavButton}"
-                            x:Name="BackButton"
-                            IsEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
-                            Click="BackButton_Click">
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    Content="Back"
-                                    Placement="Bottom" />
-                            </ToolTipService.ToolTip>
-                            <Button.Content>
-                                <FontIcon
-                                    HorizontalAlignment="Center"
-                                    Glyph="&#xE973;" />
-                            </Button.Content>
-                        </Button>
-                        <Button
-                            Style="{ThemeResource FrameNavButton}"
-                            Grid.Column="1"
-                            Click="NextButton_Click"
-                            IsEnabled="{x:Bind ContentFrame.CanGoForward, Mode=OneWay}"
-                            x:Name="NextButton">
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    Content="Forward"
-                                    Placement="Bottom" />
-                            </ToolTipService.ToolTip>
-                            <Button.Content>
-                                <FontIcon
-                                    HorizontalAlignment="Center"
-                                    Glyph="&#xE974;" />
-                            </Button.Content>
-                        </Button>
-                        <TextBlock
-                            Margin="5,0,0,0"
-                            Grid.Column="2"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind ViewModel.SelectedItem.Text, Mode=OneWay}"
-                            FontSize="20"
-                            HorizontalTextAlignment="Center"
-                            TextAlignment="Center"
-                            FontWeight="Bold" />
-                        <StackPanel
-                            Grid.Column="3"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
-                            <ToggleButton
-                                x:Name="SwitchThemeButton"
-                                Click="SwitchThemeButton_Click"
-                                BorderThickness="0"
-                                Background="Transparent"
-                                CornerRadius="10"
-                                Padding="8"
-                                Margin="5,0,5,0">
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        Content="Switch Theme"
-                                        Placement="Bottom" />
-                                </ToolTipService.ToolTip>
-                                <FontIcon
-                                    x:Name="ThemeIcon"
-                                    Foreground="{ThemeResource SystemAccentColorDark1}"
-                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                    FontSize="18" />
-                            </ToggleButton>
-
+                        Grid.Column="1"
+                        Margin="0,10,10,10"
+                        Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                        Padding="5"
+                        CornerRadius="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid
+                            CornerRadius="8"
+                            Padding="10,5,10,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="Auto" />
+                                <ColumnDefinition
+                                    Width="Auto" />
+                                <ColumnDefinition
+                                    Width="*" />
+                                <ColumnDefinition
+                                    Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <Button
-                                Click="NotificationsButton_Click"
-                                x:Name="NotificationsButton"
-                                CornerRadius="10"
-                                Padding="8"
-                                Style="{ThemeResource IconButton}">
+                                Grid.Column="0"
+                                Style="{ThemeResource FrameNavButton}"
+                                x:Name="BackButton"
+                                IsEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
+                                Click="BackButton_Click">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
-                                        Content="Notifications"
+                                        Content="Back"
                                         Placement="Bottom" />
                                 </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
-                                        Glyph="&#xEA8F;"
-                                        FontSize="18"
-                                        Style="{StaticResource MenuIconStyle}" />
+                                        HorizontalAlignment="Center"
+                                        Glyph="&#xE973;" />
                                 </Button.Content>
                             </Button>
                             <Button
-                                x:Name="SettingsButton"
-                                Margin="5,0,5,0"
-                                CornerRadius="10"
-                                Padding="8"
-                                Click="SettingsButton_Click"
-                                Style="{ThemeResource IconButton}">
+                                Style="{ThemeResource FrameNavButton}"
+                                Grid.Column="1"
+                                Click="NextButton_Click"
+                                IsEnabled="{x:Bind ContentFrame.CanGoForward, Mode=OneWay}"
+                                x:Name="NextButton">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
-                                        Content="Settings"
+                                        Content="Forward"
                                         Placement="Bottom" />
                                 </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
-                                        FontSize="18"
-                                        Glyph="&#xE713;"
-                                        Style="{StaticResource MenuIconStyle}" />
+                                        HorizontalAlignment="Center"
+                                        Glyph="&#xE974;" />
                                 </Button.Content>
                             </Button>
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind ViewModel.SelectedItem.Text, Mode=OneWay}"
+                                FontSize="20"
+                                HorizontalTextAlignment="Center"
+                                TextAlignment="Center"
+                                FontWeight="Bold" />
+                            <StackPanel
+                                Grid.Column="3"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <ToggleButton
+                                    x:Name="SwitchThemeButton"
+                                    Click="SwitchThemeButton_Click"
+                                    BorderThickness="0"
+                                    Background="Transparent"
+                                    CornerRadius="10"
+                                    Padding="8"
+                                    Margin="5,0,5,0">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            Content="Switch Theme"
+                                            Placement="Bottom" />
+                                    </ToolTipService.ToolTip>
+                                    <FontIcon
+                                        x:Name="ThemeIcon"
+                                        Foreground="{ThemeResource SystemAccentColorDark1}"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        FontSize="18" />
+                                </ToggleButton>
 
-                        </StackPanel>
+                                <Button
+                                    Click="NotificationsButton_Click"
+                                    x:Name="NotificationsButton"
+                                    CornerRadius="10"
+                                    Padding="8"
+                                    Style="{ThemeResource IconButton}">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            Content="Notifications"
+                                            Placement="Bottom" />
+                                    </ToolTipService.ToolTip>
+                                    <Button.Content>
+                                        <FontIcon
+                                            Glyph="&#xEA8F;"
+                                            FontSize="18"
+                                            Style="{StaticResource MenuIconStyle}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button
+                                    x:Name="SettingsButton"
+                                    Margin="5,0,5,0"
+                                    CornerRadius="10"
+                                    Padding="8"
+                                    Click="SettingsButton_Click"
+                                    Style="{ThemeResource IconButton}">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            Content="Settings"
+                                            Placement="Bottom" />
+                                    </ToolTipService.ToolTip>
+                                    <Button.Content>
+                                        <FontIcon
+                                            FontSize="18"
+                                            Glyph="&#xE713;"
+                                            Style="{StaticResource MenuIconStyle}" />
+                                    </Button.Content>
+                                </Button>
+
+                            </StackPanel>
+                        </Grid>
+                        <ScrollViewer
+                            Grid.Row="1">
+                            <Frame
+                                x:Name="ContentFrame" />
+                        </ScrollViewer>
                     </Grid>
-                    <ScrollViewer
-                        Grid.Row="1">
-                        <Frame
-                            x:Name="ContentFrame" />
-                    </ScrollViewer>
                 </Grid>
+               
             </SplitView.Content>
 
         </SplitView>

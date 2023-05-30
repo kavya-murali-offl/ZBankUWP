@@ -29,9 +29,8 @@
         </DataTemplate>
         <DataTemplate
             x:Key="DepositAccountTemplate">
-            <templates:TermDepositAccountInfoTemplate
-                LinkedCard="{Binding LinkedCard, Mode=OneWay}"
-                SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
+            <templates:DepositAccountInfoTemplate
+                SelectedAccount="{Binding SelectedAccount}" />
         </DataTemplate>
     </Page.Resources>
     <Grid>

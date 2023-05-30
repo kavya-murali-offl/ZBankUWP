@@ -41,7 +41,7 @@ namespace ZBank.View.DataTemplates
         }
 
         public static readonly DependencyProperty LinkedCardProperty =
-            DependencyProperty.Register("LinkedCard", typeof(CardBObj), typeof(CurrentAccountInfoTemplate), new PropertyMetadata(null));
+            DependencyProperty.Register("LinkedCard", typeof(CardBObj), typeof(DepositAccountInfoTemplate), new PropertyMetadata(null));
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

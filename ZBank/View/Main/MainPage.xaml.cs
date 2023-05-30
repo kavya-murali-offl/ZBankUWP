@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Navigation;
 using System.Linq;
 using Windows.UI.Xaml.Controls.Primitives;
 using System.ServiceModel.Channels;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -30,6 +33,7 @@ namespace ZBank
         {
             this.InitializeComponent();
             ViewModel = new MainViewModel(this);
+            initialPaneWidth = MySplitView.OpenPaneLength;
         }
 
         public void Page_Loaded(object sender, RoutedEventArgs e)
@@ -66,8 +70,6 @@ namespace ZBank
             MySplitView.IsPaneOpen = false;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
-            ShrinkButton.Visibility = Visibility.Collapsed;
-            ExpandButton.Visibility = Visibility.Visible;
         }
 
         private void OnExpandClicked(object sender, RoutedEventArgs e)
@@ -75,8 +77,6 @@ namespace ZBank
             MySplitView.IsPaneOpen = true;
             TopListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
             TopListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
-            ExpandButton.Visibility = Visibility.Collapsed;
-            ShrinkButton.Visibility = Visibility.Visible;
         }
 
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -185,6 +185,75 @@ namespace ZBank
             //{
             //    ViewModel.NavigationChanged(selectedItem);
             //}
+        }
+        
+        public double initialPaneWidth { get; set; }
+
+        public bool isManipulating { get; set; }
+
+        private void MySplitView_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            isManipulating = true;
+            MySplitView.CapturePointer(e.Pointer);
+        }
+
+        private void MySplitView_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+                if (isManipulating)
+                {
+                    MySplitView.IsPaneOpen = false;
+                    TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
+                    TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
+                    isManipulating = false;
+                    MySplitView.ReleasePointerCapture(e.Pointer);
+
+            }
+
+        }
+
+       
+        private void Content_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            if (isManipulating)
+            {
+                if (MySplitView.IsPaneOpen && e.GetCurrentPoint(MySplitView).Position.X <= MySplitView.OpenPaneLength)
+                {
+                    ClosePane();
+                }
+                else if(e.GetCurrentPoint(MySplitView).Position.X >= MySplitView.CompactPaneLength)
+                {
+                    OpenPane();
+                }
+            }
+            MySplitView.ReleasePointerCapture(e.Pointer);
+            isManipulating = false;
+            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+            ResizeBorder.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+        }
+
+        private void ClosePane()
+        {
+            MySplitView.IsPaneOpen = false;
+            TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
+            TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
+        }
+
+        private void OpenPane()
+        {
+            MySplitView.IsPaneOpen = true;
+            TopListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
+            TopListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
+        }
+
+        private void ResizeBorder_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.SizeWestEast, 1);
+            ResizeBorder.Background = (SolidColorBrush)Application.Current.Resources["BorderBrush"];
+        }
+
+        private void ResizeBorder_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            ResizeBorder.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
     }
 

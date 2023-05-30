@@ -22,6 +22,10 @@
         x:Key="ApplicationBackgroundThemeBrush"
         Color="{ThemeResource SystemChromeMediumColor}" />
     <SolidColorBrush
+        x:Key="BorderBrush"
+        Color="{ThemeResource SystemBaseMediumColor}" />
+    
+    <SolidColorBrush
         x:Key="ApplicationInactiveSelectionHighlightBrush"
         Color="{ThemeResource SystemChromeMediumColor}" />
     <SolidColorBrush

@@ -170,11 +170,11 @@
     <Compile Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DataTemplates\DepositAccountInfoTemplate.xaml.cs">
+      <DependentUpon>DepositAccountInfoTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml.cs">
       <DependentUpon>SavingsAccountInfoTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DataTemplates\TermDepositAccountInfoTemplate.xaml.cs">
-      <DependentUpon>TermDepositAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\ViewOrNoCardTemplate.xaml.cs">
       <DependentUpon>ViewOrNoCardTemplate.xaml</DependentUpon>
@@ -359,11 +359,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml">
+    <Page Include="View\DataTemplates\DepositAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DataTemplates\TermDepositAccountInfoTemplate.xaml">
+    <Page Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
