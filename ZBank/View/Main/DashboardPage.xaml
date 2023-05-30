@@ -198,6 +198,7 @@
                                 <StackPanel
                                     VerticalAlignment="Top">
                                     <TextBlock
+                                        MaxWidth="400"
                                         Margin="5,10,5,5"
                                         Text="Account"
                                         Style="{ThemeResource NormalSubText}" />
@@ -233,6 +234,7 @@
                                     </DropDownButton>
 
                                     <TextBlock
+                                        MaxWidth="400"
                                         Margin="5,20,5,5"
                                         Text="Beneficiary"
                                         Style="{ThemeResource NormalSubText}" />
@@ -272,10 +274,11 @@
                                     <TextBlock
                                         Margin="5,20,5,5"
                                         Text="Amount"
+                                        MaxWidth="400"
                                         Style="{ThemeResource NormalSubText}" />
                                     
-                                    <TextBox InputScope="CurrencyAmountAndSymbol" 
-                                             x:Name="AmountTextBox"
+                                    <TextBox 
+                                        x:Name="AmountTextBox"
                                         MaxWidth="400"
                                         Text="{x:Bind EnteredAmount, Mode=TwoWay}"
                                              TextChanging="AmountTextBox_TextChanging" 
@@ -283,7 +286,6 @@
                                     
                                     <TextBlock
                                         Margin="5,20,5,5"
-                                        Text="Description"
                                         Style="{ThemeResource NormalSubText}" />
 
                                     <TextBox
@@ -315,6 +317,17 @@
                             Padding="10"
                             MyTitle="Latest Transactions"
                             x:Name="Row3Column2">
+                            <usercontrol:CardControl.MyControls>
+                                <HyperlinkButton
+                                    x:Name="Transactions_ViewMoreButton"
+                                    Click="Transactions_ViewMoreButton_Click"
+                                    HorizontalAlignment="Right">
+                                    <HyperlinkButton.Content>
+                                        <TextBlock
+                                            Text="View More" />
+                                    </HyperlinkButton.Content>
+                                </HyperlinkButton>
+                            </usercontrol:CardControl.MyControls>
                             <usercontrol:CardControl.MyContent>
                                 <ListView
                                     MaxHeight="345"
@@ -366,6 +379,11 @@
                             <Button
                                 Click="BackButton_Click"
                                 Style="{ThemeResource SecondaryButton}">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        Content="Previous"
+                                        Placement="Bottom" />
+                                </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
                                         Foreground="{ThemeResource ApplicationForeground}"
@@ -375,6 +393,11 @@
                             <Button
                                 Click="NextButton_Click"
                                 Style="{ThemeResource SecondaryButton}">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        Content="Next"
+                                        Placement="Bottom" />
+                                </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
                                         Foreground="{ThemeResource ApplicationForeground}"
@@ -384,11 +407,31 @@
                         </StackPanel>
                     </usercontrol:CardControl.MyControls>
                     <usercontrol:CardControl.MyContent>
-                        <templates:ViewOrNoCardTemplate
-                            Grid.Row="1"
-                            VerticalAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            SelectedCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition
+                                    Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <templates:ViewOrNoCardTemplate
+                                Grid.Row="0"
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                SelectedCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />
+                            <Button
+                                Grid.Row="1"
+                                Margin="10"
+                                HorizontalAlignment="Center"
+                                MinWidth="230"
+                                Style="{ThemeResource PrimaryButton}">
+                                <Button.Content>
+                                    <TextBlock
+                                        Text="Manage Card" />
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                        
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
 

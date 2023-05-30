@@ -8,10 +8,7 @@
     xmlns:converter="using:ZBank.Utilities.Converters"
     >
     <Application.Resources>
-      
         <controls:XamlControlsResources>
-          
-           
             <controls:XamlControlsResources.MergedDictionaries>
                 <ResourceDictionary
                     Source="Styles/_Styles.xaml" />

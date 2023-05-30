@@ -13,8 +13,7 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         CornerRadius="8"
-        Padding="15"
-       >
+        Padding="15">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
@@ -28,7 +27,7 @@
             <TextBlock
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                FontSize="16"
+                FontSize="17"
                 Padding="0,0,0,10"
                 FontWeight="SemiBold"
                 Text="{x:Bind MyTitle}" />

@@ -135,16 +135,13 @@
 
 
                         <Button
-                            Padding="15"
                             x:Name="ViewAccountButton"
-                            Margin="0,15,0,0"
+                            Margin="15"
                             Grid.Row="5"
+                            HorizontalAlignment="Center"
                             Click="ViewAccountButton_Click"
-                            BorderThickness="0"
-                            CornerRadius="0,0,0,0"
-                            Style="{ThemeResource PrimaryNavigationButton}"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch">
+                            Style="{ThemeResource PrimaryButton}"
+                           >
                             <Button.Content>
                                 <StackPanel
                                     Orientation="Horizontal"
@@ -154,7 +151,6 @@
                                         Text="View Details" />
                                     <FontIcon
                                         FontSize="16"
-                                        VerticalAlignment="Center"
                                         Glyph="&#xE26B;" />
                                 </StackPanel>
                             </Button.Content>

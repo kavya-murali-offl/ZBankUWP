@@ -29,9 +29,14 @@
             x:DataType="local:Navigation">
             <FontIcon
                 Glyph="{x:Bind IconSource}"
-                Style="{StaticResource MenuIconStyle}" />
+                Style="{StaticResource MenuIconStyle}">
+                <ToolTipService.ToolTip>
+                    <ToolTip
+                        Content="{x:Bind Text}"
+                        Placement="Bottom" />
+                </ToolTipService.ToolTip>
+            </FontIcon>
         </DataTemplate>
-
     </Page.Resources>
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -86,7 +91,6 @@
                         <Setter
                             Target="ShrinkButton.Visibility"
                             Value="Collapsed" />
-
                         <Setter
                             Target="MySplitView.DisplayMode"
                             Value="CompactOverlay" />
@@ -118,11 +122,11 @@
                             Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <StackPanel
-                        Grid.Row="0">
+                    <StackPanel>
                         <ListView
                             SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=OneWay}"
                             Margin="0,10,0,0"
+                            ItemClick="TopListView_ItemClick"
                             x:Name="TopListView"
                             Loaded="TopListView_Loaded"
                             ItemsSource="{x:Bind ViewModel.TopNavigationList}"
@@ -130,19 +134,27 @@
                             IsItemClickEnabled="True" />
                         <Button
                             x:Name="ExpandButton"
-                            ToolTipService.ToolTip="Expand"
                             Click="OnExpandClicked"
                             Style="{ThemeResource ExpandButton}">
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    Content="Expand"
+                                    Placement="Bottom" />
+                            </ToolTipService.ToolTip>
                             <FontIcon
+                                FontSize="18"
                                 FontFamily="Segoe Fluent Icons"
-                                Glyph="&#xE126;"
-                                Style="{ThemeResource ShrinkIcon}" />
+                                Glyph="&#xE126;" />
                         </Button>
                         <Button
                             x:Name="ShrinkButton"
                             Click="OnShrinkClicked"
-                            ToolTipService.ToolTip="Collapse"
                             Style="{ThemeResource ExpandButton}">
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    Content="Collapse"
+                                    Placement="Bottom" />
+                            </ToolTipService.ToolTip>
                             <FontIcon
                                 Glyph="&#xE127;"
                                 Style="{ThemeResource ShrinkIcon}" />
@@ -163,7 +175,13 @@
                             HorizontalAlignment="Left"
                             Margin="7,10,5,10"
                             Style="{ThemeResource ProfilePicture}"
-                            ProfilePicture="/Assets/Pro pic.jpg" />
+                            ProfilePicture="/Assets/Pro pic.jpg">
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    Content="Kavya"
+                                    Placement="Bottom" />
+                            </ToolTipService.ToolTip>
+                        </PersonPicture>
                         <TextBlock
                             Grid.Column="1"
                             VerticalAlignment="Center"
@@ -181,7 +199,7 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid
-                    Margin="10"
+                    Margin="0,10,10,10"
                     Background="{ThemeResource ApplicationBackgroundThemeBrush}"
                     Padding="5"
                     CornerRadius="10">
@@ -210,6 +228,11 @@
                             x:Name="BackButton"
                             IsEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
                             Click="BackButton_Click">
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    Content="Back"
+                                    Placement="Bottom" />
+                            </ToolTipService.ToolTip>
                             <Button.Content>
                                 <FontIcon
                                     HorizontalAlignment="Center"
@@ -222,6 +245,11 @@
                             Click="NextButton_Click"
                             IsEnabled="{x:Bind ContentFrame.CanGoForward, Mode=OneWay}"
                             x:Name="NextButton">
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    Content="Forward"
+                                    Placement="Bottom" />
+                            </ToolTipService.ToolTip>
                             <Button.Content>
                                 <FontIcon
                                     HorizontalAlignment="Center"
@@ -242,7 +270,6 @@
                             Grid.Column="3"
                             HorizontalAlignment="Right"
                             Orientation="Horizontal">
-
                             <ToggleButton
                                 x:Name="SwitchThemeButton"
                                 Click="SwitchThemeButton_Click"
@@ -251,8 +278,14 @@
                                 CornerRadius="10"
                                 Padding="8"
                                 Margin="5,0,5,0">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        Content="Switch Theme"
+                                        Placement="Bottom" />
+                                </ToolTipService.ToolTip>
                                 <FontIcon
                                     x:Name="ThemeIcon"
+                                    Foreground="{ThemeResource SystemAccentColorDark1}"
                                     FontFamily="{StaticResource SymbolThemeFontFamily}"
                                     FontSize="18" />
                             </ToggleButton>
@@ -263,6 +296,11 @@
                                 CornerRadius="10"
                                 Padding="8"
                                 Style="{ThemeResource IconButton}">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        Content="Notifications"
+                                        Placement="Bottom" />
+                                </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
                                         Glyph="&#xEA8F;"
@@ -277,6 +315,11 @@
                                 Padding="8"
                                 Click="SettingsButton_Click"
                                 Style="{ThemeResource IconButton}">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        Content="Settings"
+                                        Placement="Bottom" />
+                                </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
                                         FontSize="18"

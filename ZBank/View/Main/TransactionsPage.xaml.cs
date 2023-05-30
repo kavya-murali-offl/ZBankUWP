@@ -28,8 +28,13 @@ namespace ZBank.View.Main
         public TransactionsPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
             ViewModel = new TransactionViewModel(this);
         }
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

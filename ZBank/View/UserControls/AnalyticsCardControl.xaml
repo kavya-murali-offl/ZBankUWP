@@ -39,7 +39,7 @@
             MaxWidth="250"
             TextTrimming="CharacterEllipsis"
             TextAlignment="Center"
-            FontWeight="SemiBold" />
+           />
         <TextBlock
             Grid.Row="1"
             MinWidth="100"
@@ -49,10 +49,9 @@
             Text="{x:Bind Card.PrimaryValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}"
             FontSize="18"
             Foreground="{ThemeResource ApplicationForeground}"
-            FontWeight="Bold"
+            FontWeight="SemiBold"
             HorizontalAlignment="Center"
             Padding="5,10,5,10" />
-
 
         <TextBlock
             Grid.Row="2"
@@ -60,7 +59,6 @@
             MaxWidth="250"
             TextTrimming="CharacterEllipsis"
             TextAlignment="Center"
-            FontWeight="SemiBold"
             HorizontalAlignment="Left"
             Text="{x:Bind Card.SecondaryKey1, Mode=OneWay}"
             Foreground="{ThemeResource ApplicationForeground}"
@@ -80,22 +78,22 @@
 
         <TextBlock
             Grid.Row="2"
-            MinWidth="100"
+            MinWidth="120"
             MaxWidth="250"
             TextTrimming="CharacterEllipsis"
             TextAlignment="Center"
-            FontWeight="SemiBold"
             HorizontalAlignment="Right"
             Text="{x:Bind Card.SecondaryKey2, Mode=OneWay}"
             Foreground="{ThemeResource ApplicationForeground}"
             FontSize="16" />
+        
         <TextBlock
             Grid.Row="3"
             Text="{x:Bind Card.SecondaryValue2, Mode=OneWay, Converter={StaticResource CurrencyConverter}}"
             FontSize="{StaticResource TextStyleLargeFontSize}"
             Foreground="{ThemeResource ApplicationForeground}"
             FontWeight="SemiBold"
-            MinWidth="100"
+            MinWidth="120"
             MaxWidth="250"
             TextTrimming="CharacterEllipsis"
             TextAlignment="Center"

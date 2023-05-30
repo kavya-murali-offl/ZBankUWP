@@ -13,21 +13,18 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.Entities;
+using ZBank.Entity.BusinessObjects;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace ZBank.View.DataTemplates
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class TermDepositAccountInfoTemplate : Page
+    public sealed partial class DepositAccountInfoTemplate : UserControl
     {
-        public TermDepositAccountInfoTemplate()
+        public DepositAccountInfoTemplate()
         {
             this.InitializeComponent();
         }
-
         public TermDepositAccount SelectedAccount
         {
             get { return (TermDepositAccount)GetValue(SelectedAccountProperty); }
@@ -35,14 +32,20 @@ namespace ZBank.View.DataTemplates
         }
 
         public static readonly DependencyProperty SelectedAccountProperty =
-            DependencyProperty.Register("SelectedAccount", typeof(TermDepositAccount), typeof(TermDepositAccountInfoTemplate), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedAccount", typeof(TermDepositAccount), typeof(DepositAccountInfoTemplate), new PropertyMetadata(null));
 
+        public CardBObj LinkedCard
+        {
+            get { return (CardBObj)GetValue(LinkedCardProperty); }
+            set { SetValue(LinkedCardProperty, value); }
+        }
+
+        public static readonly DependencyProperty LinkedCardProperty =
+            DependencyProperty.Register("LinkedCard", typeof(CardBObj), typeof(CurrentAccountInfoTemplate), new PropertyMetadata(null));
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //ViewOrNoCardTemplate.DataContext = this;
 
-            //ViewOrNoCardTemplate.Content = ((DataTemplate)Resources["ViewCardTemplate"]).LoadContent();
         }
     }
 }

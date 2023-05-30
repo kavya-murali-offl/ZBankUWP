@@ -8,9 +8,13 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.View.UserControls;
 using ZBank.ViewModel;
+using ZBank.View.Main;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -87,6 +91,9 @@ namespace ZBank.View
                 SelectedBeneficiary = beneficiaries[item.SelectedIndex];
                 BeneficiaryText.Text = beneficiaries[item.SelectedIndex]?.ToString();
             }
+
+            BeneficiaryButton.Flyout.Hide();
+
         }
 
         private void BeneficiaryButton_Click(object sender, RoutedEventArgs e)
@@ -107,6 +114,7 @@ namespace ZBank.View
                 SelectedAccount = accountsList[item.SelectedIndex];
                 AccountsText.Text = accountsList[item.SelectedIndex]?.ToString();
             }
+            AccountsDropdownButton.Flyout.Hide();
         }
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
@@ -128,12 +136,23 @@ namespace ZBank.View
             AccountsList.SelectedIndex = -1;
             BeneficiaryText.Text = "Select Beneficiary";
             AccountsText.Text = "Select Account";
-            EnteredDescription = "";
+            DescriptionTextBox.Text = string.Empty;
         }
 
         private void DescriptionTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
 
+        }
+
+        private void Transactions_ViewMoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            FrameContentChangedArgs args = new FrameContentChangedArgs()
+            {
+                PageType = typeof(TransactionsPage),
+                Params = null
+            };
+
+            ViewNotifier.Instance.OnFrameContentChanged(args);
         }
     }
 }

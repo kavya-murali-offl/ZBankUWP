@@ -44,6 +44,7 @@ namespace ZBank.ViewModel
                 new Navigation("Cards", "\uE8C7", typeof(CardsPage)),
                 new Navigation("Transactions", "\uE8AB", typeof(TransactionsPage)),
             };
+
             SelectedItem = TopNavigationList.FirstOrDefault();
         }
 

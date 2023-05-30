@@ -14,6 +14,8 @@ using System.Security.AccessControl;
 using System.Runtime.InteropServices;
 using Windows.UI.Xaml.Navigation;
 using System.Linq;
+using Windows.UI.Xaml.Controls.Primitives;
+using System.ServiceModel.Channels;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -100,6 +102,7 @@ namespace ZBank
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
                 ThemeIcon.Glyph = ThemeSelector.GetIcon();
+                SwitchThemeButton.IsChecked = false;
             });
         }
 
@@ -117,14 +120,14 @@ namespace ZBank
 
         private void LoadToggleButton()
         {
-            if (ThemeSelector.Theme == ElementTheme.Dark)
-            {
-                SwitchThemeButton.IsChecked = true;
-            }
-            else
-            {
-                SwitchThemeButton.IsChecked = false;
-            }
+            //if (ThemeSelector.Theme == ElementTheme.Dark)
+            //{
+            //    SwitchThemeButton.IsChecked = true;
+            //}
+            //else
+            //{
+            //    SwitchThemeButton.IsChecked = false;
+            //}
             ThemeIcon.Glyph = ThemeSelector.GetIcon();
         }
 
@@ -174,6 +177,15 @@ namespace ZBank
                 ContentFrame.GoBack();
             }
         }
+
+        private void TopListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            //var selectedItem = (sender as ListViewItem).DataContext as Navigation;
+            //if(selectedItem != null)
+            //{
+            //    ViewModel.NavigationChanged(selectedItem);
+            //}
+        }
     }
 
     public class Navigation
@@ -193,5 +205,7 @@ namespace ZBank
         public string IconSource { get; set; }
 
         public Type[] PageTypes { get; set; }
+
     }
 }
+

@@ -48,7 +48,6 @@ namespace ZBank.ViewModel
         {
             View = view;
             LoadAllTransactionsData();
-
         }
 
         private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)

@@ -60,7 +60,7 @@
         Color="{ThemeResource SystemChromeHighColor}" />
     <SolidColorBrush
         x:Key="ToggleButtonBackgroundPointerOver"
-        Color="{ThemeResource SystemChromeMediumColor}" />
+        Color="{ThemeResource SystemChromeLowColor}" />
     <SolidColorBrush
         x:Key="ToggleButtonBackgroundPressed"
         Color="{ThemeResource SystemChromeHighColor}" />
@@ -84,6 +84,8 @@
         x:Key="HeaderAcrylicBrush"
         TintColor="{ThemeResource SystemAccentColorLight1}"
         TintOpacity="0.1" />
+
+
     <Style
         x:Key="CustomFlyoutStyle"
         TargetType="FlyoutPresenter">
@@ -574,7 +576,7 @@
                                             Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource SystemAccentColorDark1}" />
+                                                Value="{ThemeResource SystemAccentColorDark2}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
@@ -810,7 +812,7 @@
             Value="Left" />
         <Setter
             Property="Padding"
-            Value="8" />
+            Value="7" />
         <Setter
             Property="Margin"
             Value="7,10,0,5" />
@@ -818,11 +820,118 @@
             Property="Background"
             Value="{ThemeResource SystemAccentColorDark2}" />
         <Setter
+            Property="Foreground"
+            Value="{ThemeResource SystemAltHighColor}" />
+        <Setter
             Property="CornerRadius"
             Value="5" />
         <Setter
             Property="BorderThickness"
             Value="0" />
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="Button">
+                    <ContentPresenter
+                        x:Name="ContentPresenter"
+                        Background="{TemplateBinding Background}"
+                        BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        AutomationProperties.AccessibilityView="Raw">
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup
+                                x:Name="CommonStates">
+                                <VisualState
+                                    x:Name="Normal">
+                                    <Storyboard>
+                                        <PointerUpThemeAnimation
+                                            Storyboard.TargetName="ContentPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState
+                                    x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemChromeMediumColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAccentColorDark1}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <PointerUpThemeAnimation
+                                            Storyboard.TargetName="ContentPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+
+                                <VisualState
+                                    x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemBaseLowColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAccentColorDark2}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <PointerDownThemeAnimation
+                                            Storyboard.TargetName="ContentPresenter" />
+                                    </Storyboard>
+                                </VisualState>
+
+                                <VisualState
+                                    x:Name="Disabled">
+
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAltLowColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="ContentPresenter"
+                                            Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="{ThemeResource SystemAltLowColor}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+
+                            </VisualStateGroup>
+
+                        </VisualStateManager.VisualStateGroups>
+                    </ContentPresenter>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style

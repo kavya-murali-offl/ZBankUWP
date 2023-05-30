@@ -18,6 +18,7 @@
             x:Key="DateFormatConverter" />
         <DataTemplate x:Name="SavingsAccountTemplate">
             <templates:SavingsAccountInfoTemplate
+                LinkedCard="{Binding LinkedCard, Mode=OneWay}"
                 SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
         </DataTemplate>
         <DataTemplate
@@ -29,6 +30,7 @@
         <DataTemplate
             x:Key="DepositAccountTemplate">
             <templates:TermDepositAccountInfoTemplate
+                LinkedCard="{Binding LinkedCard, Mode=OneWay}"
                 SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
         </DataTemplate>
     </Page.Resources>
