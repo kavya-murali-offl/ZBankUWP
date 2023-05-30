@@ -21,16 +21,30 @@ namespace ZBank.View.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class TransactionsPage : Page
+    public sealed partial class TransactionsPage : Page, IView
     {
         public TransactionViewModel ViewModel { get; set; }  
 
         public TransactionsPage()
         {
             this.InitializeComponent();
+            ViewModel = new TransactionViewModel(this);
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnPageLoaded();
+        }
 
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnPageUnLoaded();
+        }
+
+        private void ArrowColumn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }

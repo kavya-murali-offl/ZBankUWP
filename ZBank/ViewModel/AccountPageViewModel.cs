@@ -16,14 +16,10 @@ namespace ZBank.ViewModel
     public class AccountPageViewModel : ViewModelBase
     {
         public IView View;
-        public ICommand AddAccountCommand { get; set; } 
-        public ICommand GoToAccountInfoPageCommand { get; set; } 
 
         public AccountPageViewModel(IView view)
         {
             View = view;
-            AddAccountCommand = new RelayCommand(InsertAccount);
-            GoToAccountInfoPageCommand = new RelayCommand(GoToAccountInfoPage);
         }
 
         public void OnPageLoaded()

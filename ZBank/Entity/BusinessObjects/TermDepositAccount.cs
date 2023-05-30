@@ -10,7 +10,7 @@ using ZBank.Entity.EnumerationTypes;
 namespace ZBank.Entities
 {
 
-    public class TermDepositAccount : Account
+    public class TermDepositAccount : AccountBObj
     {
 
         //public TermDepositAccount(decimal amount, int tenureInMonths, string fromAccountNumber) : base(amount)

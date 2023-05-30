@@ -9,6 +9,7 @@ using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
@@ -27,23 +28,23 @@ namespace ZBank.ViewModel
         }
         public void OnPageLoaded()
         {
-            ViewNotifier.Instance.CardsPageDataUpdated += UpdateCardsList;
+            ViewNotifier.Instance.CardsDataUpdated += UpdateCardsList;
             LoadAllCards();
         }
 
         public void OnPageUnLoaded()
         {
-            ViewNotifier.Instance.CardsPageDataUpdated -= UpdateCardsList;
+            ViewNotifier.Instance.CardsDataUpdated -= UpdateCardsList;
         }
 
 
-        private ObservableCollection<Card> AllCards
+        private ObservableCollection<CardBObj> AllCards
         {
             get { return _allCards; }
             set { _allCards = value; OnPropertyChanged(nameof(AllCards)); }
         }
 
-        private ObservableCollection<Card> _allCards { get; set; }
+        private ObservableCollection<CardBObj> _allCards { get; set; }
 
 
         public void LoadAllCards()
@@ -58,9 +59,9 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        private void UpdateCardsList(CardPageDataUpdatedArgs args)
+        private void UpdateCardsList(CardDataUpdatedArgs args)
         {
-            AllCards = new ObservableCollection<Card>(args.CardsList);
+            AllCards = new ObservableCollection<CardBObj>(args.CardsList);
         }
     }
 }

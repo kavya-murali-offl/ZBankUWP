@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.AppEvents.AppEventArgs
 {
@@ -20,12 +21,12 @@ namespace ZBank.AppEvents.AppEventArgs
 
         public DashboardCardModel IncomeExpenseCard { get; set; }
 
-        public IEnumerable<Card> AllCards { get; set; }
+        public IEnumerable<CardBObj> AllCards { get; set; }
 
         public IEnumerable<Beneficiary> AllBeneficiaries { get; set; }
 
-        public IEnumerable<Transaction> LatestTransactions { get; set; }
+        public IEnumerable<TransactionBObj> LatestTransactions { get; set; }
 
-        public IEnumerable<Account> AllAccounts { get; set; }
+        public IEnumerable<AccountBObj> AllAccounts { get; set; }
     }
 }

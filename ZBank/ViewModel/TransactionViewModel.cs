@@ -37,7 +37,6 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.TransactionListUpdated += UpdateTransactionsData;
-            LoadAllTransactionsData();
         }
 
         public void OnPageUnLoaded()
@@ -48,19 +47,13 @@ namespace ZBank.ViewModel
         public TransactionViewModel(IView view)
         {
             View = view;
+            LoadAllTransactionsData();
+
         }
 
         private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
         {
-            var list = args.TransactionList
-               .Select(transaction =>
-               {
-                   TransactionBObj transactionBObj = Mapper.GetTransactionBObj(transaction);
-                   transactionBObj.OtherAccount = args.BeneficiariesList.FirstOrDefault(ben => ben.AccountNumber == transaction.OtherAccountNumber);
-                   return transactionBObj;
-               });
-
-            InViewTransactions = new ObservableCollection<TransactionBObj>(list);
+            InViewTransactions = new ObservableCollection<TransactionBObj>(args.TransactionList);
         }
 
 

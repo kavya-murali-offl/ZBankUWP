@@ -30,7 +30,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            _getTransactionDataManager.GetTransactionsByAccountNumber(_request, new GetAllTransactionsCallback(this));
+            _getTransactionDataManager.GetTransactionsByCustomerID(_request, new GetAllTransactionsCallback(this));
         }
 
         private class GetAllTransactionsCallback : IUseCaseCallback<GetAllTransactionsResponse>
@@ -63,9 +63,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class GetAllTransactionsResponse
     {
-        public IEnumerable<Transaction> Transactions { get; set; }
+        public IEnumerable<TransactionBObj> Transactions { get; set; }
 
         public IEnumerable<Beneficiary> Beneficiaries { get; set; }
+
+        public IEnumerable<Account> Accounts { get; set; }
     }
 
 

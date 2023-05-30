@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -38,7 +39,14 @@ namespace ZBank.View.DataTemplates
 
         public static readonly DependencyProperty SelectedAccountProperty =
             DependencyProperty.Register("SelectedAccount", typeof(CurrentAccount), typeof(CurrentAccountInfoTemplate), new PropertyMetadata(null));
+        
+        public CardBObj LinkedCard
+        {
+            get { return (CardBObj)GetValue(LinkedCardProperty); }
+            set { SetValue(LinkedCardProperty, value); }
+        }
 
-       
+        public static readonly DependencyProperty LinkedCardProperty =
+            DependencyProperty.Register("LinkedCard", typeof(CardBObj), typeof(CurrentAccountInfoTemplate), new PropertyMetadata(null));
     }
 }

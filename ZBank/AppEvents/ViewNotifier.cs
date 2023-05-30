@@ -18,10 +18,10 @@ namespace ZBank.AppEvents
             BeneficiaryListUpdated?.Invoke(args);
         }
 
-        public event Action<CardPageDataUpdatedArgs> CardsPageDataUpdated;
-        public void OnCardsPageDataUpdated(CardPageDataUpdatedArgs args)
+        public event Action<CardDataUpdatedArgs> CardsDataUpdated;
+        public void OnCardsPageDataUpdated(CardDataUpdatedArgs args)
         {
-            CardsPageDataUpdated?.Invoke(args);
+            CardsDataUpdated?.Invoke(args);
         }
 
         public event Action<TransactionPageDataUpdatedArgs> TransactionListUpdated;

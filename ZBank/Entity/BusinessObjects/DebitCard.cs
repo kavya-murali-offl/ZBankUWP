@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
+using ZBankManagement.Utility;
 
 namespace ZBank.Entities
 {
-    public class SavingsAccount : Account
+    public class DebitCard : CardBObj
     {
-        public decimal InterestRate { get; set; }
 
-        public decimal MinimumBalance { get; set; }
+        public string AccountNumber { get; set; }
 
     }
 }

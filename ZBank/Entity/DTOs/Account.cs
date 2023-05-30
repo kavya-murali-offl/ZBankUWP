@@ -11,7 +11,7 @@ using ZBank.Entity.EnumerationTypes;
 namespace ZBank.Entities
 {
     [Table("Account")]
-    public class AccountDTO
+    public class Account
     {
         [PrimaryKey]
         public string AccountNumber { get; set; }

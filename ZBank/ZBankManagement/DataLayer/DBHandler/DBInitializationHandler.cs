@@ -1,6 +1,5 @@
 ﻿using ZBank.Entities.BusinessObjects;
 using ZBank.Entities;
-using ZBank.Entities.BusinessObjects;
 using ZBank.DatabaseAdapter;
 using ZBank.Entity;
 
@@ -19,7 +18,7 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             _databaseAdapter.CreateTable<Customer>();
             _databaseAdapter.CreateTable<CustomerCredentials>();
             _databaseAdapter.CreateTable<Card>();
-            _databaseAdapter.CreateTable<AccountDTO>();
+            _databaseAdapter.CreateTable<Entities.Account>();
             _databaseAdapter.CreateTable<Beneficiary>();
             _databaseAdapter.CreateTable<CurrentAccountDTO>();
             _databaseAdapter.CreateTable<SavingsAccountDTO>();

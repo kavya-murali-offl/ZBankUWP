@@ -3,45 +3,71 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZBank.View.DataTemplates"
-    xmlns:model="using:ZBank.Entities"
     xmlns:converter="using:ZBank.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Loaded="UserControl_Loaded"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
-    
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <UserControl.Resources>
-        <DataTemplate
-            x:Key="CreditCardTemplate">
-            <StackPanel>
-                <TextBlock
-                    Grid.Row="2"
-                    HorizontalAlignment="Left"
-                    FontWeight="SemiBold"
-                    Foreground="Azure"
-                    FontSize="16"
-                    Padding="0,5,0,0"
-                    Text="Available Credit Limit" />
-                <TextBlock
-                    Grid.Row="3"
-                    HorizontalAlignment="Left"
-                    FontWeight="Bold"
-                    Foreground="Azure"
-                    FontSize="18"
-                    Padding="0,0,0,0"
-                    Text="{Binding AvailableCreditLimit}" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DebitCardTemplate">
-            <TextBlock
-                Text="" />
-        </DataTemplate>
         <converter:CurrencyConverter
             x:Key="CurrencyConverter" />
     </UserControl.Resources>
-    <ContentControl
-        x:Name="CardSpecificContent" />
+    <Grid
+        MinHeight="200"
+        MaxWidth="400"
+        MaxHeight="400"
+        HorizontalAlignment="Stretch"
+        Padding="15"
+        CornerRadius="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush
+                ImageSource="{Binding BackgroundImage, Mode=OneWay}"
+                Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
+        <TextBlock
+            HorizontalAlignment="Left"
+            FontWeight="Bold"
+            VerticalAlignment="Center"
+            Foreground="Azure"
+            Text="{Binding TypeString, Mode=OneWay}" />
+        <Image
+            MaxHeight="40"
+            HorizontalAlignment="Right"
+            Source="{Binding ProviderLogo, Mode=OneWay}" />
+        <TextBlock
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontWeight="Bold"
+            Foreground="Azure"
+            FontSize="23"
+            Padding="0,10,0,10"
+            Text="{Binding CardNumber, Mode=OneWay}" />
+        <TextBlock
+            Grid.Row="2"
+            HorizontalAlignment="Left"
+            FontWeight="SemiBold"
+            Foreground="Azure"
+            FontSize="16"
+            Padding="0,5,0,0"
+            Text="{Binding CustomTextKey, Mode=OneWay}" />
+        <TextBlock
+            Grid.Row="3"
+            HorizontalAlignment="Left"
+            FontWeight="Bold"
+            Foreground="Azure"
+            FontSize="18"
+            Padding="0,0,0,0"
+            Text="{Binding CustomTextValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
+    </Grid>
 </UserControl>

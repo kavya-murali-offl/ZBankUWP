@@ -40,7 +40,7 @@ namespace ZBank.ViewModel
             TopNavigationList = new List<Navigation>
             {
                 new Navigation("Dashboard", "\uE80F", typeof(DashboardPage)),
-                new Navigation("Accounts", "\uE910", typeof(AccountsPage), typeof(AccountInfoFrame)),
+                new Navigation("Accounts", "\uE910", typeof(AccountsPage), typeof(AccountInfoPage)),
                 new Navigation("Cards", "\uE8C7", typeof(CardsPage)),
                 new Navigation("Transactions", "\uE8AB", typeof(TransactionsPage)),
             };

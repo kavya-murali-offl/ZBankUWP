@@ -11,7 +11,8 @@ namespace ZBank.AppEvents.AppEventArgs
 {
     public class TransactionPageDataUpdatedArgs
     {
-        public IEnumerable<Transaction> TransactionList { get; set; }
+        public IEnumerable<TransactionBObj> TransactionList { get; set; }
+
         public IEnumerable<Beneficiary> BeneficiariesList { get; set; }
 
     }

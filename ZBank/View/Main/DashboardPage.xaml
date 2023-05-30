@@ -222,7 +222,7 @@
                                                     ItemsSource="{x:Bind ViewModel.DashboardModel.AllAccounts, Mode=OneWay}">
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate
-                                                            x:DataType="modelBObj:Account">
+                                                            x:DataType="modelBObj:AccountBObj">
                                                             <TextBlock
                                                                 Text="{x:Bind}" />
                                                         </DataTemplate>
@@ -276,20 +276,23 @@
                                     
                                     <TextBox InputScope="CurrencyAmountAndSymbol" 
                                              x:Name="AmountTextBox"
-                                             Text="{x:Bind EnteredAmount, Mode=TwoWay}"
+                                        MaxWidth="400"
+                                        Text="{x:Bind EnteredAmount, Mode=TwoWay}"
                                              TextChanging="AmountTextBox_TextChanging" 
                                              PlaceholderText="Enter Amount in INR"/>
                                     
                                     <TextBlock
                                         Margin="5,20,5,5"
-                                        Text="Payment Method"
+                                        Text="Description"
                                         Style="{ThemeResource NormalSubText}" />
-                                    
-                                    <DropDownButton
-                                        HorizontalAlignment="Stretch"
-                                        CornerRadius="8"
-                                        Content="Select Payment Method" />
-                                    
+
+                                    <TextBox
+                                        x:Name="DescriptionTextBox"
+                                        MaxWidth="400"
+                                        Text="{x:Bind EnteredDescription, Mode=TwoWay}"
+                                        TextChanging="DescriptionTextBox_TextChanging"
+                                        PlaceholderText="Describe the transaction" />
+
                                     <Button
                                         Margin="0,40,0,0"
                                         Style="{ThemeResource PrimaryButton}"
@@ -381,12 +384,11 @@
                         </StackPanel>
                     </usercontrol:CardControl.MyControls>
                     <usercontrol:CardControl.MyContent>
-                        <TextBlock
-                            Text="" />
-                        <!--<templates:ViewOrNoCardTemplate
+                        <templates:ViewOrNoCardTemplate
+                            Grid.Row="1"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
-                            SelectedCard="{Binding ViewModel.OnViewCard, Mode=TwoWay}" />-->
+                            SelectedCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
 

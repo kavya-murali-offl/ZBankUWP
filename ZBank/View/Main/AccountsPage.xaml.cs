@@ -24,7 +24,6 @@ namespace ZBank.View.Main
         {
             this.InitializeComponent();
             ViewModel = new AccountPageViewModel(this);
-            DataContext = ViewModel;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -39,7 +38,7 @@ namespace ZBank.View.Main
 
         private void ViewAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            Account account = ((FrameworkElement)sender).DataContext as Account;
+            AccountBObj account = ((FrameworkElement)sender).DataContext as AccountBObj;
 
             AccountInfoPageParams parameters = new AccountInfoPageParams()
             {
@@ -48,7 +47,7 @@ namespace ZBank.View.Main
 
             FrameContentChangedArgs args = new FrameContentChangedArgs()
             {
-                PageType = typeof(AccountInfoFrame),
+                PageType = typeof(AccountInfoPage),
                 Params = parameters
             };
 

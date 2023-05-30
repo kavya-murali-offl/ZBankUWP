@@ -18,7 +18,6 @@
             x:Name="CurrencyConverter" />
         <converter:BackgroundColorConverter
             x:Name="BackgroundColorConverter" />
-     
     </UserControl.Resources>
 
     <!--To do set width and text trimming
@@ -143,7 +142,7 @@
                     Grid.Row="5"
                     FontSize="16"
                     FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.IFSCCode}" />
+                    Text="{x:Bind SelectedAccount.IfscCode}" />
                 <TextBlock
                     Margin="0,40,0,0"
                     Grid.Row="4"
@@ -158,7 +157,7 @@
                     FontSize="16"
                     HorizontalAlignment="Right"
                     FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.Branch.BranchName}" />
+                    Text="{x:Bind SelectedAccount.BranchName}" />
 
                 <TextBlock
                     Margin="0,40,0,0"
@@ -202,9 +201,7 @@
                 Grid.Row="1"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
-                SelectedCard="{x:Bind SelectedAccount.LinkedCard}" />
+                SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
         </Grid>
-     
-           
     </Grid>
 </UserControl>

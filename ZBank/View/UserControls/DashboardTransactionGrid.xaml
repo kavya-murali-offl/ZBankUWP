@@ -49,7 +49,7 @@
                 Padding="10">
                 <TextBlock
                     Grid.Column="1"
-                    Text="{Binding OtherAccount.Name}"
+                Text="{Binding Name}"
                     Style="{ThemeResource BoldNormalText}" />
                 <TextBlock
                     Grid.Column="1"

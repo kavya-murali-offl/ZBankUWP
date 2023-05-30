@@ -7,9 +7,9 @@ namespace ZBankManagement.Interface
 {
     public interface IGetTransactionDataManager
     {
-        IEnumerable<Transaction> GetTransactionsByCardNumber(string cardNumber);
-
         void GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
+
+        void GetTransactionsByCustomerID(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
 
     }
 }

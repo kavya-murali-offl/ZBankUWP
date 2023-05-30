@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
-using ZBankManagement.Utility;
 
 namespace ZBank.Entities
 {
-    public class DebitCard : Card
+    public class CurrentAccount : AccountBObj
     {
 
-        public string AccountNumber { get; set; }
+        public decimal CHARGES = 100;
 
+        public decimal InterestRate { get; set; }
+        public decimal MinimumBalance { get; set; }
     }
 }

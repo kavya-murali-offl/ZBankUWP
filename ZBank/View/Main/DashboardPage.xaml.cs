@@ -25,7 +25,9 @@ namespace ZBank.View
 
         public DashboardViewModel ViewModel { get; set; }
 
-        public string EnteredAmount { get; set; }   
+        public string EnteredAmount { get; set; }  
+        
+        public string EnteredDescription { get; set; }   
 
         public Account SelectedAccount { get; set; }   
 
@@ -126,6 +128,12 @@ namespace ZBank.View
             AccountsList.SelectedIndex = -1;
             BeneficiaryText.Text = "Select Beneficiary";
             AccountsText.Text = "Select Account";
+            EnteredDescription = "";
+        }
+
+        private void DescriptionTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+
         }
     }
 }

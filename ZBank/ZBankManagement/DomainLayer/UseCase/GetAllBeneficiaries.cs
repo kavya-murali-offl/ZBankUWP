@@ -21,12 +21,13 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllBeneficiariesUseCase : UseCaseBase<GetAllBeneficiariesResponse>
     {
 
-        private readonly IGetBeneficiaryDataManager _getBeneficiaryDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetBeneficiaryDataManager>();
+        private readonly IGetBeneficiaryDataManager _getBeneficiaryDataManager;
         private readonly GetAllBeneficiariesRequest _request;
 
         public GetAllBeneficiariesUseCase(GetAllBeneficiariesRequest request, IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback) 
             : base(presenterCallback, request.Token)
         {
+            _getBeneficiaryDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IGetBeneficiaryDataManager>();
             _request = request;
         }
 
@@ -75,6 +76,32 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public void OnSuccess(GetAllBeneficiariesResponse response)
         {
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
+    }
+
+    public class GetAllBeneficiariesInAccountPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+    {
+        public AccountInfoViewModel ViewModel { get; set; }
+
+        public GetAllBeneficiariesInAccountPresenterCallback(AccountInfoViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllBeneficiariesResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                {
+                    BeneficiaryList = response.Beneficiaries
+                };
+                ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+            });
         }
 
         public void OnFailure(ZBankException response)

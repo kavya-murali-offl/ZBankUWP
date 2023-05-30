@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.AppEvents.AppEventArgs
 {
-    public class CardPageDataUpdatedArgs
+    public class CardDataUpdatedArgs
     {
-        public IEnumerable<Card> CardsList { get; set; }   
+        public IEnumerable<CardBObj> CardsList { get; set; }   
     }
 
 }

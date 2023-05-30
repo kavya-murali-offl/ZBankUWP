@@ -17,7 +17,7 @@
             x:Key="CurrencyConverter" />
         <DataTemplate
             x:Key="AccountGridTemplate"
-            x:DataType="model:Account">
+            x:DataType="model:AccountBObj">
             <Grid
                 MinHeight="200"
                 MinWidth="320"

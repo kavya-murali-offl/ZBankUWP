@@ -19,8 +19,7 @@
             x:Name="BackgroundColorConverter" />
         <DataTemplate
             x:Key="ViewCardTemplate">
-            <local:CardViewTemplate
-                SelectedCard="{Binding SelectedAccount.LinkedCard, Mode=OneWay}" />
+
         </DataTemplate>
 
     </UserControl.Resources>
@@ -163,7 +162,7 @@
                     FontSize="16"
                     HorizontalAlignment="Right"
                     FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.Branch.BranchName}" />
+                    Text="{x:Bind SelectedAccount.BranchName}" />
 
                 <TextBlock
                     Margin="0,40,0,0"
@@ -182,13 +181,15 @@
                     Text="{x:Bind SelectedAccount.InterestRate}" />
             </Grid>
         </Grid>
-        <Grid
+        
+        <Grid 
             Grid.Row="1"
             Margin="5"
             Padding="10"
             VerticalAlignment="Stretch"
             Background="{ThemeResource ApplicationBackground}"
             CornerRadius="8">
+            
             <Grid.RowDefinitions>
                 <RowDefinition
                     Height="Auto" />
@@ -204,11 +205,11 @@
                 FontWeight="Bold"
                 FontSize="19" />
 
-            <local:ViewOrNoCardTemplate
+            <!--<local:ViewOrNoCardTemplate
                 Grid.Row="1"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
-                SelectedCard="{x:Bind SelectedAccount.LinkedCard}" />
+                SelectedCard="{x:Bind SelectedAccount.LinkedCard, Mode=OneWay}" />-->
         </Grid>
     </Grid>
 </UserControl>

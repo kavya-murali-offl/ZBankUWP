@@ -53,7 +53,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
             public bool IsSuccess { get; set; }
 
-            public AccountDTO InsertedAccount { get; set; }
+            public Account InsertedAccount { get; set; }
         }
 
         public class UpdateCustomerPresenterCallback : IPresenterCallback<UpdateCustomerResponse>

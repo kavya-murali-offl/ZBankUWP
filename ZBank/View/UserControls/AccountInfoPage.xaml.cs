@@ -23,20 +23,24 @@ namespace ZBank.View.UserControls
     /// <summary
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class AccountInfoFrame : Page
+    public sealed partial class AccountInfoPage : Page, IView
     {
-        public Account SelectedAccount { get; set; }    
+        public AccountInfoViewModel ViewModel { get; set; } 
         
-        public AccountInfoFrame()
+        public AccountInfoPage()
         {
-            this.InitializeComponent(); 
+            this.InitializeComponent();
+            ViewModel = new AccountInfoViewModel(this);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if(e.Parameter is AccountInfoPageParams) { 
                 var parameters = (e.Parameter) as AccountInfoPageParams;
-                SelectedAccount = parameters.SelectedAccount;
+                AccountBObj SelectedAccount = parameters.SelectedAccount;
+
+                ViewModel.SelectedAccount = SelectedAccount;
+
                 DataTemplate template = null;
 
                 if (SelectedAccount is SavingsAccount)
@@ -54,15 +58,25 @@ namespace ZBank.View.UserControls
 
                 if(template != null)
                 {
-                    AccountInfoContentControl.DataContext = this;
+                    AccountInfoContentControl.DataContext = this.ViewModel;
                     AccountInfoContentControl.Content = template.LoadContent();
                 }
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnPageLoaded();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnPageUnLoaded();
         }
     }
 
     public class AccountInfoPageParams
     {
-        public Account SelectedAccount { get; set; }    
+        public AccountBObj SelectedAccount { get; set; }
     }
 }

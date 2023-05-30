@@ -120,34 +120,35 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppEvents\AppEventArgs\BenefiiciaryListUpdatedArgs.cs" />
-    <Compile Include="AppEvents\AppEventArgs\CardPageDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\CardDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
-    <Compile Include="Entity\Account.cs" />
+    <Compile Include="Entity\BusinessObjects\AccountBObj.cs" />
+    <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
     <Compile Include="Entity\EnumerationTypes\Currency.cs" />
     <Compile Include="Entity\EnumerationTypes\DepositType.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
-    <Compile Include="Entity\Bank.cs" />
-    <Compile Include="Entity\Branch.cs" />
+    <Compile Include="Entity\DTOs\Bank.cs" />
+    <Compile Include="Entity\DTOs\Branch.cs" />
     <Compile Include="Entity\BusinessObjects\DashboardDataModel.cs" />
-    <Compile Include="Entity\BusinessObjects\TermDepositAccountDTO.cs" />
+    <Compile Include="Entity\DTOs\TermDepositAccountDTO.cs" />
     <Compile Include="Entity\Constants\Constants.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
-    <Compile Include="Entity\Beneficiary.cs" />
-    <Compile Include="Entity\BusinessObjects\CreditCardDTO.cs" />
-    <Compile Include="Entity\BusinessObjects\CurrentAccountDTO.cs" />
-    <Compile Include="Entity\BusinessObjects\DebitCardDTO.cs" />
+    <Compile Include="Entity\DTOs\Beneficiary.cs" />
+    <Compile Include="Entity\DTOs\CreditCardDTO.cs" />
+    <Compile Include="Entity\DTOs\CurrentAccountDTO.cs" />
+    <Compile Include="Entity\DTOs\DebitCardDTO.cs" />
     <Compile Include="Entity\BusinessObjects\Notification.cs" />
-    <Compile Include="Entity\BusinessObjects\SavingsAccountDTO.cs" />
+    <Compile Include="Entity\DTOs\SavingsAccountDTO.cs" />
     <Compile Include="Entity\BusinessObjects\TransactionBObj.cs" />
-    <Compile Include="Entity\BusinessObjects\AccountDTO.cs" />
-    <Compile Include="Entity\CreditCard.cs" />
-    <Compile Include="Entity\CurrentAccount.cs" />
-    <Compile Include="Entity\Customer.cs" />
-    <Compile Include="Entity\CustomerCredentials.cs" />
-    <Compile Include="Entity\DebitCard.cs" />
+    <Compile Include="Entity\DTOs\Account.cs" />
+    <Compile Include="Entity\BusinessObjects\CreditCard.cs" />
+    <Compile Include="Entity\BusinessObjects\CurrentAccount.cs" />
+    <Compile Include="Entity\DTOs\Customer.cs" />
+    <Compile Include="Entity\DTOs\CustomerCredentials.cs" />
+    <Compile Include="Entity\BusinessObjects\DebitCard.cs" />
     <Compile Include="Entity\EnumerationTypes\AccountStatus.cs" />
     <Compile Include="Entity\EnumerationTypes\AccountType.cs" />
     <Compile Include="Entity\EnumerationTypes\CardType.cs" />
@@ -156,18 +157,16 @@
     <Compile Include="Entity\EnumerationTypes\ModeOfPayment.cs" />
     <Compile Include="Entity\EnumerationTypes\NavigationCases.cs" />
     <Compile Include="Entity\EnumerationTypes\TransactionType.cs" />
-    <Compile Include="Entity\SavingsAccount.cs" />
-    <Compile Include="Entity\TermDepositAccount.cs" />
-    <Compile Include="Entity\RecurringDepositAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\SavingsAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\TermDepositAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\RecurringDepositAccount.cs" />
     <Compile Include="Utilities\Converters\WidthConverter.cs" />
     <Compile Include="Utilities\Helpers\LogoHelper.cs" />
+    <Compile Include="ViewModel\AccountInfoViewModel.cs" />
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
-    <Compile Include="View\DataTemplates\CardViewTemplate.xaml.cs">
-      <DependentUpon>CardViewTemplate.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
@@ -187,8 +186,8 @@
     <Compile Include="View\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entity\Card.cs" />
-    <Compile Include="Entity\Transaction.cs" />
+    <Compile Include="Entity\DTOs\Card.cs" />
+    <Compile Include="Entity\DTOs\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Converters\AmountConverter.cs" />
     <Compile Include="Utilities\Converters\DateFormatter.cs" />
@@ -209,8 +208,8 @@
     <Compile Include="View\Main\TransactionsPage.xaml.cs">
       <DependentUpon>TransactionsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\AccountInfoFrame.xaml.cs">
-      <DependentUpon>AccountInfoFrame.xaml</DependentUpon>
+    <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
+      <DependentUpon>AccountInfoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\AllAccountsGridFrame.xaml.cs">
       <DependentUpon>AllAccountsGridFrame.xaml</DependentUpon>
@@ -356,10 +355,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\DataTemplates\CardViewTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -424,7 +419,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\AccountInfoFrame.xaml">
+    <Page Include="View\UserControls\AccountInfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

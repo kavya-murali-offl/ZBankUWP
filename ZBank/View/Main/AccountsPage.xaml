@@ -6,129 +6,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:usercontrols="using:ZBank.View.UserControls"
     mc:Ignorable="d"
-    xmlns:model="using:ZBank.Entities.BusinessObjects"
+    xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
     xmlns:converters="using:ZBank.Utilities.Converters"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded">
+    
     <Page.Resources>
         <converters:CurrencyConverter
             x:Name="CurrencyConverter" />
         <converters:BackgroundColorConverter
             x:Key="BackgroundColorConverter" />
-        <DataTemplate
-            x:Key="AccountGridTemplate"
-            x:DataType="model:Account">
-            <Grid
-                MinHeight="200"
-                MinWidth="320"
-                Margin="5"
-                CornerRadius="15,15,20,20"
-                BorderThickness="0"
-                BorderBrush="{ThemeResource SystemAccentColorLight3}"
-                Background="{ThemeResource ApplicationBackground}">
-                <Grid.RowDefinitions>
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                </Grid.RowDefinitions>
-                <StackPanel
-                    Background="{x:Bind AccountType, Converter={StaticResource BackgroundColorConverter}}"
-                    MaxWidth="200"
-                    Height="30"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Right"
-                    CornerRadius="0,0,0,15">
-                    <TextBlock
-                        Foreground="{ThemeResource SystemChromeWhiteColor}"
-                        FontSize="13"
-                        HorizontalAlignment="Right"
-                        Padding="10,5,10,5"
-                        Text="{Binding AccountType}" />
-                </StackPanel>
-
-                <TextBlock
-                    Margin="0,10,0,5"
-                    HorizontalAlignment="Center"
-                    Grid.Row="1"
-                    FontWeight="SemiBold"
-                    Foreground="{ThemeResource SystemBaseHighColor}"
-                    FontSize="20"
-                    Text="{Binding AccountNumber}" />
-
-                <StackPanel
-                    HorizontalAlignment="Center"
-                    Margin="0,5,0,0"
-                    Grid.Row="2"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        Text="Status:"
-                        Style="{ThemeResource NormalSubText}" />
-                    <StackPanel
-                        Margin="10,0,10,0"
-                        Background="{x:Bind AccountStatus, Converter={StaticResource BackgroundColorConverter}}"
-                        CornerRadius="4"
-                        Padding="5,5,5,5">
-                        <TextBlock
-                            Foreground="{ThemeResource SystemChromeWhiteColor}"
-                            FontSize="12"
-                            VerticalAlignment="Center"
-                            Text="{Binding AccountStatus}" />
-                    </StackPanel>
-                </StackPanel>
-                <TextBlock
-                    Grid.Row="3"
-                    FontSize="20"
-                    Margin="10"
-                    HorizontalAlignment="Center"
-                    Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}" />
-                <!--<Button
-                    Margin="0,10,0,20"
-                    HorizontalAlignment="Center"
-                    Grid.Row="4"
-                    Style="{ThemeResource PrimaryButton}">
-                    <Button.Content>
-                        <TextBlock
-                            Text="View Balance" />
-                    </Button.Content>
-                </Button>-->
-
-                <Button
-                    Padding="15"
-                    x:Name="ViewAccountButton"
-                    Margin="0,15,0,0"
-                    Grid.Row="5"
-                    Click="ViewAccountButton_Click"
-                    BorderThickness="0"
-                    CornerRadius="0,0,0,0"
-                    Style="{ThemeResource PrimaryNavigationButton}"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock 
-                                Margin="10,0,10,0"
-                                Text="View Details" />
-                            <FontIcon
-                                FontSize="16"
-                                VerticalAlignment="Center"
-                                Glyph="&#xE26B;" />
-                        </StackPanel>
-                    </Button.Content>
-                    
-                </Button>
-            </Grid>
-        </DataTemplate>
     </Page.Resources>
+    
         <Grid
             Margin="5"
             Padding="10"
@@ -138,7 +27,7 @@
                 Margin="0,10,0,0"
                 SelectionMode="None"
                 Grid.Row="1"
-                ItemTemplate="{StaticResource AccountGridTemplate}"
+               
                 ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -148,6 +37,131 @@
                             Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
+
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="modelBObj:AccountBObj">
+                    <Grid
+                        MinHeight="200"
+                        MinWidth="320"
+                        Margin="5"
+                        CornerRadius="15,15,20,20"
+                        BorderThickness="0"
+                        BorderBrush="{ThemeResource SystemAccentColorLight3}"
+                        Background="{ThemeResource ApplicationBackground}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackPanel
+                            Background="{Binding AccountType, Converter={StaticResource BackgroundColorConverter}}"
+                            MaxWidth="200"
+                            Height="30"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            CornerRadius="0,0,0,15">
+                            <TextBlock
+                                Foreground="{ThemeResource SystemChromeWhiteColor}"
+                                FontSize="13"
+                                HorizontalAlignment="Right"
+                                Padding="10,5,10,5"
+                                Text="{Binding AccountType}" />
+                        </StackPanel>
+
+                        <TextBlock
+                            Margin="0,10,0,5"
+                            HorizontalAlignment="Center"
+                            Grid.Row="1"
+                            FontWeight="SemiBold"
+                            Foreground="{ThemeResource SystemBaseHighColor}"
+                            FontSize="20"
+                            Text="{Binding AccountNumber}" />
+
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            Margin="0,5,0,0"
+                            Grid.Row="2"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Text="Status:"
+                                Style="{ThemeResource NormalSubText}" />
+                            <StackPanel
+                                Margin="10,0,10,0"
+                                Background="{Binding AccountStatus, Converter={StaticResource BackgroundColorConverter}}"
+                                CornerRadius="4"
+                                Padding="5,5,5,5">
+                                <TextBlock
+                                    Foreground="{ThemeResource SystemChromeWhiteColor}"
+                                    FontSize="12"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding AccountStatus}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel
+                            Margin="12"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal"
+                            Grid.Row="3">
+                            <TextBlock
+                                FontSize="20"
+                                Margin="10"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}" />
+                            <!--<Button
+                                Style="{ThemeResource IconButton}"
+                                Margin="10,0,10,0"
+                                Padding="10"
+                                Background="Transparent"
+                                VerticalContentAlignment="Center">
+                                <Button.Content>
+                                    <FontIcon
+                                        FontSize="14"
+                                        Glyph="{x:Bind ViewOrHideIcon}" />
+                                </Button.Content>
+                            </Button>-->
+                        </StackPanel>
+
+
+                        <Button
+                            Padding="15"
+                            x:Name="ViewAccountButton"
+                            Margin="0,15,0,0"
+                            Grid.Row="5"
+                            Click="ViewAccountButton_Click"
+                            BorderThickness="0"
+                            CornerRadius="0,0,0,0"
+                            Style="{ThemeResource PrimaryNavigationButton}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch">
+                            <Button.Content>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                                    <TextBlock
+                                        Margin="10,0,10,0"
+                                        Text="View Details" />
+                                    <FontIcon
+                                        FontSize="16"
+                                        VerticalAlignment="Center"
+                                        Glyph="&#xE26B;" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
             </GridView>
         </Grid>
 </Page>

@@ -1,11 +1,12 @@
 ﻿using System;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 using ZBankManagement.Utility;
 
 namespace ZBank.Entities
 {
-    public class CreditCard : Card
+    public class CreditCard : CardBObj
     {
         public CreditCardProvider CreditCardProvider { get; set; }
 

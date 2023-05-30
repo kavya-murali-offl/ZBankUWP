@@ -80,6 +80,10 @@
         TintColor="{ThemeResource SystemAltHighColor}"
         TintOpacity="0.9"
         />
+    <AcrylicBrush
+        x:Key="HeaderAcrylicBrush"
+        TintColor="{ThemeResource SystemAccentColorLight1}"
+        TintOpacity="0.1" />
     <Style
         x:Key="CustomFlyoutStyle"
         TargetType="FlyoutPresenter">

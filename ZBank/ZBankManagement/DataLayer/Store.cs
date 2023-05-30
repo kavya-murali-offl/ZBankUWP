@@ -11,14 +11,14 @@ namespace ZBankManagement.Data
 
         public static IEnumerable<Card> CardsList { get; set; }
 
-        public static IEnumerable<AccountDTO> AccountsList { get; set; }
+        public static IEnumerable<Account> AccountsList { get; set; }
 
         public static IEnumerable<Transaction> TransactionsList { get; set; }
 
 
         // AccountsList
 
-        public static AccountDTO GetAccountByAccountNumber(string accountNumber) => AccountsList.Where(acc => acc.AccountNumber.Equals(accountNumber)).FirstOrDefault();
+        public static Account GetAccountByAccountNumber(string accountNumber) => AccountsList.Where(acc => acc.AccountNumber.Equals(accountNumber)).FirstOrDefault();
 
         // CardsList
          //&& c.AccountID.Equals(accountID)

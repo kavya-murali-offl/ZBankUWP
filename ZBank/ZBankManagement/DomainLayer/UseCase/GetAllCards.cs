@@ -13,6 +13,7 @@ using Windows.UI.Core;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 using Windows.UI.Popups;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -27,9 +28,17 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             _request = request;
         }
 
+
         protected override void Action()
         {
-            _getCardDataManager.GetAllCards(_request, new GetAllCardsCallback(this));
+            if(_request.CardNumber != null)
+            {
+                _getCardDataManager.GetCardByCardNumber(_request, new GetAllCardsCallback(this));
+            }
+            else if (_request.CustomerID != null) 
+            {
+                _getCardDataManager.GetAllCards(_request, new GetAllCardsCallback(this));
+            }
         }
 
         private class GetAllCardsCallback : IUseCaseCallback<GetAllCardsResponse>
@@ -56,12 +65,19 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllCardsRequest : RequestObjectBase
     {
         public string CustomerID { get; set; }
+
+        public string CardNumber { get; set; }
+    }
+
+    public class GetCardByCardNumber : RequestObjectBase
+    {
+        public string CardNumber { get; set; }
     }
 
 
     public class GetAllCardsResponse
     {
-        public IEnumerable<Card> Cards { get; set; }
+        public IEnumerable<CardBObj> Cards { get; set; }
     }
 
 
@@ -78,9 +94,38 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
             await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                CardPageDataUpdatedArgs args = new CardPageDataUpdatedArgs()
+                CardDataUpdatedArgs args = new CardDataUpdatedArgs()
                 {
-                    CardsList = new ObservableCollection<Card>(response.Cards)
+                    CardsList = response.Cards
+                };
+                ViewNotifier.Instance.OnCardsPageDataUpdated(args);
+            });
+        }
+
+        public async void OnFailure(ZBankException exception)
+        {
+            var dialog = new MessageDialog(exception.Message);
+            await dialog.ShowAsync();
+
+        }
+    }
+
+    public class GetCardByNumberInAccountPresenterCallback : IPresenterCallback<GetAllCardsResponse>
+    {
+        private readonly AccountInfoViewModel ViewModel;
+
+        public GetCardByNumberInAccountPresenterCallback(AccountInfoViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllCardsResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                CardDataUpdatedArgs args = new CardDataUpdatedArgs()
+                {
+                    CardsList = response.Cards
                 };
                 ViewNotifier.Instance.OnCardsPageDataUpdated(args);
             });

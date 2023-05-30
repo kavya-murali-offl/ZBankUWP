@@ -12,11 +12,10 @@ namespace ZBank.Entities
     [Table("Card")]
     public class Card
     {
-
         [PrimaryKey]
         public string CardNumber { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public DateTime LinkedOn { get; set; }
 
         public string Pin { get; set; }
 
@@ -27,7 +26,6 @@ namespace ZBank.Entities
         public string CVV { get; set; }
 
         public string ExpiryMonth { get; set; }
-
         public string ExpiryYear { get; set; }
 
     }

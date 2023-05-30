@@ -7,12 +7,11 @@ using ZBank.Entities.BusinessObjects;
 
 namespace ZBank.Entities
 {
-    public class CurrentAccount : Account
+    public class SavingsAccount : AccountBObj
     {
-
-        public decimal CHARGES = 100;
-
         public decimal InterestRate { get; set; }
+
         public decimal MinimumBalance { get; set; }
+
     }
 }

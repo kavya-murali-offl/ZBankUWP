@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
 using ZBank.Entity;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.DatabaseHandler
  {
@@ -33,9 +34,9 @@ namespace ZBank.DatabaseHandler
         Task<int> UpdateCredentials(CustomerCredentials customerCredentials);
 
         // Account
-        Task<IEnumerable<Account>> GetAllAccounts(string userID);
+        Task<IEnumerable<AccountBObj>> GetAllAccounts(string userID);
 
-        Task<IEnumerable<Card>> GetAllCards(string customerID);
+        Task<IEnumerable<CardBObj>> GetAllCards(string customerID);
 
 
         Task InsertAccount(Account account);
@@ -49,15 +50,16 @@ namespace ZBank.DatabaseHandler
 
         Task<int> UpdateCard(Card card);
 
-        Task<IEnumerable<DebitCard>> GetCardByAccountNumber(string accountNumber);
+        Task<IEnumerable<CardBObj>> GetCardByAccountNumber(string accountNumber);
+        Task<IEnumerable<CardBObj>> GetCardByCardNumber(string accountNumber);
 
         // Transaction
 
-        Task<IEnumerable<Transaction>> GetTransactionByAccountNumber(string accountNumber);
+        Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber);
 
-        Task<IEnumerable<Transaction>> GetLatestMonthTransactionByAccountNumber(string accountNumber);
+        Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber);
 
-        Task<IEnumerable<Transaction>> GetTransactionByCardNumber(string cardNumber);
+        Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber);
 
         Task<int> InsertTransaction(Transaction transaction);
 
@@ -72,7 +74,5 @@ namespace ZBank.DatabaseHandler
         // Reset password
 
         Task<int> ResetPassword(CustomerCredentials credentials);
-
-
     }
 }

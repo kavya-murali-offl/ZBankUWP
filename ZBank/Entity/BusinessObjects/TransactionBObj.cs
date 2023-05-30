@@ -6,7 +6,7 @@ namespace ZBank.Entities.BusinessObjects
 {
     public class TransactionBObj : Transaction
     {
-        public Beneficiary OtherAccount { get; set; }
+        public string Name { get; set; }
 
         public string ArrowIcon { get; set; }
 
@@ -14,5 +14,20 @@ namespace ZBank.Entities.BusinessObjects
 
         public string BackgroundColor { get;  set; }
 
+        public void SetDefault()
+        {
+            if (TransactionType == TransactionType.EXPENSE)
+            {
+                BorderColor = "#be3232";
+                BackgroundColor = "#f5e1dd";
+                ArrowIcon = "\uEDDC";
+            }
+            else if (TransactionType == TransactionType.INCOME)
+            {
+                BackgroundColor = "#eafde8";
+                BorderColor = "#058365";
+                ArrowIcon = "\uEDDB";
+            }
+        }
     }
 }

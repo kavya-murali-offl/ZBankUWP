@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.Entities.BusinessObjects
 {
@@ -20,13 +21,13 @@ namespace ZBank.Entities.BusinessObjects
 
         public DashboardCardModel IncomeExpenseCard { get; set; }
 
-        public ObservableCollection<Card> AllCards { get; set; }
+        public ObservableCollection<CardBObj> AllCards { get; set; }
 
         public ObservableCollection<Beneficiary> AllBeneficiaries { get; set; }
 
         public ObservableCollection<TransactionBObj> LatestTransactions { get; set; }
 
-        public ObservableCollection<Account> AllAccounts { get; set; }
+        public ObservableCollection<AccountBObj> AllAccounts { get; set; }
     }
 
     public class DashboardCardModel

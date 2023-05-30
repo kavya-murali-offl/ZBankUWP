@@ -8,6 +8,7 @@ using ZBank.DatabaseHandler;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entities.EnumerationType;
+using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
@@ -29,7 +30,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                IEnumerable<Account> accountsList = _handler.GetAllAccounts(request.UserID).Result;
+                IEnumerable<AccountBObj> accountsList = _handler.GetAllAccounts(request.UserID).Result;
                 var BalanceCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Balance",
@@ -53,12 +54,13 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 };
 
 
-                List<Transaction> transactions = new List<Transaction>();
+                List<TransactionBObj> transactions = new List<TransactionBObj>();
                 foreach(var account in accountsList)
                 {
                     var list = _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber).Result;
                     transactions.AddRange(list);
                 }
+
                 var income = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.INCOME).Sum(tran => tran.Amount);
                 var expense = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.EXPENSE).Sum(tran => tran.Amount);
 
@@ -83,7 +85,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = deposits.Where(dep => dep.AccountStatus == AccountStatus.CLOSED).Count()
                 };
 
-                IEnumerable<Card> AllCards = _handler.GetAllCards(request.UserID).Result;
+                IEnumerable<CardBObj> AllCards = _handler.GetAllCards(request.UserID).Result;
 
                 GetDashboardDataResponse response = new GetDashboardDataResponse
                 {

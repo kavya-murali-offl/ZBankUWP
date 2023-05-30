@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entity.BusinessObjects;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
-using ZBankManagement.Utility;
 
 namespace ZBank.ViewModel
 {
@@ -17,11 +16,11 @@ namespace ZBank.ViewModel
     {
         public IView View;
 
-        private Card _onViewCard { get; set; }
+        private CardBObj _onViewCard { get; set; }
 
         private int _onViewCardIndex { get; set; } = 0;
 
-        public Card OnViewCard
+        public CardBObj OnViewCard
         {
             get { return _onViewCard; }
             set
@@ -80,23 +79,25 @@ namespace ZBank.ViewModel
 
         public void RefreshData(DashboardDataUpdatedArgs args)
         {
-            IEnumerable<TransactionBObj> transactionBObjs = args?.LatestTransactions.Select(tx =>
-            {
-                var bobj = Mapper.GetTransactionBObj(tx);
-                bobj.OtherAccount = args.AllBeneficiaries.FirstOrDefault(ben => ben.AccountNumber == tx.OtherAccountNumber);
-                return bobj;
-            });
+           foreach (var transactionBObj in args.LatestTransactions)
+           { 
+               transactionBObj.SetDefault();
+           }
+           foreach(var card in args.AllCards)
+           {
+                card.SetDefaultValues();
+           }
 
             DashboardModel = new DashboardDataModel()
             {
                 AllBeneficiaries = new ObservableCollection<Beneficiary>(args.AllBeneficiaries),
-                AllCards = new ObservableCollection<Card>(args.AllCards),
-                LatestTransactions = new ObservableCollection<TransactionBObj>(transactionBObjs),
+                AllCards = new ObservableCollection<CardBObj>(args.AllCards),
+                LatestTransactions = new ObservableCollection<TransactionBObj>(args.LatestTransactions),
                 BalanceCard = args.BalanceCard,
                 DepositCard = args.DepositCard,
                 IncomeExpenseCard = args.IncomeExpenseCard,
                 BeneficiariesCard = args.BeneficiariesCard,
-                AllAccounts = new ObservableCollection<Account>(args.AllAccounts)
+                AllAccounts = new ObservableCollection<AccountBObj>(args.AllAccounts)
             };
             
             _onViewCardIndex = 0;

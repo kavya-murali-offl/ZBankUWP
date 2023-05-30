@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.Entities;
+using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.Constants;
 using ZBank.Utilities.Helpers;
 
@@ -26,53 +27,34 @@ namespace ZBank.View.DataTemplates
         public ViewOrNoCardTemplate()
         {
             this.InitializeComponent();
-            UpdateCard();
         }
-        public string BackgroundImage { get; set; } = Constants.CardBackgrounds.FirstOrDefault();
 
-        public Card SelectedCard
+        public CardBObj SelectedCard
         {
-            get { return (Card)GetValue(SelectedCardProperty); }
+            get { return (CardBObj)GetValue(SelectedCardProperty); }
             set { 
-                
                 SetValue(SelectedCardProperty, value);
+                UpdateCard();
             }
         }
 
         public static readonly DependencyProperty SelectedCardProperty =
-            DependencyProperty.Register("SelectedCard", typeof(Card), typeof(ViewOrNoCardTemplate), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedCard", typeof(CardBObj), typeof(ViewOrNoCardTemplate), new PropertyMetadata(null));
 
-        public string ProviderLogo { get; set; } = Constants.ZBankLogo;
+        public string BankLogo { get; set; } = Constants.ZBankLogo;
 
-        public int bgIndex = 0;
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateCard();
         }
 
         public void UpdateCard()
         {
-            if (bgIndex >= Constants.CardBackgrounds.Count)
-            {
-                bgIndex = 0;
-            }
-
-            BackgroundImage = Constants.CardBackgrounds[0];
-            bgIndex++;
-
+          
             ViewOrNoCardContent.DataContext = this;
+
             if (SelectedCard != null)
             {
-                if (SelectedCard is CreditCard)
-                {
-                    var selectedCreditCard = SelectedCard as CreditCard;
-                    ProviderLogo = LogoHelper.GetCardProviderPath(selectedCreditCard.CreditCardProvider);
-                }
-                else
-                {
-                    ProviderLogo = LogoHelper.GetCardProviderPath();
-                }
                 ViewOrNoCardContent.Content = (Resources["ViewCardTemplate"] as DataTemplate).LoadContent();
             }
             else
