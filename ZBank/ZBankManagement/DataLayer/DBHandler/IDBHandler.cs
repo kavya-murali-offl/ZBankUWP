@@ -57,6 +57,9 @@ namespace ZBank.DatabaseHandler
 
         Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber);
 
+        Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber);
+
+
         Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber);
 
         Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber);

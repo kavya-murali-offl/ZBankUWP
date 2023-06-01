@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.View.Modals;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
@@ -52,6 +58,16 @@ namespace ZBank.View.Main
             };
 
             ViewNotifier.Instance.OnFrameContentChanged(args);
+        }
+
+
+        private void CreateAccount_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = new AddOrEditAccountViewModel(this);
+            viewModel.IsEdit = false;
+
+            WindowManager windowManager = new WindowManager();
+            windowManager.OpenNewWindow<AddOrEditAccountPage>("Add Account", viewModel);
         }
     }
 }

@@ -48,5 +48,18 @@ namespace ZBank.View.DataTemplates
 
         public static readonly DependencyProperty LinkedCardProperty =
             DependencyProperty.Register("LinkedCard", typeof(CardBObj), typeof(CurrentAccountInfoTemplate), new PropertyMetadata(null));
+
+
+        public IEnumerable<TransactionBObj> Transactions
+        {
+            get { return (IEnumerable<TransactionBObj>)GetValue(TransactionsProperty); }
+            set { SetValue(TransactionsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Transactions.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TransactionsProperty =
+            DependencyProperty.Register("Transactions", typeof(IEnumerable<TransactionBObj>), typeof(CurrentAccountInfoTemplate), new PropertyMetadata(null));
+
+
     }
 }

@@ -125,6 +125,7 @@
     <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
     <Compile Include="Entity\BusinessObjects\AccountBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
+    <Compile Include="Entity\BusinessObjects\DropDownItem.cs" />
     <Compile Include="Entity\EnumerationTypes\Currency.cs" />
     <Compile Include="Entity\EnumerationTypes\DepositType.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
@@ -164,6 +165,9 @@
     <Compile Include="Utilities\Helpers\LogoHelper.cs" />
     <Compile Include="ViewModel\AccountInfoViewModel.cs" />
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditAccountViewModel.xaml.cs">
+      <DependentUpon>AddOrEditAccountViewModel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
@@ -172,6 +176,15 @@
     </Compile>
     <Compile Include="View\DataTemplates\DepositAccountInfoTemplate.xaml.cs">
       <DependentUpon>DepositAccountInfoTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewAcountTemplates\NewCurrentAccountFormTemplate.xaml.cs">
+      <DependentUpon>NewCurrentAccountFormTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewAcountTemplates\NewDepositAccountFormTemplate.xaml.cs">
+      <DependentUpon>NewDepositAccountFormTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewAcountTemplates\NewSavingsAccountFormTemplate.xaml.cs">
+      <DependentUpon>NewSavingsAccountFormTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml.cs">
       <DependentUpon>SavingsAccountInfoTemplate.xaml</DependentUpon>
@@ -208,6 +221,13 @@
     <Compile Include="View\Main\TransactionsPage.xaml.cs">
       <DependentUpon>TransactionsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Modals\AddOrEditAccountPage.xaml.cs">
+      <DependentUpon>AddOrEditAccountPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Modals\BlankPage1.xaml.cs">
+      <DependentUpon>BlankPage1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowManager.cs" />
     <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
     </Compile>
@@ -355,11 +375,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ViewModel\AddOrEditAccountViewModel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DataTemplates\DepositAccountInfoTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewAcountTemplates\NewCurrentAccountFormTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewAcountTemplates\NewDepositAccountFormTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewAcountTemplates\NewSavingsAccountFormTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -416,6 +452,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Main\TransactionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Modals\AddOrEditAccountPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Modals\BlankPage1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

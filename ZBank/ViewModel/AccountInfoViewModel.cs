@@ -44,24 +44,38 @@ namespace ZBank.ViewModel
             }
         }
 
+        private IEnumerable<TransactionBObj> _transactions { get; set; } = new List<TransactionBObj>();
+
+        public IEnumerable<TransactionBObj> Transactions
+        {
+            get { return _transactions; }
+            set
+            {
+                _transactions = value;
+                LoadCardByID();
+                OnPropertyChanged(nameof(Transactions));
+            }
+        }
+
         public AccountInfoViewModel(IView view)
         {
             View = view;
-
         }
 
         public void OnPageLoaded()
         {
-            LoadCardByID();
+         
             ViewNotifier.Instance.CardsDataUpdated += UpdateCard;
+            ViewNotifier.Instance.TransactionListUpdated += UpdateTransactions;
+            LoadTransactions();
         }
 
         public void OnPageUnLoaded()
         {
             ViewNotifier.Instance.CardsDataUpdated -= UpdateCard;
+            ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactions;
         }
 
-        private static int bgIndex = 0;
 
         public void UpdateCard(CardDataUpdatedArgs args)
         {
@@ -70,6 +84,32 @@ namespace ZBank.ViewModel
             {
                 LinkedCard.SetDefaultValues();
             }
+        }
+
+        public void UpdateTransactions(TransactionPageDataUpdatedArgs args)
+        {
+            Transactions = args.TransactionList;
+            if (Transactions != null)
+            {
+                foreach(var transaction in Transactions)
+                {
+                    transaction.SetDefault();
+                }
+            }
+        }
+
+
+        private void LoadTransactions()
+        {
+
+            GetAllTransactionsRequest request = new GetAllTransactionsRequest()
+            {
+                AccountNumber = SelectedAccount.AccountNumber,
+            };
+
+            IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsOfAccountPresenterCallback(this);
+            UseCaseBase<GetAllTransactionsResponse> useCase = new GetAllTransactionsUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         private void LoadCardByID() {

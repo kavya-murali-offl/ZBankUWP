@@ -120,14 +120,6 @@ namespace ZBank
 
         private void LoadToggleButton()
         {
-            //if (ThemeSelector.Theme == ElementTheme.Dark)
-            //{
-            //    SwitchThemeButton.IsChecked = true;
-            //}
-            //else
-            //{
-            //    SwitchThemeButton.IsChecked = false;
-            //}
             ThemeIcon.Glyph = ThemeSelector.GetIcon();
         }
 
@@ -186,47 +178,43 @@ namespace ZBank
             //    ViewModel.NavigationChanged(selectedItem);
             //}
         }
-        
+
         public double initialPaneWidth { get; set; }
 
-        public bool isManipulating { get; set; }
+        public bool isDragging { get; set; }
 
         private void MySplitView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            isManipulating = true;
+            isDragging = true;
             MySplitView.CapturePointer(e.Pointer);
         }
 
         private void MySplitView_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-                if (isManipulating)
-                {
-                    MySplitView.IsPaneOpen = false;
-                    TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
-                    TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
-                    isManipulating = false;
-                    MySplitView.ReleasePointerCapture(e.Pointer);
-
+            if (MySplitView.IsPaneOpen && e.GetCurrentPoint(MySplitView.Pane).Position.X >= MySplitView.OpenPaneLength)
+            {
+                ClosePane();
             }
 
         }
 
-       
+
         private void Content_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            if (isManipulating)
+            if (isDragging)
             {
                 if (MySplitView.IsPaneOpen && e.GetCurrentPoint(MySplitView).Position.X <= MySplitView.OpenPaneLength)
                 {
                     ClosePane();
                 }
-                else if(e.GetCurrentPoint(MySplitView).Position.X >= MySplitView.CompactPaneLength)
+                else if (e.GetCurrentPoint(MySplitView).Position.X >= MySplitView.CompactPaneLength)
                 {
                     OpenPane();
                 }
             }
+           
             MySplitView.ReleasePointerCapture(e.Pointer);
-            isManipulating = false;
+            isDragging = false;
             Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
             ResizeBorder.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
@@ -254,6 +242,13 @@ namespace ZBank
         private void ResizeBorder_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             ResizeBorder.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+        }
+
+        private void MySplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
+        {
+            ClosePane();
+            MySplitView.IsPaneOpen = false;
         }
     }
 

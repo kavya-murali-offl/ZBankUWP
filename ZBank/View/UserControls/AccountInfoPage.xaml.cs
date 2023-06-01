@@ -58,7 +58,7 @@ namespace ZBank.View.UserControls
 
                 if(template != null)
                 {
-                    AccountInfoContentControl.DataContext = this.ViewModel;
+                    AccountInfoContentControl.DataContext = ViewModel;
                     AccountInfoContentControl.Content = template.LoadContent();
                 }
             }

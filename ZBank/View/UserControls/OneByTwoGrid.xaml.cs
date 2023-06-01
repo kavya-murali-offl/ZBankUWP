@@ -42,5 +42,24 @@ namespace ZBank.View.UserControls
         public static readonly DependencyProperty Column2ContentProperty =
             DependencyProperty.Register("Column2Content", typeof(FrameworkElement), typeof(CardControl), new PropertyMetadata(null));
 
+
+        public string Width2Ratio
+        {
+            get { return (string)GetValue(Width2RatioProperty); }
+            set { SetValue(Width2RatioProperty, value); }
+        }
+
+        public static readonly DependencyProperty Width2RatioProperty =
+            DependencyProperty.Register("Width2Ratio", typeof(string), typeof(OneByTwoGrid), new PropertyMetadata("*"));
+
+
+        public string Width1Ratio
+        {
+            get { return (string)GetValue(Width1RatioProperty); }
+            set { SetValue(Width1RatioProperty, value); }
+        }
+
+        public static readonly DependencyProperty Width1RatioProperty =
+            DependencyProperty.Register("Width1Ratio", typeof(string), typeof(OneByTwoGrid), new PropertyMetadata("*"));
     }
 }

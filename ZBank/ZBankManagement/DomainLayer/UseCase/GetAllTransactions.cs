@@ -30,7 +30,14 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            _getTransactionDataManager.GetTransactionsByCustomerID(_request, new GetAllTransactionsCallback(this));
+            if(_request.AccountNumber != null)
+            {
+                _getTransactionDataManager.GetTransactionsByAccountNumber(_request, new GetAllTransactionsCallback(this));
+            }
+            else
+            {
+                _getTransactionDataManager.GetTransactionsByCustomerID(_request, new GetAllTransactionsCallback(this));
+            }
         }
 
         private class GetAllTransactionsCallback : IUseCaseCallback<GetAllTransactionsResponse>
@@ -88,6 +95,33 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 {
                     TransactionList = response.Transactions,
                     BeneficiariesList = response.Beneficiaries
+                };
+
+                ViewNotifier.Instance.OnTransactionsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
+    }
+
+    public class GetAllTransactionsOfAccountPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
+    {
+        public AccountInfoViewModel ViewModel { get; set; }
+
+        public GetAllTransactionsOfAccountPresenterCallback(AccountInfoViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllTransactionsResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
+                {
+                    TransactionList = response.Transactions,
                 };
 
                 ViewNotifier.Instance.OnTransactionsListUpdated(args);

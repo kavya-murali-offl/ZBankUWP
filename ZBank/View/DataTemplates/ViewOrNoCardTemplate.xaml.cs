@@ -50,7 +50,6 @@ namespace ZBank.View.DataTemplates
 
         public void UpdateCard()
         {
-          
             ViewOrNoCardContent.DataContext = this;
 
             if (SelectedCard != null)

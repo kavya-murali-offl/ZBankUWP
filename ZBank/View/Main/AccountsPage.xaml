@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:usercontrols="using:ZBank.View.UserControls"
+    xmlns:popups="using:ZBank.View.Popups"
     mc:Ignorable="d"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
     xmlns:converters="using:ZBank.Utilities.Converters"
@@ -23,23 +24,43 @@
             Padding="10"
             CornerRadius="8">
             <!--Include filter, sort, search, listview and gridview-->
-            <GridView
-                Margin="0,10,0,0"
-                SelectionMode="None"
-                Grid.Row="1"
-               
-                ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid
-                            HorizontalAlignment="Center"
-                            MaximumRowsOrColumns="3"
-                            Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="Auto" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Button
+                x:Name="CreateAccount"
+                Click="CreateAccount_Click"
+                Style="{ThemeResource PrimaryButton}"
+                HorizontalAlignment="Right"
+                Content="Create Account" />
+        </Grid>
+        <GridView
+            Margin="0,20,0,0"
+            SelectionMode="None"
+            Grid.Row="1"
+            ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid
+                        HorizontalAlignment="Center"
+                        MaximumRowsOrColumns="3"
+                        Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
 
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="modelBObj:AccountBObj">
+                <DataTemplate
+                    x:DataType="modelBObj:AccountBObj">
                     <Grid
                         MinHeight="200"
                         MinWidth="320"
@@ -78,7 +99,7 @@
                         </StackPanel>
 
                         <TextBlock
-                            Margin="0,10,0,5"
+                            Margin="0,25,0,5"
                             HorizontalAlignment="Center"
                             Grid.Row="1"
                             FontWeight="SemiBold"
@@ -108,14 +129,14 @@
                             </StackPanel>
                         </StackPanel>
                         <StackPanel
-                            Margin="12"
+                            Margin="10"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal"
                             Grid.Row="3">
                             <TextBlock
-                                FontSize="20"
-                                Margin="10"
+                                Padding="0,20,0,0"
+                                FontSize="22"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}" />
@@ -136,28 +157,21 @@
 
                         <Button
                             x:Name="ViewAccountButton"
-                            Margin="15"
+                            Margin="20"
                             Grid.Row="5"
                             HorizontalAlignment="Center"
                             Click="ViewAccountButton_Click"
-                            Style="{ThemeResource PrimaryButton}"
-                           >
+                            Style="{ThemeResource PrimaryButton}">
                             <Button.Content>
-                                <StackPanel
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Center">
-                                    <TextBlock
-                                        Margin="10,0,10,0"
-                                        Text="View Details" />
-                                    <FontIcon
-                                        FontSize="16"
-                                        Glyph="&#xE26B;" />
-                                </StackPanel>
+                                <TextBlock
+                                    Margin="10,0,10,0"
+                                    Text="View Details" />
                             </Button.Content>
                         </Button>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            </GridView>
-        </Grid>
+        </GridView>
+    </Grid>
+   
 </Page>

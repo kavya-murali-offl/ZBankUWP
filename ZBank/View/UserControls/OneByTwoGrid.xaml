@@ -89,9 +89,9 @@
         </VisualStateManager.VisualStateGroups>
         <Grid.ColumnDefinitions>
             <ColumnDefinition
-                Width="*" />
+                Width="{x:Bind Width1Ratio, Mode=OneWay}" />
             <ColumnDefinition
-                Width="*" />
+                Width="{x:Bind Width2Ratio, Mode=OneWay}" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition

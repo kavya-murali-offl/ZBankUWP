@@ -127,6 +127,8 @@
                     <ItemsWrapGrid
                         x:Name="MaxItemsWrapGrid"
                         MaximumRowsOrColumns="3"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
                         Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>

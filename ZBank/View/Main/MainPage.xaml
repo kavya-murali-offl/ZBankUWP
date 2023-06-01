@@ -96,6 +96,7 @@
         <SplitView
             PointerReleased="Content_PointerReleased"
             x:Name="MySplitView"
+            PaneClosing="MySplitView_PaneClosing"
             Grid.Row="1"
             PaneBackground="{ThemeResource ApplicationBackground}"
             CompactPaneLength="50"
@@ -274,8 +275,6 @@
                                 <Button
                                     Click="NotificationsButton_Click"
                                     x:Name="NotificationsButton"
-                                    CornerRadius="10"
-                                    Padding="8"
                                     Style="{ThemeResource IconButton}">
                                     <ToolTipService.ToolTip>
                                         <ToolTip
@@ -285,15 +284,12 @@
                                     <Button.Content>
                                         <FontIcon
                                             Glyph="&#xEA8F;"
-                                            FontSize="18"
-                                            Style="{StaticResource MenuIconStyle}" />
+                                            FontSize="18" />
                                     </Button.Content>
                                 </Button>
                                 <Button
                                     x:Name="SettingsButton"
                                     Margin="5,0,5,0"
-                                    CornerRadius="10"
-                                    Padding="8"
                                     Click="SettingsButton_Click"
                                     Style="{ThemeResource IconButton}">
                                     <ToolTipService.ToolTip>
@@ -304,8 +300,7 @@
                                     <Button.Content>
                                         <FontIcon
                                             FontSize="18"
-                                            Glyph="&#xE713;"
-                                            Style="{StaticResource MenuIconStyle}" />
+                                            Glyph="&#xE713;" />
                                     </Button.Content>
                                 </Button>
 

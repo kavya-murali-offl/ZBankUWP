@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -51,6 +52,16 @@ namespace ZBank.View.DataTemplates
         {
 
         }
+        public IEnumerable<TransactionBObj> Transactions
+        {
+            get { return (IEnumerable<TransactionBObj>)GetValue(TransactionsProperty); }
+            set { SetValue(TransactionsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Transactions.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TransactionsProperty =
+            DependencyProperty.Register("Transactions", typeof(IEnumerable<TransactionBObj>), typeof(SavingsAccountInfoTemplate), new PropertyMetadata(new List<TransactionBObj>()));
+
     }
 
 }

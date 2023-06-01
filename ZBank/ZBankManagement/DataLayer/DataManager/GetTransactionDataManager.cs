@@ -58,13 +58,11 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<TransactionBObj> transactionList = DBHandler.GetTransactionByAccountNumber(request.AccountNumber).Result;
-                IEnumerable<Beneficiary> beneficiaries = DBHandler.GetBeneficiaries(request.CustomerID).Result;
+                IEnumerable<TransactionBObj> transactionList = DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber).Result;
 
                 GetAllTransactionsResponse response = new GetAllTransactionsResponse
                 {
                     Transactions = transactionList,
-                    Beneficiaries = beneficiaries
                 };
 
                 callback.OnSuccess(response);
@@ -79,6 +77,7 @@ namespace ZBankManagement.DataManager
                 callback.OnFailure(error);
             }
         }
+
 
     }
 }

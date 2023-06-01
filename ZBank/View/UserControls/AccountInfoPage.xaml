@@ -19,12 +19,14 @@
         <DataTemplate x:Name="SavingsAccountTemplate">
             <templates:SavingsAccountInfoTemplate
                 LinkedCard="{Binding LinkedCard, Mode=OneWay}"
+                Transactions="{Binding Transactions, Mode=OneWay}"
                 SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
         </DataTemplate>
         <DataTemplate
             x:Key="CurrentAccountTemplate">
             <templates:CurrentAccountInfoTemplate
                 LinkedCard="{Binding LinkedCard, Mode=OneWay}"
+                Transactions="{Binding Transactions, Mode=OneWay}"
                 SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
         </DataTemplate>
         <DataTemplate
@@ -34,133 +36,9 @@
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <local:OneByTwoGrid Grid.Row="2">
-            <local:OneByTwoGrid.Column1Content>
-                    <ContentControl
-                        VerticalContentAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        x:Name="AccountInfoContentControl" />
-            </local:OneByTwoGrid.Column1Content>
-            <local:OneByTwoGrid.Column2Content>
-                <Grid
-                    VerticalAlignment="Stretch"
-                    Margin="5"
-                    Background="{ThemeResource ApplicationBackground}"
-                    Padding="10"
-                    CornerRadius="8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="*" />
-                    </Grid.RowDefinitions>
-                    <StackPanel
-                        Padding="30,10,30,10"
-                        CornerRadius="4"
-                        Background="Green"
-                        HorizontalAlignment="Right">
-                        <TextBlock
-                            FontSize="18"
-                            HorizontalAlignment="Center"
-                            FontWeight="SemiBold"
-                            Foreground="Azure"
-                            Text="Balance" />
-                        <TextBlock
-                            FontSize="20"
-                            HorizontalAlignment="Center"
-                            Foreground="Azure"
-                            FontWeight="ExtraBold"
-                            Text="{x:Bind ViewModel.SelectedAccount.Amount, Converter={StaticResource CurrencyConverter}}" />
-                    </StackPanel>
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontWeight="Bold"
-                        FontSize="19"
-                        Margin="10"
-                        Text="Transactions" />
-                    <ListView
-                        Grid.Row="1"
-                        ItemsSource="{x:Bind ViewModel.SelectedAccount.Transactions, Mode=OneWay}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate
-                                x:DataType="modelBObj:TransactionBObj">
-                                <Grid
-                                    HorizontalAlignment="Stretch"
-                                    Width="Auto">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition
-                                            Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition
-                                            Width="Auto" />
-                                        <ColumnDefinition
-                                            Width="*" />
-                                        <ColumnDefinition
-                                            Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid
-                                        Grid.Column="0"
-                                        Padding="0,0,0,0">
-                                        <Ellipse
-                                            Stroke="{Binding BorderColor}"
-                                            Width="35"
-                                            Height="35"
-                                            Fill="{Binding BackgroundColor}"
-                                            StrokeThickness="1">
-                                        </Ellipse>
-                                        <FontIcon
-                                            Foreground="{Binding BorderColor}"
-                                            FontSize="10"
-                                            Glyph="{Binding ArrowIcon}" />
-                                    </Grid>
-                                    <StackPanel
-                                        Margin="0,0,10,0"
-                                        HorizontalAlignment="Stretch"
-                                        Grid.Column="1"
-                                        Padding="10">
-                                        <TextBlock
-                                            Grid.Column="1"
-                                            Text="{Binding AccountName}"
-                                            Style="{ThemeResource BoldNormalText}" />
-                                        <TextBlock
-                                            Grid.Column="1"
-                                            Foreground="Gray"
-                                            FontSize="12"
-                                            Text="{Binding RecordedOn, 
-                                            Converter={StaticResource DateFormatConverter}}"
-                                            Style="{ThemeResource NormalSubText}" />
-                                    </StackPanel>
-                                    <StackPanel
-                                        Grid.Column="2"
-                                        Width="Auto"
-                                        Padding="5,5,10,5"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Stretch">
-                                        <TextBlock
-                                            x:Name="AmountText"
-                                            FontSize="17"
-                                            HorizontalAlignment="Right"
-                                            TextAlignment="Right"
-                                            Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                                            Style="{ThemeResource BoldNormalText}" />
-                                        <TextBlock
-                                            x:Name="Balance"
-                                            FontSize="14"
-                                            HorizontalAlignment="Right"
-                                            TextAlignment="Right"
-                                            Foreground="Gray"
-                                            Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
-                                            Style="{ThemeResource BoldNormalText}" />
-
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-            </local:OneByTwoGrid.Column2Content>
-        </local:OneByTwoGrid>
+        <ContentControl
+            VerticalContentAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            x:Name="AccountInfoContentControl" />
     </Grid>
 </Page>

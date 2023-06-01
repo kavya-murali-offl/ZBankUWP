@@ -96,6 +96,7 @@
         <DataTemplate
             x:Key="NoCardTemplate">
             <Grid
+                MinHeight="200"
                 HorizontalAlignment="Stretch"
                 BorderThickness="0.75"
                 Padding="20"

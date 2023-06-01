@@ -177,10 +177,17 @@ namespace ZBank.DatabaseHandler
         public Task<int> InsertTransaction(Transaction transaction) => _databaseAdapter.Insert(transaction);
 
        public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
-        {
+       {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions " +
                 $"Inner Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber " +
                 "WHERE OwnerAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
+       }
+
+        public async Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber)
+        {
+            return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions " +
+                $"Inner Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber " +
+                "WHERE OwnerAccountNumber == ?", accountNumber);
         }
     }
 }

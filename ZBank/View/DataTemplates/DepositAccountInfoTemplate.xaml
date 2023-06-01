@@ -6,6 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converter="using:ZBank.Utilities.Converters"
+    xmlns:usercontrol="using:ZBank.View.UserControls"
+    xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -18,192 +20,475 @@
             x:Name="CurrencyConverter" />
         <converter:BackgroundColorConverter
             x:Name="BackgroundColorConverter" />
+
+        <converter:DateFormatter
+            x:Name="DateFormatConverter" />
     </UserControl.Resources>
 
     <!--To do set width and text trimming
     Usercontrol for each row-->
-
-    <Grid
-        VerticalAlignment="Stretch">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition
-                Height="3*" />
+                Height="Auto" />
             <RowDefinition
-                Height="2*" />
+                Height="*" />
         </Grid.RowDefinitions>
+
         <Grid
             Margin="5"
-            Padding="10"
+            Padding="15"
+            BorderBrush="{x:Bind SelectedAccount.AccountType, Converter={StaticResource BackgroundColorConverter}}"
+            BorderThickness="6,0,0,0"
             VerticalAlignment="Stretch"
             Background="{ThemeResource ApplicationBackground}"
-            CornerRadius="8">
+            CornerRadius="8"
+            Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition
                     Height="Auto" />
                 <RowDefinition
-                    Height="*" />
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Text="Account Summary"
-                FontWeight="Bold"
-                FontSize="19"
-                Margin="10" />
-            <Grid
-                VerticalAlignment="Center"
+            <TextBlock  TextTrimming="CharacterEllipsis"
+                VerticalAlignment="Bottom"
+                FontSize="14"
+                MinHeight="25"
+                Foreground="Gray"
+                FontWeight="SemiBold"
+                Text="{x:Bind SelectedAccount.AccountType}" />
+            <TextBlock  TextTrimming="CharacterEllipsis"
                 Grid.Row="1"
-                BorderThickness="1,1,5,5"
-                BorderBrush="{x:Bind SelectedAccount.AccountType, Converter={StaticResource BackgroundColorConverter}}"
-                Padding="20"
-                CornerRadius="10"
-                Margin="10,20,10,20"
-                Background="{ThemeResource ApplicationBackground}">
-                <Grid.RowDefinitions>
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    Foreground="Gray"
+                FontSize="20"
+                MinHeight="30"
+                FontWeight="SemiBold"
+                Text="{x:Bind SelectedAccount.AccountNumber}" />
+            <!--<StackPanel
+                Padding="30,10,30,10"
+                CornerRadius="4"
+                Grid.RowSpan="2"
+                Background="Green"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right">
+                <TextBlock  TextTrimming="CharacterEllipsis"
+
+                    FontSize="18"
+                    HorizontalAlignment="Center"
                     FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.AccountType}" />
-                <TextBlock
-                    Grid.Row="1"
+                    Foreground="Azure"
+                    Text="Balance" />
+                <TextBlock  TextTrimming="CharacterEllipsis"
+
                     FontSize="20"
-                    FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.AccountNumber}" />
-                <StackPanel
-                    HorizontalAlignment="Right"
-                    MaxWidth="100"
-                    Margin="10,0,0,0"
-                    Background="{x:Bind SelectedAccount.AccountStatus, Converter={StaticResource BackgroundColorConverter}}"
-                    CornerRadius="4"
-                    Padding="15,5,15,5">
-                    <TextBlock
-                        Foreground="{ThemeResource SystemChromeWhiteColor}"
-                        FontSize="12"
+                    HorizontalAlignment="Center"
+                    Foreground="Azure"
+                    FontWeight="ExtraBold"
+                    Text="{x:Bind SelectedAccount.Amount, Converter={StaticResource CurrencyConverter}}" />
+            </StackPanel>-->
+
+            <TextBlock  TextTrimming="CharacterEllipsis"
+                Margin="0,20,0,20"
+                Text="Account Summary"
+                Foreground="Gray"
+                Grid.Row="3" />
+            
+            <GridView
+                SelectionMode="None"
+                Grid.Row="4"
+                HorizontalAlignment="Center">
+                
+                <GridView.ItemContainerStyle>
+                    <Style
+                        TargetType="GridViewItem">
+                        <Setter
+                            Property="HorizontalContentAlignment"
+                            Value="Center" />
+                        <Setter
+                            Property="HorizontalAlignment"
+                            Value="Center" />
+                        <Setter
+                            Property="Padding"
+                            Value="10" />
+                    </Style>
+                </GridView.ItemContainerStyle>
+                
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid
+                            Orientation="Horizontal"
+                            VerticalAlignment="Stretch"
+                            MaximumRowsOrColumns="6" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridViewItem
+                    MinWidth="200">
+                    <StackPanel
+                        Orientation="Vertical">
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            HorizontalAlignment="Left"
+                            Foreground="Gray"
+                            FontWeight="SemiBold"
+                            Text="Account Status" />
+                        <StackPanel
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Center"
+                            MaxWidth="100"
+                            Background="{x:Bind SelectedAccount.AccountStatus, Converter={StaticResource BackgroundColorConverter}}"
+                            CornerRadius="4"
+                            Padding="15,5,15,5">
+                            <TextBlock  TextTrimming="CharacterEllipsis"
+
+                                Foreground="{ThemeResource SystemChromeWhiteColor}"
+                                FontSize="12"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind SelectedAccount.AccountStatus}" />
+                        </StackPanel>
+                    </StackPanel>
+                </GridViewItem>
+                
+                <GridViewItem
+                    Width="250">
+                    <StackPanel
+                        Orientation="Vertical">
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            HorizontalAlignment="Left"
+                            Foreground="Gray"
+                            FontWeight="SemiBold"
+                            Text="Account Name" />
+                        <TextBlock
+                            TextTrimming="CharacterEllipsis"
+                            Margin="0,10,0,0"
+                            FontSize="14"
+                            HorizontalAlignment="Left"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind SelectedAccount.AccountName}" />
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem
+                    Width="250">
+                    <StackPanel
                         VerticalAlignment="Center"
-                        Text="{x:Bind SelectedAccount.AccountStatus}" />
-                </StackPanel>
-                <TextBlock
-                    Margin="0,40,0,0"
-                    Grid.Row="2"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    HorizontalAlignment="Left"
-                    Foreground="Gray"
-                    FontWeight="SemiBold"
-                    Text="Account Name" />
-                <TextBlock
-                    Grid.Row="3"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.AccountName}" />
-                <TextBlock
-                    Margin="0,40,0,0"
-                    Grid.Row="2"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    HorizontalAlignment="Right"
-                    Foreground="Gray"
-                    FontWeight="SemiBold"
-                    Text="Account Opened On" />
-                <TextBlock
-                    Grid.Row="3"
-                    FontSize="16"
-                    HorizontalAlignment="Right"
-                    FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.CreatedOn}" />
-                <TextBlock
-                    Margin="0,40,0,0"
-                    Grid.Row="4"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    Foreground="Gray"
-                    FontWeight="SemiBold"
-                    Text="IFSC Code" />
-                <TextBlock
-                    Grid.Row="5"
-                    FontSize="16"
-                    FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.IfscCode}" />
-                <TextBlock
-                    Margin="0,40,0,0"
-                    Grid.Row="4"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    HorizontalAlignment="Right"
-                    Foreground="Gray"
-                    FontWeight="SemiBold"
-                    Text="Branch" />
-                <TextBlock
-                    Grid.Row="5"
-                    FontSize="16"
-                    HorizontalAlignment="Right"
-                    FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.BranchName}" />
+                        Orientation="Vertical">
+                        <TextBlock  TextTrimming="CharacterEllipsis"
 
-                <TextBlock
-                    Margin="0,40,0,0"
-                    Grid.Row="6"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    HorizontalAlignment="Left"
-                    Foreground="Gray"
-                    FontWeight="SemiBold"
-                    Text="Interest Rate" />
-                <TextBlock
-                    Grid.Row="7"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    FontWeight="SemiBold"
-                    Text="{x:Bind SelectedAccount.InterestRate}" />
-            </Grid>
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            HorizontalAlignment="Right"
+                            Foreground="Gray"
+                            FontWeight="SemiBold"
+                            Text="Account Opened On" />
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            Margin="0,10,0,0"
+                            FontSize="14"
+                            HorizontalAlignment="Right"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind SelectedAccount.CreatedOn}" />
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem
+                    Width="250">
+                    <StackPanel
+                        Orientation="Vertical">
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            Foreground="Gray"
+                            FontWeight="SemiBold"
+                            Text="IFSC Code" />
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            Margin="0,10,0,0"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind SelectedAccount.IfscCode}" />
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem
+                    Width="250">
+                    <StackPanel
+                        Orientation="Vertical">
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            HorizontalAlignment="Right"
+                            Foreground="Gray"
+                            FontWeight="SemiBold"
+                            Text="Branch" />
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            Margin="0,10,0,0"
+                            FontSize="14"
+                            HorizontalAlignment="Right"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind SelectedAccount.BranchName}" />
+
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem
+                    Width="250">
+                    <StackPanel
+                        Orientation="Vertical">
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            HorizontalAlignment="Center"
+                            Foreground="Gray"
+                            FontWeight="SemiBold"
+                            Text="Interest Rate" />
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            Margin="0,10,0,0"
+                            FontSize="14"
+                            HorizontalAlignment="Center"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind SelectedAccount.InterestRate}" />
+                    </StackPanel>
+                </GridViewItem>
+            </GridView>
         </Grid>
-        <Grid
-            Grid.Row="1"
-            Margin="5"
-            Padding="10"
+        <usercontrol:OneByTwoGrid
+            Width1Ratio="3*"
+            Width2Ratio="2*"
+            VerticalContentAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="{ThemeResource ApplicationBackground}"
-            CornerRadius="8">
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="Auto" />
-                <RowDefinition
-                    Height="*" />
-            </Grid.RowDefinitions>
+            Grid.Row="1">
+            <usercontrol:OneByTwoGrid.Column1Content>
+                <Grid
+                    VerticalAlignment="Stretch"
+                    Margin="5"
+                    Background="{ThemeResource ApplicationBackground}"
+                    Padding="20"
+                    CornerRadius="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            MinHeight="50"
+                            Height="Auto" />  
+                        <RowDefinition
+                            MinHeight="50"
+                            Height="Auto" />   
+                        <RowDefinition
+                            MinHeight="50"
+                            Height="Auto" /> 
+                        <RowDefinition
+                            MinHeight="50"
+                            Height="Auto" />  
+                        <RowDefinition
+                            MinHeight="50"
+                            Height="Auto" />   
+                    </Grid.RowDefinitions>
 
-            <TextBlock
-                Margin="10"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left"
-                Text="Linked Card"
-                FontWeight="Bold"
-                FontSize="19" />
+                    <TextBlock  TextTrimming="CharacterEllipsis"
 
-            <local:ViewOrNoCardTemplate
-                Grid.Row="1"
-                VerticalAlignment="Center"
-                VerticalContentAlignment="Center"
-                SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
-        </Grid>
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        FontSize="19"
+                        Margin="0,0,50,10"
+                        Text="Deposit Details" />
+
+                    <TextBlock  TextTrimming="CharacterEllipsis"
+                        VerticalAlignment="Center"
+                        Grid.Row="1" 
+                               Width="250" 
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Left"
+                               Foreground="Gray"
+                               Text="Tenure in Months"/>
+                    <TextBlock  
+                        TextTrimming="CharacterEllipsis"
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        Margin="250,0,0,0" FontSize="16"
+                        Text="{x:Bind SelectedAccount.TenureInMonths}"/>
+
+
+                    <TextBlock  
+                        TextTrimming="CharacterEllipsis"
+                        VerticalAlignment="Center"
+                        Grid.Row="2"
+                        Width="250" 
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Left"
+                        Foreground="Gray"
+                        Text="Maturity Amount" />
+                    <TextBlock  TextTrimming="CharacterEllipsis"
+
+                        VerticalAlignment="Center"
+                        
+                        Grid.Row="2"
+                        Margin="250,0,0,0" FontSize="16"
+                        Text="{x:Bind SelectedAccount.MaturityAmount}" />
+
+                    <TextBlock  TextTrimming="CharacterEllipsis"
+
+                        Grid.Row="3"
+                        Width="250"
+                        VerticalAlignment="Center"
+                        
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Left"
+                        Foreground="Gray"
+                        Text="Maturity Date" />
+                    <TextBlock  TextTrimming="CharacterEllipsis"
+
+                        VerticalAlignment="Center"
+                        
+                        Grid.Row="3"
+                        Margin="250,0,0,0" FontSize="16"
+                        Text="{x:Bind SelectedAccount.MaturityDate}" />
+
+                    <TextBlock  TextTrimming="CharacterEllipsis"
+
+                        Grid.Row="4"
+                        Width="250"
+                        VerticalAlignment="Center"
+                        
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Left"
+                        Foreground="Gray"
+                        Text="Repayment Account Number" />
+                    <TextBlock  TextTrimming="CharacterEllipsis"
+
+                        Grid.Row="4"
+                        VerticalAlignment="Center"
+                        Margin="250,0,0,0" FontSize="16"
+                        Text="{x:Bind SelectedAccount.RepaymentAccountNumber}" />
+                    <TextBlock
+                        TextTrimming="CharacterEllipsis"
+                        Grid.Row="5"
+                        Width="250"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Left"
+                        Foreground="Gray"
+                        Text="Deposit Amount" />
+                    <TextBlock
+                        TextTrimming="CharacterEllipsis"
+                        Grid.Row="5"
+                        VerticalAlignment="Center"
+                        Margin="250,0,0,0"
+                        FontSize="16"
+                        Text="{x:Bind SelectedAccount.Amount}" />
+
+
+                </Grid>
+            </usercontrol:OneByTwoGrid.Column1Content>
+            <usercontrol:OneByTwoGrid.Column2Content>
+                <Grid
+                    VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="*" />
+                        <RowDefinition
+                            Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Margin="5"
+                        Padding="10"
+                        VerticalAlignment="Stretch"
+                        Background="{ThemeResource ApplicationBackground}"
+                        CornerRadius="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            Margin="10"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Text="FD Calculator"
+                            FontWeight="Bold"
+                            FontSize="19" />
+
+                        <Grid MinHeight="250" Margin="0,10,0,0">
+                            
+                        </Grid>
+                    
+                    </Grid>
+                    <Grid
+                        Grid.Row="1"
+                        Margin="5"
+                        Padding="10"
+                        VerticalAlignment="Stretch"
+                        Background="{ThemeResource ApplicationBackground}"
+                        CornerRadius="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock  TextTrimming="CharacterEllipsis"
+
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Text="Account Settings"
+                            FontWeight="Bold"
+                            FontSize="19" />
+
+                        <Button
+                            Grid.Row="1"
+                            Margin="10"
+                            MinWidth="250"
+                            HorizontalAlignment="Center"
+                            Style="{ThemeResource PrimaryButton}"
+                            Content="Add Beneficiary" />
+
+                        <Button
+                            Grid.Row="2"
+                            Style="{ThemeResource PrimaryButton}"
+                            Margin="10"
+                            HorizontalAlignment="Center"
+                            MinWidth="250" 
+                            Content="Edit Account" />
+
+                        <Button
+                            HorizontalAlignment="Center"
+                            Grid.Row="3"
+                            MinWidth="250" 
+                            Style="{ThemeResource PrimaryButton}"
+                            Margin="10"
+                            Content="Close Account" />
+
+                    </Grid>
+                </Grid>
+
+            </usercontrol:OneByTwoGrid.Column2Content>
+        </usercontrol:OneByTwoGrid>
     </Grid>
 </UserControl>
