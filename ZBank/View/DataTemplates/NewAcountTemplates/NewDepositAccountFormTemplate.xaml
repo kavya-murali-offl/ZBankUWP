@@ -12,93 +12,130 @@
     Loaded="UserControl_Loaded"
     Unloaded="UserControl_Unloaded"
     d:DesignWidth="400">
+    
+        <Grid
+            Background="{ThemeResource ApplicationBackground}"
+            MinHeight="600">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                    Height="Auto" />
+            <RowDefinition
+                    Height="Auto" />
+            <RowDefinition
+                    Height="Auto" /> <RowDefinition
+                    Height="Auto" /> <RowDefinition
+                    Height="Auto" /> <RowDefinition
+                    Height="Auto" /> <RowDefinition
+                    Height="Auto" /> <RowDefinition
+                    Height="Auto" />
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+            
+            <TextBlock
+                Margin="0,40,30,0"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Foreground="Gray"
+                Text="Deposit Amount" />
+
+            <TextBox
+                Grid.Row="1"
+                Margin="0,10,0,10"
+                MinWidth="400"
+                HorizontalAlignment="Center"
+                x:Name="AmountTextBox"
+                MaxWidth="400"
+                Text="{x:Bind FieldValues['Deposit Amount'], Mode=TwoWay}"
+                TextChanging="AmountTextBox_TextChanging"
+                PlaceholderText="Enter Amount in INR" />
+
+            <TextBlock
+                Grid.Row="2"
+                Text="{x:Bind FieldErrors['Deposit Amount'], Mode=OneWay}" Foreground="Red" />
+      
+            <TextBlock
+                Margin="0,20,0,10"
+                Grid.Row="3"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Foreground="Gray"
+                Text="Tenure of Deposit" />
+
+            <DropDownButton
+                Margin="0,0,0,10"
+                Grid.Row="4"
+                x:Name="TenureDropDownButton"
+                MinWidth="400"
+                CornerRadius="8">
+                <DropDownButton.Content>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        x:Name="TenureText"
+                        Text="Choose Tenure" />
+                </DropDownButton.Content>
+                <DropDownButton.Flyout>
+                    <Flyout
+                        Placement="Bottom"
+                        FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                        <ListView
+                            x:Name="TenureList"
+                            SelectionChanged="TenureList_SelectionChanged"
+                            ItemsSource="{Binding TenureList, Mode=TwoWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate
+                                    x:DataType="modelBObj:DropDownItem">
+                                    <TextBlock
+                                        Text="{Binding Text}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
 
         <TextBlock
-            Margin="0,40,30,0"
-            FontSize="14"
-            FontWeight="SemiBold"
-            Foreground="Gray"
-            Text="Deposit Amount" />
-        <TextBox
-            Grid.Row="1"
-            Margin="0,10,0,10"
-            MinWidth="500"
-            x:Name="AmountTextBox"
-            MaxWidth="400"
-            Text="{Binding DepositAccount.DepositAmount, Mode=TwoWay}"
-            TextChanging="AmountTextBox_TextChanging"
-            PlaceholderText="Enter Amount in INR" />
+            Grid.Row="5"
+            Text="{x:Bind FieldErrors['Tenure'], Mode=OneWay}"
+            Foreground="Red" />
 
         <TextBlock
-            Margin="0,20,0,10"
-            Grid.Row="2"
-            FontSize="14"
-            FontWeight="SemiBold"
-            Foreground="Gray"
-            Text="Tenure of Deposit" />
-        <DropDownButton
-            Margin="0,0,0,10"
-            Grid.Row="3"
-            x:Name="TenureDropDownButton"
-            MinWidth="250"
-            HorizontalAlignment="Left"
-            CornerRadius="8">
-            <DropDownButton.Content>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    x:Name="TenureText"
-                    Text="Choose Tenure" />
-            </DropDownButton.Content>
-            <DropDownButton.Flyout>
-                <Flyout
-                    Placement="Bottom"
-                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                    <ListView
-                        x:Name="TenureList"
-                        SelectionChanged="TenureList_SelectionChanged"
-                        ItemsSource="{Binding TenureList, Mode=TwoWay}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate
-                                x:DataType="modelBObj:DropDownItem">
-                                <TextBlock
-                                    Text="{Binding Text}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Flyout>
-            </DropDownButton.Flyout>
-        </DropDownButton>
+                Grid.Row="6"
+                Text="Calculated Interest Rate"
+                     VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Foreground="Gray" />
+
+            <TextBlock
+                FontWeight="SemiBold"
+                MaxWidth="200"
+                MinWidth="100"
+                Grid.Row="6"
+                FontSize="23"
+                Foreground="Green"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Text="{x:Bind FieldValues['Interest Rate'], Mode=OneWay}" />
 
         <TextBlock
-            Grid.Row="2"
-            Text="Calculated Interest Rate"
-            Margin="0,20,0,10"
-            HorizontalAlignment="Right"
-            FontSize="14"
-            FontWeight="SemiBold"
-            Foreground="Gray"/>
-        
-        <TextBlock
-            Grid.Row="3"
-            Margin="0,0,0,10"
-            FontSize="18"
-            HorizontalAlignment="Right"
-            FontWeight="{ThemeResource ApplicationForeground}"
-            Text="7.26" />
-
-        <TextBlock
-            Grid.Row="4"
-            Text="Repayment Account Number"
+            Grid.Row="8"
+            Text="From Account Number"
             Margin="0,20,0,10"
             HorizontalAlignment="Left"
             FontSize="14"
@@ -106,25 +143,25 @@
             Foreground="Gray" />
 
         <DropDownButton
-            Grid.Row="5"
-            x:Name="AccountsDropdownButton"
-            MaxWidth="500"
-            HorizontalAlignment="Stretch"
+            Grid.Row="9"
+            x:Name="FromAccountDropdownButton"
+            Width="400"
+            HorizontalAlignment="Center"
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
                     HorizontalAlignment="Center"
-                    x:Name="AccountsText"
-                    Text="Select Account" />
+                    x:Name="FromAccountText"
+                    Text="Select From Account" />
             </DropDownButton.Content>
             <DropDownButton.Flyout>
                 <Flyout
                     Placement="Bottom"
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
-                        x:Name="AccountsList"
-                        SelectionChanged="AccountsList_SelectionChanged"
-                        ItemsSource="{x:Bind AllAccounts, Mode=OneWay}">
+                        x:Name="FromAccountsList"
+                        SelectionChanged="FromAccountsList_SelectionChanged"
+                        ItemsSource="{Binding Accounts, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate
                                 x:DataType="modelBObj:AccountBObj">
@@ -137,5 +174,67 @@
             </DropDownButton.Flyout>
         </DropDownButton>
 
-    </Grid>
+        <TextBlock
+            Grid.Row="10"
+            Text="{x:Bind FieldErrors['From Account Number'], Mode=OneWay}"
+            Foreground="Red" />
+
+        <TextBlock
+                Grid.Row="11"
+                Text="Repayment Account Number"
+                Margin="0,20,0,10"
+                HorizontalAlignment="Left"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Foreground="Gray" />
+
+            <DropDownButton
+                Grid.Row="12"
+                x:Name="ToAccountDropdownButton"
+                Width="400"
+                HorizontalAlignment="Center"
+                CornerRadius="8">
+                <DropDownButton.Content>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        x:Name="ToAccountText"
+                        Text="Select Repayment Account" />
+                </DropDownButton.Content>
+                <DropDownButton.Flyout>
+                    <Flyout
+                        Placement="Bottom"
+                        FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                        <ListView
+                            x:Name="ToAccountsList"
+                            SelectionChanged="ToAccountsList_SelectionChanged"
+                            ItemsSource="{Binding Accounts, Mode=OneWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate
+                                    x:DataType="modelBObj:AccountBObj">
+                                    <TextBlock
+                                        Text="{x:Bind}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+
+        <TextBlock
+            Grid.Row="13"
+            Text="{x:Bind FieldErrors['Repayment Account Number'], Mode=OneWay}"
+            Foreground="Red" />
+    
+    
+        <Button
+                Margin="20"
+                MinWidth="200"
+                HorizontalAlignment="Center"
+                Grid.Row="14"
+                x:Name="SubmitButton"
+                Click="SubmitButton_Click"
+                Content="Apply"
+                Style="{ThemeResource PrimaryButton}" />
+        </Grid>
+
 </UserControl>

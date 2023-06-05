@@ -21,6 +21,7 @@ namespace ZBank.ViewModel.VMObjects
             : this(execute, null)
         {
         }
+
         public RelayCommand(Action<object> execute, Func<bool> canExecute)
         {
             _execute = execute ?? throw new ArgumentNullException("execute");

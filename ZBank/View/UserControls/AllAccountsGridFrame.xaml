@@ -98,7 +98,7 @@
                     FontSize="20"
                     Margin="10"
                     HorizontalAlignment="Center"
-                    Text="{x:Bind Amount, Converter={StaticResource CurrencyConverter}}" />
+                    Text="{x:Bind Balance, Converter={StaticResource CurrencyConverter}}" />
                 <Button
                     Margin="0,10,0,20"
                     HorizontalAlignment="Center"

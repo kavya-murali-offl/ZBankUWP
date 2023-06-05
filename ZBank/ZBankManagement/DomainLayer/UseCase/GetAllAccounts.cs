@@ -13,6 +13,7 @@ using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 using ZBank.Entities.BusinessObjects;
+using Windows.ApplicationModel.Core;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -110,6 +111,33 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
                 AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                 {
                     AccountsList = new ObservableCollection<Account>(response.Accounts)
+                };
+                ViewNotifier.Instance.OnAccountsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+            // Notify view
+        }
+    }
+
+    public class GetAllAccountsInAddPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+    {
+        private AddOrEditAccountViewModel ViewModel { get; set; }
+
+        public GetAllAccountsInAddPresenterCallback(AddOrEditAccountViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllAccountsResponse response)
+        {
+            await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                {
+                    AccountsList = response.Accounts
                 };
                 ViewNotifier.Instance.OnAccountsListUpdated(args);
             });

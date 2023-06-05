@@ -391,7 +391,7 @@
                         VerticalAlignment="Center"
                         Margin="250,0,0,0"
                         FontSize="16"
-                        Text="{x:Bind SelectedAccount.Amount}" />
+                        Text="{x:Bind SelectedAccount.Balance}" />
 
 
                 </Grid>

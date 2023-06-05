@@ -24,7 +24,7 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public async Task InsertAccount(InsertAccountRequest request, IUseCaseCallback<InsertAccountResponse> callback)
+        public async void InsertAccount(InsertAccountRequest request, IUseCaseCallback<InsertAccountResponse> callback)
         {
             try
             {

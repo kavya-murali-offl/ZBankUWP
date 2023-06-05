@@ -9,5 +9,6 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
     public interface IDBInitializationHandler
     {
         void CreateTables();
+        void PopulateData();
     }
 }

@@ -139,7 +139,7 @@
                                 FontSize="22"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}" />
+                                Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}" />
                             <!--<Button
                                 Style="{ThemeResource IconButton}"
                                 Margin="10,0,10,0"

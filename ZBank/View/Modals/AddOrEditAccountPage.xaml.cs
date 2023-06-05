@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -14,9 +15,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.ViewModel;
+using ZBank.ViewModel.VMObjects;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,13 +33,15 @@ namespace ZBank.View.Modals
 
         public AddOrEditAccountViewModel ViewModel { get; set; }
 
+
         public AddOrEditAccountPage()
         {
             this.InitializeComponent();
             ViewModel = new AddOrEditAccountViewModel(this);
         }
 
-       
+
+        private string OnSelection { get; set; }
 
         private void AccountTypeButton_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -58,6 +63,8 @@ namespace ZBank.View.Modals
                         break;
                 }
 
+                OnSelection = accountType;
+
                 if (template != null)
                 {
                     AccountForm.DataContext = ViewModel;
@@ -71,6 +78,31 @@ namespace ZBank.View.Modals
             AccountForm.DataContext = ViewModel;
             DataTemplate template = Resources["CurrentAccountFormTemplate"] as DataTemplate;
             AccountForm.Content = template.LoadContent();
+            //ViewModel.LoadContent();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ////ViewModel.UnloadContent();
+        }
+
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            //switch (OnSelection)
+            //{
+            //    case "Deposit":
+            //        TermDepositAccount filledDepositAccount = ViewModel.DepositAccount;
+            //        if (filledDepositAccount.Balance > 0 && ViewModel.DepositAccount.RepaymentAccountNumber != null &&
+            //            ViewModel.DepositAccount.RepaymentAccountNumber != string.Empty &&
+            //            ViewModel.DepositAccount.TenureInMonths > 0)
+            //        {
+            //            ViewModel.ApplyNewAccount(ViewModel.DepositAccount);
+            //        }
+            //        break;
+
+            //    case "Current";
+
+            //}
         }
     }
 

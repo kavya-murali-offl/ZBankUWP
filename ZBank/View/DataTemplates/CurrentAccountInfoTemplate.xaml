@@ -79,7 +79,7 @@
                     HorizontalAlignment="Center"
                     Foreground="Azure"
                     FontWeight="ExtraBold"
-                    Text="{x:Bind SelectedAccount.Amount, Converter={StaticResource CurrencyConverter}}" />
+                    Text="{x:Bind SelectedAccount.Balance, Converter={StaticResource CurrencyConverter}}" />
             </StackPanel>
 
            

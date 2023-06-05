@@ -13,16 +13,13 @@ namespace ZBank.Entities
     public class TermDepositAccount : AccountBObj
     {
 
-        //public TermDepositAccount(decimal amount, int tenureInMonths, string fromAccountNumber) : base(amount)
-        //{
-        //    TenureInMonths = tenureInMonths;
-        //    InterestRate = GetFDInterestRate(tenureInMonths);
-        //    MaturityAmount = MaturityAmountCalculator(amount, tenureInMonths);
-        //    MaturityDate = MaturityDateCalculator(DateTime.Now, tenureInMonths);
-        //    FromAccountNumber = fromAccountNumber;
-        //    RepaymentAccountNumber = "11111";
-        //}
-    
+        public void SetDefault()
+        {
+            InterestRate = GetFDInterestRate(TenureInMonths);
+            MaturityAmount = MaturityAmountCalculator(Balance, TenureInMonths);
+            MaturityDate = MaturityDateCalculator(DateTime.Now, TenureInMonths);
+        }
+
         public decimal InterestRate { get; private set; }
 
         public decimal MaturityAmount { get; set; }
@@ -35,6 +32,9 @@ namespace ZBank.Entities
 
         public decimal MinimumBalance { get; set; }
 
+        public DepositType DepositType { get; set; }
+
+        public DateTime? DepositStartDate { get; set; }
 
         public DepositType FDType { get; set; }
 
@@ -50,7 +50,7 @@ namespace ZBank.Entities
             return date.AddMonths(months);
         }
 
-        public decimal GetFDInterestRate(int tenureInMonths)
+        public static decimal GetFDInterestRate(int tenureInMonths)
         {
             switch (tenureInMonths)
             {
@@ -58,7 +58,7 @@ namespace ZBank.Entities
                 case 6: return 10m;
                 case 9: return 11m;
                 case 12: return 12m;
-                case 24: return 12.50m;
+                case 24: return 12.5m;
                 case 48: return 14m;
                 default: return 0;
             }

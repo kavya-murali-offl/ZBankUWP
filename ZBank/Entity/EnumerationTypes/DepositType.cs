@@ -12,6 +12,8 @@ namespace ZBank.Entity.EnumerationTypes
         Monthly = 1,
         Quarterly = 2,
         HalfYearly = 3,
-        Annual = 4
+        Annual = 4,
+        OnMaturity =5
+
     }
 }

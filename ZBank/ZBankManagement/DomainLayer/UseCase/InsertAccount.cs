@@ -14,6 +14,9 @@ using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 using ZBank.Entities.BusinessObjects;
+using ZBankManagement.Utility;
+using System.Security.Principal;
+using System.Text;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -29,10 +32,26 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             protected override void Action()
             {
+                _request.AccountToInsert.AccountNumber = GenerateAccountNumber();
                 _insertAccountDataManager.InsertAccount(_request, new InsertAccountCallback(this));
             }
 
-            private class InsertAccountCallback : IUseCaseCallback<InsertAccountResponse>
+
+        public string GenerateAccountNumber()
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < 12; i++)
+            {
+                int digit = random.Next(0, 10);
+                builder.Append(digit);
+                if(i == 3 || i == 7) { builder.Append(" "); }
+            }
+
+            return builder.ToString();
+        }
+        private class InsertAccountCallback : IUseCaseCallback<InsertAccountResponse>
             {
 
                 private InsertAccountUseCase _useCase;
@@ -68,9 +87,9 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
         {
-            private AccountPageViewModel AccountPageViewModel { get; set; }
+            private AddOrEditAccountViewModel AccountPageViewModel { get; set; }
 
-            public InsertAccountPresenterCallback(AccountPageViewModel accountPageViewModel)
+            public InsertAccountPresenterCallback(AddOrEditAccountViewModel accountPageViewModel)
             {
                 AccountPageViewModel = accountPageViewModel;
             }

@@ -55,10 +55,10 @@ namespace ZBank.ViewModel
                //}
             };
             
-            IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
+            //IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
 
-            UseCaseBase<InsertAccountResponse> useCase = new InsertAccountUseCase(request, presenterCallback);
-            useCase.Execute();
+            //UseCaseBase<InsertAccountResponse> useCase = new InsertAccountUseCase(request, presenterCallback);
+            //useCase.Execute();
         }
 
         private ObservableCollection<Account> _accounts { get; set; }

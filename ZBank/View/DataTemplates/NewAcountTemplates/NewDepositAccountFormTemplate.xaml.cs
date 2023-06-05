@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -17,7 +19,11 @@ using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Utilities.Validation;
 using ZBank.ViewModel;
+using ZBank.ViewModel.VMObjects;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.Domain.UseCase;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -25,31 +31,62 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
 {
     public sealed partial class NewDepositAccountFormTemplate : UserControl
     {
-        public AddOrEditAccountViewModel ViewModel { get; set; }  
-        
         public NewDepositAccountFormTemplate()
         {
             this.InitializeComponent();
-            LoadAllAccounts();
+            FieldErrors.Add("Deposit Amount", string.Empty);
+            FieldErrors.Add("Repayment Account Number", string.Empty);
+            FieldErrors.Add("From Account Number", string.Empty);
+            FieldErrors.Add("Tenure", string.Empty);
+
+            FieldValues["Deposit Amount"] = string.Empty;
+            FieldValues["From Account Number"] = string.Empty;
+            FieldValues["Repayment Account Number"] = string.Empty;
+            FieldValues["Tenure"] = string.Empty;
+            FieldValues["Interest Rate"] = string.Empty;
+            SubmitButton.IsEnabled = true;
         }
 
-        public ObservableCollection<Account> AllAccounts { get; set; }
+        private ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
+        private ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
 
-        public void LoadAllAccounts()
+
+
+        public void ValidateField(string fieldName)
         {
-
+            if (!FieldValues.TryGetValue(fieldName, out object val) || string.IsNullOrEmpty(FieldValues[fieldName]?.ToString()))
+            {
+                FieldErrors[fieldName] = $"{fieldName} is required.";
+            }
+            else
+            {
+                FieldErrors[fieldName] = string.Empty;
+            }
         }
 
-        public TermDepositAccount DepositAccount
+        private bool IsEnabled()
         {
-            get { return (TermDepositAccount)GetValue(DepositAccountProperty); }
-            set { SetValue(DepositAccountProperty, value); }
+            ValidateField("Deposit Amount");
+            ValidateField("Repayment Account Number");
+            ValidateField("Tenure");
+            if (FieldErrors.Values.Any(err => err.Length > 0))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public static readonly DependencyProperty DepositAccountProperty =
-            DependencyProperty.Register("DepositAccount", typeof(TermDepositAccount), typeof(NewDepositAccountFormTemplate), new PropertyMetadata(null));
+        public ICommand SubmitCommand
+        {
+            get { return (ICommand)GetValue(SubmitCommandProperty); }
+            set { SetValue(SubmitCommandProperty, value); }
+        }
 
-
+        public static readonly DependencyProperty SubmitCommandProperty =
+            DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(NewDepositAccountFormTemplate), new PropertyMetadata(null));
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
@@ -57,6 +94,7 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             newText = new string(newText.Where(c => char.IsDigit(c) || c == '.').ToArray());
             sender.Text = newText;
             sender.SelectionStart = newText.Length;
+            FieldValues["Deposit Amount"] = AmountTextBox.Text;
         }
 
         private void TenureList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -66,15 +104,25 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 ListView item = view;
                 if (item.SelectedIndex >= 0)
                 {
-                    DepositAccount.TenureInMonths = (int)((item.SelectedItem as DropDownItem).Value);
+                    FieldValues["Tenure"] = (item.SelectedItem as DropDownItem).Value;
                     TenureText.Text = (item.SelectedItem as DropDownItem).Text;
+                    UpdateInterestRate();
                 }
             }
 
             TenureDropDownButton.Flyout.Hide();
         }
 
-        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UpdateInterestRate()
+        {
+            if (int.TryParse(FieldValues["Tenure"].ToString(), out int tenure))
+            {
+                decimal interestRate = TermDepositAccount.GetFDInterestRate(tenure);
+                FieldValues["Interest Rate"] = interestRate.ToString().Concat("%");    
+            }
+        }
+
+        private void FromAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView item = null;
             if (sender is ListView view)
@@ -84,24 +132,77 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             if (item.SelectedIndex >= 0)
             {
                 Account selectedAccount = (item.SelectedItem as Account);
-               
+                FieldValues["From Account Number"] = selectedAccount.AccountNumber;
+                FromAccountText.Text = selectedAccount.ToString();
+                FromAccountDropdownButton.Flyout.Hide();
             }
-            AccountsDropdownButton.Flyout.Hide();
+        }
+
+        private void ToAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView item = null;
+            if (sender is ListView view)
+            {
+                item = view;
+            }
+            if (item.SelectedIndex >= 0)
+            {
+                Account selectedAccount = (item.SelectedItem as Account);
+                FieldValues["Repayment Account Number"] = selectedAccount.AccountNumber;
+                ToAccountText.Text = selectedAccount.ToString();
+                ToAccountDropdownButton.Flyout.Hide();
+            }
+        }
+
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ValidateFields()) { 
+                TermDepositAccount depositAccount = new TermDepositAccount()
+                {
+                    AccountName = "Kavya",
+                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
+                    Balance = (decimal)FieldValues["Deposit Amount"],
+                    AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
+                    TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
+                    RepaymentAccountNumber = FieldValues["Repayment Account Number"].ToString(),
+                    UserID = "1111",
+                    CreatedOn = DateTime.Now,
+                    DepositStartDate = null,
+                    DepositType = Entity.EnumerationTypes.DepositType.OnMaturity
+                };
+                depositAccount.SetDefault();
+                SubmitCommand.Execute(depositAccount);
+            }
+        }
+
+        private bool ValidateFields() 
+        {
+            foreach (var key in FieldValues.Keys)
+            {
+                ValidateField(key);
+            }
+
+            if (decimal.TryParse(FieldValues["Deposit Amount"].ToString(), out decimal amountInDecimal))
+            {
+                FieldValues["Deposit Amount"] = amountInDecimal;
+            }
+            else
+            {
+                FieldErrors["Deposit Amount"] = "Please enter a valid deposit Amount";
+            }
+
+            if (FieldErrors.Values.Any((val) => val.Length > 0))
+                return false;
+            return true;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
-        }
-
-        private void UpdateAccountsList(AccountsListUpdatedArgs args)
-        {
-            AllAccounts = new ObservableCollection<Account>(args.AccountsList);
         }
     }
 

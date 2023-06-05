@@ -163,13 +163,14 @@
     <Compile Include="Entity\BusinessObjects\RecurringDepositAccount.cs" />
     <Compile Include="Utilities\Converters\WidthConverter.cs" />
     <Compile Include="Utilities\Helpers\LogoHelper.cs" />
+    <Compile Include="Utilities\Validation\FormValidation.cs" />
+    <Compile Include="Utilities\Validation\IValidation.cs" />
     <Compile Include="ViewModel\AccountInfoViewModel.cs" />
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
-    <Compile Include="ViewModel\AddOrEditAccountViewModel.xaml.cs">
-      <DependentUpon>AddOrEditAccountViewModel.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewModel\AddOrEditAccountViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
+    <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
@@ -375,10 +376,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ViewModel\AddOrEditAccountViewModel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -539,11 +536,6 @@
     <PRIResource Include="Resources\Strings\en-US\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\BankDB.db3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

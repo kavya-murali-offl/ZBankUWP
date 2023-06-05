@@ -11,7 +11,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationBackground}"
     Loaded="Page_Loaded"
-    >
+    Unloaded="Page_Unloaded">
 
     <Page.Resources>
         <DataTemplate
@@ -25,7 +25,7 @@
         <DataTemplate
             x:Key="DepositAccountFormTemplate">
             <templates:NewDepositAccountFormTemplate
-                DepositAccount="{Binding DepositAccount, Mode=TwoWay}" />
+                SubmitCommand="{Binding SubmitCommand}" />
         </DataTemplate>
     </Page.Resources>
 
@@ -35,7 +35,7 @@
         Background="{ThemeResource ApplicationPageBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock
             HorizontalAlignment="Center"
@@ -44,38 +44,56 @@
             Foreground="White"
             FontWeight="Bold"
             Text="Create New Account" />
-        <Grid Grid.Row="1"
-              Margin="20"
-              >
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="Auto" /> <RowDefinition
-                    Height="Auto" /> <RowDefinition
-                    Height="Auto" /> <RowDefinition
-                    Height="Auto" /> <RowDefinition
-                    Height="Auto" />
-            </Grid.RowDefinitions>
+        <ScrollViewer
+            Grid.Row="1">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <TextBlock
-                FontSize="14"
-                FontWeight="SemiBold"
-                Foreground="Gray"
-                Text="Choose Account Type" />
-            
-            <controls:RadioButtons
-                HorizontalAlignment="Center"
-                x:Name="AccountTypeButton"
-                MaxColumns="3"
-                Grid.Row="1"
-                SelectionChanged="AccountTypeButton_SelectionChanged">
-                <x:String>Current</x:String>
-                <x:String>Savings</x:String>
-                <x:String>Deposit</x:String>
-            </controls:RadioButtons>
+                <TextBlock
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Foreground="Gray"
+                    Text="Choose Account Type" />
 
-            <ContentControl x:Name="AccountForm"
-                          Grid.Row="2"  />
-        </Grid>
+                <controls:RadioButtons
+                    HorizontalAlignment="Center"
+                    x:Name="AccountTypeButton"
+                    MaxColumns="3"
+                    Grid.Row="1"
+                    SelectionChanged="AccountTypeButton_SelectionChanged">
+                    <x:String>Current</x:String>
+                    <x:String>Savings</x:String>
+                    <x:String>Deposit</x:String>
+                </controls:RadioButtons>
+
+                <ContentControl
+                    Grid.Row="2"
+                    x:Name="AccountForm" />
+
+            </Grid>
+
+        </ScrollViewer>
+        
+        <!--<Button
+            Margin="20"
+            MinWidth="200"
+            HorizontalAlignment="Center"
+            Grid.Row="2"
+            x:Name="SubmitButton"
+            Click="SubmitButton_Click"
+            Content="Apply"
+            Style="{ThemeResource PrimaryButton}" />-->
         
     </Grid>
 </Page>

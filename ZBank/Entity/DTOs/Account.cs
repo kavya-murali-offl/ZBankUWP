@@ -22,13 +22,13 @@ namespace ZBank.Entities
 
         public string UserID { get; set; }
 
-        public string CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public AccountStatus AccountStatus { get; set; }
 
         public Currency Currency { get; set; }
 
-        public decimal Amount { get; set; }
+        public decimal Balance { get; set; }
 
         public AccountType AccountType { get; set; }
     }

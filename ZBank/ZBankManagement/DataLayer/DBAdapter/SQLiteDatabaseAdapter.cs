@@ -1,9 +1,12 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.Storage;
 using ZBank.Entities;
 
 namespace ZBank.DatabaseAdapter
@@ -29,12 +32,16 @@ namespace ZBank.DatabaseAdapter
 
         private SQLiteAsyncConnection Connection { get; set; }
 
-        private SQLiteConnectionString GetConnectionString()
-        {
-            string databasePath = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "BankDb.db3");
-            return new SQLiteConnectionString(databasePath, true);
-        }
 
+
+        private  SQLiteConnectionString GetConnectionString()
+        {
+
+            string databaseFileName = "BankDB.db3";
+            string databaseLocation = Path.Combine(ApplicationData.Current.LocalFolder.Path, databaseFileName);
+            return new SQLiteConnectionString(databaseLocation);
+
+        }
         public async Task CreateTable<T>() where T : new()
         {
             await Connection.CreateTableAsync<T>();
@@ -43,6 +50,11 @@ namespace ZBank.DatabaseAdapter
         public Task<int> Insert<T>(T instance, Type insertionType=null)
         {
            return insertionType == null ?  Connection.InsertAsync(instance) : Connection.InsertAsync(instance, insertionType);
+        }
+
+        public Task<int> InsertAll<T>(IEnumerable<T> list)
+        {
+            return Connection.InsertAllAsync(list);
         }
 
         public Task<int> Update<T>(T instance)

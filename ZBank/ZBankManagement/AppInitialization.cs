@@ -32,6 +32,7 @@ namespace ZBank.ZBankManagement
         public void InitializeDB()
         {
             _dbInitHandler.CreateTables();
+            _dbInitHandler.PopulateData();
         }
     }
 }

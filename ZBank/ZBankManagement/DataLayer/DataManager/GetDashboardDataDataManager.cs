@@ -34,11 +34,11 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 var BalanceCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Balance",
-                    PrimaryValue = accountsList.Sum(acc => acc.Amount),
+                    PrimaryValue = accountsList.Sum(acc => acc.Balance),
                     SecondaryKey1 = "Total Savings",
-                    SecondaryValue1 = accountsList.Where(acc => acc.AccountType != AccountType.TERM_DEPOSIT).Sum(acc => acc.Amount),
+                    SecondaryValue1 = accountsList.Where(acc => acc.AccountType != AccountType.TERM_DEPOSIT).Sum(acc => acc.Balance),
                     SecondaryKey2 = "Total Deposits",
-                    SecondaryValue2 = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT).Sum(acc => acc.Amount)
+                    SecondaryValue2 = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT).Sum(acc => acc.Balance)
                 };
 
                 IEnumerable<Beneficiary> beneficiaries = _handler.GetBeneficiaries(request.UserID).Result;
