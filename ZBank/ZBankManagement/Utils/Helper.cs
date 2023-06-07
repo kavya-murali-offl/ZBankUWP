@@ -29,9 +29,9 @@ namespace ZBankManagement.Utility
         {
             if (Store.TransactionsList.Count() > 0)
             {
-                Transaction transaction = Store.TransactionsList.Where(data => data.TransactionType == TransactionType.EXPENSE).LastOrDefault();
+                Transaction transaction = Store.TransactionsList.Where(data => data.TransactionType == TransactionType.DEBIT).LastOrDefault();
                 if (transaction == null)
-                    transaction = Store.TransactionsList.Where(data => data.TransactionType == TransactionType.INCOME).LastOrDefault();
+                    transaction = Store.TransactionsList.Where(data => data.TransactionType == TransactionType.CREDIT).LastOrDefault();
                 return transaction.RecordedOn;
             }
             return null;

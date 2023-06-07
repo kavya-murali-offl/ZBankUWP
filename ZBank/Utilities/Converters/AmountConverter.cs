@@ -30,7 +30,7 @@ namespace ZBank.Utilities.Converters
             if (value == null)
                 return null;
 
-            if(TransactionType == TransactionType.EXPENSE)
+            if(TransactionType == TransactionType.DEBIT)
             {
                 return "+" + value;
             }

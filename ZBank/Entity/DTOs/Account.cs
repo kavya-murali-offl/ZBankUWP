@@ -19,8 +19,10 @@ namespace ZBank.Entities
         public string IFSCCode { get; set; }
 
         public string AccountName { get; set; }
-
+        
         public string UserID { get; set; }
+
+        public bool IsKYCApproved { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

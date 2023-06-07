@@ -36,7 +36,7 @@ namespace ZBank.Entities
 
     public enum TransactionType
     {
-        EXPENSE, INCOME
+        DEBIT, CREDIT
     }
 
     public enum ModeOfPayment

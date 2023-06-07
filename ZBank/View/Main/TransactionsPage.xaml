@@ -17,118 +17,319 @@
             x:Key="DateFormatConverter" />
         <converter:CurrencyConverter
             x:Key="CurrencyConverter" />
-    </Page.Resources>
-    <Grid>
-            <GridView
-                ItemsSource="{x:Bind ViewModel.InViewTransactions, Mode=OneWay}"
-                AllowDrop="True"
-                SelectionMode="None"
-                CanReorderItems="True">
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="modelBObj:TransactionBObj">
-                        <Grid
-                            BorderThickness="0"
-                            HorizontalAlignment="Stretch"
-                            Margin="12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition
-                                    Width="*" />
-                                <ColumnDefinition
-                                    Width="*" />
-                                <ColumnDefinition
-                                    Width="*" />
-                                <ColumnDefinition
-                                    Width="*" />
-                                <ColumnDefinition
-                                    Width="*" />
-                            <ColumnDefinition
-                                Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                            <TextBlock
-                                TextTrimming="CharacterEllipsis"
-                                Width="10"
+        <converter:InitialsConverter
+            x:Key="InitialsConverter" />
+        <converter:BooleanToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+        <DataTemplate
+            x:Key="NarrowDataTemplate">
+            <Grid
+                Margin="0,5,0,5"
+                x:Name="TemplateGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="3*" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
 
-                                Margin="5"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Text="{Binding ReferenceID}" />
-                            <TextBlock
-                            VerticalAlignment="Center"
-                            Grid.Column="1"
-                                Margin="5"
-                                HorizontalAlignment="Stretch"
-                                Text="{Binding RecordedOn, 
-                                Converter={StaticResource DateFormatConverter}}" />
-                            <TextBlock
-                                Margin="5"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Stretch"
-                                Grid.Column="2"
-                                Text="{Binding OwnerAccountNumber}" />
+                
+
+                <PersonPicture
+                    Grid.Column="0"
+                    Margin="0,0,5,0"
+                    BorderBrush="{ThemeResource ApplicationBackground}"
+                    Grid.RowSpan="2"
+                    FontWeight="Bold"
+                    VerticalAlignment="Center"
+                    MaxWidth="35"
+                    MaxHeight="35"
+                    Initials="{Binding Name,Converter={StaticResource InitialsConverter}}" />
+
+                <TextBlock
+                    Margin="5,0,5,0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding Name}"
+                    TextTrimming="CharacterEllipsis" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Margin="5,0,5,0"
+                    Foreground="Gray"
+                    HorizontalAlignment="Left"
+                    Text="{Binding RecordedOn, Converter={StaticResource DateFormatConverter}}"
+                    TextTrimming="CharacterEllipsis" />
+
+                <StackPanel
+                    MaxWidth="130"
+                    Orientation="Horizontal"
+                    Grid.Column="2"
+                    CornerRadius="8"
+                    Padding="0,0,10,0"
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="{Binding BackgroundColor}">
+                    <TextBlock
+                        Width="13"
+                        Margin="5,0,5,0"
+                        Padding="0,1,0,3"
+                        VerticalAlignment="Center"
+                        Text="{Binding PlusOrMinus}"
+                        FontSize="22"
+                        Foreground="{Binding BorderColor}" />
+
+                    <TextBlock
+                        MaxWidth="100"
+                        FontWeight="SemiBold"
+                        FontSize="14"
+                        VerticalAlignment="Center"
+                        Foreground="{Binding BorderColor}"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
+                        TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <Button
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Center"
+                    Style="{ThemeResource IconButton}"
+                    Grid.Column="6">
+                    <Button.Content>
+                        <FontIcon
+                            Glyph="&#xE09F;" />
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate
+            x:Key="WideDataTemplate">
+            <Grid
+                Margin="0,5,0,5"
+                x:Name="TemplateGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="3*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.RowSpan="2"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    HorizontalAlignment="Center"
+                    Text="{Binding ReferenceID}"
+                    TextTrimming="CharacterEllipsis" />
+
+                <PersonPicture
+                    Grid.Column="1"
+                    Margin="0,0,5,0"
+                    BorderBrush="{ThemeResource ApplicationBackground}"
+                    Grid.RowSpan="2"
+                    FontWeight="Bold"
+                    VerticalAlignment="Center"
+                    MaxWidth="35"
+                    MaxHeight="35"
+                    Initials="{Binding Name,Converter={StaticResource InitialsConverter}}" />
+
+                <TextBlock
+                    Margin="5,0,5,0"
+                    Grid.Column="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding Name}"
+                    TextTrimming="CharacterEllipsis" />
+
+                <TextBlock
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    Margin="5,0,5,0"
+                    Foreground="Gray"
+                    HorizontalAlignment="Left"
+                    Text="{Binding RecordedOn, Converter={StaticResource DateFormatConverter}}"
+                    TextTrimming="CharacterEllipsis" />
+
+                <TextBlock
+                    Margin="5,0,5,0"
+                    Grid.Column="3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Grid.RowSpan="2"
+                    Visibility="{Binding ElementName=IsWideEnough, Converter={StaticResource BoolToVisibilityConverter}}"
+                    TextWrapping="Wrap"
+                    Text="{Binding OwnerAccountNumber}"
+                    TextTrimming="CharacterEllipsis" />
+
+                <StackPanel
+                    MaxWidth="130"
+                    Orientation="Horizontal"
+                    Grid.Column="4"
+                    CornerRadius="8"
+                    Padding="0,0,10,0"
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="{Binding BackgroundColor}">
+                    <TextBlock
+                        Width="13"
+                        Margin="5,0,5,0"
+                        Padding="0,1,0,3"
+                        VerticalAlignment="Center"
+                        Text="{Binding PlusOrMinus}"
+                        FontSize="22"
+                        Foreground="{Binding BorderColor}" />
+
+                    <TextBlock
+                        MaxWidth="100"
+                        FontWeight="SemiBold"
+                        FontSize="14"
+                        VerticalAlignment="Center"
+                        Foreground="{Binding BorderColor}"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
+                        TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <TextBlock
+                    Visibility="{Binding ElementName=IsWideEnough, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Margin="5,0,5,0"
+                    Grid.Column="5"
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
+                    TextTrimming="CharacterEllipsis" />
+                <Button
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Center"
+                    Style="{ThemeResource IconButton}"
+                    Grid.Column="6">
+                    <Button.Content>
+                        <FontIcon
+                            Glyph="&#xE09F;" />
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid
+        Background="{ThemeResource ApplicationBackground}"
+        Padding="10"
+        Margin="5"
+        CornerRadius="8">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState
+                    x:Name="wideScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                            MinWindowWidth="900" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="ListView.ItemTemplate"
+                            Value="{StaticResource WideDataTemplate}" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState
+                    x:Name="mediumScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                            MinWindowWidth="600" />
+                        <AdaptiveTrigger
+                            MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="ListView.ItemTemplate"
+                            Value="{StaticResource NarrowDataTemplate}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <GridView
+            
+            Margin="10">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid
+                        Width="Auto"
+                        HorizontalAlignment="Stretch"
+                        Orientation="Horizontal"  MaximumRowsOrColumns="6"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridViewItem>
+                <Button>
+                    <Button.Content>
                         <TextBlock
-                            Margin="5"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top"
-                            Grid.Column="3"
-                            Text="{Binding OtherAccount.AccountNumber}" />
+                            Text="Sort" />
+                    </Button.Content>
+                </Button>
+            </GridViewItem>
+            <GridViewItem>
+                <Button>
+                    <Button.Content>
                         <TextBlock
-                            Margin="5"
-                            VerticalAlignment="Bottom"
-                            HorizontalAlignment="Stretch"
-                            Grid.Column="3"
-                            Text="{Binding OtherAccount.Name}" />
+                            Text="Filter" />
+                    </Button.Content>
+                </Button>
+            </GridViewItem>
+            <GridViewItem>
+                <Button>
+                    <Button.Content>
                         <TextBlock
-                            Margin="5"
-                            VerticalAlignment="Bottom"
-                            HorizontalAlignment="Stretch"
-                            Grid.Column="4"
-                            Text="{Binding TransactionType}" />
-                        <TextBlock
-                                Margin="5"
-                                HorizontalAlignment="Stretch"
-                                Grid.Column="5"
-                            VerticalAlignment="Center"
-                            Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}" />
-                        <Button
-                            x:Name="ArrowColumn"
-                            Click="ArrowColumn_Click"
-                            Grid.Column="6">
-                            <Button.Content>
-                                <FontIcon
-                                    Glyph="&#xE70D;"
-                                     />
-                            </Button.Content>
-                        </Button>
-                            
-                    </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsStackPanel
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch"
-                            Orientation="Vertical" />
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            <GridView.ItemContainerStyle>
-                <Style
-                    TargetType="GridViewItem">
-                    <Setter
-                        Property="HorizontalContentAlignment"
-                        Value="Stretch" />
-                    <Setter
-                        Property="VerticalContentAlignment"
-                        Value="Stretch" />
-                    <Setter
-                        Property="MinHeight"
-                        Value="80" />
-                    <Setter
-                        Property="BorderThickness"
-                        Value="0" />
-                </Style>
-            </GridView.ItemContainerStyle>
+                            Text="Export" />
+                    </Button.Content>
+                </Button>
+            </GridViewItem>
         </GridView>
+
+        <ListView
+            Grid.Row="1"
+            x:Name="ListView"
+            ItemsSource="{x:Bind ViewModel.InViewTransactions, Mode=OneWay}"
+            AllowDrop="True"
+            SelectionMode="None"
+            CanReorderItems="True">
+            
+
+        </ListView>
     </Grid>
 </Page>

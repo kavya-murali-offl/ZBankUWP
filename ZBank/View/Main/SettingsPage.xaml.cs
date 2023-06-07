@@ -55,7 +55,7 @@ namespace ZBank.View.Main
                 updatedTheme = ElementTheme.Light;
             }
             ViewNotifier.Instance.OnThemeChanged(updatedTheme);
-            this.RequestedTheme = updatedTheme;
+            RequestedTheme = updatedTheme;
         }
 
         private async void ChangeTheme(ElementTheme theme)

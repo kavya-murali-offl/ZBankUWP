@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -16,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.ViewModel;
@@ -30,7 +32,6 @@ namespace ZBank.View.Modals
     /// </summary>
     public sealed partial class AddOrEditAccountPage : Page, IView
     {
-
         public AddOrEditAccountViewModel ViewModel { get; set; }
 
 
@@ -78,12 +79,14 @@ namespace ZBank.View.Modals
             AccountForm.DataContext = ViewModel;
             DataTemplate template = Resources["CurrentAccountFormTemplate"] as DataTemplate;
             AccountForm.Content = template.LoadContent();
-            //ViewModel.LoadContent();
+            ViewNotifier.Instance.ThemeChanged += ChangeTheme;
+            ViewModel.LoadContent();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            ////ViewModel.UnloadContent();
+            ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
+            ViewModel.UnloadContent();
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
@@ -103,6 +106,20 @@ namespace ZBank.View.Modals
             //    case "Current";
 
             //}
+        }
+
+        private async void ChangeTheme(ElementTheme theme)
+        {
+            ThemeSelector.SwitchTheme(theme);
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                ((FrameworkElement)Window.Current.Content).RequestedTheme = RequestedTheme = theme;
+            });
+        }
+
+        private void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 

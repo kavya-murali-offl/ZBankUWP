@@ -7,6 +7,8 @@
     mc:Ignorable="d"
     xmlns:converter="using:ZBank.Utilities.Converters"
     d:DesignHeight="300"
+    HorizontalAlignment="Stretch"
+    HorizontalContentAlignment="Stretch"
     d:DesignWidth="400">
 
     <UserControl.Resources>
@@ -16,73 +18,7 @@
             x:Name="CurrencyConverter" />
     </UserControl.Resources>
 
-    <Grid HorizontalAlignment="Stretch" Width="Auto">
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    Width="Auto" />
-                <ColumnDefinition
-                    Width="*" />
-                <ColumnDefinition
-                    Width="Auto" />
-            </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Padding="0,0,0,0">
-            <Ellipse
-                Stroke="{Binding BorderColor}"
-                Width="35"
-                Height="35"
-                Fill="{Binding BackgroundColor}"
-                StrokeThickness="1">
-            </Ellipse>
-            <FontIcon
-                Foreground="{Binding BorderColor}"
-                FontSize="10"
-                Glyph="{Binding ArrowIcon}" />
-        </Grid>
-        <StackPanel
-            Margin="0,0,10,0"
-            HorizontalAlignment="Stretch"
-                Grid.Column="1"
-                Padding="10">
-                <TextBlock
-                    Grid.Column="1"
-                Text="{Binding Name}"
-                    Style="{ThemeResource BoldNormalText}" />
-                <TextBlock
-                    Grid.Column="1"
-                    Foreground="Gray"
-                    FontSize="12"
-                Text="{Binding RecordedOn, 
-                    Converter={StaticResource DateFormatConverter}}"
-                    Style="{ThemeResource NormalSubText}" />
-            </StackPanel>
-            <StackPanel
-                Grid.Column="2"
-                Width="Auto"
-                Padding="5,5,10,5"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Stretch">
-                <TextBlock
-                   x:Name="AmountText"
-                    FontSize="17"
-                    HorizontalAlignment="Right"
-                    TextAlignment="Right"
-                    Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                    Style="{ThemeResource BoldNormalText}" />
-                <TextBlock
-                    x:Name="Balance"
-                    FontSize="14"
-                    HorizontalAlignment="Right"
-                    TextAlignment="Right"
-                    Foreground="Gray"
-                    Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
-                    Style="{ThemeResource BoldNormalText}" />
 
-        </StackPanel>
-    </Grid>
 
               
 </UserControl>

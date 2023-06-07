@@ -4,21 +4,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ZBank.Entities.BusinessObjects;
-using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.View;
 using ZBank.AppEvents;
-using ZBankManagement.Utility;
 
 namespace ZBank.ViewModel
 {
     public class TransactionViewModel : ViewModelBase
     {
-
         public IView View;
 
         public void LoadAllTransactionsData()
@@ -52,6 +48,10 @@ namespace ZBank.ViewModel
 
         private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
         {
+            foreach(var transaction in args.TransactionList)
+            {
+                transaction.SetDefault();
+            }
             InViewTransactions = new ObservableCollection<TransactionBObj>(args.TransactionList);
         }
 

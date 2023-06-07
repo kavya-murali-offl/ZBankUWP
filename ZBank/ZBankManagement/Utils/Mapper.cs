@@ -39,13 +39,13 @@ namespace ZBankManagement.Utility
         public static TransactionBObj GetTransactionBObj(Transaction transaction) 
         {
             TransactionBObj transactionBObj = Map<Transaction, TransactionBObj>(transaction);
-            if (transaction.TransactionType == TransactionType.EXPENSE)
+            if (transaction.TransactionType == TransactionType.DEBIT)
             {
                 transactionBObj.BorderColor = "#be3232";
                 transactionBObj.BackgroundColor = "#f5e1dd";
                 transactionBObj.ArrowIcon = "\uEDDC";
             }
-            else if (transaction.TransactionType == TransactionType.INCOME)
+            else if (transaction.TransactionType == TransactionType.CREDIT)
             {
                 transactionBObj.BackgroundColor = "#eafde8";
                 transactionBObj.BorderColor = "#058365";

@@ -123,11 +123,14 @@
     <Compile Include="AppEvents\AppEventArgs\CardDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\BranchListUpdatedArgs.cs" />
     <Compile Include="Entity\BusinessObjects\AccountBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
     <Compile Include="Entity\BusinessObjects\DropDownItem.cs" />
     <Compile Include="Entity\EnumerationTypes\Currency.cs" />
     <Compile Include="Entity\EnumerationTypes\DepositType.cs" />
+    <Compile Include="Services\ViewLifetimeControl.cs" />
+    <Compile Include="Services\WindowManagerService.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
     <Compile Include="Entity\DTOs\Bank.cs" />
     <Compile Include="Entity\DTOs\Branch.cs" />
@@ -135,7 +138,9 @@
     <Compile Include="Entity\DTOs\TermDepositAccountDTO.cs" />
     <Compile Include="Entity\Constants\Constants.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
+    <Compile Include="Utilities\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
+    <Compile Include="Utilities\Converters\InitialsConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
     <Compile Include="Entity\DTOs\Beneficiary.cs" />
     <Compile Include="Entity\DTOs\CreditCardDTO.cs" />
@@ -172,6 +177,9 @@
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
+    <Compile Include="View\DataTemplates\AddNomineeTemplate.xaml.cs">
+      <DependentUpon>AddNomineeTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
@@ -186,6 +194,9 @@
     </Compile>
     <Compile Include="View\DataTemplates\NewAcountTemplates\NewSavingsAccountFormTemplate.xaml.cs">
       <DependentUpon>NewSavingsAccountFormTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\PersonalDetailsVerificationTemplate.xaml.cs">
+      <DependentUpon>PersonalDetailsVerificationTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml.cs">
       <DependentUpon>SavingsAccountInfoTemplate.xaml</DependentUpon>
@@ -273,6 +284,7 @@
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IDeleteBeneficiaryDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetAccountDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetBeneficiaryDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetBranchDetailsDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetCardDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IGetDashboardDataDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IInsertBeneficiaryDataManager.cs" />
@@ -289,6 +301,7 @@
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IUpdateCardDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\Contracts\IUpdateCustomerDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetAccountDataManager.cs" />
+    <Compile Include="ZBankManagement\DataLayer\DataManager\GetBranchDetailsDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetCardDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetBeneficiaryDataManager.cs" />
     <Compile Include="ZBankManagement\DataLayer\DataManager\GetDashboardDataDataManager.cs" />
@@ -313,6 +326,7 @@
     <Compile Include="ZBankManagement\DataLayer\Store.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\Common\RequestObjectBase.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllBeneficiaries.cs" />
+    <Compile Include="ZBankManagement\DomainLayer\UseCase\GetAllBranches.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\GetDashboardData.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\LogoutCustomer.cs" />
     <Compile Include="ZBankManagement\DomainLayer\UseCase\RemoveBeneficiary.cs" />
@@ -376,6 +390,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\DataTemplates\AddNomineeTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -393,6 +411,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DataTemplates\NewAcountTemplates\NewSavingsAccountFormTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\PersonalDetailsVerificationTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

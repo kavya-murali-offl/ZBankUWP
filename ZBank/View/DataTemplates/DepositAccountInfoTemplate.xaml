@@ -20,7 +20,6 @@
             x:Name="CurrencyConverter" />
         <converter:BackgroundColorConverter
             x:Name="BackgroundColorConverter" />
-
         <converter:DateFormatter
             x:Name="DateFormatConverter" />
     </UserControl.Resources>
@@ -159,8 +158,8 @@
                     Width="250">
                     <StackPanel
                         Orientation="Vertical">
-                        <TextBlock  TextTrimming="CharacterEllipsis"
-
+                        <TextBlock  
+                            TextTrimming="CharacterEllipsis"
                             VerticalAlignment="Center"
                             FontSize="14"
                             HorizontalAlignment="Left"

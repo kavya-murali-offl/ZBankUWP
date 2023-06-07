@@ -61,8 +61,8 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     transactions.AddRange(list);
                 }
 
-                var income = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.INCOME).Sum(tran => tran.Amount);
-                var expense = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.EXPENSE).Sum(tran => tran.Amount);
+                var income = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.CREDIT).Sum(tran => tran.Amount);
+                var expense = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.DEBIT).Sum(tran => tran.Amount);
 
                 var IncomeExpenseCard = new DashboardCardModel
                 {

@@ -10,23 +10,27 @@ namespace ZBank.Entities.BusinessObjects
 
         public string ArrowIcon { get; set; }
 
+        public string PlusOrMinus { get; set; }
+
         public string BorderColor { get;  set; }
 
         public string BackgroundColor { get;  set; }
 
         public void SetDefault()
         {
-            if (TransactionType == TransactionType.EXPENSE)
+            if (TransactionType == TransactionType.DEBIT)
             {
                 BorderColor = "#be3232";
                 BackgroundColor = "#f5e1dd";
                 ArrowIcon = "\uEDDC";
+                PlusOrMinus = "-";
             }
-            else if (TransactionType == TransactionType.INCOME)
+            else if (TransactionType == TransactionType.CREDIT)
             {
                 BackgroundColor = "#eafde8";
                 BorderColor = "#058365";
                 ArrowIcon = "\uEDDB";
+                PlusOrMinus = "+";
             }
         }
     }

@@ -10,6 +10,7 @@ using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Services;
 using ZBank.View.Modals;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
@@ -61,13 +62,11 @@ namespace ZBank.View.Main
         }
 
 
-        private void CreateAccount_Click(object sender, RoutedEventArgs e)
+        private async void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = new AddOrEditAccountViewModel(this);
-            viewModel.IsEdit = false;
-
             WindowManager windowManager = new WindowManager();
-            windowManager.OpenNewWindow<AddOrEditAccountPage>("Add Account", viewModel);
+            windowManager.OpenNewWindow<AddOrEditAccountPage>("Add Account");
+
         }
     }
 }

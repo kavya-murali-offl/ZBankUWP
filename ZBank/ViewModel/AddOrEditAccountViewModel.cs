@@ -25,11 +25,11 @@ namespace ZBank.ViewModel
         public AddOrEditAccountViewModel(IView view)
         {
             View = view;
-            SubmitCommand = new RelayCommand(SubmitAccount);
-            LoadAllAccounts();
+            SubmitCommand = new RelayCommand(GetAccount);
+            BranchList = new ObservableCollection<Branch>();
         }
 
-        private void SubmitAccount(object parameter)
+        private void GetAccount(object parameter)
         {
             Account account = (Account)parameter;
             if(account.AccountNumber == null)
@@ -54,6 +54,18 @@ namespace ZBank.ViewModel
             }
         }
 
+        private ObservableCollection<Branch> _branchList { get; set; }
+
+        public ObservableCollection<Branch> BranchList
+        {
+            get { return _branchList; }
+            set
+            {
+                _branchList = value;
+                OnPropertyChanged(nameof(BranchList));
+            }
+        }
+
         public SavingsAccount SavingsAccount { get; set; } = new SavingsAccount();
         public CurrentAccount CurrentAccount { get; set; } = new CurrentAccount();
         public TermDepositAccount DepositAccount { get; set; } = new TermDepositAccount();
@@ -71,16 +83,25 @@ namespace ZBank.ViewModel
         public void LoadContent()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
+            LoadAllAccounts();
+            LoadAllBranches();
         }
 
         public void UnloadContent()
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+            ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
         }
 
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
             Accounts = new ObservableCollection<Account>(args.AccountsList);
+        }
+
+        private void UpdateBranchesList(BranchListUpdatedArgs args)
+        {
+            BranchList = new ObservableCollection<Branch>(args.BranchList);
         }
 
         public void LoadAllAccounts()
@@ -96,11 +117,17 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
+        public void LoadAllBranches()
+        {
+            GetAllBranchesRequest request = new GetAllBranchesRequest();
+
+            IPresenterCallback<GetAllBranchesResponse> presenterCallback = new GetAllBranchesPresenterCallback(this);
+            UseCaseBase<GetAllBranchesResponse> useCase = new GetAllBranchesUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
         public void ApplyNewAccount(Account accountToInsert)
         {
-             //accountToInsert.Balance = 0;
-             //accountToInsert.UserID = 
-
             InsertAccountRequest request = new InsertAccountRequest()
             {
                AccountToInsert = accountToInsert

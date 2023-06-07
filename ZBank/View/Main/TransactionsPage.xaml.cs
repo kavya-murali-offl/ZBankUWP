@@ -25,6 +25,8 @@ namespace ZBank.View.Main
     {
         public TransactionViewModel ViewModel { get; set; }  
 
+        private bool IsWideEnough { get; set; }  
+
         public TransactionsPage()
         {
             this.InitializeComponent();

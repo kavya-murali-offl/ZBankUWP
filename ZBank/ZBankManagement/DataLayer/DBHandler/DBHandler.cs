@@ -50,7 +50,7 @@ namespace ZBank.DatabaseHandler
             return _databaseAdapter.Query<Branch>("Select * from Branch where IfscCode = ?", ifscCode);
         }
 
-        
+
         public Task<IEnumerable<CardBObj>> GetCardByAccountNumber(string accountNumber)
         {
             return _databaseAdapter.Query<CardBObj>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where AccountNumber = ?", accountNumber);
@@ -70,40 +70,43 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<AccountBObj>> GetAllAccounts(string customerID)
         {
             List<AccountBObj> accountsList = new List<AccountBObj>();
-                var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
-                    $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
-                    $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-                    $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                    $"where UserID = ?", "1111");
-                var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
-                    $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
-                    $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-                    $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                    $"where UserID = ?", "1111");
-                var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
-                    $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
-                    $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                    $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-                    $"where UserID = ?", "1111");
 
-                accountsList.AddRange(currentAccount);
-                accountsList.AddRange(savingsAccount);
-                accountsList.AddRange(termDepositAccounts);
-                return accountsList;
+            var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
+                $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
+                $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+                $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+                $"where IsKYCApproved and UserID = ?", "1111");
+            var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
+                $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
+                $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+                $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+                $"where IsKYCApproved and UserID = ?", "1111");
+            var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
+                $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
+                $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+                $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+                $"where IsKYCApproved and UserID = ?", "1111");
+
+            accountsList.AddRange(currentAccount);
+            accountsList.AddRange(savingsAccount);
+            accountsList.AddRange(termDepositAccounts);
+            return accountsList;
         }
 
-        public async Task InsertAccount(Account account)
+        public async Task<bool> InsertAccount(Account account)
         {
+            int rowsModified = 0;
             object dtoObject = AccountFactory.GetDTOObject(account);
-            await _databaseAdapter.Insert(account, typeof(Account));
-            await _databaseAdapter.Insert(dtoObject);
+            rowsModified += await _databaseAdapter.Insert(account, typeof(Account));
+            rowsModified += await _databaseAdapter.Insert(dtoObject);
+            return rowsModified == 2;
         }
 
         // Beneficiaries
 
         public async Task<IEnumerable<Beneficiary>> GetBeneficiaries(string customerID)
         {
-           return await _databaseAdapter.Query<Beneficiary>($"Select * from Beneficiary where UserID = ?", "1111");
+            return await _databaseAdapter.Query<Beneficiary>($"Select * from Beneficiary where UserID = ?", "1111");
         }
 
         public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Update(beneficiary);
@@ -130,8 +133,9 @@ namespace ZBank.DatabaseHandler
 
         // Customer Credentials
 
-        public async Task<CustomerCredentials> GetCredentials(string customerID) {
-           return await _databaseAdapter.GetScalar<CustomerCredentials>($"Select * from CustomerCredentials Where CustomerCredentials.CustomerID = ?", customerID);
+        public async Task<CustomerCredentials> GetCredentials(string customerID)
+        {
+            return await _databaseAdapter.GetScalar<CustomerCredentials>($"Select * from CustomerCredentials Where CustomerCredentials.CustomerID = ?", customerID);
         }
 
         public Task<int> InsertCredentials(CustomerCredentials customerCredentials) => _databaseAdapter.Insert(customerCredentials);
@@ -148,9 +152,9 @@ namespace ZBank.DatabaseHandler
 
         //Card
 
-        public Task<int> InsertCard(Card card) => _databaseAdapter.Insert(card); 
+        public Task<int> InsertCard(Card card) => _databaseAdapter.Insert(card);
 
-        public Task<int> UpdateCard(Card card)  => _databaseAdapter.Update(card) ;
+        public Task<int> UpdateCard(Card card) => _databaseAdapter.Update(card);
 
 
         // Credit Card
@@ -161,12 +165,17 @@ namespace ZBank.DatabaseHandler
 
         // Transaction
 
-        public async Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber) =>
-            await 
-            _databaseAdapter.GetAll<TransactionBObj>()
-            .Where(x => x.OwnerAccountNumber.Equals(accountNumber))
-            .OrderByDescending(x => x.RecordedOn)
-            .ToListAsync();
+        public async Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber)
+        {
+          var transactionBObjs =  await _databaseAdapter.Query<TransactionBObj>(
+              $"Select * from Transactions Left Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber where OwnerAccountNumber = ?", accountNumber);
+            return transactionBObjs;
+        }
+        //await
+        //_databaseAdapter.GetAll<TransactionBObj>()
+        //.Where(x => x.OwnerAccountNumber.Equals(accountNumber)
+        //.OrderByDescending(x => x.RecordedOn)
+        //.ToListAsync();
 
         public async Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber) =>
             await _databaseAdapter.GetAll<TransactionBObj>()
@@ -176,12 +185,12 @@ namespace ZBank.DatabaseHandler
 
         public Task<int> InsertTransaction(Transaction transaction) => _databaseAdapter.Insert(transaction);
 
-       public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
-       {
+        public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
+        {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions " +
                 $"Inner Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber " +
                 "WHERE OwnerAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
-       }
+        }
 
         public async Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber)
         {
@@ -189,5 +198,6 @@ namespace ZBank.DatabaseHandler
                 $"Inner Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber " +
                 "WHERE OwnerAccountNumber == ?", accountNumber);
         }
+
     }
 }

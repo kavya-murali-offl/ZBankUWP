@@ -11,6 +11,11 @@ namespace ZBank.AppEvents
 {
     public class ViewNotifier
     {
+        public event Action<BranchListUpdatedArgs> BranchListUpdated;
+        public void OnBranchListUpdated(BranchListUpdatedArgs args)
+        {
+            BranchListUpdated?.Invoke(args);
+        }
 
         public event Action<BeneficiaryListUpdatedArgs> BeneficiaryListUpdated;
         public void OnBeneficiaryListUpdated(BeneficiaryListUpdatedArgs args)

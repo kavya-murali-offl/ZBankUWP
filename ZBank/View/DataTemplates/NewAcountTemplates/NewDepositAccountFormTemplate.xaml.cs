@@ -43,14 +43,12 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             FieldValues["From Account Number"] = string.Empty;
             FieldValues["Repayment Account Number"] = string.Empty;
             FieldValues["Tenure"] = string.Empty;
-            FieldValues["Interest Rate"] = string.Empty;
+            FieldValues["Interest Rate"] = "0.0%";
             SubmitButton.IsEnabled = true;
         }
 
         private ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
         private ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
-
-
 
         public void ValidateField(string fieldName)
         {
@@ -62,22 +60,36 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             {
                 FieldErrors[fieldName] = string.Empty;
             }
+
+            if(fieldName == "Deposit Amount")
+            {
+                var inText = FieldValues["Deposit Amount"].ToString();
+                if (decimal.TryParse(inText, out decimal amountInDecimal))
+                {
+                    FieldValues["Deposit Amount"] = inText;
+                    FieldErrors["Deposit Amount"] = string.Empty;
+                }
+                else
+                {
+                    FieldErrors["Deposit Amount"] = "Please enter a valid deposit Amount";
+                }
+            }
         }
 
-        private bool IsEnabled()
-        {
-            ValidateField("Deposit Amount");
-            ValidateField("Repayment Account Number");
-            ValidateField("Tenure");
-            if (FieldErrors.Values.Any(err => err.Length > 0))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+        //private bool IsEnabled()
+        //{
+        //    ValidateField("Deposit Amount");
+        //    ValidateField("Repayment Account Number");
+        //    ValidateField("Tenure");
+        //    if (FieldErrors.Values.Any(err => err.Length > 0))
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
+        //}
 
         public ICommand SubmitCommand
         {
@@ -94,7 +106,8 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             newText = new string(newText.Where(c => char.IsDigit(c) || c == '.').ToArray());
             sender.Text = newText;
             sender.SelectionStart = newText.Length;
-            FieldValues["Deposit Amount"] = AmountTextBox.Text;
+            FieldValues["Deposit Amount"] = newText;
+            ValidateField("Deposit Amount");
         }
 
         private void TenureList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -109,7 +122,7 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                     UpdateInterestRate();
                 }
             }
-
+            ValidateField("Tenure");
             TenureDropDownButton.Flyout.Hide();
         }
 
@@ -118,7 +131,7 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             if (int.TryParse(FieldValues["Tenure"].ToString(), out int tenure))
             {
                 decimal interestRate = TermDepositAccount.GetFDInterestRate(tenure);
-                FieldValues["Interest Rate"] = interestRate.ToString().Concat("%");    
+                FieldValues["Interest Rate"] = interestRate.ToString() + "%";
             }
         }
 
@@ -136,6 +149,8 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 FromAccountText.Text = selectedAccount.ToString();
                 FromAccountDropdownButton.Flyout.Hide();
             }
+            ValidateField("From Account Number");
+
         }
 
         private void ToAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -152,6 +167,8 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 ToAccountText.Text = selectedAccount.ToString();
                 ToAccountDropdownButton.Flyout.Hide();
             }
+            ValidateField("Repayment Account Number");
+
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
@@ -180,15 +197,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             foreach (var key in FieldValues.Keys)
             {
                 ValidateField(key);
-            }
-
-            if (decimal.TryParse(FieldValues["Deposit Amount"].ToString(), out decimal amountInDecimal))
-            {
-                FieldValues["Deposit Amount"] = amountInDecimal;
-            }
-            else
-            {
-                FieldErrors["Deposit Amount"] = "Please enter a valid deposit Amount";
             }
 
             if (FieldErrors.Values.Any((val) => val.Length > 0))

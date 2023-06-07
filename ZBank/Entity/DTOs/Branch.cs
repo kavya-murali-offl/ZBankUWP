@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBank.Entity
+namespace ZBank.Entities
 {
     [Table("Branch")]
     public class Branch
