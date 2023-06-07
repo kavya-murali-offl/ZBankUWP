@@ -13,6 +13,8 @@ using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 using System.Windows.Input;
 using ZBank.ViewModel.VMObjects;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 
 namespace ZBank.ViewModel
 {
@@ -136,7 +138,90 @@ namespace ZBank.ViewModel
             IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
             UseCaseBase<InsertAccountResponse> useCase = new InsertAccountUseCase(request, presenterCallback);
             useCase.Execute();
+        }
+
+        public class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
+        {
+            private AddOrEditAccountViewModel AccountPageViewModel { get; set; }
+
+            public InsertAccountPresenterCallback(AddOrEditAccountViewModel accountPageViewModel)
+            {
+                AccountPageViewModel = accountPageViewModel;
+            }
+
+            public async void OnSuccess(InsertAccountResponse response)
+            {
+                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    if (AccountPageViewModel.Accounts != null)
+                    {
+                        AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                        {
+                            AccountsList = new ObservableCollection<Account>(AccountPageViewModel.Accounts.Append(response.InsertedAccount))
+                        };
+                        ViewNotifier.Instance.OnAccountsListUpdated(args);
+                    }
+                });
+            }
+
+            public void OnFailure(ZBankException error)
+            {
+
+            }
+        }
+
+        public class GetAllBranchesPresenterCallback : IPresenterCallback<GetAllBranchesResponse>
+        {
+            private AddOrEditAccountViewModel ViewModel { get; set; }
+
+            public GetAllBranchesPresenterCallback(AddOrEditAccountViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async void OnSuccess(GetAllBranchesResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    BranchListUpdatedArgs args = new BranchListUpdatedArgs()
+                    {
+                        BranchList = response.BranchList
+                    };
+                    ViewNotifier.Instance.OnBranchListUpdated(args);
+                });
+            }
+
+            public void OnFailure(ZBankException response)
+            {
+            }
 
         }
     }
+    public class GetAllAccountsInAddPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+    {
+        private AddOrEditAccountViewModel ViewModel { get; set; }
+
+        public GetAllAccountsInAddPresenterCallback(AddOrEditAccountViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllAccountsResponse response)
+        {
+            await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                {
+                    AccountsList = response.Accounts
+                };
+                ViewNotifier.Instance.OnAccountsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+            // Notify view
+        }
+    }
+
 }

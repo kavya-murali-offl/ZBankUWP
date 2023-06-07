@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B9F924B9-046E-4D50-BE61-F943EB9E1E15}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZBankManagement</RootNamespace>
+    <AssemblyName>ZBankManagement</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <PlatformTarget>ARM64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <PlatformTarget>ARM64</PlatformTarget>
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AppEvents\AppEventArgs\AccountsListUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\BenefiiciaryListUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\BranchListUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\CardDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\DashboardDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\ViewNotifier.cs" />
+    <Compile Include="AppInitialization.cs" />
+    <Compile Include="Data\DataManager\AccountFactory.cs" />
+    <Compile Include="Data\DataManager\Contracts\IAccountFactory.cs" />
+    <Compile Include="Data\DataManager\Contracts\IDeleteBeneficiaryDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IGetAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IGetBeneficiaryDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IGetBranchDetailsDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IGetCardDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IGetDashboardDataDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IGetTransactionDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IInsertAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IInsertBeneficiaryDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IInsertCardDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IInsertTransactionDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\ILoginCustomerDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IResetPasswordDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\ISignupUserDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\ITransferAmountDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IUpdateAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IUpdateBeneficiaryDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IUpdateCardDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IUpdateCustomerDataManager.cs" />
+    <Compile Include="Data\DataManager\GetAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\GetBeneficiaryDataManager.cs" />
+    <Compile Include="Data\DataManager\GetBranchDetailsDataManager.cs" />
+    <Compile Include="Data\DataManager\GetCardDataManager.cs" />
+    <Compile Include="Data\DataManager\GetDashboardDataDataManager.cs" />
+    <Compile Include="Data\DataManager\GetTransactionDataManager.cs" />
+    <Compile Include="Data\DataManager\InsertAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\InsertCardDataManager.cs" />
+    <Compile Include="Data\DataManager\InsertTransactionDataManager.cs" />
+    <Compile Include="Data\DataManager\LoginCustomerDataManager.cs" />
+    <Compile Include="Data\DataManager\ResetPasswordDataManager.cs" />
+    <Compile Include="Data\DataManager\SignupUserDataManager.cs" />
+    <Compile Include="Data\DataManager\TranferAmountDataManager.cs" />
+    <Compile Include="Data\DataManager\UpdateAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\UpdateCardDataManager.cs" />
+    <Compile Include="Data\DataManager\UpdateCustomerDataManager.cs" />
+    <Compile Include="Data\DBAdapter\IDatabaseAdapter.cs" />
+    <Compile Include="Data\DBAdapter\SQLiteDatabaseAdapter.cs" />
+    <Compile Include="Data\DBHandler\DBHandler.cs" />
+    <Compile Include="Data\DBHandler\DBInitializationHandler.cs" />
+    <Compile Include="Data\DBHandler\IDBHandler.cs" />
+    <Compile Include="Data\DBHandler\IDBInitializationHandler.cs" />
+    <Compile Include="Data\Dependencies\DependencyContainer.cs" />
+    <Compile Include="Domain\Services\Contracts\IPasswordHasherService.cs" />
+    <Compile Include="Domain\Services\PasswordHasherService.cs" />
+    <Compile Include="Domain\UseCase\Common\IPresenterCallback.cs" />
+    <Compile Include="Domain\UseCase\Common\IUseCaseCallback.cs" />
+    <Compile Include="Domain\UseCase\Common\RequestObjectBase.cs" />
+    <Compile Include="Domain\UseCase\Common\UseCaseBase.cs" />
+    <Compile Include="Domain\UseCase\Common\ZBankException.cs" />
+    <Compile Include="Domain\UseCase\GetAllAccounts.cs" />
+    <Compile Include="Domain\UseCase\GetAllBeneficiaries.cs" />
+    <Compile Include="Domain\UseCase\GetAllBranches.cs" />
+    <Compile Include="Domain\UseCase\GetAllCards.cs" />
+    <Compile Include="Domain\UseCase\GetAllTransactions.cs" />
+    <Compile Include="Domain\UseCase\GetDashboardData.cs" />
+    <Compile Include="Domain\UseCase\InsertAccount.cs" />
+    <Compile Include="Domain\UseCase\InsertBeneficiary.cs" />
+    <Compile Include="Domain\UseCase\InsertCard.cs" />
+    <Compile Include="Domain\UseCase\InsertTransaction.cs" />
+    <Compile Include="Domain\UseCase\LoginCustomer.cs" />
+    <Compile Include="Domain\UseCase\LogoutCustomer.cs" />
+    <Compile Include="Domain\UseCase\RemoveBeneficiary.cs" />
+    <Compile Include="Domain\UseCase\ResetPassword.cs" />
+    <Compile Include="Domain\UseCase\SignupUser.cs" />
+    <Compile Include="Domain\UseCase\TransferAmount.cs" />
+    <Compile Include="Domain\UseCase\UpdateAccount.cs" />
+    <Compile Include="Domain\UseCase\UpdateBeneficiary.cs" />
+    <Compile Include="Domain\UseCase\UpdateCard.cs" />
+    <Compile Include="Domain\UseCase\UpdateCustomer.cs" />
+    <Compile Include="Entity\BusinessObjects\AccountBObj.cs" />
+    <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
+    <Compile Include="Entity\BusinessObjects\CreditCard.cs" />
+    <Compile Include="Entity\BusinessObjects\CurrentAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\DashboardDataModel.cs" />
+    <Compile Include="Entity\BusinessObjects\DebitCard.cs" />
+    <Compile Include="Entity\BusinessObjects\DropDownItem.cs" />
+    <Compile Include="Entity\BusinessObjects\Notification.cs" />
+    <Compile Include="Entity\BusinessObjects\RecurringDepositAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\SavingsAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\TermDepositAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\TransactionBObj.cs" />
+    <Compile Include="Entity\Constants\Constants.cs" />
+    <Compile Include="Entity\DTOs\Account.cs" />
+    <Compile Include="Entity\DTOs\Bank.cs" />
+    <Compile Include="Entity\DTOs\Beneficiary.cs" />
+    <Compile Include="Entity\DTOs\Branch.cs" />
+    <Compile Include="Entity\DTOs\Card.cs" />
+    <Compile Include="Entity\DTOs\CreditCardDTO.cs" />
+    <Compile Include="Entity\DTOs\CurrentAccountDTO.cs" />
+    <Compile Include="Entity\DTOs\Customer.cs" />
+    <Compile Include="Entity\DTOs\CustomerCredentials.cs" />
+    <Compile Include="Entity\DTOs\DebitCardDTO.cs" />
+    <Compile Include="Entity\DTOs\SavingsAccountDTO.cs" />
+    <Compile Include="Entity\DTOs\TermDepositAccountDTO.cs" />
+    <Compile Include="Entity\DTOs\Transaction.cs" />
+    <Compile Include="Entity\EnumerationTypes\AccountStatus.cs" />
+    <Compile Include="Entity\EnumerationTypes\AccountType.cs" />
+    <Compile Include="Entity\EnumerationTypes\CardType.cs" />
+    <Compile Include="Entity\EnumerationTypes\CreditCardType.cs" />
+    <Compile Include="Entity\EnumerationTypes\Currency.cs" />
+    <Compile Include="Entity\EnumerationTypes\DepositType.cs" />
+    <Compile Include="Entity\EnumerationTypes\ErrorType.cs" />
+    <Compile Include="Entity\EnumerationTypes\ModeOfPayment.cs" />
+    <Compile Include="Entity\EnumerationTypes\NavigationCases.cs" />
+    <Compile Include="Entity\EnumerationTypes\TransactionType.cs" />
+    <Compile Include="Helpers\LogoHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\AuthServices.cs" />
+    <Compile Include="Utilities\Formatter.cs" />
+    <Compile Include="Utilities\Helper.cs" />
+    <Compile Include="Utilities\Mapper.cs" />
+    <Compile Include="Utilities\RandomGenerator.cs" />
+    <Compile Include="Utilities\Validator.cs" />
+    <EmbeddedResource Include="Properties\ZBankManagement.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>7.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="sqlite-net-sqlcipher">
+      <Version>1.8.116</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\DBHandler\NewFolder1\" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

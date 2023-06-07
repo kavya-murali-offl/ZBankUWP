@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
@@ -123,6 +125,88 @@ namespace ZBank.ViewModel
                 IPresenterCallback<GetAllCardsResponse> presenterCallback = new GetCardByNumberInAccountPresenterCallback(this);
                 UseCaseBase<GetAllCardsResponse> useCase = new GetAllCardsUseCase(request, presenterCallback);
                 useCase.Execute();
+        }
+    }
+
+    public class GetCardByNumberInAccountPresenterCallback : IPresenterCallback<GetAllCardsResponse>
+    {
+        private readonly AccountInfoViewModel ViewModel;
+
+        public GetCardByNumberInAccountPresenterCallback(AccountInfoViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllCardsResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                CardDataUpdatedArgs args = new CardDataUpdatedArgs()
+                {
+                    CardsList = response.Cards
+                };
+                ViewNotifier.Instance.OnCardsPageDataUpdated(args);
+            });
+        }
+
+        public async void OnFailure(ZBankException exception)
+        {
+            var dialog = new MessageDialog(exception.Message);
+            await dialog.ShowAsync();
+
+        }
+    }
+
+    public class GetAllTransactionsOfAccountPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
+    {
+        public AccountInfoViewModel ViewModel { get; set; }
+
+        public GetAllTransactionsOfAccountPresenterCallback(AccountInfoViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllTransactionsResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
+                {
+                    TransactionList = response.Transactions,
+                };
+
+                ViewNotifier.Instance.OnTransactionsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
+    }
+
+    public class GetAllBeneficiariesInAccountPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+    {
+        public AccountInfoViewModel ViewModel { get; set; }
+
+        public GetAllBeneficiariesInAccountPresenterCallback(AccountInfoViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllBeneficiariesResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                {
+                    BeneficiaryList = response.Beneficiaries
+                };
+                ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
         }
     }
 }

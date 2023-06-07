@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
@@ -62,6 +64,35 @@ namespace ZBank.ViewModel
         private void UpdateCardsList(CardDataUpdatedArgs args)
         {
             AllCards = new ObservableCollection<CardBObj>(args.CardsList);
+        }
+    }
+
+    public class GetAllCardsPresenterCallback : IPresenterCallback<GetAllCardsResponse>
+    {
+        private readonly CardsViewModel ViewModel;
+
+        public GetAllCardsPresenterCallback(CardsViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllCardsResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                CardDataUpdatedArgs args = new CardDataUpdatedArgs()
+                {
+                    CardsList = response.Cards
+                };
+                ViewNotifier.Instance.OnCardsPageDataUpdated(args);
+            });
+        }
+
+        public async void OnFailure(ZBankException exception)
+        {
+            var dialog = new MessageDialog(exception.Message);
+            await dialog.ShowAsync();
+
         }
     }
 }

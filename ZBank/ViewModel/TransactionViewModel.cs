@@ -10,6 +10,7 @@ using ZBankManagement.Domain.UseCase;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.View;
 using ZBank.AppEvents;
+using Windows.UI.Core;
 
 namespace ZBank.ViewModel
 {
@@ -68,5 +69,59 @@ namespace ZBank.ViewModel
             }
         }
 
+    }
+
+    public class GetAllTransactionsPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
+    {
+        public TransactionViewModel ViewModel { get; set; }
+
+        public GetAllTransactionsPresenterCallback(TransactionViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllTransactionsResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
+                {
+                    TransactionList = response.Transactions,
+                    BeneficiariesList = response.Beneficiaries
+                };
+
+                ViewNotifier.Instance.OnTransactionsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
+    }
+
+    public class GetAllBeneficiariesInTransactionsPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+    {
+        public TransactionViewModel ViewModel { get; set; }
+
+        public GetAllBeneficiariesInTransactionsPresenterCallback(TransactionViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
+        public async void OnSuccess(GetAllBeneficiariesResponse response)
+        {
+            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                {
+                    BeneficiaryList = response.Beneficiaries
+                };
+                ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
     }
 }

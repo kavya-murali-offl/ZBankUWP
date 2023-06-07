@@ -10,6 +10,7 @@ using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 using ZBank.Entities.EnumerationType;
 using ZBank.Entities.BusinessObjects;
+using Windows.UI.Core;
 
 namespace ZBank.ViewModel
 {
@@ -89,6 +90,77 @@ namespace ZBank.ViewModel
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
             Accounts = new ObservableCollection<Account>(args.AccountsList);
+        }
+    }
+
+    public class InsertTransactionPresenterCallback : IPresenterCallback<InsertTransactionResponse>
+    {
+        private AccountPageViewModel AccountPageViewModel { get; set; }
+
+        public InsertTransactionPresenterCallback(AccountPageViewModel accountPageViewModel)
+        {
+            AccountPageViewModel = accountPageViewModel;
+        }
+
+        public async void OnSuccess(InsertTransactionResponse response)
+        {
+            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+
+        }
+    }
+
+    public class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+    {
+        private AccountPageViewModel AccountPageViewModel { get; set; }
+
+        public GetAllAccountsPresenterCallback(AccountPageViewModel accountPageViewModel)
+        {
+            AccountPageViewModel = accountPageViewModel;
+        }
+
+        public async void OnSuccess(GetAllAccountsResponse response)
+        {
+            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                {
+                    AccountsList = new ObservableCollection<Account>(response.Accounts)
+                };
+                ViewNotifier.Instance.OnAccountsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
+    }
+
+
+    public class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>
+    {
+        private AccountPageViewModel AccountPageViewModel { get; set; }
+
+        public UpdateAccountPresenterCallback(AccountPageViewModel accountPageViewModel)
+        {
+            AccountPageViewModel = accountPageViewModel;
+        }
+
+        public async void OnSuccess(UpdateAccountResponse response)
+        {
+            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+
         }
     }
 }

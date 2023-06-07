@@ -8,7 +8,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
-using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Services;
 using ZBank.View.Modals;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Windows.UI.Core;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
@@ -129,6 +130,81 @@ namespace ZBank.ViewModel
 
      
     }
+    public class GetAllAccountsInDashboardPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+    {
+        private DashboardViewModel DashboardViewModel { get; set; }
 
+        public GetAllAccountsInDashboardPresenterCallback(DashboardViewModel dashboardViewModel)
+        {
+            DashboardViewModel = dashboardViewModel;
+        }
+
+        public async void OnSuccess(GetAllAccountsResponse response)
+        {
+            await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                {
+                    AccountsList = new ObservableCollection<Account>(response.Accounts)
+                };
+                ViewNotifier.Instance.OnAccountsListUpdated(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+            // Notify view
+        }
+    }
+
+
+    public class GetDashboardDataPresenterCallback : IPresenterCallback<GetDashboardDataResponse>
+    {
+        private DashboardViewModel DashboardViewModel { get; set; }
+
+        public GetDashboardDataPresenterCallback(DashboardViewModel dashboardViewModel)
+        {
+            DashboardViewModel = dashboardViewModel;
+        }
+
+        public async void OnSuccess(GetDashboardDataResponse response)
+        {
+            await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                DashboardDataUpdatedArgs args = new DashboardDataUpdatedArgs()
+                {
+                    AllCards = response.AllCards,
+                    DepositCard = response.DepositCard,
+                    AllBeneficiaries = response.Beneficiaries,
+                    BeneficiariesCard = response.BeneficiariesCard,
+                    AllAccounts = response.Accounts,
+                    BalanceCard = response.BalanceCard,
+                    IncomeExpenseCard = response.IncomeExpenseCard,
+                    LatestTransactions = response.LatestTransactions,
+                };
+
+                ViewNotifier.Instance.OnDashboardDataChanged(args);
+            });
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+
+        }
+    }
+
+    public class GetAllBeneficiariesInDashboardPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+    {
+
+        private readonly DashboardViewModel _dashboardViewModel;
+
+        public void OnSuccess(GetAllBeneficiariesResponse response)
+        {
+        }
+
+        public void OnFailure(ZBankException response)
+        {
+        }
+    }
 
 }
