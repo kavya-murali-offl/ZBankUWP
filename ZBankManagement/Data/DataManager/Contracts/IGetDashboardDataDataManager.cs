@@ -10,6 +10,6 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
     public interface IGetDashboardDataDataManager
     {
-        void GetDashboardData(GetDashboardDataRequest request, IUseCaseCallback<GetDashboardDataResponse> callback);  
+        Task GetDashboardData(GetDashboardDataRequest request, IUseCaseCallback<GetDashboardDataResponse> callback);  
     }
 }

@@ -11,6 +11,7 @@ using ZBank.AppEvents.AppEventArgs;
 using ZBank.View;
 using ZBank.AppEvents;
 using Windows.UI.Core;
+using System.Threading.Tasks;
 
 namespace ZBank.ViewModel
 {
@@ -80,7 +81,7 @@ namespace ZBank.ViewModel
             ViewModel = viewModel;
         }
 
-        public async void OnSuccess(GetAllTransactionsResponse response)
+        public async Task OnSuccess(GetAllTransactionsResponse response)
         {
             await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -94,7 +95,7 @@ namespace ZBank.ViewModel
             });
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
         }
     }
@@ -108,7 +109,7 @@ namespace ZBank.ViewModel
             ViewModel = viewModel;
         }
 
-        public async void OnSuccess(GetAllBeneficiariesResponse response)
+        public async Task OnSuccess(GetAllBeneficiariesResponse response)
         {
             await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -120,7 +121,7 @@ namespace ZBank.ViewModel
             });
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
         }
     }

@@ -67,11 +67,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
 
 
-        public void OnSuccess(RemoveBeneficiaryResponse response)
+        public async Task OnSuccess(RemoveBeneficiaryResponse response)
         {
         }
 
-        public void OnFailure(ZBankException error)
+        public async Task OnFailure(ZBankException error)
         {
 
         }

@@ -2,6 +2,7 @@
 using ZBank.DatabaseHandler;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -14,9 +15,9 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public void InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback)
+        public async Task InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback)
         {
-            int rowsModified = DBHandler.InsertCard(request.CardToInsert).Result;
+            int rowsModified = await DBHandler.InsertCard(request.CardToInsert);
         }
     }
 }

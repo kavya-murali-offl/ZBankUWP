@@ -64,12 +64,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
         public IEnumerable<Account> Accounts { get; set; }
     }
-
-
-
-
-
-
-
-
 }

@@ -8,9 +8,9 @@ namespace ZBankManagement.Domain.UseCase
 {
     public interface IPresenterCallback<TResponse>
     {
-        void OnSuccess(TResponse result);
+        Task OnSuccess(TResponse result);
 
-        void OnFailure(ZBankException exception);
+        Task OnFailure(ZBankException exception);
 
     }
 }

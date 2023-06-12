@@ -5,6 +5,7 @@ using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCard;
 using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBank.Entity.EnumerationTypes;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -18,9 +19,9 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public void UpdateCard(UpdateCardRequest request, IUseCaseCallback<UpdateCardResponse> callback)
+        public async Task UpdateCard(UpdateCardRequest request, IUseCaseCallback<UpdateCardResponse> callback)
         {
-            int rowsModified = DBHandler.UpdateCard(request.UpdatedCard).Result;
+            int rowsModified = await DBHandler.UpdateCard(request.UpdatedCard);
             if(rowsModified > 0)
             {
                 UpdateCardResponse response = new UpdateCardResponse();

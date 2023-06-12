@@ -10,6 +10,6 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
     public interface IGetBranchDetailsDataManager
     {
-        void GetBranchList(GetAllBranchesRequest request, IUseCaseCallback<GetAllBranchesResponse> callback);
+        Task GetBranchList(GetAllBranchesRequest request, IUseCaseCallback<GetAllBranchesResponse> callback);
     }
 }

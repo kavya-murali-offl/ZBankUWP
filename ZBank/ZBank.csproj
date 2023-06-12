@@ -119,11 +119,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppEvents\AppEventArgs\BenefiiciaryListUpdatedArgs.cs" />
-    <Compile Include="AppEvents\AppEventArgs\CardDataUpdatedArgs.cs" />
-    <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
-    <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
-    <Compile Include="AppEvents\AppEventArgs\BranchListUpdatedArgs.cs" />
     <Compile Include="Services\ViewLifetimeControl.cs" />
     <Compile Include="Services\WindowManagerService.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
@@ -203,6 +198,13 @@
     <Compile Include="View\Modals\BlankPage1.xaml.cs">
       <DependentUpon>BlankPage1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\NotificationService.cs" />
+    <Compile Include="View\UserControls\AppNotification.xaml.cs">
+      <DependentUpon>AppNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\PopupNotification.xaml.cs">
+      <DependentUpon>PopupNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowManager.cs" />
     <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
@@ -240,9 +242,6 @@
     <Compile Include="View\UserControls\Toast.xaml.cs">
       <DependentUpon>Toast.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppEvents\AppEventArgs\AccountsListUpdatedArgs.cs" />
-    <Compile Include="AppEvents\AppEventArgs\DashboardDataUpdatedArgs.cs" />
-    <Compile Include="AppEvents\ViewNotifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -380,6 +379,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UserControls\AppNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserControls\CardControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -412,6 +415,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UserControls\PopupNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserControls\Toast.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -429,6 +436,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
+      <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.2</Version>

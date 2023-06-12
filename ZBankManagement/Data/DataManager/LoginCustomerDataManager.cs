@@ -5,6 +5,8 @@ using ZBank.DatabaseHandler;
 using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -16,10 +18,11 @@ namespace ZBankManagement.DataManager
         }
         private IDBHandler DBHandler { get; set; }
 
-        public void GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback)
+        public async Task GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback)
         {
             try{
-                Customer customer = DBHandler.GetCustomer(request.CustomerID).Result.FirstOrDefault();
+                IEnumerable<Customer> customers = await DBHandler.GetCustomer(request.CustomerID);
+                Customer customer = customers.FirstOrDefault();
 
                 GetCustomerResponse response = new GetCustomerResponse()
                 {
@@ -41,11 +44,11 @@ namespace ZBankManagement.DataManager
         
         } 
 
-        public void GetCredentials(GetCredentialsRequest request, IUseCaseCallback<GetCredentialsResponse> callback)
+        public async Task GetCredentials(GetCredentialsRequest request, IUseCaseCallback<GetCredentialsResponse> callback)
         {
             try
             {
-                CustomerCredentials credentials = DBHandler.GetCredentials(request.CustomerID).Result;
+                CustomerCredentials credentials = await DBHandler.GetCredentials(request.CustomerID);
                 GetCredentialsResponse response = new GetCredentialsResponse()
                 {
                     CustomerCredentials = credentials,

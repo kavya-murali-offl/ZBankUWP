@@ -64,7 +64,7 @@ namespace ZBank.View.Main
         private async void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
             WindowManager windowManager = new WindowManager();
-            windowManager.OpenNewWindow<AddOrEditAccountPage>("Add Account");
+            await windowManager.OpenNewWindow<AddOrEditAccountPage>("Add Account");
 
         }
     }

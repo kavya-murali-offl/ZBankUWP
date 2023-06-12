@@ -22,11 +22,11 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public void GetBranchList(GetAllBranchesRequest request, IUseCaseCallback<GetAllBranchesResponse> callback)
+        public async Task GetBranchList(GetAllBranchesRequest request, IUseCaseCallback<GetAllBranchesResponse> callback)
         {
             try
             {
-                IEnumerable<Branch> branchList = DBHandler.GetBranchDetails().Result;
+                IEnumerable<Branch> branchList = await DBHandler.GetBranchDetails();
                 GetAllBranchesResponse response = new GetAllBranchesResponse()
                 {
                     BranchList = branchList

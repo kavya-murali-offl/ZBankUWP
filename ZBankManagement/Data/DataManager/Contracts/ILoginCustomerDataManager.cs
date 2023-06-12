@@ -2,14 +2,15 @@
 using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using static ZBank.ZBankManagement.DomainLayer.UseCase.LoginCustomerUseCase;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
     public interface ILoginCustomerDataManager
     {
-        void GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback);
+        Task GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback);
 
-        void GetCredentials(GetCredentialsRequest request, IUseCaseCallback<GetCredentialsResponse> callback);
+        Task GetCredentials(GetCredentialsRequest request, IUseCaseCallback<GetCredentialsResponse> callback);
 
     }
 }

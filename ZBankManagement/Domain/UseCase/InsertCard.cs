@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
+using System.Threading.Tasks;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -59,11 +60,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public class InsertCardPresenterCallback : IPresenterCallback<InsertCardResponse>
         {
 
-            public void OnSuccess(InsertCardResponse response)
+            public async Task OnSuccess(InsertCardResponse response)
             {
             }
 
-            public void OnFailure(ZBankException response)
+            public async Task OnFailure(ZBankException response)
             {
 
             }

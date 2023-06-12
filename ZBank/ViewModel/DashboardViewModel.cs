@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
@@ -9,6 +11,7 @@ using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ViewModel
@@ -39,7 +42,7 @@ namespace ZBank.ViewModel
 
         public void UpdateOnViewCard()
         {
-            if(_onViewCardIndex < 0 || _onViewCardIndex >= DashboardModel.AllCards.Count)
+            if (_onViewCardIndex < 0 || _onViewCardIndex >= DashboardModel.AllCards.Count)
             {
                 _onViewCardIndex = 0;
             }
@@ -49,7 +52,7 @@ namespace ZBank.ViewModel
         public void OnNextCard()
         {
             _onViewCardIndex++;
-            if(_onViewCardIndex >= DashboardModel.AllCards.Count)
+            if (_onViewCardIndex >= DashboardModel.AllCards.Count)
             {
                 _onViewCardIndex = 0;
             }
@@ -74,20 +77,20 @@ namespace ZBank.ViewModel
             set
             {
                 model = value;
-                OnPropertyChanged(nameof(DashboardModel));   
+                OnPropertyChanged(nameof(DashboardModel));
             }
         }
 
         public void RefreshData(DashboardDataUpdatedArgs args)
         {
-           foreach (var transactionBObj in args.LatestTransactions)
-           { 
-               transactionBObj.SetDefault();
-           }
-           foreach(var card in args.AllCards)
-           {
+            foreach (var transactionBObj in args.LatestTransactions)
+            {
+                transactionBObj.SetDefault();
+            }
+            foreach (var card in args.AllCards)
+            {
                 card.SetDefaultValues();
-           }
+            }
 
             DashboardModel = new DashboardDataModel()
             {
@@ -100,7 +103,7 @@ namespace ZBank.ViewModel
                 BeneficiariesCard = args.BeneficiariesCard,
                 AllAccounts = new ObservableCollection<AccountBObj>(args.AllAccounts)
             };
-            
+
             _onViewCardIndex = 0;
             UpdateOnViewCard();
         }
@@ -128,83 +131,110 @@ namespace ZBank.ViewModel
             View = view;
         }
 
-     
-    }
-    public class GetAllAccountsInDashboardPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
-    {
-        private DashboardViewModel DashboardViewModel { get; set; }
 
-        public GetAllAccountsInDashboardPresenterCallback(DashboardViewModel dashboardViewModel)
+        private class GetAllAccountsInDashboardPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
         {
-            DashboardViewModel = dashboardViewModel;
-        }
+            private DashboardViewModel DashboardViewModel { get; set; }
 
-        public async void OnSuccess(GetAllAccountsResponse response)
-        {
-            await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public GetAllAccountsInDashboardPresenterCallback(DashboardViewModel dashboardViewModel)
             {
-                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
-                {
-                    AccountsList = new ObservableCollection<Account>(response.Accounts)
-                };
-                ViewNotifier.Instance.OnAccountsListUpdated(args);
-            });
-        }
+                DashboardViewModel = dashboardViewModel;
+            }
 
-        public void OnFailure(ZBankException response)
-        {
-            // Notify view
-        }
-    }
-
-
-    public class GetDashboardDataPresenterCallback : IPresenterCallback<GetDashboardDataResponse>
-    {
-        private DashboardViewModel DashboardViewModel { get; set; }
-
-        public GetDashboardDataPresenterCallback(DashboardViewModel dashboardViewModel)
-        {
-            DashboardViewModel = dashboardViewModel;
-        }
-
-        public async void OnSuccess(GetDashboardDataResponse response)
-        {
-            await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public async Task OnSuccess(GetAllAccountsResponse response)
             {
-                DashboardDataUpdatedArgs args = new DashboardDataUpdatedArgs()
+                await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    AllCards = response.AllCards,
-                    DepositCard = response.DepositCard,
-                    AllBeneficiaries = response.Beneficiaries,
-                    BeneficiariesCard = response.BeneficiariesCard,
-                    AllAccounts = response.Accounts,
-                    BalanceCard = response.BalanceCard,
-                    IncomeExpenseCard = response.IncomeExpenseCard,
-                    LatestTransactions = response.LatestTransactions,
-                };
+                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                    {
+                        AccountsList = new ObservableCollection<Account>(response.Accounts)
+                    };
+                    ViewNotifier.Instance.OnAccountsListUpdated(args);
+                });
+            }
 
-                ViewNotifier.Instance.OnDashboardDataChanged(args);
-            });
+            public async Task OnFailure(ZBankException response)
+            {
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Exception = new ZBankException()
+                        {
+                            Message = "test",
+                            Type = Entity.EnumerationTypes.ErrorType.NOT_AUTHORIZED
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+            }
         }
 
-        public void OnFailure(ZBankException response)
+
+        private class GetDashboardDataPresenterCallback : IPresenterCallback<GetDashboardDataResponse>
         {
+            private DashboardViewModel DashboardViewModel { get; set; }
+
+            public GetDashboardDataPresenterCallback(DashboardViewModel dashboardViewModel)
+            {
+                DashboardViewModel = dashboardViewModel;
+            }
+
+            public async Task OnSuccess(GetDashboardDataResponse response)
+            {
+
+                await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    DashboardDataUpdatedArgs args = new DashboardDataUpdatedArgs()
+                    {
+                        AllCards = response.AllCards,
+                        DepositCard = response.DepositCard,
+                        AllBeneficiaries = response.Beneficiaries,
+                        BeneficiariesCard = response.BeneficiariesCard,
+                        AllAccounts = response.Accounts,
+                        BalanceCard = response.BalanceCard,
+                        IncomeExpenseCard = response.IncomeExpenseCard,
+                        LatestTransactions = response.LatestTransactions,
+                    };
+
+                    ViewNotifier.Instance.OnDashboardDataChanged(args);
+                });
+
+
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Exception = new ZBankException()
+                        {
+                            Message = response.Message,
+                            Type = Entity.EnumerationTypes.ErrorType.UNKNOWN
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+
+            }
+
+            private class GetAllBeneficiariesInDashboardPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+            {
+
+                private readonly DashboardViewModel _dashboardViewModel;
+
+                public async Task OnSuccess(GetAllBeneficiariesResponse response)
+                {
+                }
+
+                public async Task OnFailure(ZBankException response)
+                {
+                }
+            }
 
         }
+
     }
-
-    public class GetAllBeneficiariesInDashboardPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
-    {
-
-        private readonly DashboardViewModel _dashboardViewModel;
-
-        public void OnSuccess(GetAllBeneficiariesResponse response)
-        {
-        }
-
-        public void OnFailure(ZBankException response)
-        {
-        }
-    }
-
 }

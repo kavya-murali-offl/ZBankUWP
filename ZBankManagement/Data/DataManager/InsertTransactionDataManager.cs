@@ -4,6 +4,7 @@ using ZBank.DatabaseHandler;
 using ZBankManagement.Domain.UseCase;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -16,10 +17,9 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public void InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback)
+        public async Task InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback)
         {
-            int rowsModified = DBHandler.InsertTransaction(request.TransactionToInsert).Result;
-
+            int rowsModified = await DBHandler.InsertTransaction(request.TransactionToInsert);
 
             if (rowsModified > 0)
             {

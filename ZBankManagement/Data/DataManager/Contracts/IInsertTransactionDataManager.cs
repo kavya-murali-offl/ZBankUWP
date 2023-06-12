@@ -1,11 +1,12 @@
 ﻿using ZBankManagement.Domain.UseCase;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
     public interface IInsertTransactionDataManager
     {
-        void InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback);
+        Task InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback);
     }
 }

@@ -7,6 +7,7 @@ using ZBankManagement.Domain.UseCase;
 using ZBank.Entity.EnumerationTypes;
 using System;
 using ZBank.Entities.BusinessObjects;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -19,19 +20,19 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get;  set; }
 
-        public void GetTransactionsByCustomerID(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback)
+        public async Task GetTransactionsByCustomerID(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback)
         {
             try
             {
-                var accounts = DBHandler.GetAllAccounts(request.CustomerID).Result;
+                var accounts = await DBHandler.GetAllAccounts(request.CustomerID);
                 List<TransactionBObj> transactions = new List<TransactionBObj>();    
                 foreach (var account in accounts)
                 {
-                    var accountTransactions = DBHandler.GetTransactionByAccountNumber(account.AccountNumber).Result;
+                    var accountTransactions = await DBHandler.GetTransactionByAccountNumber(account.AccountNumber);
                     transactions.AddRange(accountTransactions);
                 }
 
-                IEnumerable<Beneficiary> beneficiaries = DBHandler.GetBeneficiaries(request.CustomerID).Result;
+                IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.CustomerID);
 
                 GetAllTransactionsResponse response = new GetAllTransactionsResponse
                 {
@@ -53,11 +54,11 @@ namespace ZBankManagement.DataManager
             }
         }
 
-        public void GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback)
+        public async Task GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback)
         {
             try
             {
-                IEnumerable<TransactionBObj> transactionList = DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber).Result;
+                IEnumerable<TransactionBObj> transactionList = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber);
 
                 GetAllTransactionsResponse response = new GetAllTransactionsResponse
                 {

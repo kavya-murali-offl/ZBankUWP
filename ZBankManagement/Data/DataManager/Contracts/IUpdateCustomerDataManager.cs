@@ -1,13 +1,14 @@
 ﻿using ZBankManagement.Domain.UseCase;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
     public interface IUpdateCustomerDataManager
     {
-        void UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback);
+        Task UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback);
 
-        void LogoutCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback);
+        Task LogoutCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback);
     }
 }

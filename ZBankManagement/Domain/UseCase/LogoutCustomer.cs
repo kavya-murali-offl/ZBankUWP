@@ -66,11 +66,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
 
 
-        public async void OnSuccess(LogoutCustomerResponse response)
+        public async Task OnSuccess(LogoutCustomerResponse response)
         {
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
 
         }

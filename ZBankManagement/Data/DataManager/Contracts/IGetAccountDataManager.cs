@@ -12,6 +12,6 @@ namespace ZBankManagement.Interface
 {
     public interface IGetAccountDataManager
     {
-        void GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback);
+        Task GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback);
     }
 }

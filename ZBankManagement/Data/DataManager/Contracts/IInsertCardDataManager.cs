@@ -1,11 +1,12 @@
 ﻿using ZBankManagement.Domain.UseCase;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
     public interface IInsertCardDataManager
     {
-        void InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback);
+        Task InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback);
     }
 }

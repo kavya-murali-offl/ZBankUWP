@@ -3,6 +3,7 @@ using ZBank.Entities;
 using ZBank.DatabaseHandler;
 using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -15,9 +16,9 @@ namespace ZBankManagement.DataManager
         private IDBHandler DBHandler { get; set; }
 
 
-        public void UpdateAccount(UpdateAccountRequest request, IUseCaseCallback<UpdateAccountResponse> callback)
+        public async Task UpdateAccount(UpdateAccountRequest request, IUseCaseCallback<UpdateAccountResponse> callback)
         {
-            int rowsModified = DBHandler.UpdateAccount(request.UpdatedAccount).Result;
+            int rowsModified = await DBHandler.UpdateAccount(request.UpdatedAccount);
 
             if(rowsModified > 0)
             {

@@ -1,17 +1,10 @@
-﻿using ZBank.Entities.BusinessObjects;
-using ZBank.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
-using ZBankManagement.Domain.UseCase;
-using System.Threading;
-using ZBankManagement.Controller;
-using System.Security.Principal;
-using ZBank.Entity;
-using System.Linq;
-using System.Collections.ObjectModel;
+using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
+using ZBankManagement.Controller;
 
 namespace ZBank.DatabaseHandler
 {
@@ -146,7 +139,7 @@ namespace ZBank.DatabaseHandler
         public async Task<int> UpdateAccount<T>(T account)
         {
             await _databaseAdapter.Update<T>(account);
-            return _databaseAdapter.Update(account as Entities.Account).Result;
+            return await _databaseAdapter.Update(account as Entities.Account);
         }
 
         //Card
@@ -166,8 +159,8 @@ namespace ZBank.DatabaseHandler
 
         public async Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber)
         {
-          var transactionBObjs =  await _databaseAdapter.Query<TransactionBObj>(
-              $"Select * from Transactions Left Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber where OwnerAccountNumber = ?", accountNumber);
+            var transactionBObjs = await _databaseAdapter.Query<TransactionBObj>(
+                $"Select * from Transactions Left Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber where OwnerAccountNumber = ?", accountNumber);
             return transactionBObjs;
         }
         //await

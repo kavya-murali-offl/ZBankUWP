@@ -11,6 +11,7 @@ using ZBank.ZBankManagement.DomainLayer.UseCase;
 using System.Diagnostics;
 using ZBank.Entities.BusinessObjects;
 using ZBankManagement.Utility;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -23,11 +24,11 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public void GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback)
+        public async Task GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback)
         {
             try
             {
-                IEnumerable<Account> accountsList = DBHandler.GetAllAccounts(request.UserID).Result;
+                IEnumerable<Account> accountsList = await DBHandler.GetAllAccounts(request.UserID);
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {
                     Accounts = accountsList

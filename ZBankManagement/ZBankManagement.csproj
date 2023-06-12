@@ -126,7 +126,10 @@
     <Compile Include="AppEvents\AppEventArgs\CardDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\DashboardDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\NotificationOpeningEventArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\NotifyUserArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppNotification.cs" />
     <Compile Include="AppEvents\ViewNotifier.cs" />
     <Compile Include="AppInitialization.cs" />
     <Compile Include="Data\DataManager\AccountFactory.cs" />

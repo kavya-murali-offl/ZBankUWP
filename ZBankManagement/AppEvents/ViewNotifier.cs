@@ -6,11 +6,26 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
+using ZBankManagement.AppEvents.AppEventArgs;
 
 namespace ZBank.AppEvents
 {
     public class ViewNotifier
     {
+
+
+        public event Action<NotificationOpeningEventArgs> NotificationOpening;
+        public void ONNotificationOpening(NotificationOpeningEventArgs args)
+        {
+            NotificationOpening?.Invoke(args);
+        }
+
+        public event Action<NotifyUserArgs> NotificationStackUpdated;
+        public void OnNotificationStackUpdated(NotifyUserArgs args)
+        {
+            NotificationStackUpdated?.Invoke(args);
+        }
+
         public event Action<BranchListUpdatedArgs> BranchListUpdated;
         public void OnBranchListUpdated(BranchListUpdatedArgs args)
         {

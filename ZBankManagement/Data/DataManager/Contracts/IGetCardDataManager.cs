@@ -11,8 +11,8 @@ namespace ZBankManagement.Interface
 {
     public interface IGetCardDataManager
     {
-        void GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
+        Task GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
 
-        void GetCardByCardNumber(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
+        Task GetCardByCardNumber(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
     }
 }

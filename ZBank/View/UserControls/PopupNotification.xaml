@@ -1,0 +1,59 @@
+﻿<UserControl
+    x:Class="ZBank.View.UserControls.PopupNotification"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank.View.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <Popup
+        Canvas.ZIndex="10"
+        x:Name="AppPopup"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Top"
+        IsLightDismissEnabled="True"
+        LightDismissOverlayMode="On"
+        IsOpen="True">
+        <Grid
+            MinHeight="100"
+            Background="Red"
+            x:Name="NotificationPanel"
+            Margin="0,4,-100,4"
+            HorizontalAlignment="Right"
+            Opacity="1">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="1"
+                x:Name="NotificationText"
+                Margin="4,0,8,0"
+                FontSize="14"
+                Foreground="White"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="Error dispaly"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+            <TextBlock
+                Grid.Row="2"
+                x:Name="NotificationTextBottom"
+                Margin="4,0,8,0"
+                FontSize="12"
+                Foreground="White"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="Other text"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+        </Grid>
+    </Popup>
+</UserControl>

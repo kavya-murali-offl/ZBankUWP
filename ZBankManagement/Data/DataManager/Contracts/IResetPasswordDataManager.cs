@@ -10,6 +10,6 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
     public interface IResetPasswordDataManager
     {
-        void ResetPassword(UpdateCustomerCredentialsRequest request, IUseCaseCallback<ResetPasswordResponse> callback);
+        Task ResetPassword(UpdateCustomerCredentialsRequest request, IUseCaseCallback<ResetPasswordResponse> callback);
     }
 }

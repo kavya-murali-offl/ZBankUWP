@@ -164,13 +164,14 @@
 
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition
-                            Width="Auto" />
-                        <ColumnDefinition
-                            Width="*" />
-                    </Grid.ColumnDefinitions>
+                 
+                    <Grid x:Name="MainGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="Auto" />
+                            <ColumnDefinition
+                                Width="*" />
+                        </Grid.ColumnDefinitions>
                         <Border
                             PointerExited="ResizeBorder_PointerExited"
                             x:Name="ResizeBorder"
@@ -179,141 +180,148 @@
                             Margin="0,18,0,18"
                             Background="Transparent"
                             Width="2" />
-                    <Grid
-                        Grid.Column="1"
-                        Margin="0,10,10,10"
-                        Background="{ThemeResource ApplicationBackgroundThemeBrush}"
-                        Padding="5"
-                        CornerRadius="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition
-                                Height="Auto" />
-                            <RowDefinition
-                                Height="*" />
-                        </Grid.RowDefinitions>
                         <Grid
-                            CornerRadius="8"
-                            Padding="10,5,10,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="Auto" />
-                                <ColumnDefinition
-                                    Width="Auto" />
-                                <ColumnDefinition
-                                    Width="*" />
-                                <ColumnDefinition
-                                    Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Button
-                                Grid.Column="0"
-                                Style="{ThemeResource FrameNavButton}"
-                                x:Name="BackButton"
-                                IsEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
-                                Click="BackButton_Click">
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        Content="Back"
-                                        Placement="Bottom" />
-                                </ToolTipService.ToolTip>
-                                <Button.Content>
-                                    <FontIcon
-                                        HorizontalAlignment="Center"
-                                        Glyph="&#xE973;" />
-                                </Button.Content>
-                            </Button>
-                            <Button
-                                Style="{ThemeResource FrameNavButton}"
-                                Grid.Column="1"
-                                Click="NextButton_Click"
-                                IsEnabled="{x:Bind ContentFrame.CanGoForward, Mode=OneWay}"
-                                x:Name="NextButton">
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        Content="Forward"
-                                        Placement="Bottom" />
-                                </ToolTipService.ToolTip>
-                                <Button.Content>
-                                    <FontIcon
-                                        HorizontalAlignment="Center"
-                                        Glyph="&#xE974;" />
-                                </Button.Content>
-                            </Button>
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Grid.Column="2"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind ViewModel.SelectedItem.Text, Mode=OneWay}"
-                                FontSize="20"
-                                HorizontalTextAlignment="Center"
-                                TextAlignment="Center"
-                                FontWeight="Bold" />
-                            <StackPanel
-                                Grid.Column="3"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal">
-                                <ToggleButton
-                                    x:Name="SwitchThemeButton"
-                                    Click="SwitchThemeButton_Click"
-                                    BorderThickness="0"
-                                    Background="Transparent"
-                                    CornerRadius="10"
-                                    Padding="8"
-                                    Margin="5,0,5,0">
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            Content="Switch Theme"
-                                            Placement="Bottom" />
-                                    </ToolTipService.ToolTip>
-                                    <FontIcon
-                                        x:Name="ThemeIcon"
-                                        Foreground="{ThemeResource SystemAccentColorDark1}"
-                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                        FontSize="18" />
-                                </ToggleButton>
-
+                            Grid.Column="1"
+                            Margin="0,10,10,10"
+                            Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                            Padding="5"
+                            CornerRadius="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition
+                                    Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid
+                                CornerRadius="8"
+                                Padding="10,5,10,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+                                        Width="Auto" />
+                                    <ColumnDefinition
+                                        Width="Auto" />
+                                    <ColumnDefinition
+                                        Width="*" />
+                                    <ColumnDefinition
+                                        Width="Auto" />
+                                </Grid.ColumnDefinitions>
                                 <Button
-                                    Click="NotificationsButton_Click"
-                                    x:Name="NotificationsButton"
-                                    Style="{ThemeResource IconButton}">
+                                    Grid.Column="0"
+                                    Style="{ThemeResource FrameNavButton}"
+                                    x:Name="BackButton"
+                                    IsEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
+                                    Click="BackButton_Click">
                                     <ToolTipService.ToolTip>
                                         <ToolTip
-                                            Content="Notifications"
+                                            Content="Back"
                                             Placement="Bottom" />
                                     </ToolTipService.ToolTip>
                                     <Button.Content>
                                         <FontIcon
-                                            Glyph="&#xEA8F;"
+                                            HorizontalAlignment="Center"
+                                            Glyph="&#xE973;" />
+                                    </Button.Content>
+                                </Button>
+                                <Button
+                                    Style="{ThemeResource FrameNavButton}"
+                                    Grid.Column="1"
+                                    Click="NextButton_Click"
+                                    IsEnabled="{x:Bind ContentFrame.CanGoForward, Mode=OneWay}"
+                                    x:Name="NextButton">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            Content="Forward"
+                                            Placement="Bottom" />
+                                    </ToolTipService.ToolTip>
+                                    <Button.Content>
+                                        <FontIcon
+                                            HorizontalAlignment="Center"
+                                            Glyph="&#xE974;" />
+                                    </Button.Content>
+                                </Button>
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind ViewModel.SelectedItem.Text, Mode=OneWay}"
+                                    FontSize="20"
+                                    HorizontalTextAlignment="Center"
+                                    TextAlignment="Center"
+                                    FontWeight="Bold" />
+                                <StackPanel
+                                    Grid.Column="3"
+                                    HorizontalAlignment="Right"
+                                    Orientation="Horizontal">
+                                    <ToggleButton
+                                        x:Name="SwitchThemeButton"
+                                        Click="SwitchThemeButton_Click"
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        CornerRadius="10"
+                                        Padding="8"
+                                        Margin="5,0,5,0">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                Content="Switch Theme"
+                                                Placement="Bottom" />
+                                        </ToolTipService.ToolTip>
+                                        <FontIcon
+                                            x:Name="ThemeIcon"
+                                            Foreground="{ThemeResource SystemAccentColorDark1}"
+                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                                             FontSize="18" />
-                                    </Button.Content>
-                                </Button>
-                                <Button
-                                    x:Name="SettingsButton"
-                                    Margin="5,0,5,0"
-                                    Click="SettingsButton_Click"
-                                    Style="{ThemeResource IconButton}">
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            Content="Settings"
-                                            Placement="Bottom" />
-                                    </ToolTipService.ToolTip>
-                                    <Button.Content>
-                                        <FontIcon
-                                            FontSize="18"
-                                            Glyph="&#xE713;" />
-                                    </Button.Content>
-                                </Button>
+                                    </ToggleButton>
 
-                            </StackPanel>
-                        </Grid>
+                                    <Button
+                                        Click="NotificationsButton_Click"
+                                        x:Name="NotificationsButton"
+                                        Style="{ThemeResource IconButton}">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                Content="Notifications"
+                                                Placement="Bottom" />
+                                        </ToolTipService.ToolTip>
+                                        <Button.Content>
+                                            <FontIcon
+                                                Glyph="&#xEA8F;"
+                                                FontSize="18" />
+                                        </Button.Content>
+                                    </Button>
+                                    <Button
+                                        x:Name="SettingsButton"
+                                        Margin="5,0,5,0"
+                                        Click="SettingsButton_Click"
+                                        Style="{ThemeResource IconButton}">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                Content="Settings"
+                                                Placement="Bottom" />
+                                        </ToolTipService.ToolTip>
+                                        <Button.Content>
+                                            <FontIcon
+                                                FontSize="18"
+                                                Glyph="&#xE713;" />
+                                        </Button.Content>
+                                    </Button>
+
+                                </StackPanel>
+                            </Grid>
+                        <userControls:AppNotification
+                            Grid.Row="1"
+                            HorizontalAlignment="Right"
+                            Canvas.ZIndex="30"
+                            Margin="5"
+                            x:Name="AppNotification" />
                         <ScrollViewer
+                            Canvas.ZIndex="10"
                             Grid.Row="1">
-                            <Frame
-                                x:Name="ContentFrame" />
-                        </ScrollViewer>
+                                <Frame
+                                    x:Name="ContentFrame" />
+                            </ScrollViewer>
+
                     </Grid>
-                </Grid>
-               
+                    </Grid>
             </SplitView.Content>
 
         </SplitView>

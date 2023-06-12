@@ -3,6 +3,7 @@ using ZBank.DatabaseHandler;
 using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using System;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -15,14 +16,14 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public void UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback)
+        public async Task UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback)
         {
-            int rowsModified = DBHandler.UpdateCustomer(request.CustomerToUpdate).Result;
+            int rowsModified = await DBHandler.UpdateCustomer(request.CustomerToUpdate);
         }
 
-        public void LogoutCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback)
+        public async Task LogoutCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback)
         {
-            int rowsModified = DBHandler.UpdateCustomer(request.LoggedInCustomer).Result;
+            int rowsModified = await DBHandler.UpdateCustomer(request.LoggedInCustomer);
         }
     }
 }

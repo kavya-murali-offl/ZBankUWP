@@ -11,7 +11,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
     public interface IGetBeneficiaryDataManager
     {
-       void GetAllBeneficiariesByUserID(GetAllBeneficiariesRequest request, IUseCaseCallback<GetAllBeneficiariesResponse> callback);
+       Task GetAllBeneficiariesByUserID(GetAllBeneficiariesRequest request, IUseCaseCallback<GetAllBeneficiariesResponse> callback);
 
     }
 }

@@ -86,8 +86,9 @@
         />
     <AcrylicBrush
         x:Key="HeaderAcrylicBrush"
-        TintColor="{ThemeResource SystemAccentColorLight1}"
-        TintOpacity="0.1" />
+        BackgroundSource="Backdrop"
+        TintColor="DarkRed"
+        TintOpacity="0.3" />
 
 
     <Style

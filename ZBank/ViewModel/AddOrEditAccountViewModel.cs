@@ -149,7 +149,7 @@ namespace ZBank.ViewModel
                 AccountPageViewModel = accountPageViewModel;
             }
 
-            public async void OnSuccess(InsertAccountResponse response)
+            public async Task OnSuccess(InsertAccountResponse response)
             {
                 await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -164,7 +164,7 @@ namespace ZBank.ViewModel
                 });
             }
 
-            public void OnFailure(ZBankException error)
+            public async Task OnFailure(ZBankException error)
             {
 
             }
@@ -179,7 +179,7 @@ namespace ZBank.ViewModel
                 ViewModel = viewModel;
             }
 
-            public async void OnSuccess(GetAllBranchesResponse response)
+            public async Task OnSuccess(GetAllBranchesResponse response)
             {
                 await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -191,7 +191,7 @@ namespace ZBank.ViewModel
                 });
             }
 
-            public void OnFailure(ZBankException response)
+            public async Task OnFailure(ZBankException response)
             {
             }
 
@@ -206,7 +206,7 @@ namespace ZBank.ViewModel
             ViewModel = viewModel;
         }
 
-        public async void OnSuccess(GetAllAccountsResponse response)
+        public async Task OnSuccess(GetAllAccountsResponse response)
         {
             await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -218,7 +218,7 @@ namespace ZBank.ViewModel
             });
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
             // Notify view
         }

@@ -23,7 +23,7 @@ namespace ZBank.View
 
         private readonly static Dictionary<int, Window> AllWindows = new Dictionary<int, Window>();
 
-        public async void OpenNewWindow<T>(string title, object dataContext=null) where T : Page
+        public async Task OpenNewWindow<T>(string title, object dataContext=null) where T : Page
         {
 
             var currentAV = ApplicationView.GetForCurrentView();

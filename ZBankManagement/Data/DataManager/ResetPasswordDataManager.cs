@@ -22,9 +22,9 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
         private IDBHandler DBHandler { get; set; }
 
-        public void ResetPassword(UpdateCustomerCredentialsRequest request, IUseCaseCallback<ResetPasswordResponse> callback)
+        public async Task ResetPassword(UpdateCustomerCredentialsRequest request, IUseCaseCallback<ResetPasswordResponse> callback)
         {
-            int rowsModified = DBHandler.UpdateCredentials(request.CustomerCredentials).Result;
+            int rowsModified = await DBHandler.UpdateCredentials(request.CustomerCredentials);
             if (rowsModified > 0)
             {
                 ResetPasswordResponse response = new ResetPasswordResponse();

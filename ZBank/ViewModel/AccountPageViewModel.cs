@@ -11,6 +11,10 @@ using ZBank.AppEvents;
 using ZBank.Entities.EnumerationType;
 using ZBank.Entities.BusinessObjects;
 using Windows.UI.Core;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using ZBankManagement.AppEvents.AppEventArgs;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace ZBank.ViewModel
 {
@@ -37,6 +41,10 @@ namespace ZBank.ViewModel
         public void GoToAccountInfoPage(object parameter)
         {
             var paras = parameter;
+        }
+        public void UpdateNotification(NotifyUserArgs args)
+        {
+
         }
 
         public void InsertAccount(object parameter)
@@ -91,76 +99,91 @@ namespace ZBank.ViewModel
         {
             Accounts = new ObservableCollection<Account>(args.AccountsList);
         }
-    }
 
-    public class InsertTransactionPresenterCallback : IPresenterCallback<InsertTransactionResponse>
-    {
-        private AccountPageViewModel AccountPageViewModel { get; set; }
-
-        public InsertTransactionPresenterCallback(AccountPageViewModel accountPageViewModel)
+        private class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>
         {
-            AccountPageViewModel = accountPageViewModel;
-        }
+            private AccountPageViewModel AccountPageViewModel { get; set; }
 
-        public async void OnSuccess(InsertTransactionResponse response)
-        {
-            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public UpdateAccountPresenterCallback(AccountPageViewModel accountPageViewModel)
             {
-            });
-        }
+                AccountPageViewModel = accountPageViewModel;
+            }
 
-        public void OnFailure(ZBankException response)
-        {
-
-        }
-    }
-
-    public class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
-    {
-        private AccountPageViewModel AccountPageViewModel { get; set; }
-
-        public GetAllAccountsPresenterCallback(AccountPageViewModel accountPageViewModel)
-        {
-            AccountPageViewModel = accountPageViewModel;
-        }
-
-        public async void OnSuccess(GetAllAccountsResponse response)
-        {
-            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public async Task OnSuccess(UpdateAccountResponse response)
             {
-                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    AccountsList = new ObservableCollection<Account>(response.Accounts)
-                };
-                ViewNotifier.Instance.OnAccountsListUpdated(args);
-            });
-        }
 
-        public void OnFailure(ZBankException response)
-        {
-        }
-    }
+                });
+            }
 
-
-    public class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>
-    {
-        private AccountPageViewModel AccountPageViewModel { get; set; }
-
-        public UpdateAccountPresenterCallback(AccountPageViewModel accountPageViewModel)
-        {
-            AccountPageViewModel = accountPageViewModel;
-        }
-
-        public async void OnSuccess(UpdateAccountResponse response)
-        {
-            await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public async Task OnFailure(ZBankException response)
             {
-            });
+            }
         }
 
-        public void OnFailure(ZBankException response)
+        private class InsertTransactionPresenterCallback : IPresenterCallback<InsertTransactionResponse>
         {
+            private AccountPageViewModel AccountPageViewModel { get; set; }
+
+            public InsertTransactionPresenterCallback(AccountPageViewModel accountPageViewModel)
+            {
+                AccountPageViewModel = accountPageViewModel;
+            }
+
+            public async Task OnSuccess(InsertTransactionResponse response)
+            {
+                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+
+            }
+        }
+
+        private class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+        {
+            private AccountPageViewModel AccountPageViewModel { get; set; }
+
+            public GetAllAccountsPresenterCallback(AccountPageViewModel accountPageViewModel)
+            {
+                AccountPageViewModel = accountPageViewModel;
+            }
+
+            public async Task OnSuccess(GetAllAccountsResponse response)
+            {
+                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                    {
+                        AccountsList = new ObservableCollection<Account>(response.Accounts)
+                    };
+                    ViewNotifier.Instance.OnAccountsListUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Exception = response
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+
+            }
+
 
         }
     }
+
+
+
+
+
 }

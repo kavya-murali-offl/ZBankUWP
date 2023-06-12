@@ -71,11 +71,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
     {
 
-        public void OnSuccess(GetAllBeneficiariesResponse response)
+        public async Task OnSuccess(GetAllBeneficiariesResponse response)
         {
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
         }
     }

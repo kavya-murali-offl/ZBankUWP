@@ -64,11 +64,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class UpdateBeneficiaryPresenterCallback : IPresenterCallback<UpdateBeneficiaryResponse>
     {
-        public void OnSuccess(UpdateBeneficiaryResponse response)
+        public async Task OnSuccess(UpdateBeneficiaryResponse response)
         {
         }
 
-        public void OnFailure(ZBankException error)
+        public async Task OnFailure(ZBankException error)
         {
 
         }

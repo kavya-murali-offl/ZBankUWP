@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Windows.UI.Core;
 using ZBank.Dependencies;
 using ZBank.Entities;
@@ -98,11 +99,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
         }
 
-        public async void OnSuccess(SignupUserResponse response)
+        public async Task OnSuccess(SignupUserResponse response)
         {
         }
 
-        public void OnFailure(ZBankException error)
+        public async Task OnFailure(ZBankException error)
         {
         }
     }

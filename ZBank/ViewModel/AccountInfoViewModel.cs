@@ -137,7 +137,7 @@ namespace ZBank.ViewModel
             ViewModel = viewModel;
         }
 
-        public async void OnSuccess(GetAllCardsResponse response)
+        public async Task OnSuccess(GetAllCardsResponse response)
         {
             await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -149,7 +149,7 @@ namespace ZBank.ViewModel
             });
         }
 
-        public async void OnFailure(ZBankException exception)
+        public async Task OnFailure(ZBankException exception)
         {
             var dialog = new MessageDialog(exception.Message);
             await dialog.ShowAsync();
@@ -166,7 +166,7 @@ namespace ZBank.ViewModel
             ViewModel = viewModel;
         }
 
-        public async void OnSuccess(GetAllTransactionsResponse response)
+        public async Task OnSuccess(GetAllTransactionsResponse response)
         {
             await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -179,7 +179,7 @@ namespace ZBank.ViewModel
             });
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
         }
     }
@@ -193,7 +193,7 @@ namespace ZBank.ViewModel
             ViewModel = viewModel;
         }
 
-        public async void OnSuccess(GetAllBeneficiariesResponse response)
+        public async Task OnSuccess(GetAllBeneficiariesResponse response)
         {
             await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -205,7 +205,7 @@ namespace ZBank.ViewModel
             });
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
         }
     }

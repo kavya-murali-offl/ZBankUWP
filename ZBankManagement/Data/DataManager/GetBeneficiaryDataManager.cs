@@ -21,11 +21,11 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             DBHandler = dBHandler;
         }
 
-        public void GetAllBeneficiariesByUserID(GetAllBeneficiariesRequest request, IUseCaseCallback<GetAllBeneficiariesResponse> callback)
+        public async Task GetAllBeneficiariesByUserID(GetAllBeneficiariesRequest request, IUseCaseCallback<GetAllBeneficiariesResponse> callback)
         {
             try
             {
-                IEnumerable<Beneficiary> beneficiaries = DBHandler.GetBeneficiaries(request.UserID).Result;
+                IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.UserID);
                 GetAllBeneficiariesResponse response = new GetAllBeneficiariesResponse()
                 {
                     Beneficiaries = beneficiaries

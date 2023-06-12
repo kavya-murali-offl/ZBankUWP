@@ -65,11 +65,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class TransferAmountPresenterCallback : IPresenterCallback<TransferAmountResponse>
     {
 
-        public void OnSuccess(TransferAmountResponse response)
+        public async Task OnSuccess(TransferAmountResponse response)
         {
         }
 
-        public void OnFailure(ZBankException response)
+        public async Task OnFailure(ZBankException response)
         {
 
         }

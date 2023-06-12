@@ -25,11 +25,11 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
             _handler = dbHandler;   
         }
 
-        public void GetDashboardData(GetDashboardDataRequest request, IUseCaseCallback<GetDashboardDataResponse> callback)
+        public async Task GetDashboardData(GetDashboardDataRequest request, IUseCaseCallback<GetDashboardDataResponse> callback)
         {
             try
             {
-                IEnumerable<AccountBObj> accountsList = _handler.GetAllAccounts(request.UserID).Result;
+                IEnumerable<AccountBObj> accountsList = await _handler.GetAllAccounts(request.UserID);
                 var BalanceCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Balance",
@@ -40,8 +40,10 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT).Sum(acc => acc.Balance)
                 };
 
-                IEnumerable<Beneficiary> beneficiaries = _handler.GetBeneficiaries(request.UserID).Result;
-                IEnumerable<string> ifscCodes = _handler.GetBranchDetails().Result.Where(brn => brn.BankID == "1").Select(brn => brn.IfscCode);
+                IEnumerable<Beneficiary> beneficiaries = await _handler.GetBeneficiaries(request.UserID);
+                List<Branch> branches = await _handler.GetBranchDetails();
+                IEnumerable<string> ifscCodes = branches.Where(brn => brn.BankID == "1").Select(brn => brn.IfscCode);
+                
                 var BeneficiariesCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Beneficiaries",
@@ -56,7 +58,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 List<TransactionBObj> transactions = new List<TransactionBObj>();
                 foreach(var account in accountsList)
                 {
-                    var list = _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber).Result;
+                    var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber);
                     transactions.AddRange(list);
                 }
 
@@ -84,7 +86,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = deposits.Where(dep => dep.AccountStatus == AccountStatus.CLOSED).Count()
                 };
 
-                IEnumerable<CardBObj> AllCards = _handler.GetAllCards(request.UserID).Result;
+                IEnumerable<CardBObj> AllCards = await _handler.GetAllCards(request.UserID);
 
                 GetDashboardDataResponse response = new GetDashboardDataResponse
                 {

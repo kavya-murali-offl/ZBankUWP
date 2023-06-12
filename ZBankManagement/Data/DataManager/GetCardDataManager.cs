@@ -8,6 +8,7 @@ using ZBankManagement.Domain.UseCase;
 using ZBank.Entities.BusinessObjects;
 using System;
 using ZBank.Entity.BusinessObjects;
+using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
@@ -20,11 +21,11 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler _dBHandler { get; set; }
 
-        public void GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
+        public async Task GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
         {
             try
             {
-                IEnumerable<CardBObj> cards = _dBHandler.GetAllCards(request.CustomerID).Result;
+                IEnumerable<CardBObj> cards = await _dBHandler.GetAllCards(request.CustomerID);
 
                 GetAllCardsResponse response = new GetAllCardsResponse();
                 response.Cards = cards;
@@ -41,11 +42,11 @@ namespace ZBankManagement.DataManager
             }
         }
 
-        public void GetCardByCardNumber(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
+        public async Task GetCardByCardNumber(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
         {
             try
             {
-                IEnumerable<CardBObj> cards = _dBHandler.GetCardByCardNumber(request.CardNumber).Result;
+                IEnumerable<CardBObj> cards = await _dBHandler.GetCardByCardNumber(request.CardNumber);
 
                 GetAllCardsResponse response = new GetAllCardsResponse();
                 response.Cards = cards;

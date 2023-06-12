@@ -19,6 +19,12 @@ using System.ServiceModel.Channels;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
+using ZBankManagement.AppEvents.AppEventArgs;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using ZBank.Entity.BusinessObjects;
+using ZBank.Entities;
+using ZBank.View.UserControls;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -45,6 +51,9 @@ namespace ZBank
             ContentFrame.Navigate(typeof(DashboardPage));
             ContentFrame.Navigated += OnNavigated;
         }
+
+        private string ErrorText { get; set; }
+
 
 
         public void Page_UnLoaded(object sender, RoutedEventArgs e)
@@ -170,6 +179,12 @@ namespace ZBank
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         private void TopListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             //var selectedItem = (sender as ListViewItem).DataContext as Navigation;
