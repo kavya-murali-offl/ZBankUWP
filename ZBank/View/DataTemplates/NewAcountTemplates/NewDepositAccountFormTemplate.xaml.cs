@@ -29,22 +29,12 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.View.DataTemplates.NewAcountTemplates
 {
-    public sealed partial class NewDepositAccountFormTemplate : UserControl
+    public sealed partial class NewDepositAccountFormTemplate : UserControl, IForm
     {
         public NewDepositAccountFormTemplate()
         {
             this.InitializeComponent();
-            FieldErrors.Add("Deposit Amount", string.Empty);
-            FieldErrors.Add("Repayment Account Number", string.Empty);
-            FieldErrors.Add("From Account Number", string.Empty);
-            FieldErrors.Add("Tenure", string.Empty);
-
-            FieldValues["Deposit Amount"] = string.Empty;
-            FieldValues["From Account Number"] = string.Empty;
-            FieldValues["Repayment Account Number"] = string.Empty;
-            FieldValues["Tenure"] = string.Empty;
-            FieldValues["Interest Rate"] = "0.0%";
-            SubmitButton.IsEnabled = true;
+            Reset();
         }
 
         private ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
@@ -76,20 +66,43 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             }
         }
 
-        //private bool IsEnabled()
-        //{
-        //    ValidateField("Deposit Amount");
-        //    ValidateField("Repayment Account Number");
-        //    ValidateField("Tenure");
-        //    if (FieldErrors.Values.Any(err => err.Length > 0))
-        //    {
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        return true;
-        //    }
-        //}
+        public void Reset() {
+            FieldErrors.Add("Deposit Amount", string.Empty);
+            FieldErrors.Add("Repayment Account Number", string.Empty);
+            FieldErrors.Add("From Account Number", string.Empty);
+            FieldErrors.Add("Tenure", string.Empty);
+
+            FieldValues["Deposit Amount"] = string.Empty;
+            FieldValues["From Account Number"] = string.Empty;
+            FieldValues["Repayment Account Number"] = string.Empty;
+            FieldValues["Tenure"] = string.Empty;
+            FieldValues["Interest Rate"] = "0.0%";
+        }
+
+        public void ValidateAndSubmit()
+        {
+            if (ValidateFields())
+            {
+                TermDepositAccount depositAccount = new TermDepositAccount()
+                {
+                    AccountName = "Kavya",
+                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
+                    Balance = (decimal)FieldValues["Deposit Amount"],
+                    AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
+                    TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
+                    RepaymentAccountNumber = FieldValues["Repayment Account Number"].ToString(),
+                    UserID = "1111",
+                    CreatedOn = DateTime.Now,
+                    DepositStartDate = null,
+                    DepositType = Entity.EnumerationTypes.DepositType.OnMaturity
+                };
+                depositAccount.SetDefault();
+                SubmitCommand.Execute(depositAccount);
+            }
+        }
+
+     
+
 
         public ICommand SubmitCommand
         {
@@ -98,7 +111,7 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
         }
 
         public static readonly DependencyProperty SubmitCommandProperty =
-            DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(NewDepositAccountFormTemplate), new PropertyMetadata(null));
+            DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(NewSavingsAccountFormTemplate), new PropertyMetadata(null));
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
@@ -171,26 +184,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
 
         }
 
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (ValidateFields()) { 
-                TermDepositAccount depositAccount = new TermDepositAccount()
-                {
-                    AccountName = "Kavya",
-                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
-                    Balance = (decimal)FieldValues["Deposit Amount"],
-                    AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
-                    TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
-                    RepaymentAccountNumber = FieldValues["Repayment Account Number"].ToString(),
-                    UserID = "1111",
-                    CreatedOn = DateTime.Now,
-                    DepositStartDate = null,
-                    DepositType = Entity.EnumerationTypes.DepositType.OnMaturity
-                };
-                depositAccount.SetDefault();
-                SubmitCommand.Execute(depositAccount);
-            }
-        }
 
         private bool ValidateFields() 
         {
@@ -212,6 +205,8 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
         }
+
+        
     }
 
 }

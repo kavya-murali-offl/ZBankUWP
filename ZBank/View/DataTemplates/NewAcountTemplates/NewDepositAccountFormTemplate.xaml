@@ -239,16 +239,6 @@
             Text="{x:Bind FieldErrors['Repayment Account Number'], Mode=OneWay}"
             Foreground="Red" />
     
-        <Button
-                VerticalAlignment="Bottom"
-                Margin="20"
-                MinWidth="200"
-                HorizontalAlignment="Center"
-                Grid.Row="16"
-                x:Name="SubmitButton"
-                Click="SubmitButton_Click"
-                Content="Apply"
-                Style="{ThemeResource PrimaryButton}" />
         </Grid>
 
 </UserControl>

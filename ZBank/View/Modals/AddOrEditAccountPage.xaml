@@ -16,19 +16,18 @@
     Unloaded="Page_Unloaded">
 
     <Page.Resources>
-        <DataTemplate
-            x:Key="CurrentAccountFormTemplate">
-            <templates:NewCurrentAccountFormTemplate  />
-        </DataTemplate>
-        <DataTemplate
-            x:Key="SavingsAccountFormTemplate">
-            <templates:NewSavingsAccountFormTemplate />
-        </DataTemplate>
-        <DataTemplate
-            x:Key="DepositAccountFormTemplate">
-            <templates:NewDepositAccountFormTemplate
-                SubmitCommand="{Binding SubmitCommand}" />
-        </DataTemplate>
+
+        <!--<templates:NewCurrentAccountFormTemplate
+            SubmitCommand="{Binding SubmitCommand}"
+            x:Key="NewCurrentAccountFormTemplate"/>
+
+        <templates:NewSavingsAccountFormTemplate
+            SubmitCommand="{Binding SubmitCommand}"
+            x:Key="NewSavingsAccountFormTemplate"/>
+
+        <templates:NewDepositAccountFormTemplate
+            x:Key="NewDepositAccountFormTemplate"
+                SubmitCommand="{Binding SubmitCommand}" />-->
     </Page.Resources>
     <ScrollViewer
         HorizontalScrollBarVisibility="Auto">

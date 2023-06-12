@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
 using ZBankManagement.AppEvents;
 using ZBankManagement.AppEvents.AppEventArgs;
 
@@ -58,35 +59,20 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
         }
 
-
-        private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
-        {
-            PositionPopup();
-        }
-
         private void UpdateStack(NotifyUserArgs obj)
         {
-            Notification notification = new Notification()
-            {
-                Content = obj.Exception.Message,
-                Duration = 3000
-            };
-
             if (NotificationStack.Count == 0)
             {
-                NotificationStack.Add(notification);
+                NotificationStack.Add(obj.Notification);
                 Show(NotificationStack[0]);
             }
             else
             {
-                NotificationStack.Add(notification);
+                NotificationStack.Add(obj.Notification);
             }
         }
-        private void PositionPopup()
-        {
-            //PopupPanel.Width = Window.Current.Bounds.Width - 20;
-            //NotificationPanel.Margin = new Thickness(0, 0, PopupPanel.Width, 0);
-        }
+
+       
 
         private void CloseNotification(DispatcherQueueTimer sender, object args)
         {
@@ -100,8 +86,7 @@ namespace ZBank.View.UserControls
             NotificationStack.RemoveAt(0);
             if (NotificationStack.Count > 0)
             {
-                var notification = NotificationStack[0];
-                Show(notification);
+                Show(NotificationStack.First());
             }
         }
 
@@ -129,7 +114,6 @@ namespace ZBank.View.UserControls
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.NotificationStackUpdated += UpdateStack;
-            Window.Current.SizeChanged += Window_SizeChanged;
             DispatcherQueue queue = DispatcherQueue.GetForCurrentThread();
             Timer = queue.CreateTimer();
             Timer.Tick += CloseNotification;
@@ -139,7 +123,6 @@ namespace ZBank.View.UserControls
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.NotificationStackUpdated -= UpdateStack;
-            Window.Current.SizeChanged -= Window_SizeChanged;
             Timer.Tick -= CloseNotification;
             NotificationStack.Clear();
         }

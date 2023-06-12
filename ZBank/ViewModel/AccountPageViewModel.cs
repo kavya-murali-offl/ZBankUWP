@@ -162,6 +162,7 @@ namespace ZBank.ViewModel
                         AccountsList = new ObservableCollection<Account>(response.Accounts)
                     };
                     ViewNotifier.Instance.OnAccountsListUpdated(args);
+                   
                 });
             }
 
@@ -171,7 +172,12 @@ namespace ZBank.ViewModel
                 {
                     NotifyUserArgs args = new NotifyUserArgs()
                     {
-                        Exception = response
+                        Notification = new Notification()
+                        {
+                            Message=response.Message,
+                            Duration=3000,
+                             Type= NotificationType.ERROR
+                        }
                     };
                     ViewNotifier.Instance.OnNotificationStackUpdated(args);
                 });

@@ -15,6 +15,7 @@ using System.Windows.Input;
 using ZBank.ViewModel.VMObjects;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using ZBankManagement.AppEvents.AppEventArgs;
 
 namespace ZBank.ViewModel
 {
@@ -34,7 +35,7 @@ namespace ZBank.ViewModel
         private void GetAccount(object parameter)
         {
             Account account = (Account)parameter;
-            if(account.AccountNumber == null)
+            if (account.AccountNumber == null)
             {
                 ApplyNewAccount(account);
             }
@@ -132,7 +133,7 @@ namespace ZBank.ViewModel
         {
             InsertAccountRequest request = new InsertAccountRequest()
             {
-               AccountToInsert = accountToInsert
+                AccountToInsert = accountToInsert
             };
 
             IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
@@ -140,7 +141,7 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
+        private class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
         {
             private AddOrEditAccountViewModel AccountPageViewModel { get; set; }
 
@@ -151,26 +152,30 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertAccountResponse response)
             {
-                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    if (AccountPageViewModel.Accounts != null)
+                    ViewNotifier.Instance.OnSuccessfulEvent(true);
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
                     {
-                        AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                        Notification = new Notification()
                         {
-                            AccountsList = new ObservableCollection<Account>(AccountPageViewModel.Accounts.Append(response.InsertedAccount))
-                        };
-                        ViewNotifier.Instance.OnAccountsListUpdated(args);
-                    }
+                            Message = "Account Inserted Successfully",
+                            Type = NotificationType.SUCCESS,
+                        }
+                    });
                 });
             }
 
             public async Task OnFailure(ZBankException error)
             {
-
+                await CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnSuccessfulEvent(false);
+                });
             }
         }
 
-        public class GetAllBranchesPresenterCallback : IPresenterCallback<GetAllBranchesResponse>
+        private class GetAllBranchesPresenterCallback : IPresenterCallback<GetAllBranchesResponse>
         {
             private AddOrEditAccountViewModel ViewModel { get; set; }
 
@@ -196,32 +201,31 @@ namespace ZBank.ViewModel
             }
 
         }
-    }
-    public class GetAllAccountsInAddPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
-    {
-        private AddOrEditAccountViewModel ViewModel { get; set; }
-
-        public GetAllAccountsInAddPresenterCallback(AddOrEditAccountViewModel viewModel)
+        private class GetAllAccountsInAddPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
         {
-            ViewModel = viewModel;
-        }
+            private AddOrEditAccountViewModel ViewModel { get; set; }
 
-        public async Task OnSuccess(GetAllAccountsResponse response)
-        {
-            await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public GetAllAccountsInAddPresenterCallback(AddOrEditAccountViewModel viewModel)
             {
-                AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
-                {
-                    AccountsList = response.Accounts
-                };
-                ViewNotifier.Instance.OnAccountsListUpdated(args);
-            });
-        }
+                ViewModel = viewModel;
+            }
 
-        public async Task OnFailure(ZBankException response)
-        {
-            // Notify view
+            public async Task OnSuccess(GetAllAccountsResponse response)
+            {
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                    {
+                        AccountsList = response.Accounts
+                    };
+                    ViewNotifier.Instance.OnAccountsListUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                // Notify view
+            }
         }
     }
-
 }

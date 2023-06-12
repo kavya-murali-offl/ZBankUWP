@@ -62,7 +62,6 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<AccountBObj>> GetAllAccounts(string customerID)
         {
             List<AccountBObj> accountsList = new List<AccountBObj>();
-
             var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
                 $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +

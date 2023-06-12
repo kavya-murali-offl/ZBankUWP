@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,6 +21,7 @@ using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.View.DataTemplates.NewAcountTemplates;
 using ZBank.ViewModel;
 using ZBank.ViewModel.VMObjects;
 
@@ -32,8 +34,9 @@ namespace ZBank.View.Modals
     /// </summary>
     public sealed partial class AddOrEditAccountPage : Page, IView
     {
-        public AddOrEditAccountViewModel ViewModel { get; set; }
-
+        private AddOrEditAccountViewModel ViewModel { get; set; }
+        private IForm FormTemplate { get; set; }    
+        private string CurrentDataTemplateKey { get; set; }
 
         public AddOrEditAccountPage()
         {
@@ -49,63 +52,50 @@ namespace ZBank.View.Modals
             if (sender is RadioButtons radios)
             {
                 string accountType = radios.SelectedItem as string;
-                DataTemplate template = null;
-
+                
                 switch (accountType)
                 {
                     case "Current":
-                        template = Resources["CurrentAccountFormTemplate"] as DataTemplate;
+                        NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
+                        newCurrentAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
+                        FormTemplate = newCurrentAccountFormTemplate;
                         break;
                     case "Savings":
-                        template = Resources["SavingsAccountFormTemplate"] as DataTemplate;
+                        NewSavingsAccountFormTemplate newSavingsAccountFormTemplate = new NewSavingsAccountFormTemplate();
+                        newSavingsAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
+                        FormTemplate = newSavingsAccountFormTemplate;
                         break;
                     case "Deposit":
-                        template = Resources["DepositAccountFormTemplate"] as DataTemplate;
+                        NewDepositAccountFormTemplate newDepositAccountFormTemplate = new NewDepositAccountFormTemplate();
+                        newDepositAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
+                        FormTemplate = newDepositAccountFormTemplate; 
                         break;
                 }
 
-                OnSelection = accountType;
-
-                if (template != null)
-                {
-                    AccountForm.DataContext = ViewModel;
-                    AccountForm.Content = template.LoadContent();
-                }
+                AccountForm.Content = FormTemplate;
             }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             AccountForm.DataContext = ViewModel;
-            DataTemplate template = Resources["CurrentAccountFormTemplate"] as DataTemplate;
-            AccountForm.Content = template.LoadContent();
+            NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
+            AccountForm.Content = newCurrentAccountFormTemplate;
             ViewNotifier.Instance.ThemeChanged += ChangeTheme;
+            ViewNotifier.Instance.OnSuccess += InsertedAccount;
             ViewModel.LoadContent();
+        }
+
+        private void InsertedAccount(bool obj)
+        {
+
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
+            ViewNotifier.Instance.OnSuccess -= InsertedAccount;
             ViewModel.UnloadContent();
-        }
-
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
-        {
-            //switch (OnSelection)
-            //{
-            //    case "Deposit":
-            //        TermDepositAccount filledDepositAccount = ViewModel.DepositAccount;
-            //        if (filledDepositAccount.Balance > 0 && ViewModel.DepositAccount.RepaymentAccountNumber != null &&
-            //            ViewModel.DepositAccount.RepaymentAccountNumber != string.Empty &&
-            //            ViewModel.DepositAccount.TenureInMonths > 0)
-            //        {
-            //            ViewModel.ApplyNewAccount(ViewModel.DepositAccount);
-            //        }
-            //        break;
-
-            //    case "Current";
-
-            //}
         }
 
         private async void ChangeTheme(ElementTheme theme)
@@ -120,6 +110,11 @@ namespace ZBank.View.Modals
         private void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            FormTemplate.ValidateAndSubmit();
         }
     }
 

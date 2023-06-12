@@ -13,17 +13,23 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Entities;
 using ZBank.ViewModel.VMObjects;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace ZBank.View.DataTemplates.NewAcountTemplates
 {
-    public sealed partial class NewSavingsAccountFormTemplate : UserControl
+    public sealed partial class NewSavingsAccountFormTemplate : UserControl, IForm
     {
         public NewSavingsAccountFormTemplate()
         {
             this.InitializeComponent();
+            Reset();
+        }
+
+        public void Reset()
+        {
             FieldValues["Deposit Amount"] = string.Empty;
             FieldErrors["Deposit Amount"] = string.Empty;
         }
@@ -57,14 +63,22 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             }
         }
 
-        public ICommand SubmitCommand
+        public void ValidateAndSubmit()
         {
-            get { return (ICommand)GetValue(SubmitCommandProperty); }
-            set { SetValue(SubmitCommandProperty, value); }
+            if (ValidateFields())
+            {
+                SavingsAccount savingsAccount = new SavingsAccount()
+                {
+                    AccountName = "Kavya",
+                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
+                    Balance = (decimal)FieldValues["Deposit Amount"],
+                    AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
+                    UserID = "1111",
+                    CreatedOn = DateTime.Now,
+                };
+                SubmitCommand.Execute(savingsAccount);
+            }
         }
-
-        public static readonly DependencyProperty SubmitCommandProperty =
-            DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(NewDepositAccountFormTemplate), new PropertyMetadata(null));
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
@@ -76,27 +90,14 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             ValidateField("Deposit Amount");
         }
 
-        //private void SubmitButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (ValidateFields())
-        //    {
-        //        TermDepositAccount depositAccount = new TermDepositAccount()
-        //        {
-        //            AccountName = "Kavya",
-        //            AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
-        //            Balance = (decimal)FieldValues["Deposit Amount"],
-        //            AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
-        //            TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
-        //            RepaymentAccountNumber = FieldValues["Repayment Account Number"].ToString(),
-        //            UserID = "1111",
-        //            CreatedOn = DateTime.Now,
-        //            DepositStartDate = null,
-        //            DepositType = Entity.EnumerationTypes.DepositType.OnMaturity
-        //        };
-        //        depositAccount.SetDefault();
-        //        SubmitCommand.Execute(depositAccount);
-        //    }
-        //}
+        public ICommand SubmitCommand
+        {
+            get { return (ICommand)GetValue(SubmitCommandProperty); }
+            set { SetValue(SubmitCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty SubmitCommandProperty =
+            DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(NewSavingsAccountFormTemplate), new PropertyMetadata(null));
 
         private bool ValidateFields()
         {

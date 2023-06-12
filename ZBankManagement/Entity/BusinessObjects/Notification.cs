@@ -8,17 +8,14 @@ namespace ZBank.Entities.BusinessObjects
 {
     public class Notification
     {
-        public Notification(string title, string description) {
-            Title = title;
-            Description = description;
-        }
 
-        public string ID { get; set; }  
+        public object Message { get; set; }
 
-        public string Title { get; set; }
+        public double Duration { get; set; } = 3000;
 
-        public string Description { get; set; }
-
-        public string Priority { get; set; }
+        public NotificationType Type { get; set; }
     }
+
+
+    public enum NotificationType { ERROR, INFO, WARNING, SUCCESS }
 }

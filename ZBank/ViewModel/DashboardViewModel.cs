@@ -157,15 +157,15 @@ namespace ZBank.ViewModel
             {
                 await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
                     {
-                        Exception = new ZBankException()
+                        Notification = new Notification()
                         {
-                            Message = "test",
-                            Type = Entity.EnumerationTypes.ErrorType.NOT_AUTHORIZED
+                            Message = response.Message,
+                            Type = NotificationType.ERROR,
                         }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                    });
                 });
             }
         }
@@ -209,11 +209,11 @@ namespace ZBank.ViewModel
                 {
                     NotifyUserArgs args = new NotifyUserArgs()
                     {
-                        Exception = new ZBankException()
-                        {
-                            Message = response.Message,
-                            Type = Entity.EnumerationTypes.ErrorType.UNKNOWN
-                        }
+                      Notification = new Notification()
+                      {
+                          Message = response.Message,
+                          Type = NotificationType.ERROR
+                      }
                     };
                     ViewNotifier.Instance.OnNotificationStackUpdated(args);
                 });

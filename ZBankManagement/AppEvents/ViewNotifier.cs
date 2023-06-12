@@ -13,6 +13,11 @@ namespace ZBank.AppEvents
     public class ViewNotifier
     {
 
+        public event Action<bool> OnSuccess;
+        public void OnSuccessfulEvent (bool isSuccess)
+        {
+            OnSuccess?.Invoke(isSuccess);
+        }
 
         public event Action<NotificationOpeningEventArgs> NotificationOpening;
         public void ONNotificationOpening(NotificationOpeningEventArgs args)

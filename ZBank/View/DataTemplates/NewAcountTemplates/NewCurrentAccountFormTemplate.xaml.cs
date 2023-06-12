@@ -13,19 +13,19 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Entities;
 using ZBank.ViewModel.VMObjects;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace ZBank.View.DataTemplates.NewAcountTemplates
 {
-    public sealed partial class NewCurrentAccountFormTemplate : UserControl
+    public sealed partial class NewCurrentAccountFormTemplate : UserControl, IForm
     {
         public NewCurrentAccountFormTemplate()
         {
             this.InitializeComponent();
-            FieldValues["Deposit Amount"] = string.Empty;
-            FieldErrors["Deposit Amount"] = string.Empty;
+            Reset();
         }
 
         private ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
@@ -42,26 +42,14 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 FieldErrors[fieldName] = string.Empty;
             }
 
-            if (fieldName == "Deposit Amount")
-            {
-                var inText = FieldValues["Deposit Amount"].ToString();
-                if (decimal.TryParse(inText, out decimal amountInDecimal))
-                {
-                    FieldValues["Deposit Amount"] = inText;
-                    FieldErrors["Deposit Amount"] = string.Empty;
-                }
-                else
-                {
-                    FieldErrors["Deposit Amount"] = "Please enter a valid deposit Amount";
-                }
-            }
+           
         }
-
         public ICommand SubmitCommand
         {
             get { return (ICommand)GetValue(SubmitCommandProperty); }
             set { SetValue(SubmitCommandProperty, value); }
         }
+
 
         public static readonly DependencyProperty SubmitCommandProperty =
             DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(NewDepositAccountFormTemplate), new PropertyMetadata(null));
@@ -76,27 +64,28 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             ValidateField("Deposit Amount");
         }
 
-        //private void SubmitButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (ValidateFields())
-        //    {
-        //        TermDepositAccount depositAccount = new TermDepositAccount()
-        //        {
-        //            AccountName = "Kavya",
-        //            AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
-        //            Balance = (decimal)FieldValues["Deposit Amount"],
-        //            AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
-        //            TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
-        //            RepaymentAccountNumber = FieldValues["Repayment Account Number"].ToString(),
-        //            UserID = "1111",
-        //            CreatedOn = DateTime.Now,
-        //            DepositStartDate = null,
-        //            DepositType = Entity.EnumerationTypes.DepositType.OnMaturity
-        //        };
-        //        depositAccount.SetDefault();
-        //        SubmitCommand.Execute(depositAccount);
-        //    }
-        //}
+        public void ValidateAndSubmit() 
+        {
+            if (ValidateFields())
+            {
+                CurrentAccount currentAccount = new CurrentAccount()
+                {
+                    AccountName = "Kavya",
+                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
+                    Balance = decimal.Parse(FieldValues["Deposit Amount"].ToString()),
+                    AccountType = Entities.EnumerationType.AccountType.CURRENT,
+                    UserID = "1111",
+                    CreatedOn = DateTime.Now,
+                };
+                SubmitCommand.Execute(currentAccount);
+            }
+        }
+
+        public void Reset()
+        {
+            FieldValues["Deposit Amount"] = string.Empty;
+            FieldErrors["Deposit Amount"] = string.Empty;
+        }
 
         private bool ValidateFields()
         {
@@ -104,6 +93,16 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             {
                 ValidateField(key);
             }
+
+                var inText = FieldValues["Deposit Amount"].ToString();
+                if (decimal.TryParse(inText, out decimal amountInDecimal))
+                {
+                    FieldErrors["Deposit Amount"] = string.Empty;
+                }
+                else
+                {
+                    FieldErrors["Deposit Amount"] = "Please enter a valid deposit Amount";
+                }
 
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;
