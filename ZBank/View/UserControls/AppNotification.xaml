@@ -11,6 +11,8 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
         <Grid
+            MaxWidth="300"
+            MaxHeight="200"
             Visibility="Collapsed"
             Background="{ThemeResource HeaderAcrylicBrush}"
             CornerRadius="8"
@@ -20,7 +22,7 @@
                     <RowDefinition
                         Height="Auto" />
                     <RowDefinition
-                        Height="*" />
+                        Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -60,7 +62,7 @@
                     Foreground="White"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{Binding Content, Mode=OneWay}"
+                    Text="{Binding Message, Mode=OneWay}"
                     TextTrimming="CharacterEllipsis" />
             </Grid>
 </UserControl>

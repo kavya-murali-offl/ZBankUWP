@@ -56,7 +56,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 var inText = FieldValues["Deposit Amount"].ToString();
                 if (decimal.TryParse(inText, out decimal amountInDecimal))
                 {
-                    FieldValues["Deposit Amount"] = inText;
                     FieldErrors["Deposit Amount"] = string.Empty;
                 }
                 else
@@ -87,7 +86,7 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 {
                     AccountName = "Kavya",
                     AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
-                    Balance = (decimal)FieldValues["Deposit Amount"],
+                    Balance = decimal.Parse(FieldValues["Deposit Amount"].ToString()),
                     AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
                     TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
                     RepaymentAccountNumber = FieldValues["Repayment Account Number"].ToString(),

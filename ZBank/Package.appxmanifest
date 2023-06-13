@@ -7,7 +7,7 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="5058f49c-e8ba-4215-bec4-5f821e3d0d86"
+    Name="5058f49c-e8ba-4215-bec4-5f821e3d0d87"
     Publisher="CN=kavya-pt6688"
     Version="1.0.0.0" />
 
@@ -15,7 +15,7 @@
 
   <Properties>
     <DisplayName>ZBank</DisplayName>
-    <PublisherDisplayName>kavya-pt6688</PublisherDisplayName>
+    <PublisherDisplayName>kavya-17565</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

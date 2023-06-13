@@ -49,7 +49,7 @@
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Text="Beneficiary / Transaction Date" />
+                    Text="Beneficiary" />
                 
                 <TextBlock
                     Foreground="Gray"
@@ -68,12 +68,9 @@
         <DataTemplate
             x:Key="WideHeaderDataTemplate">
             <Grid
-                Margin="0"
-                CornerRadius="8,8,0,0"
                 BorderThickness="0,0,0,1"
                 Padding="0,20,0,20"
-                BorderBrush="DarkGray"
-                x:Name="TemplateGrid">
+                BorderBrush="DarkGray">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
                         Width="2*" />
@@ -158,8 +155,8 @@
         <DataTemplate
             x:Key="NarrowDataTemplate">
             <Grid
-                Margin="0,15,0,15"
-                x:Name="TemplateGrid">
+                
+                Padding="0,15,0,15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
                         Width="*" />
@@ -201,7 +198,7 @@
                     Margin="5,0,5,0"
                     Foreground="Gray"
                     HorizontalAlignment="Left"
-                    Text="{Binding RecordedOn, Converter={StaticResource DateFormatConverter}}"
+                    Text="{Binding OtherAccountNumber}"
                     TextTrimming="CharacterEllipsis" />
 
                 <StackPanel
@@ -249,7 +246,9 @@
         <DataTemplate
             x:Key="WideDataTemplate">
             <Grid
-                Margin="0,15,0,15"
+                BorderThickness="0,0.5,0,0.5"
+                BorderBrush="DarkGray"
+                Padding="0,15,0,15"
                 x:Name="TemplateGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -412,7 +411,6 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
@@ -420,6 +418,8 @@
                 Height="Auto" />
             <RowDefinition
                 Height="*" />
+            <RowDefinition
+                Height="Auto" />
         </Grid.RowDefinitions>
         <GridView
             VerticalAlignment="Center"
@@ -428,7 +428,7 @@
             SelectionMode="None">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsStackPanel
+                    <ItemsWrapGrid
                         Height="40"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Stretch"
@@ -453,7 +453,9 @@
                 </DropDownButton>
             </GridViewItem>
             <GridViewItem>
-                <ToggleButton Width="80" x:Name="FilterButton">
+                <ToggleButton
+                    Background="{ThemeResource ApplicationPageBackground}"
+                    Width="80" x:Name="FilterButton">
                     <ToggleButton.Content>
                         <TextBlock
                             Text="Filter" />
@@ -628,17 +630,85 @@
         <Grid Grid.Row="2"
               BorderBrush="DarkGray"
               BorderThickness="1"
-            Padding="0,0,0,20"
             Background="{ThemeResource ApplicationBackground}"
-            CornerRadius="8"
-            Margin="0,5,0,5">
+            CornerRadius="8">
             <ListView
+                MinHeight="500"
                 x:Name="ListView"
                 ItemsSource="{x:Bind ViewModel.InViewTransactions, Mode=OneWay}"
                 AllowDrop="True"
                 SelectionMode="None"
                 CanReorderItems="True">
             </ListView>
+        </Grid>
+        <Grid Grid.Row="3" Margin="0,10,0,10">
+            <DropDownButton 
+                x:Name="RowsPerPageButton"
+                CornerRadius="4">
+                <DropDownButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Text="Rows Per Page: " />
+                        <TextBlock
+                            Foreground="{ThemeResource SystemAccentColorLight1}"
+                            Margin="15,0,0,0"
+                            Text="{x:Bind ViewModel.RowsPerPage, Mode=OneWay}" />
+                    </StackPanel>
+                
+                </DropDownButton.Content>
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <ListView
+                            x:Name="RowsPerPageList"
+                            SelectionChanged="RowsPerPageList_SelectionChanged"
+                            ItemsSource="{x:Bind ViewModel.DefinedRows}" />
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+
+            <StackPanel
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                    Padding="7"
+                    Command="{x:Bind ViewModel.PreviousCommand}"
+                    CornerRadius="6"
+                    ToolTipService.ToolTip="Previous"
+                    ToolTipService.Placement="Bottom"
+                    Margin="5">
+                    <Button.Content>
+                        <FontIcon
+                            FontSize="16"
+                            Glyph="&#xE0E2;" />
+                    </Button.Content>
+                </Button>
+                <TextBlock
+                    Foreground="{ThemeResource SystemAccentColorLight1}"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" Margin="5,0,5,0" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="of"
+                    Margin="5,0,5,0" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="{x:Bind ViewModel.TotalPages, Mode=OneWay}"
+                    Margin="5,0,5,0" />
+                <Button
+                    Padding="7"
+                    ToolTipService.ToolTip="Next"
+                    ToolTipService.Placement="Bottom"
+                    CornerRadius="6"
+                    Command="{x:Bind ViewModel.NextCommand}"
+                    Margin="5">
+                    <Button.Content>
+                        <FontIcon
+                            FontSize="16"
+                            Glyph="&#xE0E3;" />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

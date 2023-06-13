@@ -12,12 +12,81 @@ using ZBank.View;
 using ZBank.AppEvents;
 using Windows.UI.Core;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Windows.UI.Xaml.Data;
+using ZBank.ViewModel.VMObjects;
 
 namespace ZBank.ViewModel
 {
     public class TransactionViewModel : ViewModelBase
     {
         public IView View;
+        public ICommand PreviousCommand { get; private set; }
+        public ICommand NextCommand { get; private set; }
+        public IList<int> DefinedRows { get; private set; }
+
+
+        public TransactionViewModel(IView view)
+        {
+            View = view;
+            LoadAllTransactionsData();
+            DefinedRows = new List<int>()
+            {
+               1
+            };
+            CurrentPageIndex = 0;
+            RowsPerPage = 1;
+            NextCommand = new RelayCommand(GoToNextPage, IsNextButtonEnabled);
+            PreviousCommand = new RelayCommand(GoToPreviousPage, IsPreviousButtonEnabled);
+        }
+
+        private bool IsPreviousButtonEnabled()
+        {
+            return CurrentPageIndex > 0;
+        }
+
+        private bool IsNextButtonEnabled()
+        {
+                return CurrentPageIndex < FilteredTransactions.Count() / RowsPerPage;
+        }
+
+        private void GoToPreviousPage(object parameter)
+        {
+            CurrentPageIndex--;
+            UpdateOnViewList();
+            UpdatePageNavigation();
+        }
+
+        private void GoToNextPage(object parameter)
+        {
+            CurrentPageIndex++;
+            UpdateOnViewList();
+            UpdatePageNavigation();
+        }
+
+        private int _totalPages;
+        public int TotalPages
+        {
+            get { return _totalPages; }
+            set { 
+                _totalPages = value;
+                OnPropertyChanged("TotalPages");
+            }
+        }
+
+        public IEnumerable<TransactionBObj> AllTransactions { get; set; }
+
+        public IEnumerable<TransactionBObj> FilteredTransactions { get; set; } = new List<TransactionBObj>();
+        
+        private void CalculateTotalPages()
+        {
+            var itemCount = FilteredTransactions.Count();
+            TotalPages = (itemCount / RowsPerPage);
+            if (itemCount % RowsPerPage != 0)
+            {
+                CurrentPageIndex += 1;
+            }
+        }
 
         public void LoadAllTransactionsData()
         {
@@ -31,6 +100,31 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
+        private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
+        {
+            foreach(var transaction in args.TransactionList)
+            {
+                transaction.SetDefault();
+            }
+            AllTransactions = args.TransactionList;
+            FilteredTransactions = args.TransactionList;
+            CalculateTotalPages();
+            UpdateOnViewList();
+        }
+
+        private void UpdateOnViewList()
+        {
+            CalculateTotalPages(); 
+            int startIndex = (CurrentPageIndex) * RowsPerPage;
+            InViewTransactions = new ObservableCollection<TransactionBObj>(FilteredTransactions.Skip(startIndex).Take(RowsPerPage));
+        }
+
+        private void UpdatePageNavigation()
+        {
+            (NextCommand as RelayCommand).RaiseCanExecuteChanged();
+            (PreviousCommand as RelayCommand).RaiseCanExecuteChanged();
+        }
+
 
         public void OnPageLoaded()
         {
@@ -42,21 +136,44 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactionsData;
         }
 
-        public TransactionViewModel(IView view)
-        {
-            View = view;
-            LoadAllTransactionsData();
-        }
+        private int _currentPageIndex { get; set; }
 
-        private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
-        {
-            foreach(var transaction in args.TransactionList)
+        private int CurrentPageIndex { 
+            get
             {
-                transaction.SetDefault();
+                return _currentPageIndex;
             }
-            InViewTransactions = new ObservableCollection<TransactionBObj>(args.TransactionList);
+            set
+            {
+                _currentPageIndex = value;
+                CurrentPage = value + 1;
+            }
         }
 
+        private int _currentPage { get; set; }
+
+        public int CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+            }
+        }
+
+        private int _rowsPerPage { get; set; }
+
+        public int RowsPerPage
+        {
+            get { return _rowsPerPage; }
+            set
+            {
+                _rowsPerPage = value;
+                OnPropertyChanged(nameof(RowsPerPage));
+                UpdateOnViewList();
+            }
+        }
 
         private ObservableCollection<TransactionBObj> _inViewTransactions { get; set; }
 

@@ -202,6 +202,9 @@
     <Compile Include="View\UserControls\AppNotification.xaml.cs">
       <DependentUpon>AppNotification.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\PaginationRow.xaml.cs">
+      <DependentUpon>PaginationRow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\PopupNotification.xaml.cs">
       <DependentUpon>PopupNotification.xaml</DependentUpon>
     </Compile>
@@ -412,6 +415,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\PageHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\PaginationRow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

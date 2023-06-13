@@ -25,18 +25,11 @@ namespace ZBank.View.Main
     {
         public TransactionViewModel ViewModel { get; set; }  
 
-        private bool IsWideEnough { get; set; }  
-
         public TransactionsPage()
         {
             this.InitializeComponent();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
             ViewModel = new TransactionViewModel(this);
         }
-
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -50,6 +43,16 @@ namespace ZBank.View.Main
 
         private void ArrowColumn_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void RowsPerPageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(int.TryParse(RowsPerPageList.SelectedItem.ToString(), out int rows))
+            {
+                ViewModel.RowsPerPage = rows;
+            }
+            RowsPerPageButton.Flyout.Hide();
 
         }
     }

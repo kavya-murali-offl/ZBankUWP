@@ -309,6 +309,7 @@
                             </Grid>
                         <userControls:AppNotification
                             Grid.Row="1"
+                            VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             Canvas.ZIndex="30"
                             Margin="5"

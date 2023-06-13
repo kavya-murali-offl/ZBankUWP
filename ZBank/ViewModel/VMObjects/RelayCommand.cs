@@ -16,13 +16,7 @@ namespace ZBank.ViewModel.VMObjects
 
         public event EventHandler CanExecuteChanged;
 
-
-        public RelayCommand(Action<object> execute)
-            : this(execute, null)
-        {
-        }
-
-        public RelayCommand(Action<object> execute, Func<bool> canExecute)
+        public RelayCommand(Action<object> execute, Func<bool> canExecute=null)
         {
             _execute = execute ?? throw new ArgumentNullException("execute");
             _canExecute = canExecute;
