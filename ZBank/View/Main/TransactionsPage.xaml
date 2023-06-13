@@ -22,9 +22,143 @@
         <converter:BooleanToVisibilityConverter
             x:Key="BoolToVisibilityConverter" />
         <DataTemplate
+            x:Key="NarrowHeaderDataTemplate">
+            <Grid
+                BorderThickness="0,0,0,1"
+                BorderBrush="DarkGray"
+                Padding="0,20,0,20"
+                x:Name="TemplateHeaderGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="3*" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Foreground="Gray"
+                    FontWeight="SemiBold"
+                    MinWidth="100"
+                    FontSize="16"
+                    TextAlignment="Center"
+                    TextWrapping="WrapWholeWords"
+                    Margin="5,0,5,0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Beneficiary / Transaction Date" />
+                
+                <TextBlock
+                    Foreground="Gray"
+                    FontWeight="SemiBold"
+                    MaxWidth="100"
+                    FontSize="16"
+                    TextAlignment="Center"
+                    TextWrapping="WrapWholeWords"
+                    Margin="0,0,5,0"
+                    Grid.Column="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Amount" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate
+            x:Key="WideHeaderDataTemplate">
+            <Grid
+                Margin="0"
+                CornerRadius="8,8,0,0"
+                BorderThickness="0,0,0,1"
+                Padding="0,20,0,20"
+                BorderBrush="DarkGray"
+                x:Name="TemplateGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="3*" />
+                    <ColumnDefinition
+                        Width="2*" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+            <TextBlock
+                Foreground="Gray"
+                FontWeight="SemiBold"
+                MaxWidth="100"
+                FontSize="16"
+                TextAlignment="Center"
+                TextWrapping="WrapWholeWords"
+                Margin="0,0,5,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="Ref No." />
+                <TextBlock
+                    Foreground="Gray"
+                    FontWeight="SemiBold"
+                    MaxWidth="100"
+                    FontSize="16"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    TextAlignment="Center"
+                    TextWrapping="WrapWholeWords"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Beneficiary" />
+
+                <TextBlock
+                    Foreground="Gray"
+                    FontWeight="SemiBold"
+                    MaxWidth="100"
+                    FontSize="16"
+                    Grid.Column="3"
+                    TextAlignment="Center"
+                    TextWrapping="WrapWholeWords"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Timestamp" />
+
+                <TextBlock
+                    Foreground="Gray"
+                    FontWeight="SemiBold"
+                    MaxWidth="100"
+                    FontSize="16"
+                    Grid.Column="4"
+                    TextAlignment="Center"
+                    TextWrapping="WrapWholeWords"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Amount" />
+
+                <TextBlock
+                    Foreground="Gray"
+                    FontWeight="SemiBold"
+                    MaxWidth="100"
+                    FontSize="16"
+                    Grid.Column="5"
+                    TextAlignment="Center"
+                    TextWrapping="WrapWholeWords"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Balance" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate
             x:Key="NarrowDataTemplate">
             <Grid
-                Margin="0,5,0,5"
+                Margin="0,15,0,15"
                 x:Name="TemplateGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -42,9 +176,6 @@
                     <RowDefinition
                         Height="Auto" />
                 </Grid.RowDefinitions>
-
-                
-
                 <PersonPicture
                     Grid.Column="0"
                     Margin="0,0,5,0"
@@ -118,7 +249,7 @@
         <DataTemplate
             x:Key="WideDataTemplate">
             <Grid
-                Margin="0,5,0,5"
+                Margin="0,15,0,15"
                 x:Name="TemplateGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -171,23 +302,22 @@
                     TextTrimming="CharacterEllipsis" />
 
                 <TextBlock
-                    Grid.Column="2"
-                    Grid.Row="1"
                     Margin="5,0,5,0"
-                    Foreground="Gray"
-                    HorizontalAlignment="Left"
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Text="{Binding RecordedOn, Converter={StaticResource DateFormatConverter}}"
                     TextTrimming="CharacterEllipsis" />
 
                 <TextBlock
+                    Grid.Column="2"
+                    Grid.Row="1"
+                   Foreground="Gray"
                     Margin="5,0,5,0"
-                    Grid.Column="3"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Grid.RowSpan="2"
                     Visibility="{Binding ElementName=IsWideEnough, Converter={StaticResource BoolToVisibilityConverter}}"
                     TextWrapping="Wrap"
-                    Text="{Binding OwnerAccountNumber}"
+                    Text="{Binding OtherAccountNumber}"
                     TextTrimming="CharacterEllipsis" />
 
                 <StackPanel
@@ -224,8 +354,9 @@
                     Visibility="{Binding ElementName=IsWideEnough, Converter={StaticResource BoolToVisibilityConverter}}"
                     Margin="5,0,5,0"
                     Grid.Column="5"
+                    FontSize="16"
                     Grid.RowSpan="2"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
                     TextTrimming="CharacterEllipsis" />
@@ -243,8 +374,6 @@
         </DataTemplate>
     </Page.Resources>
     <Grid
-        Background="{ThemeResource ApplicationBackground}"
-        Padding="10"
         Margin="5"
         CornerRadius="8">
         <VisualStateManager.VisualStateGroups>
@@ -259,6 +388,9 @@
                         <Setter
                             Target="ListView.ItemTemplate"
                             Value="{StaticResource WideDataTemplate}" />
+                        <Setter
+                            Target="ListView.HeaderTemplate"
+                            Value="{StaticResource WideHeaderDataTemplate}" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState
@@ -273,6 +405,9 @@
                         <Setter
                             Target="ListView.ItemTemplate"
                             Value="{StaticResource NarrowDataTemplate}" />
+                        <Setter
+                            Target="ListView.HeaderTemplate"
+                            Value="{StaticResource NarrowHeaderDataTemplate}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -282,37 +417,52 @@
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
+                Height="Auto" />
+            <RowDefinition
                 Height="*" />
         </Grid.RowDefinitions>
         <GridView
-            
-            Margin="10">
+            VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
+            HorizontalAlignment="Right"
+            SelectionMode="None">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid
-                        Width="Auto"
+                    <ItemsStackPanel
+                        Height="40"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Stretch"
-                        Orientation="Horizontal"  MaximumRowsOrColumns="6"/>
+                        Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridViewItem>
-                <Button>
-                    <Button.Content>
+                <DropDownButton
+                    Width="80"
+                    CornerRadius="4">
+                    <DropDownButton.Content>
                         <TextBlock
+                            VerticalAlignment="Center"
                             Text="Sort" />
-                    </Button.Content>
-                </Button>
+                    </DropDownButton.Content>
+                    <DropDownButton.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
+                            <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
             </GridViewItem>
             <GridViewItem>
-                <Button>
-                    <Button.Content>
+                <ToggleButton Width="80" x:Name="FilterButton">
+                    <ToggleButton.Content>
                         <TextBlock
                             Text="Filter" />
-                    </Button.Content>
-                </Button>
+                    </ToggleButton.Content>
+                </ToggleButton>
             </GridViewItem>
             <GridViewItem>
-                <Button>
+                <Button
+                    Width="80">
                     <Button.Content>
                         <TextBlock
                             Text="Export" />
@@ -320,16 +470,175 @@
                 </Button>
             </GridViewItem>
         </GridView>
-
-        <ListView
+        <Grid
+            Background="{ThemeResource ApplicationBackground}"
+            MinHeight="150"
+            CornerRadius="8"
             Grid.Row="1"
-            x:Name="ListView"
-            ItemsSource="{x:Bind ViewModel.InViewTransactions, Mode=OneWay}"
-            AllowDrop="True"
-            SelectionMode="None"
-            CanReorderItems="True">
-            
+            Margin="0,0,0,5"
+            Visibility="{x:Bind FilterButton.IsChecked, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            <GridView
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                SelectionMode="None">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VariableSizedWrapGrid
+                            ItemWidth="220"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter
+                            Value="10"
+                            Property="Margin"/>
+                        <Setter
+                            Value="Auto"
+                            Property="Width"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridViewItem>
+                    <StackPanel>
+                        <TextBlock
+                            Foreground="Gray"
+                            Margin="0,5,0,5"
+                            Text="From Date" />
+                        <DropDownButton
+                            Width="200"
+                            CornerRadius="4">
+                            <DropDownButton.Content>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="Choose Date" />
+                            </DropDownButton.Content>
+                            <DropDownButton.Flyout>
+                                <MenuFlyout
+                                    Placement="Bottom">
+                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
+                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem>
+                    <StackPanel>
+                        <TextBlock
+                            Foreground="Gray"
+                            Margin="0,5,0,5"
+                            Text="To Date" />
+                        <DropDownButton Width="200"
+                            CornerRadius="4">
+                            <DropDownButton.Content>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="Choose Date" />
+                            </DropDownButton.Content>
+                            <DropDownButton.Flyout>
+                                <MenuFlyout
+                                    Placement="Bottom">
+                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
+                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem
+                    MinWidth="200">
+                    <StackPanel
+                        MinWidth="200">
+                        <TextBlock
+                            Foreground="Gray"
+                            Margin="0,5,0,5"
+                            Text="From Account" />
+                        <DropDownButton
+                            Width="200"
+                            CornerRadius="4">
+                            <DropDownButton.Content>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="Choose Account" />
+                            </DropDownButton.Content>
+                            <DropDownButton.Flyout>
+                                <MenuFlyout
+                                    Placement="Bottom">
+                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
+                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem>
+                    <StackPanel>
+                        <TextBlock
+                            Foreground="Gray"
+                            Margin="0,5,0,5"
+                            Text="To Account" />
+                        <DropDownButton
+                            Width="200"
+                            CornerRadius="4">
+                            <DropDownButton.Content>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="Choose Account" />
+                            </DropDownButton.Content>
+                            <DropDownButton.Flyout>
+                                <MenuFlyout
+                                    Placement="Bottom">
+                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
+                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </StackPanel>
 
-        </ListView>
+                </GridViewItem>
+                <GridViewItem>
+                    <StackPanel>
+                        <TextBlock
+                            Foreground="Gray"
+                            Margin="0,5,0,5"
+                            Text="Transaction Type" />
+                        <DropDownButton
+                            Width="200"
+                            CornerRadius="4">
+                            <DropDownButton.Content>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="Choose" />
+                            </DropDownButton.Content>
+                            <DropDownButton.Flyout>
+                                <MenuFlyout
+                                    Placement="Bottom">
+                                    <MenuFlyoutItem>Income</MenuFlyoutItem>
+                                    <MenuFlyoutItem>Expenses</MenuFlyoutItem>
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </StackPanel>
+                    
+                </GridViewItem>
+            </GridView>
+        </Grid>
+        <Grid Grid.Row="2"
+              BorderBrush="DarkGray"
+              BorderThickness="1"
+            Padding="0,0,0,20"
+            Background="{ThemeResource ApplicationBackground}"
+            CornerRadius="8"
+            Margin="0,5,0,5">
+            <ListView
+                x:Name="ListView"
+                ItemsSource="{x:Bind ViewModel.InViewTransactions, Mode=OneWay}"
+                AllowDrop="True"
+                SelectionMode="None"
+                CanReorderItems="True">
+            </ListView>
+        </Grid>
     </Grid>
 </Page>
