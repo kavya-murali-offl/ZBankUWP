@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
 using ZBank.Entities;
@@ -14,9 +15,19 @@ namespace ZBank.DatabaseHandler
         {
             _databaseAdapter = databaseAdapter;
         }
-        private IDatabaseAdapter _databaseAdapter { get; set; }
 
-        // Rewritten
+        public async Task InsertAccount(Account account)
+        {
+            object dtoObject = AccountFactory.GetDTOObject(account);
+            Func<Task> func = async () =>
+            {
+                await _databaseAdapter.Insert(account, typeof(Account));
+                await _databaseAdapter.Insert(dtoObject);
+            };
+            await _databaseAdapter.RunInTransactionAsync(func);
+        }
+
+        private IDatabaseAdapter _databaseAdapter { get; set; }
 
         public async Task<IEnumerable<CardBObj>> GetAllCards(string customerID)
         {
@@ -84,14 +95,7 @@ namespace ZBank.DatabaseHandler
             return accountsList;
         }
 
-        public async Task<bool> InsertAccount(Account account)
-        {
-            int rowsModified = 0;
-            object dtoObject = AccountFactory.GetDTOObject(account);
-            rowsModified += await _databaseAdapter.Insert(account, typeof(Account));
-            rowsModified += await _databaseAdapter.Insert(dtoObject);
-            return rowsModified == 2;
-        }
+       
 
         // Beneficiaries
 

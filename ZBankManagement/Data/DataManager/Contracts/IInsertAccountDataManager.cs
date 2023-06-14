@@ -8,7 +8,6 @@ namespace ZBankManagement.Interface
     public interface IInsertAccountDataManager
     {
         Task InsertAccount(InsertAccountRequest request, IUseCaseCallback<InsertAccountResponse> callback);
-       
 
     }
 }

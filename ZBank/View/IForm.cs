@@ -9,6 +9,7 @@ namespace ZBank.View
     public interface IForm
     {
         void ValidateAndSubmit();
+
         void Reset();
     }
 }

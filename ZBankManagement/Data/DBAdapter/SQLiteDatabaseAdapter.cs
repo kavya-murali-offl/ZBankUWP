@@ -1,13 +1,9 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Storage;
-using ZBank.Entities;
 
 namespace ZBank.DatabaseAdapter
 {
@@ -80,6 +76,22 @@ namespace ZBank.DatabaseAdapter
             {
                 action();
             });
+        }
+
+        public async Task RunInTransactionAsync(Func<Task> action)
+        {
+            SQLiteConnectionWithLock conn = Connection.GetConnection();
+            conn.BeginTransaction();
+            try
+            {
+                await action();
+                conn.Commit();
+            }
+            catch (Exception)
+            {
+                conn.Rollback();
+                throw;
+            }
         }
     }
 }

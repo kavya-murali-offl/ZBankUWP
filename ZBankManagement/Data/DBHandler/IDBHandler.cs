@@ -40,7 +40,7 @@ namespace ZBank.DatabaseHandler
 
         Task<int> UpdateAccount<T>(T account);
 
-        Task<bool> InsertAccount(Account account);
+        Task InsertAccount(Account account);
 
         // Card
         Task<int> InsertCard(Card card);

@@ -19,12 +19,6 @@ namespace ZBank.AppEvents
             OnSuccess?.Invoke(isSuccess);
         }
 
-        public event Action<NotificationOpeningEventArgs> NotificationOpening;
-        public void ONNotificationOpening(NotificationOpeningEventArgs args)
-        {
-            NotificationOpening?.Invoke(args);
-        }
-
         public event Action<NotifyUserArgs> NotificationStackUpdated;
         public void OnNotificationStackUpdated(NotifyUserArgs args)
         {

@@ -16,6 +16,7 @@ using ZBank.ViewModel.VMObjects;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using ZBankManagement.AppEvents.AppEventArgs;
+using Windows.UI.Xaml;
 
 namespace ZBank.ViewModel
 {
@@ -152,7 +153,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertAccountResponse response)
             {
-                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnSuccessfulEvent(true);
                     ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
@@ -168,9 +169,16 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException error)
             {
-                await CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    ViewNotifier.Instance.OnSuccessfulEvent(false);
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = error.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    });
                 });
             }
         }
@@ -198,9 +206,22 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
+                await CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = response.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    });
+                });
+
             }
 
         }
+
         private class GetAllAccountsInAddPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
         {
             private AddOrEditAccountViewModel ViewModel { get; set; }

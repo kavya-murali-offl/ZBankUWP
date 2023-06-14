@@ -65,7 +65,6 @@ namespace ZBank.View.Main
         {
             WindowManager windowManager = new WindowManager();
             await windowManager.OpenNewWindow<AddOrEditAccountPage>("Add Account");
-
         }
     }
 }

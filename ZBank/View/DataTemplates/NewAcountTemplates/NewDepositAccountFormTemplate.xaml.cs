@@ -100,9 +100,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             }
         }
 
-     
-
-
         public ICommand SubmitCommand
         {
             get { return (ICommand)GetValue(SubmitCommandProperty); }

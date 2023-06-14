@@ -21,6 +21,7 @@ using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entities.EnumerationType;
 using ZBank.View.DataTemplates.NewAcountTemplates;
 using ZBank.ViewModel;
 using ZBank.ViewModel.VMObjects;
@@ -36,44 +37,51 @@ namespace ZBank.View.Modals
     {
         private AddOrEditAccountViewModel ViewModel { get; set; }
         private IForm FormTemplate { get; set; }    
-        private string CurrentDataTemplateKey { get; set; }
 
         public AddOrEditAccountPage()
         {
             this.InitializeComponent();
             ViewModel = new AddOrEditAccountViewModel(this);
+            SetFormTemplate(AccountType.CURRENT);
+           
         }
 
-
-        private string OnSelection { get; set; }
 
         private void AccountTypeButton_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is RadioButtons radios)
             {
-                string accountType = radios.SelectedItem as string;
-                
-                switch (accountType)
-                {
-                    case "Current":
-                        NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
-                        newCurrentAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
-                        FormTemplate = newCurrentAccountFormTemplate;
-                        break;
-                    case "Savings":
-                        NewSavingsAccountFormTemplate newSavingsAccountFormTemplate = new NewSavingsAccountFormTemplate();
-                        newSavingsAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
-                        FormTemplate = newSavingsAccountFormTemplate;
-                        break;
-                    case "Deposit":
-                        NewDepositAccountFormTemplate newDepositAccountFormTemplate = new NewDepositAccountFormTemplate();
-                        newDepositAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
-                        FormTemplate = newDepositAccountFormTemplate; 
-                        break;
+                if(radios.SelectedItem != null) { 
+                    AccountType accountType = (AccountType)radios.SelectedItem;
+                    SetFormTemplate(accountType);
                 }
-
-                AccountForm.Content = FormTemplate;
             }
+        }
+
+        private IList<AccountType> AccountTypes { get; set; } = new List<AccountType>() { AccountType.CURRENT, AccountType.SAVINGS, AccountType.TERM_DEPOSIT };
+
+        private void SetFormTemplate(AccountType accountType)
+        {
+            switch (accountType)
+            {
+                case AccountType.CURRENT:
+                    NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
+                    newCurrentAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
+                    FormTemplate = newCurrentAccountFormTemplate;
+                    break;
+                case AccountType.SAVINGS:
+                    NewSavingsAccountFormTemplate newSavingsAccountFormTemplate = new NewSavingsAccountFormTemplate();
+                    newSavingsAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
+                    FormTemplate = newSavingsAccountFormTemplate;
+                    break;
+                case AccountType.TERM_DEPOSIT:
+                    NewDepositAccountFormTemplate newDepositAccountFormTemplate = new NewDepositAccountFormTemplate();
+                    newDepositAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
+                    FormTemplate = newDepositAccountFormTemplate;
+                    break;
+            }
+            AccountForm.Content = FormTemplate;
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -117,6 +125,4 @@ namespace ZBank.View.Modals
             FormTemplate.ValidateAndSubmit();
         }
     }
-
-    
 }
