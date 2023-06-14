@@ -654,7 +654,6 @@
                             Margin="15,0,0,0"
                             Text="{x:Bind ViewModel.RowsPerPage, Mode=OneWay}" />
                     </StackPanel>
-                
                 </DropDownButton.Content>
                 <DropDownButton.Flyout>
                     <Flyout>

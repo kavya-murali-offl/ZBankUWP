@@ -25,19 +25,16 @@ namespace ZBank.ViewModel
         public ICommand NextCommand { get; private set; }
         public IList<int> DefinedRows { get; private set; }
 
-
         public TransactionViewModel(IView view)
         {
             View = view;
-            LoadAllTransactionsData();
             DefinedRows = new List<int>()
             {
-               1
+               1, 5, 10, 25, 50
             };
-            CurrentPageIndex = 0;
-            RowsPerPage = 1;
             NextCommand = new RelayCommand(GoToNextPage, IsNextButtonEnabled);
             PreviousCommand = new RelayCommand(GoToPreviousPage, IsPreviousButtonEnabled);
+            RowsPerPage = DefinedRows.First();
         }
 
         private bool IsPreviousButtonEnabled()
@@ -47,7 +44,7 @@ namespace ZBank.ViewModel
 
         private bool IsNextButtonEnabled()
         {
-                return CurrentPageIndex < FilteredTransactions.Count() / RowsPerPage;
+            return CurrentPageIndex + 1 < FilteredTransactions.Count() / RowsPerPage;
         }
 
         private void GoToPreviousPage(object parameter)
@@ -78,16 +75,6 @@ namespace ZBank.ViewModel
 
         public IEnumerable<TransactionBObj> FilteredTransactions { get; set; } = new List<TransactionBObj>();
         
-        private void CalculateTotalPages()
-        {
-            var itemCount = FilteredTransactions.Count();
-            TotalPages = (itemCount / RowsPerPage);
-            if (itemCount % RowsPerPage != 0)
-            {
-                CurrentPageIndex += 1;
-            }
-        }
-
         public void LoadAllTransactionsData()
         {
             GetAllTransactionsRequest request = new GetAllTransactionsRequest()
@@ -108,15 +95,15 @@ namespace ZBank.ViewModel
             }
             AllTransactions = args.TransactionList;
             FilteredTransactions = args.TransactionList;
-            CalculateTotalPages();
             UpdateOnViewList();
+            CalculateTotalPages();
         }
 
         private void UpdateOnViewList()
         {
-            CalculateTotalPages(); 
             int startIndex = (CurrentPageIndex) * RowsPerPage;
             InViewTransactions = new ObservableCollection<TransactionBObj>(FilteredTransactions.Skip(startIndex).Take(RowsPerPage));
+            UpdatePageNavigation();
         }
 
         private void UpdatePageNavigation()
@@ -129,6 +116,9 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.TransactionListUpdated += UpdateTransactionsData;
+            CurrentPageIndex = 0;
+            RowsPerPage = DefinedRows.First();
+            LoadAllTransactionsData();
         }
 
         public void OnPageUnLoaded()
@@ -147,6 +137,7 @@ namespace ZBank.ViewModel
             {
                 _currentPageIndex = value;
                 CurrentPage = value + 1;
+                OnPropertyChanged(nameof(CurrentPageIndex));    
             }
         }
 
@@ -162,6 +153,15 @@ namespace ZBank.ViewModel
             }
         }
 
+        private void CalculateTotalPages()
+        {
+            TotalPages = (FilteredTransactions.Count() / RowsPerPage);
+            if (FilteredTransactions.Count() % RowsPerPage != 0)
+            {
+                TotalPages += 1;
+            }
+        }
+
         private int _rowsPerPage { get; set; }
 
         public int RowsPerPage
@@ -171,6 +171,8 @@ namespace ZBank.ViewModel
             {
                 _rowsPerPage = value;
                 OnPropertyChanged(nameof(RowsPerPage));
+                CalculateTotalPages();
+                CurrentPageIndex = 0;
                 UpdateOnViewList();
             }
         }
