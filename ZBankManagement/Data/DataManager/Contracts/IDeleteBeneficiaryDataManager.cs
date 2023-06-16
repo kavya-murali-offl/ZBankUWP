@@ -8,7 +8,7 @@ using ZBank.ZBankManagement.DomainLayer.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
-    public interface IDeleteBeneficiaryDataManager
+    interface IDeleteBeneficiaryDataManager
     {
         void DeleteBeneficiary(RemoveBeneficiaryRequest request, IUseCaseCallback<RemoveBeneficiaryResponse> callback);
 

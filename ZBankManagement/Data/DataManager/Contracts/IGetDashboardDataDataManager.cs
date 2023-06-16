@@ -8,7 +8,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
-    public interface IGetDashboardDataDataManager
+    interface IGetDashboardDataDataManager
     {
         Task GetDashboardData(GetDashboardDataRequest request, IUseCaseCallback<GetDashboardDataResponse> callback);  
     }

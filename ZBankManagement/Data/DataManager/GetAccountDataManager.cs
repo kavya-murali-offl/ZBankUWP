@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public class GetAccountDataManager : IGetAccountDataManager
+    class GetAccountDataManager : IGetAccountDataManager
     {
         public GetAccountDataManager(IDBHandler dBHandler)
         {

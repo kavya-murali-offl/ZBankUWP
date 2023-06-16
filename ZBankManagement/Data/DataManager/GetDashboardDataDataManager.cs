@@ -17,7 +17,7 @@ using ZBankManagement.Utility;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
 {
-    public class GetDashboardDataDataManager : IGetDashboardDataDataManager
+    class GetDashboardDataDataManager : IGetDashboardDataDataManager
     {
         private readonly IDBHandler _handler; 
         

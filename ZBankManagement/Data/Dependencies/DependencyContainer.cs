@@ -11,14 +11,13 @@ using ZBank.AppEvents;
 
 namespace ZBank.Dependencies
 {
-    public static class DependencyContainer
+    static class DependencyContainer
     {
-
+        //465419
         static DependencyContainer()
         {
             ServiceProvider = 
                 new ServiceCollection()
-                //.ConfigureServices()
                 .ConfigureDBAdapter()
                 .ConfigureCustomerServices()
                 .ConfigureAccountServices()

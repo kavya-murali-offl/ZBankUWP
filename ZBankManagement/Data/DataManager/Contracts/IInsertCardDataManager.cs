@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public interface IInsertCardDataManager
+    interface IInsertCardDataManager
     {
         Task InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback);
     }

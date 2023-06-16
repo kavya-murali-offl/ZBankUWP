@@ -8,7 +8,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
-    public interface ISignupUserDataManager
+    interface ISignupUserDataManager
     {
         Task SignupUser(InsertCustomerRequest request, IUseCaseCallback<SignupUserResponse> callback);
     }

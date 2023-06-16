@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
-    public interface IInsertTransactionDataManager
+    interface IInsertTransactionDataManager
     {
         Task InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback);
     }

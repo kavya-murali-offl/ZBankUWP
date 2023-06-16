@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
-    public interface ILoginCustomerDataManager
+    interface ILoginCustomerDataManager
     {
         Task GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback);
 

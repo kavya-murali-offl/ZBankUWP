@@ -7,7 +7,7 @@ using Windows.Storage;
 
 namespace ZBank.DatabaseAdapter
 {
-    public class SQLiteDatabaseAdapter : IDatabaseAdapter
+    class SQLiteDatabaseAdapter : IDatabaseAdapter
     {
         private static IDatabaseAdapter _databaseAdapter;
 

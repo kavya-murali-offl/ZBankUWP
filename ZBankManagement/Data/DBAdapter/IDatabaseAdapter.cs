@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ZBank.DatabaseAdapter
 {
-    public interface IDatabaseAdapter
+    interface IDatabaseAdapter
     {
         Task CreateTable<T>() where T : new();
 

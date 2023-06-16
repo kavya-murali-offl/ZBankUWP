@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace ZBank.ZBankManagement.DataLayer.DBHandler
 {
-    public class DBInitializationHandler : IDBInitializationHandler
+    class DBInitializationHandler : IDBInitializationHandler
     {
         private IDatabaseAdapter _databaseAdapter { get;set; }
 

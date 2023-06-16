@@ -8,7 +8,7 @@ using ZBank.ZBankManagement.DomainLayer.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
-    internal interface IUpdateBeneficiaryDataManager
+    interface IUpdateBeneficiaryDataManager
     {
         void UpdateBeneficiary(UpdateBeneficiaryRequest request, IUseCaseCallback<UpdateBeneficiaryResponse> callback);
     }

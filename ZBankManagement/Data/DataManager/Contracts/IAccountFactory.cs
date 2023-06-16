@@ -4,7 +4,7 @@ using ZBank.Entities.BusinessObjects;
 
 namespace ZBankManagement.Interface
 {
-    public interface IAccountFactory
+    interface IAccountFactory
     {
         Account GetAccountByType(AccountType accountType);
     }

@@ -9,7 +9,7 @@ using ZBankManagement.Controller;
 
 namespace ZBank.DatabaseHandler
 {
-    public class DBHandler : IDBHandler
+    class DBHandler : IDBHandler
     {
         public DBHandler(IDatabaseAdapter databaseAdapter)
         {

@@ -9,7 +9,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
-    public interface IGetBeneficiaryDataManager
+    interface IGetBeneficiaryDataManager
     {
        Task GetAllBeneficiariesByUserID(GetAllBeneficiariesRequest request, IUseCaseCallback<GetAllBeneficiariesResponse> callback);
 

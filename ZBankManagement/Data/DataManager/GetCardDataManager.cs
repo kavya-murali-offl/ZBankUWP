@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public class GetCardDataManager : IGetCardDataManager
+    class GetCardDataManager : IGetCardDataManager
     {
         public GetCardDataManager(IDBHandler dBHandler)
         {

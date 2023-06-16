@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public class LoginCustomerDataManager  : ILoginCustomerDataManager
+    class LoginCustomerDataManager  : ILoginCustomerDataManager
     {
         public LoginCustomerDataManager(IDBHandler dBHandler)
         {

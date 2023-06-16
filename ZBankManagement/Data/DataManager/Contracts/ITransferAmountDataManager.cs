@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
-    public interface ITransferAmountDataManager
+    interface ITransferAmountDataManager
     {
         //void UpdateBalance(IList<Action> actions);
     }

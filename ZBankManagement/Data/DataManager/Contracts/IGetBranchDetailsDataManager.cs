@@ -8,7 +8,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
-    public interface IGetBranchDetailsDataManager
+    interface IGetBranchDetailsDataManager
     {
         Task GetBranchList(GetAllBranchesRequest request, IUseCaseCallback<GetAllBranchesResponse> callback);
     }

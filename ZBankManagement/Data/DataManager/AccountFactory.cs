@@ -8,7 +8,7 @@ using ZBankManagement.Utility;
 
 namespace ZBankManagement.Controller
 {
-    public class AccountFactory : IAccountFactory
+     class AccountFactory : IAccountFactory
     {
         public Account GetAccountByType(AccountType accountType)
         {

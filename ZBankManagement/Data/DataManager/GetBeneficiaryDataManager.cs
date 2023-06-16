@@ -12,7 +12,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
 {
-    public class GetBeneficiaryDataManager : IGetBeneficiaryDataManager
+    class GetBeneficiaryDataManager : IGetBeneficiaryDataManager
     {
         private IDBHandler DBHandler { get; set; }
 

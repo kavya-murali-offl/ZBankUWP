@@ -8,7 +8,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
-    public interface IResetPasswordDataManager
+    interface IResetPasswordDataManager
     {
         Task ResetPassword(UpdateCustomerCredentialsRequest request, IUseCaseCallback<ResetPasswordResponse> callback);
     }

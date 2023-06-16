@@ -10,7 +10,7 @@ using ZBank.ZBankManagement.DomainLayer.UseCase;
 
 namespace ZBankManagement.Interface
 {
-    public interface IGetAccountDataManager
+    interface IGetAccountDataManager
     {
         Task GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback);
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public class InsertCardDataManager : IInsertCardDataManager
+    class InsertCardDataManager : IInsertCardDataManager
     {
         public InsertCardDataManager(IDBHandler dBHandler)
         {

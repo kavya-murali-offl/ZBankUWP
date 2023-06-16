@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public class UpdateCardDataManager : IUpdateCardDataManager
+    class UpdateCardDataManager : IUpdateCardDataManager
     {
 
         public UpdateCardDataManager(IDBHandler dBHandler)

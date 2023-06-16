@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
-    public interface IUpdateAccountDataManager
+    interface IUpdateAccountDataManager
     {
         Task UpdateAccount(UpdateAccountRequest request, IUseCaseCallback<UpdateAccountResponse> callback);
     }

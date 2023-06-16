@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public class InsertTransactionDataManager : IInsertTransactionDataManager
+    class InsertTransactionDataManager : IInsertTransactionDataManager
     {
         public InsertTransactionDataManager(IDBHandler dbHandler)
         {

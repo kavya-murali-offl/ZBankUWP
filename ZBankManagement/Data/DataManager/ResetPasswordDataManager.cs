@@ -12,7 +12,7 @@ using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCard;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
 {
-    public class ResetPasswordDataManager : IResetPasswordDataManager
+    class ResetPasswordDataManager : IResetPasswordDataManager
     {
 
         public ResetPasswordDataManager(IDBHandler dBHandler)

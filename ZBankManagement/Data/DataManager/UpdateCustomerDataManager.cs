@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.DataManager
 {
-    public class UpdateCustomerDataManager : IUpdateCustomerDataManager
+    class UpdateCustomerDataManager : IUpdateCustomerDataManager
     {
         public UpdateCustomerDataManager(IDBHandler dBHandler)
         {

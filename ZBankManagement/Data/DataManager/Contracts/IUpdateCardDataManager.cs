@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
-    public interface IUpdateCardDataManager
+    interface IUpdateCardDataManager
     {
         Task UpdateCard(UpdateCardRequest request, IUseCaseCallback<UpdateCardResponse> callback);
     }

@@ -9,7 +9,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBankManagement.Interface
 {
-    public interface IGetCardDataManager
+    interface IGetCardDataManager
     {
         Task GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
 

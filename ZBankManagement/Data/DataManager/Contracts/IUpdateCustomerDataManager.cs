@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
-    public interface IUpdateCustomerDataManager
+    interface IUpdateCustomerDataManager
     {
         Task UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback);
 

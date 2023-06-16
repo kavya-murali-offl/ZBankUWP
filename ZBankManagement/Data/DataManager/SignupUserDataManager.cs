@@ -11,7 +11,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
 {
-    public class SignupUserDataManager
+    class SignupUserDataManager
     {
         public SignupUserDataManager(IDBHandler dbHandler)
         {

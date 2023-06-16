@@ -5,7 +5,7 @@ using ZBank.DatabaseHandler;
 
 namespace ZBankManagement.DataManager
 {
-    public class TranferAmountDataManager : ITransferAmountDataManager
+    class TranferAmountDataManager : ITransferAmountDataManager
     {
         public TranferAmountDataManager(IDBHandler dBHandler)
         {

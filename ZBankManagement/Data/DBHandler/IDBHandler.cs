@@ -9,7 +9,7 @@ using ZBank.Entity.BusinessObjects;
 
 namespace ZBank.DatabaseHandler
  {
-    public interface IDBHandler
+    interface IDBHandler
     {
 
         //Branch 

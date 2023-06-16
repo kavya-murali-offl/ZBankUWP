@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZBankManagement.Interface
 {
-    public interface IGetTransactionDataManager
+    interface IGetTransactionDataManager
     {
         Task GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZBank.ZBankManagement.DataLayer.DBHandler
 {
-    public interface IDBInitializationHandler
+    interface IDBInitializationHandler
     {
         void CreateTables();
         void PopulateData();
