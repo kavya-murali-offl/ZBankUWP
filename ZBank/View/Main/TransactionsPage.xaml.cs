@@ -12,6 +12,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
+using ZBank.View.Modals;
 using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -24,6 +26,7 @@ namespace ZBank.View.Main
     public sealed partial class TransactionsPage : Page, IView
     {
         public TransactionViewModel ViewModel { get; set; }  
+        public ContentDialog PaymentDialog { get; set; }  
 
         public TransactionsPage()
         {
@@ -34,16 +37,28 @@ namespace ZBank.View.Main
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageLoaded();
+            ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
+
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageUnLoaded();
+            ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
         }
 
         private void ArrowColumn_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void CancelPaymentRequested(bool isPaymentCompleted)
+        {
+            if(PaymentDialog != null)
+            {
+                PaymentDialog.Hide();
+                PaymentDialog = null;   
+            }
         }
 
         private void RowsPerPageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -54,6 +69,14 @@ namespace ZBank.View.Main
             }
             RowsPerPageButton.Flyout.Hide();
 
+        }
+
+        private async void NewPaymentButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog dialog = new ContentDialog();
+            dialog.Content = new NewPaymentView();
+            PaymentDialog = dialog;
+            await dialog.ShowAsync();
         }
     }
 

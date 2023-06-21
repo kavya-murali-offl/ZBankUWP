@@ -11,6 +11,6 @@ namespace ZBank.AppEvents.AppEventArgs
 {
     public class AccountsListUpdatedArgs
     {
-       public IEnumerable<Account> AccountsList;
+       public IEnumerable<AccountBObj> AccountsList;
     }
 }

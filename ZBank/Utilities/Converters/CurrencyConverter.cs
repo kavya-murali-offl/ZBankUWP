@@ -11,15 +11,19 @@ namespace ZBank.Utilities.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value != null)
-            {
-                if (value is decimal)
+           
+                if (value != null && value is decimal)
                 {
                     return ((decimal)value).ToString("C");
                 }
+                else if(bool.TryParse(parameter?.ToString(), out bool convert))
+                {
+                    if (convert && decimal.TryParse(value.ToString(), out decimal decimalValue))
+                    {
+                        return decimalValue.ToString("C");
+                    }
+                }
                 return value.ToString();
-            }
-            return string.Empty;
 
         }
 

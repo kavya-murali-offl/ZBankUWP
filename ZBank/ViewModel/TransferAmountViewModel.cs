@@ -1,0 +1,350 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using ZBank.AppEvents.AppEventArgs;
+using ZBank.AppEvents;
+using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
+using ZBank.View;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.Domain.UseCase;
+using ZBankManagement.AppEvents.AppEventArgs;
+using ZBank.ViewModel.VMObjects;
+using System.Windows.Input;
+
+namespace ZBank.ViewModel
+{
+    public class TransferAmountViewModel : ViewModelBase
+    {
+        private IView View { get; set; }
+        public ICommand OnProceedToPayCommand { get; set; }
+        public ICommand OnResetCommand { get; set; }
+        public ICommand OnNextCommand { get; set; }
+        public ICommand OnBackCommand { get; set; }
+
+        public int CurrentStep { get; set; } = 1; 
+
+        public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
+        public ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
+
+        public TransferAmountViewModel(IView view) {
+            View = view;
+            Reset();
+            OnProceedToPayCommand = new RelayCommand(ProceedToPay);
+            OnResetCommand = new RelayCommand(Reset);
+            OnNextCommand = new RelayCommand(GoToNextStep);
+            OnBackCommand = new RelayCommand(GoToPreviousStep);
+        }
+
+        public Beneficiary SelectedBeneficiary
+        {
+            get { 
+                return AllBeneficiaries.FirstOrDefault(ben =>
+            ben.ToString().Equals(FieldValues["Beneficiary"].ToString())
+            ); }
+        }
+
+        public AccountBObj SelectedAccount
+        {
+            get
+            {
+                return UserAccounts.FirstOrDefault(ben =>
+            ben.ToString().Equals(FieldValues["Account"].ToString())
+            );
+            }
+        }
+
+        private void ProceedToPay(object parameter) { }
+
+        public void ValidateField(string fieldName)
+        {
+            if (!FieldValues.TryGetValue(fieldName, out object val) || string.IsNullOrEmpty(FieldValues[fieldName]?.ToString()))
+            {
+                FieldErrors[fieldName] = $"{fieldName} is required.";
+            }
+            else
+            {
+                FieldErrors[fieldName] = string.Empty;
+            }
+
+            if (fieldName == "Amount")
+            {
+                var inText = FieldValues["Amount"].ToString();
+                if (decimal.TryParse(inText, out decimal amountInDecimal))
+                {
+                    FieldErrors["Amount"] = string.Empty;
+                }
+                else
+                {
+                    FieldErrors["Amount"] = "Please enter a valid Amount";
+                }
+            }
+        }
+
+        private void Reset(object parameter=null) 
+        {
+            FieldValues["Amount"] = string.Empty;
+            FieldValues["Description"] = string.Empty;
+            FieldValues["Account"] = null;
+            FieldValues["Beneficiary"] = null;
+            FieldValues["Available Balance"] = 0.0m;
+            FieldErrors["Amount"] = string.Empty;
+            FieldErrors["Description"] = string.Empty;
+            FieldErrors["Account"] = string.Empty;
+            FieldErrors["Beneficiary"] = string.Empty;
+            FieldErrors["Available Balance"] = string.Empty;
+        }
+
+        private void LoadAllAccounts()
+        {
+            GetAllAccountsRequest request = new GetAllAccountsRequest()
+            {
+                AccountType = null,
+                UserID = "1111"
+            };
+
+            IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
+            UseCaseBase<GetAllAccountsResponse> useCase = new GetAllAccountsUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        private void LoadAllBeneficiaries()
+        {
+            GetAllBeneficiariesRequest request = new GetAllBeneficiariesRequest()
+            {
+                UserID = "1111"
+            };
+
+            IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback = new GetAllBeneficiariesPresenterCallback(this);
+            UseCaseBase<GetAllBeneficiariesResponse> useCase = new GetAllBeneficiariesUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        public void UpdateBeneficiary(int index)
+        {
+            FieldValues["Beneficiary"] = AllBeneficiaries[index].ToString();
+            ValidateField("Beneficiary");
+
+        }
+
+        public void UpdateUserAccount(int index)
+        {
+            FieldValues["Account"] = UserAccounts[index].ToString();
+            FieldValues["Available Balance"] = UserAccounts[index].Balance;
+            ValidateField("Account");
+        }
+
+        public string UpdateAndGetAmount(string text)
+        {
+            text = new string(text.Where(c => char.IsDigit(c) || c == '.').ToArray());
+            //sender.SelectionStart = newText.Length;
+            FieldValues["Amount"] = text;
+            ValidateField("Amount");
+            return text;
+
+        }
+
+        public void OnLoaded()
+        {
+            ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            ViewNotifier.Instance.BeneficiaryListUpdated += UpdateBeneficiariesList;
+            LoadAllBeneficiaries();
+            LoadAllAccounts();
+        }
+
+        private void UpdateBeneficiariesList(BeneficiaryListUpdatedArgs args)
+        {
+            AllBeneficiaries = new ObservableCollection<Beneficiary>(args.BeneficiaryList);
+        }
+
+        private void UpdateAccountsList(AccountsListUpdatedArgs args)
+        {
+            UserAccounts = new ObservableCollection<AccountBObj>(args.AccountsList);
+        }
+
+        public void OnUnloaded()
+        {
+            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+            ViewNotifier.Instance.BeneficiaryListUpdated -= UpdateBeneficiariesList;
+        }
+
+        private bool ValidateFields()
+        {
+            foreach (var key in FieldValues.Keys)
+            {
+                ValidateField(key);
+            }
+
+            if (FieldErrors.Values.Any((val) => val.Length > 0))
+                return false;
+            return true;
+        }
+
+
+        private void GoToNextStep(object parameter = null)
+        {
+            if (CurrentStep == 1)
+            {
+                if(ValidateFields() && CheckBalance())
+                {
+                    CurrentStep = 2;
+                    ViewNotifier.Instance.OnCurrentPaymentStepChanged(CurrentStep);
+                }
+            }
+        }
+
+        private void GoToPreviousStep(object parameter = null)
+        {
+            if (CurrentStep != 1)
+            {
+                CurrentStep--;
+                ViewNotifier.Instance.OnCurrentPaymentStepChanged(CurrentStep);
+            }
+        }
+
+        private bool CheckBalance()
+        {
+            decimal availableBalance = decimal.Parse(FieldValues["Available Balance"].ToString());
+            decimal amount = decimal.Parse(FieldValues["Amount"].ToString());
+            if (availableBalance < amount)
+            {
+                FieldErrors["Amount"] = $"Insufficient Balance. Amount should be less than Rs. {availableBalance.ToString("C")}";
+                return false;
+            }
+            return true;
+        }
+
+        private ObservableCollection<AccountBObj> _accounts { get; set; }
+
+        public ObservableCollection<AccountBObj> UserAccounts
+        {
+            get { return _accounts; }
+            set
+            {
+                _accounts = new ObservableCollection<AccountBObj>(value);
+                OnPropertyChanged(nameof(UserAccounts));
+            }
+        }
+
+        private ObservableCollection<Beneficiary> _beneficiaries { get; set; }
+
+        public ObservableCollection<Beneficiary> AllBeneficiaries
+        {
+            get { return _beneficiaries; }
+            set
+            {
+                _beneficiaries = new ObservableCollection<Beneficiary>(value);
+                OnPropertyChanged(nameof(AllBeneficiaries));
+            }
+        }
+
+        private class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+        {
+            private TransferAmountViewModel ViewModel { get; set; }
+
+            public GetAllAccountsPresenterCallback(TransferAmountViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(GetAllAccountsResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                    {
+                        AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
+                    };
+                    ViewNotifier.Instance.OnAccountsListUpdated(args);
+
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = response.Message,
+                            Duration = 3000,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+
+            }
+        }
+
+        private class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+        {
+            public TransferAmountViewModel ViewModel { get; set; }
+
+            public GetAllBeneficiariesPresenterCallback(TransferAmountViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(GetAllBeneficiariesResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                    {
+                        BeneficiaryList = response.Beneficiaries
+                    };
+                    ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+            }
+        }
+
+        private class TransferAmountPresenterCallback : IPresenterCallback<TransferAmountResponse>
+        {
+            private TransferAmountViewModel ViewModel { get; set; }
+
+            public TransferAmountPresenterCallback(TransferAmountViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(TransferAmountResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    //AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                    //{
+                    //    AccountsList = new ObservableCollection<Account>(response.Accounts)
+                    //};
+                    //ViewNotifier.Instance.OnAccountsListUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = response.Message,
+                            Type = NotificationType.ERROR,
+                        }
+                    });
+                });
+            }
+        }
+    }
+}

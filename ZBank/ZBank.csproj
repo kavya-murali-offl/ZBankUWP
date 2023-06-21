@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\DispatcherService.cs" />
     <Compile Include="Services\ViewLifetimeControl.cs" />
     <Compile Include="Services\WindowManagerService.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="ViewModel\AddOrEditAccountViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
+    <Compile Include="ViewModel\TransferAmountViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="View\DataTemplates\AddNomineeTemplate.xaml.cs">
@@ -155,6 +157,15 @@
     </Compile>
     <Compile Include="View\DataTemplates\NewAcountTemplates\NewSavingsAccountFormTemplate.xaml.cs">
       <DependentUpon>NewSavingsAccountFormTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewPaymentTemplates\PaymentAcknowledgement.xaml.cs">
+      <DependentUpon>PaymentAcknowledgement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewPaymentTemplates\PaymentConfirmation.xaml.cs">
+      <DependentUpon>PaymentConfirmation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewPaymentTemplates\PaymentDetails.xaml.cs">
+      <DependentUpon>PaymentDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\PersonalDetailsVerificationTemplate.xaml.cs">
       <DependentUpon>PersonalDetailsVerificationTemplate.xaml</DependentUpon>
@@ -196,8 +207,8 @@
     <Compile Include="View\Modals\AddOrEditAccountPage.xaml.cs">
       <DependentUpon>AddOrEditAccountPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Modals\BlankPage1.xaml.cs">
-      <DependentUpon>BlankPage1.xaml</DependentUpon>
+    <Compile Include="View\Modals\NewPaymentView.xaml.cs">
+      <DependentUpon>NewPaymentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\AppNotification.xaml.cs">
       <DependentUpon>AppNotification.xaml</DependentUpon>
@@ -302,6 +313,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\DataTemplates\NewPaymentTemplates\PaymentAcknowledgement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewPaymentTemplates\PaymentConfirmation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewPaymentTemplates\PaymentDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DataTemplates\PersonalDetailsVerificationTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -366,7 +389,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Modals\BlankPage1.xaml">
+    <Page Include="View\Modals\NewPaymentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

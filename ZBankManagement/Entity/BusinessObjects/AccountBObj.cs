@@ -13,24 +13,6 @@ namespace ZBank.Entities.BusinessObjects
 
         public string CardNumber { get; set; }
 
-        public DateTime LinkedOn { get; set; }
-
-        public string Pin { get; set; }
-
-        public CardType Type { get; set; }
-
-        public string CustomerID { get; set; }
-
-        public string CVV { get; set; }
-
-        public string ExpiryMonth { get; set; }
-
-        public string ExpiryYear { get; set; }
-
-        public Branch Branch { get; set; }
-
-        public string BranchID { get; set; }
-
         public string BranchName { get; set; }
 
         public string BankID { get; set; }

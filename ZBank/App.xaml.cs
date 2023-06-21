@@ -8,6 +8,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
+using Windows.UI.Core.Preview;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -15,8 +17,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Dependencies;
+using ZBank.Services;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement;
 
@@ -62,6 +66,7 @@ namespace ZBank
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
+            SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += App_CloseRequested;
 
             if (e.PrelaunchActivated == false)
             {
@@ -76,6 +81,27 @@ namespace ZBank
                 Window.Current.Activate();
             }
             AppInitialization.GetInstance().InitializeDB();
+
+        }
+
+        private async void App_CloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        {
+            if (ViewNotifier.Instance.PaymentInProgress)
+            {
+                var deferral = e.GetDeferral();
+                var dialog = new MessageDialog("Payment is still in progress. Do you still want to exit?", "Exit App");
+                var confirmCommand = new UICommand("Yes");
+                var cancelCommand = new UICommand("No");
+                dialog.Commands.Add(confirmCommand);
+                dialog.Commands.Add(cancelCommand);
+
+                if (await dialog.ShowAsync() == cancelCommand)
+                {
+                    e.Handled = true;
+                }
+
+                deferral.Complete();
+            }
         }
 
         /// <summary>

@@ -14,8 +14,12 @@ using ZBank.Config;
 
 namespace ZBank.Services
 {
+    public delegate void ViewClosedHandler(ViewLifetimeControl viewControl, EventArgs e);
     public class WindowManagerService
     {
+
+        // For instructions on using this service see https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/UWP/features/multiple-views.md
+        // More details about showing multiple views at https://docs.microsoft.com/windows/uwp/design/layout/show-multiple-views
         private static WindowManagerService _current;
 
         public static WindowManagerService Current => _current ?? (_current = new WindowManagerService());
@@ -26,6 +30,8 @@ namespace ZBank.Services
         public int MainViewId { get; private set; }
 
         public CoreDispatcher MainDispatcher { get; private set; }
+
+
 
         public async Task InitializeAsync()
         {
@@ -80,5 +86,6 @@ namespace ZBank.Services
         }
 
         public bool IsWindowOpen(string windowTitle) => SecondaryViews.Any(v => v.Title == windowTitle);
+
     }
 }

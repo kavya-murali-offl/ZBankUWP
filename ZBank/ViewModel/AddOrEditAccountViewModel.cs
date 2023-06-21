@@ -17,32 +17,107 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using ZBankManagement.AppEvents.AppEventArgs;
 using Windows.UI.Xaml;
+using ZBank.Entities.EnumerationType;
+using Windows.Storage;
+using ZBank.Services;
 
 namespace ZBank.ViewModel
 {
-    public class AddOrEditAccountViewModel : ViewModelBase
+    public class AddOrEditAccountViewModel : ViewModelBase, IForm
     {
         public IView View { get; set; }
-
+        public IList<AccountType> AccountTypes { get; set; } = new List<AccountType>() { AccountType.CURRENT, AccountType.SAVINGS, AccountType.TERM_DEPOSIT };
         public ICommand SubmitCommand { get; set; }
+        public AccountType SelectedAccountType { get; set; }
 
         public AddOrEditAccountViewModel(IView view)
         {
             View = view;
             SubmitCommand = new RelayCommand(GetAccount);
             BranchList = new ObservableCollection<Branch>();
+            Reset();
+        }
+
+        public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
+        public ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
+
+        public void ValidateAndSubmit()
+        {
+            if (ValidateFields())
+            {
+                CurrentAccount currentAccount = new CurrentAccount()
+                {
+                    IFSCCode = (FieldValues["Branch"] as Branch).IfscCode.ToString(),
+                    AccountName = "Kavya",
+                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
+                    Balance = decimal.Parse(FieldValues["Amount"].ToString()),
+                    AccountType = Entities.EnumerationType.AccountType.CURRENT,
+                    UserID = "1111",
+                    CreatedOn = DateTime.Now,
+                };
+                SubmitCommand.Execute(currentAccount);
+            }
+        }
+        private bool ValidateFields()
+        {
+            foreach (var key in FieldValues.Keys)
+            {
+                ValidateField(key);
+            }
+
+            var inText = FieldValues["Amount"].ToString();
+            if (decimal.TryParse(inText, out decimal amountInDecimal))
+            {
+                FieldErrors["Amount"] = string.Empty;
+            }
+            else
+            {
+                FieldErrors["Amount"] = "Please enter a valid deposit Amount";
+            }
+
+            if (FieldErrors.Values.Any((val) => val.Length > 0))
+                return false;
+            return true;
+        }
+
+        public void Reset()
+        {
+            FieldValues["Branch"] = string.Empty;
+            FieldErrors["Branch"] = string.Empty;
+            FieldValues["Amount"] = string.Empty;
+            FieldErrors["Amount"] = string.Empty;
+        }
+
+        public void ValidateField(string fieldName)
+        {
+            if (!FieldValues.TryGetValue(fieldName, out object val) || string.IsNullOrEmpty(FieldValues[fieldName]?.ToString()))
+            {
+                FieldErrors[fieldName] = $"{fieldName} is required.";
+            }
+            else
+            {
+                FieldErrors[fieldName] = string.Empty;
+            }
         }
 
         private void GetAccount(object parameter)
         {
             Account account = (Account)parameter;
-            if (account.AccountNumber == null)
+            if (account.IFSCCode == null)
             {
-                ApplyNewAccount(account);
+
             }
             else
             {
-                // edit account
+                if (account.AccountNumber == null)
+                {
+                    IReadOnlyList<StorageFile> files = FieldValues["KYC"] as IReadOnlyList<StorageFile>;
+                    ApplyNewAccount(account, files);
+                }
+                else
+                {
+                    // edit account
+                }
             }
         }
 
@@ -70,9 +145,6 @@ namespace ZBank.ViewModel
             }
         }
 
-        public SavingsAccount SavingsAccount { get; set; } = new SavingsAccount();
-        public CurrentAccount CurrentAccount { get; set; } = new CurrentAccount();
-        public TermDepositAccount DepositAccount { get; set; } = new TermDepositAccount();
 
         public IEnumerable<DropDownItem> TenureList { get; set; } = new List<DropDownItem>()
         {
@@ -83,13 +155,17 @@ namespace ZBank.ViewModel
 
         public bool IsEdit { get; set; }
 
-
         public void LoadContent()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
             LoadAllAccounts();
             LoadAllBranches();
+        }
+
+        public async void CloseView()
+        {
+            await _viewLifetimeControl.CloseAsync();
         }
 
         public void UnloadContent()
@@ -130,11 +206,12 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public void ApplyNewAccount(Account accountToInsert)
+        private void ApplyNewAccount(Account accountToInsert, IReadOnlyList<StorageFile> files)
         {
             InsertAccountRequest request = new InsertAccountRequest()
             {
-                AccountToInsert = accountToInsert
+                AccountToInsert = accountToInsert,
+                Documents = files
             };
 
             IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
@@ -142,34 +219,54 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
+        internal void UpdateBranch(Branch branch)
+        {
+            FieldValues["Branch"] = branch;
+            if (branch != null)
+            {
+                FieldErrors["Branch"] = string.Empty;
+            }
+        }
+
+        private ViewLifetimeControl _viewLifetimeControl;
+
+        public void Initialize(ViewLifetimeControl viewLifetimeControl)
+        {
+            _viewLifetimeControl = viewLifetimeControl;
+            _viewLifetimeControl.Released += OnViewLifetimeControlReleased;
+        }
+
+        private async void OnViewLifetimeControlReleased(object sender, EventArgs e)
+        {
+            _viewLifetimeControl.Released -= OnViewLifetimeControlReleased;
+            await WindowManagerService.Current.MainDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                WindowManagerService.Current.SecondaryViews.Remove(_viewLifetimeControl);
+            });
+        }
+
         private class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
         {
-            private AddOrEditAccountViewModel AccountPageViewModel { get; set; }
+            private AddOrEditAccountViewModel ViewModel { get; set; }
 
             public InsertAccountPresenterCallback(AddOrEditAccountViewModel accountPageViewModel)
             {
-                AccountPageViewModel = accountPageViewModel;
+                ViewModel = accountPageViewModel;
             }
 
             public async Task OnSuccess(InsertAccountResponse response)
             {
-                await CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await WindowManagerService.Current.MainDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    ViewNotifier.Instance.OnSuccessfulEvent(true);
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = "Account Inserted Successfully",
-                            Type = NotificationType.SUCCESS,
-                        }
-                    });
+                    ViewNotifier.Instance.OnAccountInserted(true);
                 });
+
+                
             }
 
             public async Task OnFailure(ZBankException error)
             {
-                await Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await WindowManagerService.Current.MainDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
                     {
@@ -206,7 +303,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
                     {

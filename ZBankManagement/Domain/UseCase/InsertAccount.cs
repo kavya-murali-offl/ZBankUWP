@@ -14,6 +14,7 @@ using ZBank.Entities.BusinessObjects;
 using ZBankManagement.Utility;
 using System.Security.Principal;
 using System.Text;
+using Windows.Storage;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -73,6 +74,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public class InsertAccountRequest : RequestObjectBase
         {
             public Account AccountToInsert { get; set; }
+
+            public IReadOnlyList<StorageFile> Documents { get; set; }
         }
 
         public class InsertAccountResponse

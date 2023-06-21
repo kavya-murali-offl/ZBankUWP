@@ -1,11 +1,15 @@
-﻿using System;
+﻿using BankManagementDB.Utility;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Windows.Storage;
 using ZBank.DatabaseAdapter;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 using ZBankManagement.Controller;
+using ZBankManagement.Entity.DTOs;
 
 namespace ZBank.DatabaseHandler
 {
@@ -16,15 +20,36 @@ namespace ZBank.DatabaseHandler
             _databaseAdapter = databaseAdapter;
         }
 
-        public async Task InsertAccount(Account account)
+        public async Task InsertAccount(Account account, IReadOnlyList<StorageFile> documents)
         {
             object dtoObject = AccountFactory.GetDTOObject(account);
             Func<Task> func = async () =>
             {
                 await _databaseAdapter.Insert(account, typeof(Account));
                 await _databaseAdapter.Insert(dtoObject);
+                foreach(var file in documents)
+                {
+                    byte[] fileBytes = await GetBytesFromFile(file);
+                    KYCDocuments kycDoc = new KYCDocuments()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        File = fileBytes,
+                        FileName = file.Name,
+                        UploadedOn = DateTime.Now,
+
+                    };
+                    await _databaseAdapter.Insert(kycDoc);
+                }
             };
             await _databaseAdapter.RunInTransactionAsync(func);
+        }
+        public async Task<byte[]> GetBytesFromFile(StorageFile file)
+        {
+            var stream = await file.OpenStreamForReadAsync();
+            byte[] bytes = new byte[stream.Length];
+            await stream.ReadAsync(bytes, 0, bytes.Length);
+            stream.Seek(0, SeekOrigin.Begin);
+            return bytes;
         }
 
         private IDatabaseAdapter _databaseAdapter { get; set; }

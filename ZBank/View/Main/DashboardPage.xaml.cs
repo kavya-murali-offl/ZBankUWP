@@ -125,7 +125,6 @@ namespace ZBank.View
             sender.SelectionStart = newText.Length;
         }
 
-
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             SelectedAccount = null;

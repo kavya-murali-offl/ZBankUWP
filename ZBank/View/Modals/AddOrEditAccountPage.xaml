@@ -19,7 +19,7 @@
         <Grid   
             MinWidth="800"
             MaxWidth="1000"
-            MinHeight="800"
+            MinHeight="700"
             Margin="20"
             BorderThickness="1"
             BorderBrush="{ThemeResource ApplicationForeground}"
@@ -73,6 +73,8 @@
                         Height="Auto" />
                     <RowDefinition
                         Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <allTemplates:PersonalDetailsVerificationTemplate
@@ -116,7 +118,7 @@
                         <TextBlock
                             HorizontalAlignment="Center"
                             x:Name="BranchText"
-                            Text="Select Branch" />
+                            Text="{x:Bind ViewModel.FieldValues['Branch']}" />
                     </DropDownButton.Content>
                     <DropDownButton.Flyout>
                         <Flyout
@@ -125,7 +127,7 @@
                             <ListView
                                 x:Name="BranchList"
                                 SelectionChanged="BranchList_SelectionChanged"
-                                ItemsSource="{Binding BranchList, Mode=OneWay}">
+                                ItemsSource="{x:Bind ViewModel.BranchList, Mode=OneWay}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate
                                         x:DataType="model:Branch">
@@ -137,12 +139,19 @@
                         </Flyout>
                     </DropDownButton.Flyout>
                 </DropDownButton>
+                <TextBlock
+                    TextWrapping="Wrap"
+                    Grid.Row="6"
+                    Width="400"
+                    Margin="20,10,20,10"
+                    Text="{x:Bind ViewModel.FieldErrors['Branch'], Mode=OneWay}"
+                    Foreground="Red" />
 
                 <TextBlock
                     TextTrimming="CharacterEllipsis"
                     FontSize="14"
                     Margin="20,20,20,0"
-                    Grid.Row="6"
+                    Grid.Row="7"
                     VerticalAlignment="Center"
                     Foreground="Gray"
                     FontWeight="SemiBold"
@@ -151,18 +160,26 @@
                 
                 <Border
                     Margin="20,5,20,20"
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Background="{ThemeResource SystemAccentColor}"
                     Height="1" />
 
                 <Button
-                    Grid.Row="8"
+                    x:Name="UploadButton"
+                    Grid.Row="9"
+                    Click="UploadButton_Click"
                     Content="Upload Documents"
                     HorizontalAlignment="Center"
                     Style="{ThemeResource PrimaryButton}"
-                    Margin="0">
-                </Button>
+                    Margin="0" />
 
+                <TextBlock
+                    Grid.Row="10"
+                    FontSize="16"
+                    Margin="20"
+                    HorizontalAlignment="Center"
+                    x:Name="PickFilesOutputTextBlock"
+                    TextWrapping="Wrap" />
             </Grid>
 
 
@@ -230,10 +247,9 @@
                         HorizontalAlignment="Center"
                         x:Name="AccountTypeButton"
                         MaxColumns="3"
-                        ItemsSource="{x:Bind AccountTypes}"
-                    Grid.Row="4"
+                        ItemsSource="{x:Bind ViewModel.AccountTypes}"
+                        Grid.Row="4"
                         SelectionChanged="AccountTypeButton_SelectionChanged">
-                       
                     </controls:RadioButtons>
                     <ContentControl
                         Grid.Row="5"

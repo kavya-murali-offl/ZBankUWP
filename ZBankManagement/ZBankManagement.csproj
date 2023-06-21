@@ -225,6 +225,7 @@
     <Compile Include="Entity\DTOs\Customer.cs" />
     <Compile Include="Entity\DTOs\CustomerCredentials.cs" />
     <Compile Include="Entity\DTOs\DebitCardDTO.cs" />
+    <Compile Include="Entity\DTOs\KYCDocuments.cs" />
     <Compile Include="Entity\DTOs\SavingsAccountDTO.cs" />
     <Compile Include="Entity\DTOs\TermDepositAccountDTO.cs" />
     <Compile Include="Entity\DTOs\Transaction.cs" />

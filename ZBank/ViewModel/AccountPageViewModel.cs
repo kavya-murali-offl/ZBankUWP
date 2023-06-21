@@ -30,7 +30,13 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            ViewNotifier.Instance.AccountInserted += OnAccountInsertSuccess;
             LoadAllAccounts();
+        }
+
+        private void OnAccountInsertSuccess(bool obj)
+        {
+           
         }
 
         public void OnPageUnLoaded()
@@ -47,29 +53,6 @@ namespace ZBank.ViewModel
 
         }
 
-        public void InsertAccount(object parameter)
-        {
-            InsertAccountRequest request = new InsertAccountRequest()
-            {
-               //AccountToInsert = new SavingsAccount()
-               //{
-               //     AccountNumber = "test2",
-               //     IFSCCode = "ZBNK1233",
-               //     AccountName = "xxxxxxx",
-               //     AccountStatus = AccountStatus.ACTIVE,
-               //     OpenedOn = DateTime.Now,
-               //     Currency = Currency.INR,
-               //     Amount = 100,
-               //     UserID="1111"
-               //}
-            };
-            
-            //IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
-
-            //UseCaseBase<InsertAccountResponse> useCase = new InsertAccountUseCase(request, presenterCallback);
-            //useCase.Execute();
-        }
-
         private ObservableCollection<Account> _accounts { get; set; }
 
         public ObservableCollection<Account> Accounts
@@ -82,7 +65,7 @@ namespace ZBank.ViewModel
             }
         }
 
-        public void LoadAllAccounts()
+        private void LoadAllAccounts()
         {
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
@@ -159,7 +142,7 @@ namespace ZBank.ViewModel
                 {
                     AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                     {
-                        AccountsList = new ObservableCollection<Account>(response.Accounts)
+                        AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
                     };
                     ViewNotifier.Instance.OnAccountsListUpdated(args);
                    

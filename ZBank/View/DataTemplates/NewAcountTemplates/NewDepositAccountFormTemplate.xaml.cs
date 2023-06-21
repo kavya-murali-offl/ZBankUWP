@@ -29,7 +29,7 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.View.DataTemplates.NewAcountTemplates
 {
-    public sealed partial class NewDepositAccountFormTemplate : UserControl, IForm
+    public sealed partial class NewDepositAccountFormTemplate : UserControl
     {
         public NewDepositAccountFormTemplate()
         {
@@ -37,68 +37,40 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             Reset();
         }
 
-        private ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
-        private ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
-
-        public void ValidateField(string fieldName)
+        public ObservableDictionary<string, object> FieldValues
         {
-            if (!FieldValues.TryGetValue(fieldName, out object val) || string.IsNullOrEmpty(FieldValues[fieldName]?.ToString()))
-            {
-                FieldErrors[fieldName] = $"{fieldName} is required.";
-            }
-            else
-            {
-                FieldErrors[fieldName] = string.Empty;
-            }
-
-            if(fieldName == "Deposit Amount")
-            {
-                var inText = FieldValues["Deposit Amount"].ToString();
-                if (decimal.TryParse(inText, out decimal amountInDecimal))
-                {
-                    FieldErrors["Deposit Amount"] = string.Empty;
-                }
-                else
-                {
-                    FieldErrors["Deposit Amount"] = "Please enter a valid deposit Amount";
-                }
-            }
+            get { return (ObservableDictionary<string, object>)GetValue(FieldValuesProperty); }
+            set { SetValue(FieldValuesProperty, value); }
         }
 
-        public void Reset() {
-            FieldErrors.Add("Deposit Amount", string.Empty);
-            FieldErrors.Add("Repayment Account Number", string.Empty);
-            FieldErrors.Add("From Account Number", string.Empty);
-            FieldErrors.Add("Tenure", string.Empty);
+        // Using a DependencyProperty as the backing store for FieldValues.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FieldValuesProperty =
+            DependencyProperty.Register("FieldValues", typeof(ObservableDictionary<string, object>), typeof(NewCurrentAccountFormTemplate), new PropertyMetadata(new ObservableDictionary<string, object>()));
 
-            FieldValues["Deposit Amount"] = string.Empty;
-            FieldValues["From Account Number"] = string.Empty;
+        public ObservableDictionary<string, string> FieldErrors
+        {
+            get { return (ObservableDictionary<string, string>)GetValue(FieldErrorsProperty); }
+            set { SetValue(FieldErrorsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FieldErrors.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FieldErrorsProperty =
+            DependencyProperty.Register("FieldErrors", typeof(ObservableDictionary<string, string>), typeof(NewCurrentAccountFormTemplate), new PropertyMetadata(new ObservableDictionary<string, string>()));
+
+       public void Reset()
+        {
+            FieldValues["Amount"] = string.Empty;
+            FieldErrors["Amount"] = string.Empty;
             FieldValues["Repayment Account Number"] = string.Empty;
+            FieldErrors["Repayment Account Number"] = string.Empty;
+            FieldValues["From Account Number"] = string.Empty;
+            FieldErrors["From Account Number"] = string.Empty;
             FieldValues["Tenure"] = string.Empty;
+            FieldErrors["Tenure"] = string.Empty;
             FieldValues["Interest Rate"] = "0.0%";
+            FieldErrors["Interest Rate"] = "0.0%";
         }
 
-        public void ValidateAndSubmit()
-        {
-            if (ValidateFields())
-            {
-                TermDepositAccount depositAccount = new TermDepositAccount()
-                {
-                    AccountName = "Kavya",
-                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
-                    Balance = decimal.Parse(FieldValues["Deposit Amount"].ToString()),
-                    AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
-                    TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
-                    RepaymentAccountNumber = FieldValues["Repayment Account Number"].ToString(),
-                    UserID = "1111",
-                    CreatedOn = DateTime.Now,
-                    DepositStartDate = null,
-                    DepositType = Entity.EnumerationTypes.DepositType.OnMaturity
-                };
-                depositAccount.SetDefault();
-                SubmitCommand.Execute(depositAccount);
-            }
-        }
 
         public ICommand SubmitCommand
         {
@@ -115,8 +87,7 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             newText = new string(newText.Where(c => char.IsDigit(c) || c == '.').ToArray());
             sender.Text = newText;
             sender.SelectionStart = newText.Length;
-            FieldValues["Deposit Amount"] = newText;
-            ValidateField("Deposit Amount");
+            FieldValues["Amount"] = newText;
         }
 
         private void TenureList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -131,7 +102,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                     UpdateInterestRate();
                 }
             }
-            ValidateField("Tenure");
             TenureDropDownButton.Flyout.Hide();
         }
 
@@ -158,7 +128,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 FromAccountText.Text = selectedAccount.ToString();
                 FromAccountDropdownButton.Flyout.Hide();
             }
-            ValidateField("From Account Number");
 
         }
 
@@ -176,23 +145,10 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 ToAccountText.Text = selectedAccount.ToString();
                 ToAccountDropdownButton.Flyout.Hide();
             }
-            ValidateField("Repayment Account Number");
-
         }
 
 
-        private bool ValidateFields() 
-        {
-            foreach (var key in FieldValues.Keys)
-            {
-                ValidateField(key);
-            }
-
-            if (FieldErrors.Values.Any((val) => val.Length > 0))
-                return false;
-            return true;
-        }
-
+       
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 

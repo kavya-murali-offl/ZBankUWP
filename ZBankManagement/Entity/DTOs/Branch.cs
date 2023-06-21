@@ -18,5 +18,7 @@ namespace ZBank.Entities
         public string BankID { get; set; }
 
         public string IfscCode { get; set; }
+
+        public override string ToString() => BranchName + " - " + IfscCode;
     }
 }

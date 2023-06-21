@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 
 namespace ZBank.Services
 {
@@ -30,6 +31,14 @@ namespace ZBank.Services
         public int Id { get; private set; }
 
         public string Title { get; set; }
+
+        public async Task CloseAsync()
+        {
+            await Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                _window.Close();
+            });
+        }
 
         public event ViewReleasedHandler Released
         {
@@ -127,12 +136,21 @@ namespace ZBank.Services
 
         private void RegisterForEvents()
         {
+            Window.Current.Closed += OnClosed;
             ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
         }
 
+        public event EventHandler Closed;
+
         private void UnregisterForEvents()
         {
+            Window.Current.Closed -= OnClosed;
             ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
+        }
+
+        private void OnClosed(object sender, CoreWindowEventArgs e)
+        {
+            Closed?.Invoke(this, EventArgs.Empty);
         }
 
         private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs e)
@@ -157,11 +175,13 @@ namespace ZBank.Services
                 UnregisterForEvents();
                 if (InternalReleased == null)
                 {
-                    // For more information about using Multiple Views, see https://github.com/microsoft/TemplateStudio/blob/main/docs/UWP/features/multiple-views.md
+                    // For more information about using Multiple Views, see https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/UWP/features/multiple-views.md
                     throw new InvalidOperationException("All pages opened in a new window must subscribe to the Released Event.");
                 }
 
                 InternalReleased.Invoke(this, null);
+                Window.Current.Content = null;
+                Window.Current.Close();
             }
         }
     }

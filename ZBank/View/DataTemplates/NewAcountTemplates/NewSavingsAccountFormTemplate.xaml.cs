@@ -20,65 +20,37 @@ using ZBank.ViewModel.VMObjects;
 
 namespace ZBank.View.DataTemplates.NewAcountTemplates
 {
-    public sealed partial class NewSavingsAccountFormTemplate : UserControl, IForm
+    public sealed partial class NewSavingsAccountFormTemplate : UserControl
     {
         public NewSavingsAccountFormTemplate()
         {
             this.InitializeComponent();
             Reset();
         }
-
+        public ObservableDictionary<string, object> FieldValues
+        {
+            get { return (ObservableDictionary<string, object>)GetValue(FieldValuesProperty); }
+            set { SetValue(FieldValuesProperty, value); }
+        }
         public void Reset()
         {
-            FieldValues["Deposit Amount"] = string.Empty;
-            FieldErrors["Deposit Amount"] = string.Empty;
+            FieldValues["Amount"] = string.Empty;
+            FieldErrors["Amount"] = string.Empty;
         }
 
-        private ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
-        private ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
+        // Using a DependencyProperty as the backing store for FieldValues.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FieldValuesProperty =
+            DependencyProperty.Register("FieldValues", typeof(ObservableDictionary<string, object>), typeof(NewCurrentAccountFormTemplate), new PropertyMetadata(new ObservableDictionary<string, object>()));
 
-        public void ValidateField(string fieldName)
+        public ObservableDictionary<string, string> FieldErrors
         {
-            if (!FieldValues.TryGetValue(fieldName, out object val) || string.IsNullOrEmpty(FieldValues[fieldName]?.ToString()))
-            {
-                FieldErrors[fieldName] = $"{fieldName} is required.";
-            }
-            else
-            {
-                FieldErrors[fieldName] = string.Empty;
-            }
-
-            if (fieldName == "Deposit Amount")
-            {
-                var inText = FieldValues["Deposit Amount"].ToString();
-                if (decimal.TryParse(inText, out decimal amountInDecimal))
-                {
-                    FieldValues["Deposit Amount"] = inText;
-                    FieldErrors["Deposit Amount"] = string.Empty;
-                }
-                else
-                {
-                    FieldErrors["Deposit Amount"] = "Please enter a valid deposit Amount";
-                }
-            }
+            get { return (ObservableDictionary<string, string>)GetValue(FieldErrorsProperty); }
+            set { SetValue(FieldErrorsProperty, value); }
         }
 
-        public void ValidateAndSubmit()
-        {
-            if (ValidateFields())
-            {
-                SavingsAccount savingsAccount = new SavingsAccount()
-                {
-                    AccountName = "Kavya",
-                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
-                    Balance = (decimal)FieldValues["Deposit Amount"],
-                    AccountType = Entities.EnumerationType.AccountType.TERM_DEPOSIT,
-                    UserID = "1111",
-                    CreatedOn = DateTime.Now,
-                };
-                SubmitCommand.Execute(savingsAccount);
-            }
-        }
+        // Using a DependencyProperty as the backing store for FieldErrors.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FieldErrorsProperty =
+            DependencyProperty.Register("FieldErrors", typeof(ObservableDictionary<string, string>), typeof(NewCurrentAccountFormTemplate), new PropertyMetadata(new ObservableDictionary<string, string>()));
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
@@ -86,8 +58,8 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             newText = new string(newText.Where(c => char.IsDigit(c) || c == '.').ToArray());
             sender.Text = newText;
             sender.SelectionStart = newText.Length;
-            FieldValues["Deposit Amount"] = newText;
-            ValidateField("Deposit Amount");
+            FieldValues["Amount"] = newText;
+            //ValidateField("Deposit Amount");
         }
 
         public ICommand SubmitCommand
@@ -99,16 +71,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
         public static readonly DependencyProperty SubmitCommandProperty =
             DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(NewSavingsAccountFormTemplate), new PropertyMetadata(null));
 
-        private bool ValidateFields()
-        {
-            foreach (var key in FieldValues.Keys)
-            {
-                ValidateField(key);
-            }
-
-            if (FieldErrors.Values.Any((val) => val.Length > 0))
-                return false;
-            return true;
-        }
+        
     }
 }

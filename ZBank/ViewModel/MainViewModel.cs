@@ -15,6 +15,7 @@ using ZBank.View;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.View.UserControls;
+using ZBank.Services;
 
 namespace ZBank.ViewModel
 {
@@ -46,6 +47,11 @@ namespace ZBank.ViewModel
             };
 
             SelectedItem = TopNavigationList.FirstOrDefault();
+            LoadWindow();
+        }
+        private async void LoadWindow()
+        {
+            await WindowManagerService.Current.InitializeAsync();
         }
 
         public void UpdateSelectedPage(Type pageType)

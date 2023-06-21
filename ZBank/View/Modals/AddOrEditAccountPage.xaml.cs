@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -25,6 +28,7 @@ using ZBank.Entities.EnumerationType;
 using ZBank.View.DataTemplates.NewAcountTemplates;
 using ZBank.ViewModel;
 using ZBank.ViewModel.VMObjects;
+using ZBank.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,14 +40,11 @@ namespace ZBank.View.Modals
     public sealed partial class AddOrEditAccountPage : Page, IView
     {
         private AddOrEditAccountViewModel ViewModel { get; set; }
-        private IForm FormTemplate { get; set; }    
+
 
         public AddOrEditAccountPage()
         {
             this.InitializeComponent();
-            ViewModel = new AddOrEditAccountViewModel(this);
-            SetFormTemplate(AccountType.CURRENT);
-           
         }
 
 
@@ -53,35 +54,46 @@ namespace ZBank.View.Modals
             {
                 if(radios.SelectedItem != null) { 
                     AccountType accountType = (AccountType)radios.SelectedItem;
+                    ViewModel.SelectedAccountType = accountType;
                     SetFormTemplate(accountType);
                 }
             }
         }
 
-        private IList<AccountType> AccountTypes { get; set; } = new List<AccountType>() { AccountType.CURRENT, AccountType.SAVINGS, AccountType.TERM_DEPOSIT };
-
         private void SetFormTemplate(AccountType accountType)
         {
+            ViewModel.Reset();
             switch (accountType)
             {
                 case AccountType.CURRENT:
-                    NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
-                    newCurrentAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
-                    FormTemplate = newCurrentAccountFormTemplate;
+                    NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate()
+                    {
+                        SubmitCommand = ViewModel.SubmitCommand,
+                        FieldErrors = ViewModel.FieldErrors,
+                        FieldValues = ViewModel.FieldValues,
+                    };
+                    AccountForm.Content = newCurrentAccountFormTemplate;
                     break;
                 case AccountType.SAVINGS:
-                    NewSavingsAccountFormTemplate newSavingsAccountFormTemplate = new NewSavingsAccountFormTemplate();
-                    newSavingsAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
-                    FormTemplate = newSavingsAccountFormTemplate;
+                    NewSavingsAccountFormTemplate newSavingsAccountFormTemplate = new NewSavingsAccountFormTemplate()
+                    {
+                        SubmitCommand = ViewModel.SubmitCommand,
+                        FieldErrors = ViewModel.FieldErrors,
+                        FieldValues = ViewModel.FieldValues,
+                    };
+                    AccountForm.Content = newSavingsAccountFormTemplate;
                     break;
                 case AccountType.TERM_DEPOSIT:
-                    NewDepositAccountFormTemplate newDepositAccountFormTemplate = new NewDepositAccountFormTemplate();
-                    newDepositAccountFormTemplate.SubmitCommand = ViewModel.SubmitCommand;
-                    FormTemplate = newDepositAccountFormTemplate;
+                    NewDepositAccountFormTemplate newDepositAccountFormTemplate = new NewDepositAccountFormTemplate()
+                    {
+                        SubmitCommand = ViewModel.SubmitCommand,
+                        FieldErrors = ViewModel.FieldErrors,
+                        FieldValues = ViewModel.FieldValues,
+                    };
+                    newDepositAccountFormTemplate.Reset();
+                    AccountForm.Content = newDepositAccountFormTemplate;
                     break;
             }
-            AccountForm.Content = FormTemplate;
-
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -90,20 +102,40 @@ namespace ZBank.View.Modals
             NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
             AccountForm.Content = newCurrentAccountFormTemplate;
             ViewNotifier.Instance.ThemeChanged += ChangeTheme;
-            ViewNotifier.Instance.OnSuccess += InsertedAccount;
+            ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
+            ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
             ViewModel.LoadContent();
         }
 
-        private void InsertedAccount(bool obj)
+        private void OnAccountInsertionSuccessful(bool obj)
         {
-
+            ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
+            ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
+            ViewModel.UnloadContent();
+            ViewModel.CloseView();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
-            ViewNotifier.Instance.OnSuccess -= InsertedAccount;
             ViewModel.UnloadContent();
+            ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
+        }
+
+        private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
+        {
+            ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
+            ViewModel.UnloadContent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            ViewModel = new AddOrEditAccountViewModel(this);
+            ViewModel.Reset();
+            AccountTypeButton.SelectedIndex = 0;
+            SetFormTemplate(AccountType.CURRENT);
+            ViewModel.Initialize(e.Parameter as ViewLifetimeControl);
         }
 
         private async void ChangeTheme(ElementTheme theme)
@@ -117,12 +149,49 @@ namespace ZBank.View.Modals
 
         private void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (sender is ListView item)
+            {
+                if (item.SelectedIndex >= 0)
+                {
+                    var branch = (item.SelectedItem as Branch);
+                    ViewModel.UpdateBranch(branch);
+                    BranchText.Text = branch.ToString();
+                }
+                BranchDropdown.Flyout.Hide();
+            }
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            FormTemplate.ValidateAndSubmit();
+            ViewModel.ValidateAndSubmit();
+        }
+
+        private async void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            PickFilesOutputTextBlock.Text = "";
+
+            var openPicker = new FileOpenPicker
+            {
+                ViewMode = PickerViewMode.List,
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
+            openPicker.FileTypeFilter.Add("*");
+
+            IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
+            if (files.Count > 0)
+            {
+                StringBuilder output = new StringBuilder("Uploaded Files");
+                foreach (StorageFile file in files)
+                {
+                    output.Append(file.Name + "\n");
+                }
+                PickFilesOutputTextBlock.Text = output.ToString();
+                ViewModel.FieldValues["KYC"] = files;
+            }
+            else
+            {
+                PickFilesOutputTextBlock.Text = "Operation cancelled.";
+            }
         }
     }
 }

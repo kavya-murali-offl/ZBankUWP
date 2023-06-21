@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
 using ZBank.Entity;
 using ZBank.Entity.BusinessObjects;
+using Windows.Storage;
 
 namespace ZBank.DatabaseHandler
  {
@@ -40,7 +41,7 @@ namespace ZBank.DatabaseHandler
 
         Task<int> UpdateAccount<T>(T account);
 
-        Task InsertAccount(Account account);
+        Task InsertAccount(Account account, IReadOnlyList<StorageFile> storageFiles);
 
         // Card
         Task<int> InsertCard(Card card);

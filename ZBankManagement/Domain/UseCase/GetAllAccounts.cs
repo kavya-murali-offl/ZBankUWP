@@ -56,12 +56,13 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllAccountsRequest : RequestObjectBase
     {
         public AccountType? AccountType { get; set; }
+
         public string UserID { get; set; }
     }
 
 
     public class GetAllAccountsResponse
     {
-        public IEnumerable<Account> Accounts { get; set; }
+        public IEnumerable<AccountBObj> Accounts { get; set; }
     }
 }

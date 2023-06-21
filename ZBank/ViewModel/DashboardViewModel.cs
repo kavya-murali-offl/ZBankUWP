@@ -147,7 +147,7 @@ namespace ZBank.ViewModel
                 {
                     AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                     {
-                        AccountsList = new ObservableCollection<Account>(response.Accounts)
+                        AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
                     };
                     ViewNotifier.Instance.OnAccountsListUpdated(args);
                 });

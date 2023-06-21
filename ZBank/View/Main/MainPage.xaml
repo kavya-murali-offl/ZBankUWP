@@ -164,7 +164,6 @@
 
             </SplitView.Pane>
             <SplitView.Content>
-                 
                     <Grid x:Name="MainGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition

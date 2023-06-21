@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ZBankManagement.Entity.DTOs;
 
 namespace ZBank.ZBankManagement.DataLayer.DBHandler
 {
@@ -24,7 +25,7 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             _databaseAdapter.CreateTable<Customer>();
             _databaseAdapter.CreateTable<CustomerCredentials>();
             _databaseAdapter.CreateTable<Card>();
-            _databaseAdapter.CreateTable<Entities.Account>();
+            _databaseAdapter.CreateTable<Account>();
             _databaseAdapter.CreateTable<Beneficiary>();
             _databaseAdapter.CreateTable<CurrentAccountDTO>();
             _databaseAdapter.CreateTable<SavingsAccountDTO>();
@@ -34,6 +35,7 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             _databaseAdapter.CreateTable<DebitCardDTO>();
             _databaseAdapter.CreateTable<Bank>();
             _databaseAdapter.CreateTable<Branch>();
+            _databaseAdapter.CreateTable<KYCDocuments>();
         }
 
         public void PopulateData()

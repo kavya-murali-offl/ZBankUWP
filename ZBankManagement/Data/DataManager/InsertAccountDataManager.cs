@@ -25,14 +25,13 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                await DBHandler.InsertAccount(request.AccountToInsert); ;
-            
-                    InsertAccountResponse response = new InsertAccountResponse
-                    {
+               await DBHandler.InsertAccount(request.AccountToInsert, request.Documents);
+               InsertAccountResponse response = new InsertAccountResponse
+               {
                         IsSuccess = true,
                         InsertedAccount = request.AccountToInsert
-                    };
-                    callback.OnSuccess(response);
+               };
+               callback.OnSuccess(response);
               
             }
             catch(Exception err)

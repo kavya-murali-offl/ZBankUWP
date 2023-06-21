@@ -12,11 +12,24 @@ namespace ZBank.AppEvents
 {
     public class ViewNotifier
     {
+        public bool PaymentInProgress { get; set; }
 
-        public event Action<bool> OnSuccess;
-        public void OnSuccessfulEvent (bool isSuccess)
+        public event Action<int> CurrentPaymentStepChanged;
+        public void OnCurrentPaymentStepChanged(int step)
         {
-            OnSuccess?.Invoke(isSuccess);
+            CurrentPaymentStepChanged?.Invoke(step);
+        }
+
+        public event Action<bool> CancelPaymentRequested;
+        public void OnCancelPaymentRequested(bool isPaymentCompleted)
+        {
+            CancelPaymentRequested?.Invoke(isPaymentCompleted);
+        }
+
+        public event Action<bool> AccountInserted;
+        public void OnAccountInserted (bool isSuccess)
+        {
+            AccountInserted?.Invoke(isSuccess);
         }
 
         public event Action<NotifyUserArgs> NotificationStackUpdated;

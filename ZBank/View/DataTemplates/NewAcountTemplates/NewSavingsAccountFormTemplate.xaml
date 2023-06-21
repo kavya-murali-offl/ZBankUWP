@@ -39,13 +39,13 @@
             HorizontalAlignment="Center"
             x:Name="AmountTextBox"
             MaxWidth="400"
-            Text="{x:Bind FieldValues['Deposit Amount'], Mode=TwoWay}"
+            Text="{x:Bind FieldValues['Amount'], Mode=TwoWay}"
             TextChanging="AmountTextBox_TextChanging"
             PlaceholderText="Enter Amount in INR" />
 
         <TextBlock
             Grid.Row="5"
-            Text="{x:Bind FieldErrors['Deposit Amount'], Mode=OneWay}"
+            Text="{x:Bind FieldErrors['Amount'], Mode=OneWay}"
             Foreground="Red" />
 
     </Grid>

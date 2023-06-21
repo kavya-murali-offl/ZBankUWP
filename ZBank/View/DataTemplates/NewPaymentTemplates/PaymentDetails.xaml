@@ -1,0 +1,185 @@
+﻿<UserControl
+    x:Class="ZBank.View.DataTemplates.NewPaymentTemplates.PaymentDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank.View.DataTemplates.NewPaymentTemplates"
+    xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
+    xmlns:converter="using:ZBank.Utilities.Converters"
+    xmlns:model="using:ZBank.Entities"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <converter:CurrencyConverter x:Key="CurrencyConverter"/>
+    </UserControl.Resources>
+    <StackPanel
+        MaxWidth="400"
+        MinWidth="300">
+        <TextBlock
+            MaxWidth="400"
+            Margin="5,10,5,5"
+            Text="Account"
+            Style="{ThemeResource NormalSubText}" />
+        <DropDownButton
+            x:Name="AccountsDropdownButton"
+            HorizontalAlignment="Stretch"
+            CornerRadius="8">
+            <DropDownButton.Content>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Text="{x:Bind ViewModel.FieldValues['Account'], TargetNullValue='Select Account', Mode=OneWay}" />
+            </DropDownButton.Content>
+            <DropDownButton.Flyout>
+                <Flyout
+                    Placement="Bottom"
+                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                    <ListView
+                        x:Name="AccountsList"
+                        SelectionChanged="AccountsList_SelectionChanged"
+                        ItemsSource="{Binding UserAccounts, Mode=OneWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate
+                                x:DataType="modelBObj:AccountBObj">
+                                <TextBlock
+                                    Text="{x:Bind}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Flyout>
+            </DropDownButton.Flyout>
+        </DropDownButton>
+        <TextBlock
+            TextWrapping="Wrap"
+            Margin="5"
+            Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
+            Foreground="Red" />
+        <StackPanel
+            Orientation="Horizontal">
+            <TextBlock
+                FontSize="16"
+                HorizontalAlignment="Left"
+                FontWeight="SemiBold"
+                VerticalAlignment="Center"
+                Text="Available Balance:" />
+            <TextBlock
+                FontSize="20"
+                Foreground="Green"
+                Margin="15,0,5,0"
+                HorizontalAlignment="Left"
+                FontWeight="SemiBold"
+                Text="{x:Bind ViewModel.FieldValues['Available Balance'], Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
+        </StackPanel>
+        <TextBlock
+            Margin="5,20,5,5"
+            Text="Beneficiary"
+            Style="{ThemeResource NormalSubText}" />
+        <DropDownButton
+            x:Name="BeneficiaryButton"
+            HorizontalAlignment="Stretch"
+            CornerRadius="8">
+            <DropDownButton.Content>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Text="{x:Bind ViewModel.FieldValues['Beneficiary'], TargetNullValue='Select Beneficiary', Mode=OneWay}" 
+                x:Name="BeneficiaryText" />
+            </DropDownButton.Content>
+            <DropDownButton.Flyout>
+                <Flyout
+                    Placement="Bottom"
+                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                    <ListView
+                        x:Name="BeneficiaryList"
+                        SelectionChanged="BeneficiaryList_SelectionChanged"
+                        ItemsSource="{Binding AllBeneficiaries, Mode=OneWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate
+                                x:DataType="model:Beneficiary">
+                                <TextBlock
+                                    Text="{x:Bind}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Flyout>
+            </DropDownButton.Flyout>
+        </DropDownButton>
+        <TextBlock
+            Grid.Row="5"
+            TextWrapping="Wrap"
+            Margin="5"
+            Text="{x:Bind ViewModel.FieldErrors['Beneficiary'], Mode=OneWay}"
+            Foreground="Red" />
+
+        <!--<ListView
+                HorizontalAlignment="Center"
+                ItemsSource="{x:Bind ViewModel.AllBeneficiaries, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate
+                        x:DataType="model:Beneficiary">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="*"
+                                    MinWidth="100" />
+                                <ColumnDefinition
+                                    Width="*"
+                                    MinWidth="200" />
+                                <ColumnDefinition
+                                    Width="*"
+                                    MinWidth="100" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{x:Bind Name}" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Grid.Column="1"
+                                Text="{x:Bind AccountNumber}" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Grid.Column="2"
+                                Text="{x:Bind IFSCCode}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+        <TextBlock
+            Margin="5,20,5,5"
+            Text="Amount"
+            MaxWidth="400"
+            Style="{ThemeResource NormalSubText}" />
+
+        <TextBox
+            x:Name="AmountTextBox"
+            MaxWidth="400"
+            Text="{x:Bind ViewModel.FieldValues['Amount'], Mode=TwoWay}"
+            TextChanging="AmountTextBox_TextChanging"
+            PlaceholderText="Enter Amount in INR" />
+
+        <TextBlock
+            Grid.Row="5"
+            TextWrapping="Wrap"
+            Margin="5"
+            Text="{x:Bind ViewModel.FieldErrors['Amount'], Mode=OneWay}"
+            Foreground="Red" />
+
+        <TextBlock
+            Margin="5,20,5,5"
+            Text="Description"
+            Style="{ThemeResource NormalSubText}" />
+        <TextBox
+            x:Name="DescriptionTextBox"
+            MaxWidth="400"
+            Text="{x:Bind ViewModel.FieldValues['Description'], Mode=TwoWay}"
+            TextChanging="DescriptionTextBox_TextChanging"
+            PlaceholderText="Describe the transaction" />
+        <TextBlock
+            Grid.Row="5"
+            TextWrapping="Wrap"
+            Margin="5"
+            Text="{x:Bind ViewModel.FieldErrors['Description'], Mode=OneWay}"
+            Foreground="Red" />
+    </StackPanel>
+
+</UserControl>

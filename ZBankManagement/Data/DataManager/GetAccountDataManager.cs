@@ -28,7 +28,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<Account> accountsList = await DBHandler.GetAllAccounts(request.UserID);
+                IEnumerable<AccountBObj> accountsList = await DBHandler.GetAllAccounts(request.UserID);
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {
                     Accounts = accountsList
