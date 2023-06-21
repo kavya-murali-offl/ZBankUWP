@@ -14,11 +14,8 @@
     <UserControl.Resources>
         <converter:CurrencyConverter x:Key="CurrencyConverter"/>
     </UserControl.Resources>
-    <StackPanel
-        MaxWidth="400"
-        MinWidth="300">
+    <StackPanel MinWidth="300" MaxWidth="400">
         <TextBlock
-            MaxWidth="400"
             Margin="5,10,5,5"
             Text="Account"
             Style="{ThemeResource NormalSubText}" />
@@ -147,12 +144,10 @@
         <TextBlock
             Margin="5,20,5,5"
             Text="Amount"
-            MaxWidth="400"
             Style="{ThemeResource NormalSubText}" />
 
         <TextBox
             x:Name="AmountTextBox"
-            MaxWidth="400"
             Text="{x:Bind ViewModel.FieldValues['Amount'], Mode=TwoWay}"
             TextChanging="AmountTextBox_TextChanging"
             PlaceholderText="Enter Amount in INR" />
@@ -161,6 +156,7 @@
             Grid.Row="5"
             TextWrapping="Wrap"
             Margin="5"
+            Width="300"
             Text="{x:Bind ViewModel.FieldErrors['Amount'], Mode=OneWay}"
             Foreground="Red" />
 
@@ -170,7 +166,7 @@
             Style="{ThemeResource NormalSubText}" />
         <TextBox
             x:Name="DescriptionTextBox"
-            MaxWidth="400"
+            
             Text="{x:Bind ViewModel.FieldValues['Description'], Mode=TwoWay}"
             TextChanging="DescriptionTextBox_TextChanging"
             PlaceholderText="Describe the transaction" />

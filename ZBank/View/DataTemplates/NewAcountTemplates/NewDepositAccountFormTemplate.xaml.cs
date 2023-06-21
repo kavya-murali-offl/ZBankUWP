@@ -61,14 +61,13 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
         {
             FieldValues["Amount"] = string.Empty;
             FieldErrors["Amount"] = string.Empty;
-            FieldValues["Repayment Account Number"] = string.Empty;
+            FieldValues["Repayment Account Number"] = null;
             FieldErrors["Repayment Account Number"] = string.Empty;
-            FieldValues["From Account Number"] = string.Empty;
+            FieldValues["From Account Number"] = null;
             FieldErrors["From Account Number"] = string.Empty;
             FieldValues["Tenure"] = string.Empty;
             FieldErrors["Tenure"] = string.Empty;
-            FieldValues["Interest Rate"] = "0.0%";
-            FieldErrors["Interest Rate"] = "0.0%";
+            FieldValues["Interest Rate"] = "0.0";
         }
 
 
@@ -88,6 +87,10 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             sender.Text = newText;
             sender.SelectionStart = newText.Length;
             FieldValues["Amount"] = newText;
+            if (newText?.Length > 0)
+            {
+                FieldErrors["Amount"] = string.Empty;
+            }
         }
 
         private void TenureList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -98,6 +101,7 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
                 if (item.SelectedIndex >= 0)
                 {
                     FieldValues["Tenure"] = (item.SelectedItem as DropDownItem).Value;
+                    FieldErrors["Tenure"] = string.Empty;
                     TenureText.Text = (item.SelectedItem as DropDownItem).Text;
                     UpdateInterestRate();
                 }
@@ -124,8 +128,8 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             if (item.SelectedIndex >= 0)
             {
                 Account selectedAccount = (item.SelectedItem as Account);
-                FieldValues["From Account Number"] = selectedAccount.AccountNumber;
-                FromAccountText.Text = selectedAccount.ToString();
+                FieldValues["From Account Number"] = selectedAccount.ToString();
+                FieldErrors["From Account Number"] = string.Empty;
                 FromAccountDropdownButton.Flyout.Hide();
             }
 
@@ -141,8 +145,8 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             if (item.SelectedIndex >= 0)
             {
                 Account selectedAccount = (item.SelectedItem as Account);
-                FieldValues["Repayment Account Number"] = selectedAccount.AccountNumber;
-                ToAccountText.Text = selectedAccount.ToString();
+                FieldValues["Repayment Account Number"] = selectedAccount.ToString();
+                FieldErrors["Repayment Account Number"] = string.Empty;
                 ToAccountDropdownButton.Flyout.Hide();
             }
         }

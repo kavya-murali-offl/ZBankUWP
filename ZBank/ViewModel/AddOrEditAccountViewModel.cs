@@ -20,6 +20,7 @@ using Windows.UI.Xaml;
 using ZBank.Entities.EnumerationType;
 using Windows.Storage;
 using ZBank.Services;
+using ZBank.Entity.EnumerationTypes;
 
 namespace ZBank.ViewModel
 {
@@ -33,7 +34,6 @@ namespace ZBank.ViewModel
         public AddOrEditAccountViewModel(IView view)
         {
             View = view;
-            SubmitCommand = new RelayCommand(GetAccount);
             BranchList = new ObservableCollection<Branch>();
             Reset();
         }
@@ -45,19 +45,21 @@ namespace ZBank.ViewModel
         {
             if (ValidateFields())
             {
-                CurrentAccount currentAccount = new CurrentAccount()
+                Account account = GetAccount();
+                if (account.AccountNumber == null)
                 {
-                    IFSCCode = (FieldValues["Branch"] as Branch).IfscCode.ToString(),
-                    AccountName = "Kavya",
-                    AccountStatus = Entities.EnumerationType.AccountStatus.INACTIVE,
-                    Balance = decimal.Parse(FieldValues["Amount"].ToString()),
-                    AccountType = Entities.EnumerationType.AccountType.CURRENT,
-                    UserID = "1111",
-                    CreatedOn = DateTime.Now,
-                };
-                SubmitCommand.Execute(currentAccount);
+                    IReadOnlyList<StorageFile> files = FieldValues["KYC"] as IReadOnlyList<StorageFile>;
+                    if(files.Count > 0)
+                    {
+                        ApplyNewAccount(account, files);
+                    }
+                }
+                else
+                {
+                }
             }
         }
+
         private bool ValidateFields()
         {
             foreach (var key in FieldValues.Keys)
@@ -66,7 +68,7 @@ namespace ZBank.ViewModel
             }
 
             var inText = FieldValues["Amount"].ToString();
-            if (decimal.TryParse(inText, out decimal amountInDecimal))
+            if (FieldErrors["Amount"] == string.Empty && decimal.TryParse(inText, out decimal amountInDecimal))
             {
                 FieldErrors["Amount"] = string.Empty;
             }
@@ -82,10 +84,12 @@ namespace ZBank.ViewModel
 
         public void Reset()
         {
-            FieldValues["Branch"] = string.Empty;
+            FieldValues["Branch"] = null;
             FieldErrors["Branch"] = string.Empty;
             FieldValues["Amount"] = string.Empty;
             FieldErrors["Amount"] = string.Empty;
+            FieldValues["KYC"] = null;
+            FieldErrors["KYC"] = string.Empty;
         }
 
         public void ValidateField(string fieldName)
@@ -100,25 +104,60 @@ namespace ZBank.ViewModel
             }
         }
 
-        private void GetAccount(object parameter)
+        private Account GetAccount()
         {
-            Account account = (Account)parameter;
-            if (account.IFSCCode == null)
+            switch (SelectedAccountType)
             {
-
+                case AccountType.CURRENT:
+                   return new CurrentAccount()
+                    {
+                        IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode,
+                        AccountName = "Kavya",
+                        AccountStatus = AccountStatus.INACTIVE,
+                        Balance = decimal.Parse(FieldValues["Amount"].ToString()),
+                        AccountType = AccountType.CURRENT,
+                        UserID = "1111",
+                        CreatedOn = DateTime.Now,
+                        Currency = Currency.INR,
+                        InterestRate = 3.2m,
+                        MinimumBalance = 500m
+                    };
+                case AccountType.SAVINGS:
+                    return new SavingsAccount()
+                    {
+                        IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode,
+                        AccountName = "Kavya",
+                        AccountStatus = AccountStatus.INACTIVE,
+                        Balance = decimal.Parse(FieldValues["Amount"].ToString()),
+                        AccountType = AccountType.SAVINGS,
+                        UserID = "1111",
+                        CreatedOn = DateTime.Now,
+                        Currency = Currency.INR,
+                        InterestRate = 4.8m,
+                        MinimumBalance = 500m
+                    };
+                case AccountType.TERM_DEPOSIT:
+                    TermDepositAccount depositAccount = new TermDepositAccount()
+                    {
+                        IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode,
+                        AccountName = "Kavya",
+                        AccountStatus = AccountStatus.INACTIVE,
+                        Balance = decimal.Parse(FieldValues["Amount"].ToString()),
+                        AccountType = AccountType.TERM_DEPOSIT,
+                        UserID = "1111",
+                        CreatedOn = DateTime.Now,
+                        Currency = Currency.INR,
+                        TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
+                        DepositType = DepositType.OnMaturity,
+                        DepositStartDate = DateTime.Now,
+                        RepaymentAccountNumber = Accounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Repayment Account Number"].ToString())).AccountNumber,
+                        FromAccountNumber = Accounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["From Account Number"].ToString())).AccountNumber,
+                    };
+                    depositAccount.SetDefault();
+                    return depositAccount;
+                 default: return null;
             }
-            else
-            {
-                if (account.AccountNumber == null)
-                {
-                    IReadOnlyList<StorageFile> files = FieldValues["KYC"] as IReadOnlyList<StorageFile>;
-                    ApplyNewAccount(account, files);
-                }
-                else
-                {
-                    // edit account
-                }
-            }
+                
         }
 
         private ObservableCollection<Account> _accounts { get; set; }

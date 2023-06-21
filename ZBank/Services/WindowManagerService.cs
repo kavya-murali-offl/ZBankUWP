@@ -44,9 +44,9 @@ namespace ZBank.Services
 
         // Displays a view as a standalone
         // You can use the resulting ViewLifeTileControl to interact with the new window.
-        public async Task<ViewLifetimeControl> TryShowAsStandaloneAsync(string windowTitle, Type pageType)
+        public async Task<ViewLifetimeControl> TryShowAsStandaloneAsync(string windowTitle, Type pageType, bool isFullScreenRequested = false)
         {
-            ViewLifetimeControl viewControl = await CreateViewLifetimeControlAsync(windowTitle, pageType);
+            ViewLifetimeControl viewControl = await CreateViewLifetimeControlAsync(windowTitle, pageType, isFullScreenRequested);
             SecondaryViews.Add(viewControl);
             viewControl.StartViewInUse();
             await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewControl.Id, ViewSizePreference.Default, ApplicationView.GetForCurrentView().Id, ViewSizePreference.Default);
@@ -65,7 +65,7 @@ namespace ZBank.Services
             return viewControl;
         }
 
-        private async Task<ViewLifetimeControl> CreateViewLifetimeControlAsync(string windowTitle, Type pageType)
+        private async Task<ViewLifetimeControl> CreateViewLifetimeControlAsync(string windowTitle, Type pageType, bool isFullScreenRequested = false)
         {
             ViewLifetimeControl viewControl = null;
 
@@ -79,7 +79,9 @@ namespace ZBank.Services
                 frame.Navigate(pageType, viewControl);
                 Window.Current.Content = frame;
                 Window.Current.Activate();
-                ApplicationView.GetForCurrentView().Title = viewControl.Title;
+                var appView = ApplicationView.GetForCurrentView();
+                //if (isFullScreenRequested) appView.TryEnterFullScreenMode();
+                appView.Title = viewControl.Title;
             });
 
             return viewControl;

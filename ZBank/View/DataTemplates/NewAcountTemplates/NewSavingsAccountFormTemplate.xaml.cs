@@ -59,7 +59,10 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             sender.Text = newText;
             sender.SelectionStart = newText.Length;
             FieldValues["Amount"] = newText;
-            //ValidateField("Deposit Amount");
+            if(newText?.Length > 0)
+            {
+                FieldErrors["Amount"] = string.Empty;
+            }
         }
 
         public ICommand SubmitCommand

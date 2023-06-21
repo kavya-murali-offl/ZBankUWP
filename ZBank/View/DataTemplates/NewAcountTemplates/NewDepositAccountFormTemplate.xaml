@@ -165,8 +165,7 @@
             <DropDownButton.Content>
                 <TextBlock
                     HorizontalAlignment="Center"
-                    x:Name="FromAccountText"
-                    Text="Select From Account" />
+                    Text="{x:Bind FieldValues['From Account Number'], Mode=OneWay, TargetNullValue='Select From Account'}" />
             </DropDownButton.Content>
             <DropDownButton.Flyout>
                 <Flyout
@@ -211,9 +210,9 @@
                 <DropDownButton.Content>
                     <TextBlock
                         HorizontalAlignment="Center"
-                        x:Name="ToAccountText"
-                        Text="Select Repayment Account" />
-                </DropDownButton.Content>
+                    Text="{x:Bind FieldValues['Repayment Account Number'], Mode=OneWay, TargetNullValue='Select Repayment Account'}"
+                    />
+            </DropDownButton.Content>
                 <DropDownButton.Flyout>
                     <Flyout
                         Placement="Bottom"

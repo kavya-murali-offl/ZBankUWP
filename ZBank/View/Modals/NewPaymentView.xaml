@@ -38,7 +38,6 @@
         <Grid
             MinWidth="450"
             CornerRadius="8">
-
             <Grid.RowDefinitions>
                 <RowDefinition
                     Height="Auto" />
@@ -166,6 +165,7 @@
             <ContentControl
                 Grid.Row="2"
                 MinHeight="400"
+                Content="{x:Bind ViewModel.CurrentStep.Content, Mode=OneWay}"
                 DataContext="{x:Bind ViewModel, Mode=OneWay}"
                 HorizontalAlignment="Center"
                 x:Name="NewPaymentContent" />
@@ -196,6 +196,8 @@
                     x:Name="SecondaryButton"
                     Margin="0"
                     VerticalAlignment="Center"
+                    Content="{x:Bind ViewModel.CurrentStep.SecondaryCommandText, Mode=OneWay}"
+                    Command="{x:Bind ViewModel.CurrentStep.SecondaryCommand, Mode=OneWay}"
                     Style="{ThemeResource CardButton}" />
                 
                 <Button
@@ -204,10 +206,11 @@
                     Margin="10,0,10,0"
                     CornerRadius="10"
                     MinWidth="100"
+                    Command="{x:Bind ViewModel.CurrentStep.PrimaryCommand, Mode=OneWay}"
+                    Content="{x:Bind ViewModel.CurrentStep.PrimaryCommandText, Mode=OneWay}"
                     VerticalAlignment="Center"
                     Style="{ThemeResource PrimaryButton}" />
             </StackPanel>
         </Grid>
     </ScrollViewer>
-
 </UserControl>

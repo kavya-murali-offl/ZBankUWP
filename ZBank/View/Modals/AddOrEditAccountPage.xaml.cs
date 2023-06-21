@@ -62,7 +62,6 @@ namespace ZBank.View.Modals
 
         private void SetFormTemplate(AccountType accountType)
         {
-            ViewModel.Reset();
             switch (accountType)
             {
                 case AccountType.CURRENT:
@@ -72,6 +71,7 @@ namespace ZBank.View.Modals
                         FieldErrors = ViewModel.FieldErrors,
                         FieldValues = ViewModel.FieldValues,
                     };
+                    newCurrentAccountFormTemplate.Reset();
                     AccountForm.Content = newCurrentAccountFormTemplate;
                     break;
                 case AccountType.SAVINGS:
@@ -81,6 +81,7 @@ namespace ZBank.View.Modals
                         FieldErrors = ViewModel.FieldErrors,
                         FieldValues = ViewModel.FieldValues,
                     };
+                    newSavingsAccountFormTemplate.Reset();
                     AccountForm.Content = newSavingsAccountFormTemplate;
                     break;
                 case AccountType.TERM_DEPOSIT:
@@ -130,9 +131,7 @@ namespace ZBank.View.Modals
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
             ViewModel = new AddOrEditAccountViewModel(this);
-            ViewModel.Reset();
             AccountTypeButton.SelectedIndex = 0;
             SetFormTemplate(AccountType.CURRENT);
             ViewModel.Initialize(e.Parameter as ViewLifetimeControl);
@@ -187,6 +186,7 @@ namespace ZBank.View.Modals
                 }
                 PickFilesOutputTextBlock.Text = output.ToString();
                 ViewModel.FieldValues["KYC"] = files;
+                ViewModel.FieldErrors["KYC"] = string.Empty;
             }
             else
             {

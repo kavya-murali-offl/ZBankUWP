@@ -118,7 +118,7 @@
                         <TextBlock
                             HorizontalAlignment="Center"
                             x:Name="BranchText"
-                            Text="{x:Bind ViewModel.FieldValues['Branch']}" />
+                            Text="{x:Bind ViewModel.FieldValues['Branch'], TargetNullValue='Select Branch'}" />
                     </DropDownButton.Content>
                     <DropDownButton.Flyout>
                         <Flyout
@@ -180,6 +180,12 @@
                     HorizontalAlignment="Center"
                     x:Name="PickFilesOutputTextBlock"
                     TextWrapping="Wrap" />
+                <TextBlock
+                    Grid.Row="11"
+                    Foreground="Red"
+                    Margin="20,10,20,10"
+                    Width="400"
+                    Text="{x:Bind ViewModel.FieldErrors['KYC'], Mode=OneWay}" />
             </Grid>
 
 

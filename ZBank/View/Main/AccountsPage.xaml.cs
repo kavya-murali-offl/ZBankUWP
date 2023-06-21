@@ -63,7 +63,7 @@ namespace ZBank.View.Main
 
         private async void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            await WindowManagerService.Current.TryShowAsStandaloneAsync("Apply New Account", typeof(AddOrEditAccountPage));
+            await WindowManagerService.Current.TryShowAsStandaloneAsync("Apply New Account", typeof(AddOrEditAccountPage), true);
         }
     }
 }

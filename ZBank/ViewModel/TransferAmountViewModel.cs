@@ -16,36 +16,31 @@ using ZBankManagement.Domain.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBank.ViewModel.VMObjects;
 using System.Windows.Input;
+using Windows.UI.Xaml;
+using ZBank.View.DataTemplates.NewPaymentTemplates;
+using Windows.UI.Xaml.Controls;
+using ZBankManagement.Entity.BusinessObjects;
 
 namespace ZBank.ViewModel
 {
     public class TransferAmountViewModel : ViewModelBase
     {
         private IView View { get; set; }
-        public ICommand OnProceedToPayCommand { get; set; }
-        public ICommand OnResetCommand { get; set; }
-        public ICommand OnNextCommand { get; set; }
-        public ICommand OnBackCommand { get; set; }
-
-        public int CurrentStep { get; set; } = 1; 
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
         public ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
 
         public TransferAmountViewModel(IView view) {
             View = view;
+            InitializeSteps();
             Reset();
-            OnProceedToPayCommand = new RelayCommand(ProceedToPay);
-            OnResetCommand = new RelayCommand(Reset);
-            OnNextCommand = new RelayCommand(GoToNextStep);
-            OnBackCommand = new RelayCommand(GoToPreviousStep);
         }
 
         public Beneficiary SelectedBeneficiary
         {
             get { 
                 return AllBeneficiaries.FirstOrDefault(ben =>
-            ben.ToString().Equals(FieldValues["Beneficiary"].ToString())
+                ben.ToString().Equals(FieldValues["Beneficiary"].ToString())
             ); }
         }
 
@@ -54,12 +49,35 @@ namespace ZBank.ViewModel
             get
             {
                 return UserAccounts.FirstOrDefault(ben =>
-            ben.ToString().Equals(FieldValues["Account"].ToString())
+                 ben.ToString().Equals(FieldValues["Account"].ToString())
             );
             }
         }
 
-        private void ProceedToPay(object parameter) { }
+        private void ProceedToPay(object parameter) 
+        {
+            TransferAmountRequest request = new TransferAmountRequest()
+            {
+                Transaction = new Transaction()
+                {
+                     Amount = decimal.Parse(FieldValues["Amount"].ToString()),
+                    OtherAccountNumber = AllBeneficiaries.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Beneficiary"])).AccountNumber,
+                    OwnerAccountNumber = UserAccounts.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Account"])).AccountNumber,
+                    Description = FieldValues["Description"].ToString(),    
+                    RecordedOn = DateTime.Now,
+                    ReferenceID = Guid.NewGuid().ToString(),
+                      TransactionType = TransactionType.DEBIT,
+                       ModeOfPayment = ModeOfPayment.DIRECT,
+                       Balance = decimal.Parse(FieldValues["Available Balance"].ToString())
+                }
+               
+            };
+
+            IPresenterCallback<TransferAmountResponse> presenterCallback = new TransferAmountPresenterCallback(this);
+            UseCaseBase<TransferAmountResponse> useCase = new TransferAmountUseCase(request, presenterCallback);
+            useCase.Execute();
+
+        }
 
         public void ValidateField(string fieldName)
         {
@@ -188,22 +206,79 @@ namespace ZBank.ViewModel
 
         private void GoToNextStep(object parameter = null)
         {
-            if (CurrentStep == 1)
+            int currentIndex = Steps.IndexOf(CurrentStep);
+            switch (currentIndex)
             {
-                if(ValidateFields() && CheckBalance())
-                {
-                    CurrentStep = 2;
-                    ViewNotifier.Instance.OnCurrentPaymentStepChanged(CurrentStep);
-                }
+                case 0:
+                    if (ValidateFields() && CheckBalance())
+                    {
+                        CurrentStep = Steps[currentIndex + 1];
+                    }
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
             }
+        }
+
+
+        private ObservableCollection<StepModel> Steps { get;  set; }  
+
+        private StepModel _currentStep;
+        public StepModel CurrentStep
+        {
+            get { return _currentStep; }
+            set
+            {
+                _currentStep = value;
+                OnPropertyChanged(nameof(CurrentStep));
+            }
+        }
+
+
+        private void InitializeSteps()
+        {
+            Steps = new ObservableCollection<StepModel>
+        {
+            new StepModel
+            {
+                StepNumber = 1,
+                PrimaryCommandText = "Next",
+                SecondaryCommandText = "Reset",
+                PrimaryCommand = new RelayCommand(GoToNextStep),
+                SecondaryCommand = new RelayCommand(Reset),
+                Content = new PaymentDetails()
+            },
+            new StepModel
+            {
+                StepNumber = 2,
+                PrimaryCommandText = "Proceed To Pay",
+                SecondaryCommandText = "Back",
+                PrimaryCommand = new RelayCommand(ProceedToPay),
+                SecondaryCommand = new RelayCommand(GoToPreviousStep),
+                Content = new PaymentConfirmation()
+            },
+            new StepModel
+            {
+                StepNumber = 3,
+                PrimaryCommandText = "Finish",
+                SecondaryCommandText = "Back",
+                // PrimaryCommand = new RelayCommand(Finish),
+                // SecondaryCommand = new RelayCommand(GoToPreviousStep),
+                Content = new PaymentAcknowledgement()
+            }
+        };
+
+            // Set the initial current step
+            CurrentStep = Steps.FirstOrDefault();
         }
 
         private void GoToPreviousStep(object parameter = null)
         {
-            if (CurrentStep != 1)
-            {
-                CurrentStep--;
-                ViewNotifier.Instance.OnCurrentPaymentStepChanged(CurrentStep);
+            int currentIndex = Steps.IndexOf(CurrentStep);
+            if(currentIndex != 0) { 
+                CurrentStep = Steps[currentIndex - 1]; 
             }
         }
 
@@ -218,7 +293,7 @@ namespace ZBank.ViewModel
             }
             return true;
         }
-
+    
         private ObservableCollection<AccountBObj> _accounts { get; set; }
 
         public ObservableCollection<AccountBObj> UserAccounts
@@ -226,7 +301,7 @@ namespace ZBank.ViewModel
             get { return _accounts; }
             set
             {
-                _accounts = new ObservableCollection<AccountBObj>(value);
+                _accounts = value;
                 OnPropertyChanged(nameof(UserAccounts));
             }
         }
@@ -238,7 +313,7 @@ namespace ZBank.ViewModel
             get { return _beneficiaries; }
             set
             {
-                _beneficiaries = new ObservableCollection<Beneficiary>(value);
+                _beneficiaries = value;
                 OnPropertyChanged(nameof(AllBeneficiaries));
             }
         }

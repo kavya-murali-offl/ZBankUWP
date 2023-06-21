@@ -212,6 +212,7 @@
     <Compile Include="Entity\BusinessObjects\Notification.cs" />
     <Compile Include="Entity\BusinessObjects\RecurringDepositAccount.cs" />
     <Compile Include="Entity\BusinessObjects\SavingsAccount.cs" />
+    <Compile Include="Entity\BusinessObjects\StepModel.cs" />
     <Compile Include="Entity\BusinessObjects\TermDepositAccount.cs" />
     <Compile Include="Entity\BusinessObjects\TransactionBObj.cs" />
     <Compile Include="Entity\Constants\Constants.cs" />

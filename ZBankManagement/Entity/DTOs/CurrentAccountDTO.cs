@@ -14,5 +14,7 @@ namespace ZBank.Entities.BusinessObjects
         public string AccountNumber { get; set; }  
         
         public decimal InterestRate { get; set; }
+        public decimal MinimumBalance { get; set; }
+
     }
 }
