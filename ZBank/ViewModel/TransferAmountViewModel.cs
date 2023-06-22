@@ -60,17 +60,17 @@ namespace ZBank.ViewModel
             {
                 Transaction = new Transaction()
                 {
-                     Amount = decimal.Parse(FieldValues["Amount"].ToString()),
-                    OtherAccountNumber = AllBeneficiaries.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Beneficiary"])).AccountNumber,
-                    OwnerAccountNumber = UserAccounts.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Account"])).AccountNumber,
-                    Description = FieldValues["Description"].ToString(),    
+                    Amount = decimal.Parse(FieldValues["Amount"].ToString()),
+                    ToAccountNumber = AllBeneficiaries.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Beneficiary"])).AccountNumber,
+                    FromAccountNumber = UserAccounts.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Account"])).AccountNumber,
+                    Description = FieldValues["Description"].ToString(),
                     RecordedOn = DateTime.Now,
                     ReferenceID = Guid.NewGuid().ToString(),
-                      TransactionType = TransactionType.DEBIT,
-                       ModeOfPayment = ModeOfPayment.DIRECT,
-                       Balance = decimal.Parse(FieldValues["Available Balance"].ToString())
-                }
-               
+                    ModeOfPayment = ModeOfPayment.DIRECT,
+                    Balance = decimal.Parse(FieldValues["Available Balance"].ToString())
+                },
+                OwnerAccount = UserAccounts.FirstOrDefault(acc => acc.Equals(FieldValues["Account"])),
+                Beneficiary = AllBeneficiaries.FirstOrDefault(acc => acc.Equals(FieldValues["Beneficiary"])),
             };
 
             IPresenterCallback<TransferAmountResponse> presenterCallback = new TransferAmountPresenterCallback(this);

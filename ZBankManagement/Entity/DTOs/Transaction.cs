@@ -25,9 +25,9 @@ namespace ZBank.Entities
 
         public decimal Balance { get; set; }
 
-        public string OwnerAccountNumber { get; set; }
+        public string FromAccountNumber { get; set; }
 
-        public string OtherAccountNumber { get; set; }
+        public string ToAccountNumber { get; set; }
 
         public string Description { get; set; }
 

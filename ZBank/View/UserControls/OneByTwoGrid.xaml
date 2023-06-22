@@ -35,7 +35,9 @@
                         <Setter
                             Target="Column1.(Grid.ColumnSpan)"
                             Value="1" />
-
+                        <Setter
+                            Target="Column2.(Grid.RowSpan)"
+                            Value="2" />
                         <Setter
                             Target="Column2.(Grid.Row)"
                             Value="0" />

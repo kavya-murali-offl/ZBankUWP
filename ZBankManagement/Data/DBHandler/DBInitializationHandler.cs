@@ -279,10 +279,9 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
                         CardNumber="",
                          Description="Salary",
                           ModeOfPayment=Entities.ModeOfPayment.DIRECT,
-                          OtherAccountNumber="1009 6678 5556 3332",
-                          OwnerAccountNumber="1000 1789 7890 6633",
+                          ToAccountNumber="1009 6678 5556 3332",
+                          FromAccountNumber="1000 1789 7890 6633",
                            RecordedOn=DateTime.Now,
-                           TransactionType=Entities.TransactionType.CREDIT
                 },
 
                 new Transaction()
@@ -293,10 +292,9 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
                         CardNumber="",
                          Description="Payment",
                           ModeOfPayment=Entities.ModeOfPayment.DIRECT,
-                          OtherAccountNumber="1234 7654 9876 9874",
-                          OwnerAccountNumber="1000 1789 7890 6633",
+                          ToAccountNumber="1234 7654 9876 9874",
+                          FromAccountNumber="1000 1789 7890 6633",
                            RecordedOn=DateTime.Now,
-                           TransactionType=Entities.TransactionType.DEBIT
                 }
                 };
 

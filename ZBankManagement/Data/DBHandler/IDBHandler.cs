@@ -76,5 +76,11 @@ namespace ZBank.DatabaseHandler
         // Reset password
 
         Task<int> ResetPassword(CustomerCredentials credentials);
+
+        Task InitiateTransactionInternal(Transaction transaction, Account account, Account beneficiaryAccount);
+
+        Task InitiateTransactionExternal(Transaction transaction, Account account);
+
+        Task<Account> GetAccountByAccountNumber(string accountNumber);
     }
 }

@@ -1,0 +1,69 @@
+﻿<Page
+    x:Class="ZBank.View.Main.BeneficiariesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank.View.Main"
+    xmlns:usercontrols="using:ZBank.View.UserControls"
+    xmlns:model="using:ZBank.Entities"
+    Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <usercontrols:OneByTwoGrid Width1Ratio="2*" Width2Ratio="*">
+            <usercontrols:OneByTwoGrid.Column1Content>
+                <Grid 
+                    CornerRadius="8"
+                    Margin="5"
+                    Background="{ThemeResource ApplicationBackground}">
+                    <ListView x:Name="BeneficiaryList"
+                                ItemsSource="{x:Bind ViewModel.BeneficiariesList, Mode=OneWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate
+                                x:DataType="model:Beneficiary">
+                                <TextBlock
+                                    Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        </ListView>
+                </Grid>
+            </usercontrols:OneByTwoGrid.Column1Content>
+            <usercontrols:OneByTwoGrid.Column2Content>
+                <Grid VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="*" />
+                        <RowDefinition
+                            Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid
+                        CornerRadius="8"
+                        Margin="5"
+                        Background="{ThemeResource ApplicationBackground}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            
+                        </Grid.RowDefinitions>
+                        <usercontrols:CardControl
+                            Height="Auto"
+                            MyTitle="Add Beneficiary">
+                            <usercontrols:CardControl.MyContent>
+                                <usercontrols:AddEditBeneficiaryView />
+                            </usercontrols:CardControl.MyContent>
+                        </usercontrols:CardControl>
+                    </Grid>
+                    <Grid
+                        CornerRadius="8"
+                        Margin="5"
+                        Background="{ThemeResource ApplicationBackground}"
+                        Grid.Row="1">
+                        
+                    </Grid>
+                </Grid>
+            </usercontrols:OneByTwoGrid.Column2Content>
+        </usercontrols:OneByTwoGrid>
+    </Grid>
+</Page>

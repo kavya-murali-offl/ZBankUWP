@@ -134,7 +134,9 @@
     <Compile Include="Utilities\Validation\IValidation.cs" />
     <Compile Include="ViewModel\AccountInfoViewModel.cs" />
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
+    <Compile Include="ViewModel\AddEditBeneficiaryViewModel.cs" />
     <Compile Include="ViewModel\AddOrEditAccountViewModel.cs" />
+    <Compile Include="ViewModel\BeneficiariesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
@@ -178,6 +180,9 @@
     </Compile>
     <Compile Include="View\IForm.cs" />
     <Compile Include="View\IView.cs" />
+    <Compile Include="View\Main\BeneficiariesPage.xaml.cs">
+      <DependentUpon>BeneficiariesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Main\CardsPage.xaml.cs">
       <DependentUpon>CardsPage.xaml</DependentUpon>
     </Compile>
@@ -209,6 +214,9 @@
     </Compile>
     <Compile Include="View\Modals\NewPaymentView.xaml.cs">
       <DependentUpon>NewPaymentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\AddEditBeneficiaryView.xaml.cs">
+      <DependentUpon>AddEditBeneficiaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\AppNotification.xaml.cs">
       <DependentUpon>AppNotification.xaml</DependentUpon>
@@ -337,6 +345,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Main\BeneficiariesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Main\CardsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -394,6 +406,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\AccountInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\AddEditBeneficiaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

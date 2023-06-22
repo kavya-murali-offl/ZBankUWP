@@ -92,13 +92,6 @@ namespace ZBank.ViewModel
         public void UpdateTransactions(TransactionPageDataUpdatedArgs args)
         {
             Transactions = args.TransactionList;
-            if (Transactions != null)
-            {
-                foreach (var transaction in Transactions)
-                {
-                    transaction.SetDefault();
-                }
-            }
         }
 
 

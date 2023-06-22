@@ -9,7 +9,9 @@ using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBankManagement.DataManager;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entity.EnumerationTypes;
 using ZBankManagement.Interface;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.LoginCustomerUseCase;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -26,7 +28,69 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            //_transferAmountDataManager.UpdateBalance(_request, new TransferAmountCallback(this));
+            UpdateBalance(_request.OwnerAccount, TransactionType.DEBIT);
+            if (_request.Beneficiary.BeneficiaryType == BeneficiaryType.WITHIN_BANK)
+            {
+                _transferAmountDataManager.GetBeneficiaryAccount(_request, new GetBeneficiaryAccountCallback(this));
+            }
+            else if(_request.Beneficiary.BeneficiaryType == BeneficiaryType.OTHER_BANK)
+            {
+                MakeExternalTransaction();
+            }
+        }
+
+        private void UpdateBalance(Account account, TransactionType transactionType)
+        {
+            switch (transactionType)
+            {
+                case TransactionType.DEBIT:
+                    account.Balance -= _request.Transaction.Amount;
+                    break;
+                case TransactionType.CREDIT:
+                    account.Balance += _request.Transaction.Amount;
+                    break;
+            }
+        }
+        private void MakeExternalTransaction()
+        {
+            _transferAmountDataManager.InitiateOtherBankTransaction(_request, new TransferAmountCallback(this));
+        }
+
+        private void MakeInternalTransaction(Account beneficiaryAccount)
+        {
+            UpdateBalance(beneficiaryAccount, TransactionType.CREDIT);
+            _transferAmountDataManager.InitiateOtherBankTransaction(_request, new TransferAmountCallback(this));
+        }
+
+        private class GetBeneficiaryAccountCallback : IUseCaseCallback<GetBeneficiaryAccountResponse>
+        {
+            private readonly TransferAmountUseCase _useCase;
+
+            public GetBeneficiaryAccountCallback(TransferAmountUseCase useCase)
+            {
+                _useCase = useCase;
+            }
+
+            public void OnSuccess(GetBeneficiaryAccountResponse response)
+            {
+                if (response.Account != null)
+                {
+                    _useCase.MakeInternalTransaction(response.Account);
+                }
+                else
+                {
+                    ZBankException error = new ZBankException
+                    {
+                        Message = "Account Not Found"
+                    };
+                    _useCase.PresenterCallback.OnFailure(error);
+                }
+            }
+
+            public void OnFailure(ZBankException error)
+            {
+                _useCase.PresenterCallback.OnFailure(error);
+            }
         }
 
         private class TransferAmountCallback : IUseCaseCallback<TransferAmountResponse>
@@ -53,25 +117,23 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class TransferAmountRequest : RequestObjectBase
     {
         public Transaction Transaction { get; set; }
+
+        public Account OwnerAccount { get; set; }
+
+        public Beneficiary Beneficiary { get; set; }  
+
+        public Account BeneficiaryAccount { get; set; }   
     }
 
     public class TransferAmountResponse
     {
-        public bool IsSuccess { get; set; }
-
-        public Card InsertedCard { get; set; }
+        public Transaction Transaction { get; set; }
     }
 
-    public class TransferAmountPresenterCallback : IPresenterCallback<TransferAmountResponse>
+
+    public class GetBeneficiaryAccountResponse
     {
-
-        public async Task OnSuccess(TransferAmountResponse response)
-        {
-        }
-
-        public async Task OnFailure(ZBankException response)
-        {
-
-        }
+        public Account Account { get; set; }
     }
+
 }

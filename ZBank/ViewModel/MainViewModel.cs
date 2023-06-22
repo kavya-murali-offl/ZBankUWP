@@ -37,6 +37,7 @@ namespace ZBank.ViewModel
 
         public MainViewModel(IView view)
         {
+            LoadWindow();
             View = view;
             TopNavigationList = new List<Navigation>
             {
@@ -44,10 +45,10 @@ namespace ZBank.ViewModel
                 new Navigation("Accounts", "\uE910", typeof(AccountsPage), typeof(AccountInfoPage)),
                 new Navigation("Cards", "\uE8C7", typeof(CardsPage)),
                 new Navigation("Transactions", "\uE8AB", typeof(TransactionsPage)),
+                new Navigation("Beneficiaries", "\uE716", typeof(BeneficiariesPage)),
             };
 
             SelectedItem = TopNavigationList.FirstOrDefault();
-            LoadWindow();
         }
         private async void LoadWindow()
         {
@@ -84,7 +85,9 @@ namespace ZBank.ViewModel
                 case "Cards":
                     return typeof(CardsPage);
                 case "Transactions":
-                    return typeof(TransactionsPage);
+                    return typeof(TransactionsPage); 
+                case "Beneficiaries":
+                    return typeof(BeneficiariesPage);
                 default:
                     return typeof(DashboardPage);
             }

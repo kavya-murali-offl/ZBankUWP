@@ -24,7 +24,8 @@ namespace ZBank.DatabaseAdapter
 
         Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new();
 
-        Task RunInTransactionAsync(Func<Task> action);
+        Task<int> Execute(string query, params object[] args);
 
+        Task RunInTransactionAsync(Func<Task> action);
     }
 }

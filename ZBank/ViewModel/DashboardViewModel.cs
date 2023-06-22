@@ -83,10 +83,6 @@ namespace ZBank.ViewModel
 
         public void RefreshData(DashboardDataUpdatedArgs args)
         {
-            foreach (var transactionBObj in args.LatestTransactions)
-            {
-                transactionBObj.SetDefault();
-            }
             foreach (var card in args.AllCards)
             {
                 card.SetDefaultValues();

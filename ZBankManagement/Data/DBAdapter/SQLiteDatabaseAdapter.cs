@@ -55,7 +55,7 @@ namespace ZBank.DatabaseAdapter
 
         public Task<int> Update<T>(T instance)
         {
-            return Connection.InsertOrReplaceAsync(instance, typeof(T));
+            return Connection.UpdateAsync(instance);
         }
 
         public AsyncTableQuery<T> GetAll<T>() where T : new()
@@ -68,15 +68,12 @@ namespace ZBank.DatabaseAdapter
             return await Connection.ExecuteScalarAsync<T>(query, args);
         }
 
-        public async Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new() => await Connection.QueryAsync<T>(query, args);
-
-        public Task RunInTransaction(Action action)
+        public async Task<int> Execute(string query, params object[] args)
         {
-            return Connection.RunInTransactionAsync(tran =>
-            {
-                action();
-            });
+            return await Connection.ExecuteAsync(query, args);
         }
+
+        public async Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new() => await Connection.QueryAsync<T>(query, args);
 
         public async Task RunInTransactionAsync(Func<Task> action)
         {

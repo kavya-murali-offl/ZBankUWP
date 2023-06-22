@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using ZBank.Entities.BusinessObjects;
@@ -89,10 +88,6 @@ namespace ZBank.ViewModel
 
         private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
         {
-            foreach(var transaction in args.TransactionList)
-            {
-                transaction.SetDefault();
-            }
             AllTransactions = args.TransactionList;
             FilteredTransactions = args.TransactionList;
             UpdateOnViewList();

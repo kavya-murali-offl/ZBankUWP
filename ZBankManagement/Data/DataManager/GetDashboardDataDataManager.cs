@@ -56,14 +56,15 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
 
                 List<TransactionBObj> transactions = new List<TransactionBObj>();
+                decimal income = 0;
+                decimal expense = 0;
                 foreach(var account in accountsList)
                 {
                     var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber);
                     transactions.AddRange(list);
+                    income += transactions.Where(tran => tran.ToAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
+                    expense += transactions.Where(tran => tran.FromAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
                 }
-
-                var income = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.CREDIT).Sum(tran => tran.Amount);
-                var expense = transactions.Where(tran => tran.TransactionType == Entities.TransactionType.DEBIT).Sum(tran => tran.Amount);
 
                 var IncomeExpenseCard = new DashboardCardModel
                 {

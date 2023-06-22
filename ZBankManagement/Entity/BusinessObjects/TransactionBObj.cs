@@ -16,16 +16,16 @@ namespace ZBank.Entities.BusinessObjects
 
         public string BackgroundColor { get;  set; }
 
-        public void SetDefault()
+        public void SetDefault(TransactionType type)
         {
-            if (TransactionType == TransactionType.DEBIT)
+            if (type == TransactionType.DEBIT)
             {
                 BorderColor = "#be3232";
                 BackgroundColor = "#f5e1dd";
                 ArrowIcon = "\uEDDC";
                 PlusOrMinus = "-";
             }
-            else if (TransactionType == TransactionType.CREDIT)
+            else if (type == TransactionType.CREDIT)
             {
                 BackgroundColor = "#eafde8";
                 BorderColor = "#058365";

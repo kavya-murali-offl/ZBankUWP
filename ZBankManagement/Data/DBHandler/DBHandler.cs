@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using Windows.Storage;
 using ZBank.DatabaseAdapter;
@@ -71,6 +72,34 @@ namespace ZBank.DatabaseHandler
         public Task<List<Branch>> GetBranchDetails()
         {
             return _databaseAdapter.GetAll<Branch>().ToListAsync();
+        }
+
+        public async Task InitiateTransactionExternal(Transaction transaction, Account ownerAccount)
+        {
+            Func<Task> action = async () =>
+            {
+                await _databaseAdapter.Update(ownerAccount);
+                await _databaseAdapter.Insert(transaction);
+            };
+            await _databaseAdapter.RunInTransactionAsync(action);
+        }
+
+        public async Task<Account> GetAccountByAccountNumber(string accountNumber)
+        {
+            return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync();    
+        }
+
+
+        public async Task InitiateTransactionInternal(Transaction transaction, Account ownerAccount, Account beneficiaryAccount)
+        {
+
+            Func<Task> action = async () =>
+            {
+                await _databaseAdapter.Insert(transaction);
+                await _databaseAdapter.Update(ownerAccount);
+                await _databaseAdapter.Update(beneficiaryAccount);
+            };
+            await _databaseAdapter.RunInTransactionAsync(action);
         }
 
         public Task<IEnumerable<Branch>> GetBranchByIfscCode(string ifscCode)
@@ -188,14 +217,10 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber)
         {
             var transactionBObjs = await _databaseAdapter.Query<TransactionBObj>(
-                $"Select * from Transactions Left Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber where OwnerAccountNumber = ?", accountNumber);
+                $"Select * from Transactions Left Join Beneficiary on Transactions.ToAccountNumber = Beneficiary.AccountNumber where FromAccountNumber = ?", accountNumber);
             return transactionBObjs;
         }
-        //await
-        //_databaseAdapter.GetAll<TransactionBObj>()
-        //.Where(x => x.OwnerAccountNumber.Equals(accountNumber)
-        //.OrderByDescending(x => x.RecordedOn)
-        //.ToListAsync();
+       
 
         public async Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber) =>
             await _databaseAdapter.GetAll<TransactionBObj>()
@@ -208,15 +233,15 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
         {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions " +
-                $"Inner Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber " +
-                "WHERE OwnerAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
+                $"Inner Join Beneficiary on Transactions.ToAccountNumber = Beneficiary.AccountNumber " +
+                "WHERE FromAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
         }
 
         public async Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber)
         {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions " +
-                $"Inner Join Beneficiary on Transactions.OtherAccountNumber = Beneficiary.AccountNumber " +
-                "WHERE OwnerAccountNumber == ?", accountNumber);
+                $"Inner Join Beneficiary on Transactions.ToAccountNumber = Beneficiary.AccountNumber " +
+                "WHERE FromAccountNumber == ?", accountNumber);
         }
 
     }

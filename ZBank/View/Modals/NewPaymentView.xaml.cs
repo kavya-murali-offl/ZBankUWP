@@ -49,33 +49,6 @@ namespace ZBank.View.Modals
             ViewNotifier.Instance.OnCancelPaymentRequested(false);
         }
 
-        //private void SwitchTemplate(int currentStep)
-        //{
-        //    switch (currentStep)
-        //    {
-        //        case 1:
-        //            PrimaryButton.Command = ViewModel.OnNextCommand;
-        //            PrimaryButton.Content = "Next";
-        //            SecondaryButton.Command = ViewModel.OnResetCommand;
-        //            SecondaryButton.Content = "Reset";
-        //            NewPaymentContent.Content = ((DataTemplate)Resources["PaymentDetails"]).LoadContent();
-        //            break;
-        //        case 2:
-        //            PrimaryButton.Command = ViewModel.OnProceedToPayCommand;
-        //            PrimaryButton.Content = "Proceed To Pay";
-        //            SecondaryButton.Command = ViewModel.OnBackCommand;
-        //            SecondaryButton.Content = "Back";
-        //            NewPaymentContent.Content = ((DataTemplate)Resources["PaymentConfirmation"]).LoadContent();
-        //            break;
-        //        case 3:
-        //            NewPaymentContent.Content = ((DataTemplate)Resources["PaymentConfirmation"]).LoadContent();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
-
-
         private void PayButton_Click(object sender, RoutedEventArgs e)
         {
 

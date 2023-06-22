@@ -8,6 +8,7 @@ using ZBank.Entity.EnumerationTypes;
 using System;
 using ZBank.Entities.BusinessObjects;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ZBankManagement.DataManager
 {
@@ -29,6 +30,18 @@ namespace ZBankManagement.DataManager
                 foreach (var account in accounts)
                 {
                     var accountTransactions = await DBHandler.GetTransactionByAccountNumber(account.AccountNumber);
+                    accountTransactions.Select(transaction =>
+                    {
+                        if(transaction.FromAccountNumber == account.AccountNumber)
+                        {
+                            transaction.SetDefault(TransactionType.DEBIT);
+                        }
+                        else
+                        {
+                            transaction.SetDefault(TransactionType.CREDIT);
+                        }
+                        return transaction;
+                    });
                     transactions.AddRange(accountTransactions);
                 }
 

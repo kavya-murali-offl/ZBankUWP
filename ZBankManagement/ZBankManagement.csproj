@@ -164,7 +164,7 @@
     <Compile Include="Data\DataManager\LoginCustomerDataManager.cs" />
     <Compile Include="Data\DataManager\ResetPasswordDataManager.cs" />
     <Compile Include="Data\DataManager\SignupUserDataManager.cs" />
-    <Compile Include="Data\DataManager\TranferAmountDataManager.cs" />
+    <Compile Include="Data\DataManager\TransferAmountDataManager.cs" />
     <Compile Include="Data\DataManager\UpdateAccountDataManager.cs" />
     <Compile Include="Data\DataManager\UpdateCardDataManager.cs" />
     <Compile Include="Data\DataManager\UpdateCustomerDataManager.cs" />
@@ -232,6 +232,7 @@
     <Compile Include="Entity\DTOs\Transaction.cs" />
     <Compile Include="Entity\EnumerationTypes\AccountStatus.cs" />
     <Compile Include="Entity\EnumerationTypes\AccountType.cs" />
+    <Compile Include="Entity\EnumerationTypes\BeneficiaryType.cs" />
     <Compile Include="Entity\EnumerationTypes\CardType.cs" />
     <Compile Include="Entity\EnumerationTypes\CreditCardType.cs" />
     <Compile Include="Entity\EnumerationTypes\Currency.cs" />
