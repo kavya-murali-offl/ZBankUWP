@@ -22,7 +22,7 @@ namespace ZBank.ViewModel
 
         private CardBObj _onViewCard { get; set; }
 
-        private int _onViewCardIndex { get; set; } = 0;
+        private int _onViewCardIndex { get; set; } = -1;
 
         public CardBObj OnViewCard
         {

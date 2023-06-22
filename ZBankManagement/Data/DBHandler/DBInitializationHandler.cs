@@ -58,7 +58,7 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
                     CreatedOn = DateTime.Now,
                     AccountStatus = AccountStatus.ACTIVE,
                     Currency = Currency.INR,
-                    Balance = 0m,
+                    Balance = 10000m,
                     AccountType = AccountType.CURRENT,
                     IsKYCApproved = true
                 },
