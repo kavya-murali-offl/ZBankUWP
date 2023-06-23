@@ -138,6 +138,7 @@
     <Compile Include="ViewModel\AddOrEditAccountViewModel.cs" />
     <Compile Include="ViewModel\BeneficiariesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />

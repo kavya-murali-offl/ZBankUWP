@@ -9,14 +9,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ZBankManagement.Entity.DTOs;
+using System.Threading.Tasks;
 
 namespace ZBank.ZBankManagement.DataLayer.DBHandler
 {
     class DBInitializationHandler : IDBInitializationHandler
     {
-        private IDatabaseAdapter _databaseAdapter { get;set; }
+        private IDatabaseAdapter _databaseAdapter { get; set; }
 
-        public DBInitializationHandler(IDatabaseAdapter _dbAdapter) {
+        public DBInitializationHandler(IDatabaseAdapter _dbAdapter)
+        {
             _databaseAdapter = _dbAdapter;
         }
 
@@ -38,7 +40,7 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             _databaseAdapter.CreateTable<KYCDocuments>();
         }
 
-        public void PopulateData()
+        public  void PopulateData()
         {
             _databaseAdapter.Insert(new Bank()
             {
@@ -46,6 +48,46 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
                 Name = "ZBank"
             });
 
+
+            List<CurrentAccountDTO> currentAccountDTOs = new List<CurrentAccountDTO>()
+            {
+                new CurrentAccountDTO()
+                {
+                    AccountNumber="1000 1789 7890 6633",
+                     InterestRate=3.4m,
+                     MinimumBalance=500,
+                }
+            };
+
+            var insert1 = _databaseAdapter.InsertAll(currentAccountDTOs);
+
+            List<SavingsAccountDTO> savingsAccountDTOs = new List<SavingsAccountDTO>()
+            {
+                new SavingsAccountDTO()
+                {
+                    AccountNumber="1001 1000 1789 7890",
+                    InterestRate=5.4m,
+                }
+            };
+
+            var insert2 = _databaseAdapter.InsertAll(savingsAccountDTOs);
+
+            List<TermDepositAccountDTO> termDepositAccountDTOs = new List<TermDepositAccountDTO>()
+            {
+                new TermDepositAccountDTO()
+                {
+                    AccountNumber="1009 6678 5556 3332",
+                    DepositStartDate=DateTime.Now,
+                 InterestRate=7.2m,
+                  DepositType=DepositType.OnMaturity,
+                   MaturityAmount=200000,
+                    MaturityDate=DateTime.Now.AddYears(1),
+              RepaymentAccountNumber="1000 1789 7890 6633",
+               Tenure=12
+                }
+            };
+
+            var insert3 = _databaseAdapter.InsertAll(termDepositAccountDTOs);
 
             List<Account> accounts = new List<Account>
                 {
@@ -75,7 +117,6 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
                     Balance = 0m,
                     AccountType = AccountType.SAVINGS,
                     IsKYCApproved = true
-
                 },
 
                   new Account()
@@ -143,7 +184,6 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
                      IfscCode="HDFC1001"
                 },
             };
-
             _databaseAdapter.InsertAll(branches);
 
             List<Card> cards = new List<Card>()
@@ -200,45 +240,6 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             };
 
             _databaseAdapter.InsertAll(debitCardDTOs);
-
-            List<CurrentAccountDTO> currentAccountDTOs = new List<CurrentAccountDTO>()
-            {
-                new CurrentAccountDTO()
-                {
-                    AccountNumber="1000 1789 7890 6633",
-                     InterestRate=3.4m
-                }
-            };
-
-            _databaseAdapter.InsertAll(currentAccountDTOs);
-
-            List<SavingsAccountDTO> savingsAccountDTOs = new List<SavingsAccountDTO>()
-            {
-                new SavingsAccountDTO()
-                {
-                    AccountNumber="1001 1000 1789 7890",
-                    InterestRate=5.4m
-                }
-            };
-
-            _databaseAdapter.InsertAll(savingsAccountDTOs);
-
-            List<TermDepositAccountDTO> termDepositAccountDTOs = new List<TermDepositAccountDTO>()
-            {
-                new TermDepositAccountDTO()
-                {
-                    AccountNumber="1009 6678 5556 3332",
-                    DepositStartDate=DateTime.Now,
-                 InterestRate=7.2m,
-                  DepositType=DepositType.OnMaturity,
-                   MaturityAmount=200000,
-                    MaturityDate=DateTime.Now.AddYears(1),
-              RepaymentAccountNumber="1000 1789 7890 6633",
-               Tenure=12
-                }
-            };
-
-            _databaseAdapter.InsertAll(termDepositAccountDTOs);
 
             List<Customer> customers = new List<Customer>()
             {
@@ -298,11 +299,11 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
                 }
                 };
 
-                _databaseAdapter.InsertAll(transactions);
-           
+            _databaseAdapter.InsertAll(transactions);
+
         }
 
 
-        
+
     }
 }

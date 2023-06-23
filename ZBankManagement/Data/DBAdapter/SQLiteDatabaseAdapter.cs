@@ -1,9 +1,11 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using ZBankManagement.Data;
 
 namespace ZBank.DatabaseAdapter
 {
@@ -13,7 +15,7 @@ namespace ZBank.DatabaseAdapter
 
         public SQLiteDatabaseAdapter()
         {
-            SQLiteConnectionString connectionString = GetConnectionString();
+            SQLiteConnectionString connectionString = new SQLiteConnectionString(Config.DatabasePath);
             Connection = new SQLiteAsyncConnection(connectionString);
         }
 
@@ -30,14 +32,6 @@ namespace ZBank.DatabaseAdapter
 
 
 
-        private  SQLiteConnectionString GetConnectionString()
-        {
-
-            string databaseFileName = "BankDB.db3";
-            string databaseLocation = Path.Combine(ApplicationData.Current.LocalFolder.Path, databaseFileName);
-            return new SQLiteConnectionString(databaseLocation);
-
-        }
         public async Task CreateTable<T>() where T : new()
         {
             await Connection.CreateTableAsync<T>();

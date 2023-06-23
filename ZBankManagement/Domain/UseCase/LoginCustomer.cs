@@ -78,7 +78,6 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             }
         }
 
-
         public class GetCustomerCallback : IUseCaseCallback<GetCustomerResponse>
         {
             private readonly LoginCustomerUseCase _useCase;

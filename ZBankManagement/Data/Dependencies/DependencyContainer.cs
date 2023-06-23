@@ -8,6 +8,8 @@ using ZBank.ZBankManagement.DataLayer.DBHandler;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DataLayer.DataManager;
 using ZBank.AppEvents;
+using ZBankManagement.Data.DataManager.Contracts;
+using ZBankManagement.Data.DataManager;
 
 namespace ZBank.Dependencies
 {
@@ -41,6 +43,7 @@ namespace ZBank.Dependencies
             serviceCollection.AddScoped<IGetCardDataManager, GetCardDataManager>();
             serviceCollection.AddScoped<IInsertCardDataManager, InsertCardDataManager>();
             serviceCollection.AddScoped<IUpdateCardDataManager, UpdateCardDataManager>();
+            serviceCollection.AddScoped<IInitializeAppDataManager, InitializeAppDataManager>();
             return serviceCollection;
         }
 

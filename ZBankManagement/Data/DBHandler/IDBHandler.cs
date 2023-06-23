@@ -82,5 +82,8 @@ namespace ZBank.DatabaseHandler
         Task InitiateTransactionExternal(Transaction transaction, Account account);
 
         Task<Account> GetAccountByAccountNumber(string accountNumber);
+
+        Task CreateTables();
+        Task PopulateData();
     }
 }

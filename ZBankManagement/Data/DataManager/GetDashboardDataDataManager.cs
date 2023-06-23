@@ -54,7 +54,6 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = beneficiaries.Where(ben => !ifscCodes.Contains(ben.IFSCCode)).Count()
                 };
 
-
                 List<TransactionBObj> transactions = new List<TransactionBObj>();
                 decimal income = 0;
                 decimal expense = 0;

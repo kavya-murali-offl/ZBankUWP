@@ -39,11 +39,27 @@ namespace ZBank
         {
             this.InitializeComponent();
             ViewModel = new MainViewModel(this);
-            initialPaneWidth = MySplitView.OpenPaneLength;
+            
         }
 
-        public void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.LoadApp += OnLoadApp;
+            LoadingScreen.Visibility = Visibility.Visible;
+            ContentGrid.Visibility = Visibility.Collapsed;  
+            ViewModel.OnLoaded();
+        }
+
+        private void OnLoadApp()
+        {
+            LoadPage();
+        }
+
+        private void LoadPage()
+        {
+            LoadingScreen.Visibility = Visibility.Collapsed;
+            ContentGrid.Visibility = Visibility.Visible;
+            initialPaneWidth = MySplitView.OpenPaneLength;
             LoadTheme();
             LoadToggleButton();
             ViewNotifier.Instance.ThemeChanged += SwitchTheme;
@@ -60,7 +76,8 @@ namespace ZBank
         {
             ViewNotifier.Instance.ThemeChanged -= SwitchTheme;
             ViewNotifier.Instance.FrameContentChanged -= ChangeFrame;
-            ContentFrame.Navigated += OnNavigated;
+            ContentFrame.Navigated -= OnNavigated;
+            ViewNotifier.Instance.LoadApp -= OnLoadApp;
         }
 
         public void OnNavigated(object sender, NavigationEventArgs e)

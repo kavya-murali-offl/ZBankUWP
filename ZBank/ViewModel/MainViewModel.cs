@@ -16,6 +16,9 @@ using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.View.UserControls;
 using ZBank.Services;
+using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.Domain.UseCase;
+using static ZBankManagement.Domain.UseCase.InitializeApp;
 
 namespace ZBank.ViewModel
 {
@@ -33,6 +36,16 @@ namespace ZBank.ViewModel
                 _selectedItem = value;
                 OnPropertyChanged(nameof(SelectedItem));
             }
+        }
+        public void OnLoaded()
+        {
+            InitializeAppRequest request = new InitializeAppRequest()
+            {
+            };
+
+            IPresenterCallback<InitializeAppResponse> presenterCallback = new InitializeAppPresenterCallback(this);
+            UseCaseBase<InitializeAppResponse> useCase = new InitializeAppUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         public MainViewModel(IView view)
@@ -92,5 +105,29 @@ namespace ZBank.ViewModel
                     return typeof(DashboardPage);
             }
         }
+
+        private class InitializeAppPresenterCallback : IPresenterCallback<InitializeAppResponse>
+        {
+            public MainViewModel ViewModel { get; set; }
+
+            public InitializeAppPresenterCallback(MainViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(InitializeAppResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnLoadApp();
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+
+            }
+        }
+
     }
 }

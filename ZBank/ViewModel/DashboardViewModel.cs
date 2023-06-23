@@ -42,11 +42,14 @@ namespace ZBank.ViewModel
 
         public void UpdateOnViewCard()
         {
-            if (_onViewCardIndex < 0 || _onViewCardIndex >= DashboardModel.AllCards.Count)
+            if (DashboardModel.AllCards.Count > 0)
             {
-                _onViewCardIndex = 0;
-            }
-            OnViewCard = DashboardModel.AllCards.ElementAt(_onViewCardIndex);
+                if (_onViewCardIndex < 0 || _onViewCardIndex < DashboardModel.AllCards.Count)
+                {
+                    _onViewCardIndex = 0;
+                }
+                OnViewCard = DashboardModel.AllCards.ElementAt(_onViewCardIndex);
+            };
         }
 
         public void OnNextCard()

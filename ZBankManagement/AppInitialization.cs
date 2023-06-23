@@ -1,12 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.DatabaseAdapter;
 using ZBank.Dependencies;
 using ZBank.ZBankManagement.DataLayer.DBHandler;
+using ZBankManagement.Data;
 
 namespace ZBank.ZBankManagement
 {
@@ -27,12 +30,14 @@ namespace ZBank.ZBankManagement
             return _appInitialization;
         }
 
-
-
         public void InitializeDB()
         {
-            _dbInitHandler.CreateTables();
-            _dbInitHandler.PopulateData();
+            
+                if (!File.Exists(Config.DatabasePath))
+                {
+                    _dbInitHandler.CreateTables();
+                    _dbInitHandler.PopulateData();
+                }
         }
     }
 }

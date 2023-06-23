@@ -47,6 +47,9 @@ namespace ZBank
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            //AppInitialization.GetInstance().InitializeDB();
+
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -80,9 +83,11 @@ namespace ZBank
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-            AppInitialization.GetInstance().InitializeDB();
+
 
         }
+
+      
 
         private async void App_CloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
         {

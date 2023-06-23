@@ -12,6 +12,13 @@ namespace ZBank.AppEvents
 {
     public class ViewNotifier
     {
+
+        public event Action LoadApp;
+        public void OnLoadApp()
+        {
+            LoadApp?.Invoke();
+        }
+
         public bool PaymentInProgress { get; set; }
 
         public event Action<int> CurrentPaymentStepChanged;

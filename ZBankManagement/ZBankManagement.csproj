@@ -131,6 +131,7 @@
     <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\ViewNotifier.cs" />
     <Compile Include="AppInitialization.cs" />
+    <Compile Include="Data\Config.cs" />
     <Compile Include="Data\DataManager\AccountFactory.cs" />
     <Compile Include="Data\DataManager\Contracts\IAccountFactory.cs" />
     <Compile Include="Data\DataManager\Contracts\IDeleteBeneficiaryDataManager.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Data\DataManager\Contracts\IGetCardDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IGetDashboardDataDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IGetTransactionDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IInitializeAppDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IInsertAccountDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IInsertBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IInsertCardDataManager.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="Data\DataManager\GetCardDataManager.cs" />
     <Compile Include="Data\DataManager\GetDashboardDataDataManager.cs" />
     <Compile Include="Data\DataManager\GetTransactionDataManager.cs" />
+    <Compile Include="Data\DataManager\InitializeAppDataManager.cs" />
     <Compile Include="Data\DataManager\InsertAccountDataManager.cs" />
     <Compile Include="Data\DataManager\InsertCardDataManager.cs" />
     <Compile Include="Data\DataManager\InsertTransactionDataManager.cs" />
@@ -188,6 +191,7 @@
     <Compile Include="Domain\UseCase\GetAllCards.cs" />
     <Compile Include="Domain\UseCase\GetAllTransactions.cs" />
     <Compile Include="Domain\UseCase\GetDashboardData.cs" />
+    <Compile Include="Domain\UseCase\InitializeApp.cs" />
     <Compile Include="Domain\UseCase\InsertAccount.cs" />
     <Compile Include="Domain\UseCase\InsertBeneficiary.cs" />
     <Compile Include="Domain\UseCase\InsertCard.cs" />
