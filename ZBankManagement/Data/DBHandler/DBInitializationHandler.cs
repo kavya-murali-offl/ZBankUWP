@@ -302,8 +302,5 @@ namespace ZBank.ZBankManagement.DataLayer.DBHandler
             _databaseAdapter.InsertAll(transactions);
 
         }
-
-
-
     }
 }

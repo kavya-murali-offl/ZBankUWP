@@ -19,6 +19,7 @@ using ZBank.Services;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 using static ZBankManagement.Domain.UseCase.InitializeApp;
+using System.IO;
 
 namespace ZBank.ViewModel
 {
