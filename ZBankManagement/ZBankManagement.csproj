@@ -130,7 +130,6 @@
     <Compile Include="AppEvents\AppEventArgs\NotifyUserArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\ViewNotifier.cs" />
-    <Compile Include="AppInitialization.cs" />
     <Compile Include="Data\Config.cs" />
     <Compile Include="Data\DataManager\AccountFactory.cs" />
     <Compile Include="Data\DataManager\Contracts\IAccountFactory.cs" />
@@ -174,9 +173,7 @@
     <Compile Include="Data\DBAdapter\IDatabaseAdapter.cs" />
     <Compile Include="Data\DBAdapter\SQLiteDatabaseAdapter.cs" />
     <Compile Include="Data\DBHandler\DBHandler.cs" />
-    <Compile Include="Data\DBHandler\DBInitializationHandler.cs" />
     <Compile Include="Data\DBHandler\IDBHandler.cs" />
-    <Compile Include="Data\DBHandler\IDBInitializationHandler.cs" />
     <Compile Include="Data\Dependencies\DependencyContainer.cs" />
     <Compile Include="Domain\Services\Contracts\IPasswordHasherService.cs" />
     <Compile Include="Domain\Services\PasswordHasherService.cs" />
@@ -207,6 +204,7 @@
     <Compile Include="Domain\UseCase\UpdateCard.cs" />
     <Compile Include="Domain\UseCase\UpdateCustomer.cs" />
     <Compile Include="Entity\BusinessObjects\AccountBObj.cs" />
+    <Compile Include="Entity\BusinessObjects\BeneficiaryBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CreditCard.cs" />
     <Compile Include="Entity\BusinessObjects\CurrentAccount.cs" />

@@ -47,9 +47,9 @@ namespace ZBank.DatabaseAdapter
             return Connection.InsertAllAsync(list);
         }
 
-        public Task<int> Update<T>(T instance)
+        public Task<int> Update<T>(T instance, Type type = null)
         {
-            return Connection.UpdateAsync(instance);
+            return Connection.UpdateAsync(instance, type);
         }
 
         public AsyncTableQuery<T> GetAll<T>() where T : new()

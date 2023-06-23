@@ -13,6 +13,7 @@ using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entity.BusinessObjects;
 using ZBankManagement.Utility;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
@@ -40,7 +41,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT).Sum(acc => acc.Balance)
                 };
 
-                IEnumerable<Beneficiary> beneficiaries = await _handler.GetBeneficiaries(request.UserID);
+                IEnumerable<BeneficiaryBObj> beneficiaries = await _handler.GetBeneficiaries(request.UserID);
                 List<Branch> branches = await _handler.GetBranchDetails();
                 IEnumerable<string> ifscCodes = branches.Where(brn => brn.BankID == "1").Select(brn => brn.IfscCode);
                 
@@ -61,8 +62,8 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 {
                     var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber);
                     transactions.AddRange(list);
-                    income += transactions.Where(tran => tran.ToAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
-                    expense += transactions.Where(tran => tran.FromAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
+                    income += transactions.Where(tran => tran.RecipientAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
+                    expense += transactions.Where(tran => tran.SenderAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
                 }
 
                 var IncomeExpenseCard = new DashboardCardModel

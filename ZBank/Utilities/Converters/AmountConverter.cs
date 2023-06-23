@@ -30,14 +30,14 @@ namespace ZBank.Utilities.Converters
             if (value == null)
                 return null;
 
-            if(TransactionType == TransactionType.DEBIT)
-            {
-                return "+" + value;
-            }
-            else
-            {
-                return "-" + value;
-            }
+            //if(TransactionType == TransactionType.DEBIT)
+            //{
+            //    return "+" + value;
+            //}
+            //else
+            //{
+            return "-" + value;
+            //}
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string culture)

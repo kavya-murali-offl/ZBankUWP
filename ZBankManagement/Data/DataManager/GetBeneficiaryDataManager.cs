@@ -9,6 +9,7 @@ using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entity.BusinessObjects;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
 {
@@ -25,7 +26,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.UserID);
+                IEnumerable<BeneficiaryBObj> beneficiaries = await DBHandler.GetBeneficiaries(request.UserID);
                 GetAllBeneficiariesResponse response = new GetAllBeneficiariesResponse()
                 {
                     Beneficiaries = beneficiaries

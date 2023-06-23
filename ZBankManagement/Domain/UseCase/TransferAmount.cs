@@ -28,7 +28,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            UpdateBalance(_request.OwnerAccount, TransactionType.DEBIT);
+            //UpdateBalance(_request.OwnerAccount, TransactionType.DEBIT);
             if (_request.Beneficiary.BeneficiaryType == BeneficiaryType.WITHIN_BANK)
             {
                 _transferAmountDataManager.GetBeneficiaryAccount(_request, new GetBeneficiaryAccountCallback(this));
@@ -41,15 +41,15 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         private void UpdateBalance(Account account, TransactionType transactionType)
         {
-            switch (transactionType)
-            {
-                case TransactionType.DEBIT:
-                    account.Balance -= _request.Transaction.Amount;
-                    break;
-                case TransactionType.CREDIT:
-                    account.Balance += _request.Transaction.Amount;
-                    break;
-            }
+            //switch (transactionType)
+            //{
+            //    case TransactionType.DEBIT:
+            //        account.Balance -= _request.Transaction.Amount;
+            //        break;
+            //    case TransactionType.CREDIT:
+            //        account.Balance += _request.Transaction.Amount;
+            //        break;
+            //}
         }
         private void MakeExternalTransaction()
         {
@@ -58,7 +58,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         private void MakeInternalTransaction(Account beneficiaryAccount)
         {
-            UpdateBalance(beneficiaryAccount, TransactionType.CREDIT);
+            //UpdateBalance(beneficiaryAccount, TransactionType.CREDIT);
             _transferAmountDataManager.InitiateOtherBankTransaction(_request, new TransferAmountCallback(this));
         }
 

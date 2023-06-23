@@ -32,14 +32,6 @@ namespace ZBankManagement.DataManager
                     var accountTransactions = await DBHandler.GetTransactionByAccountNumber(account.AccountNumber);
                     accountTransactions.Select(transaction =>
                     {
-                        if(transaction.FromAccountNumber == account.AccountNumber)
-                        {
-                            transaction.SetDefault(TransactionType.DEBIT);
-                        }
-                        else
-                        {
-                            transaction.SetDefault(TransactionType.CREDIT);
-                        }
                         return transaction;
                     });
                     transactions.AddRange(accountTransactions);

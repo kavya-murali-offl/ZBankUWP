@@ -12,6 +12,7 @@ using ZBank.Entities.BusinessObjects;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entity.BusinessObjects;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -64,7 +65,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class GetAllBeneficiariesResponse
     {
-        public IEnumerable<Beneficiary> Beneficiaries { get; set; }
+        public IEnumerable<BeneficiaryBObj> Beneficiaries { get; set; }
     }
 
 

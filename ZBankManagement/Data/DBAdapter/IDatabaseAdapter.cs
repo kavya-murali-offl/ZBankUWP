@@ -20,7 +20,7 @@ namespace ZBank.DatabaseAdapter
 
         Task<int> InsertAll<T>(IEnumerable<T> list);
 
-        Task<int> Update<T>(T obj);
+        Task<int> Update<T>(T obj, Type type = null);
 
         Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new();
 

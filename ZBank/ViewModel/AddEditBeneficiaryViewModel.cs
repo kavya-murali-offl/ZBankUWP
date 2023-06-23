@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.View;
+using ZBankManagement.Entity.BusinessObjects;
 using ZBankManagement.Entity.EnumerationTypes;
 
 namespace ZBank.ViewModel
@@ -12,9 +13,9 @@ namespace ZBank.ViewModel
     public class AddEditBeneficiaryViewModel : ViewModelBase
     {
         private IView View { get; set; }
-        private Beneficiary _selectedBeneficiary {  get; set; } 
+        private BeneficiaryBObj _selectedBeneficiary {  get; set; } 
         
-        public Beneficiary SelectedBeneficiary
+        public BeneficiaryBObj SelectedBeneficiary
         {
             get { return _selectedBeneficiary; }
             set { _selectedBeneficiary = value; }

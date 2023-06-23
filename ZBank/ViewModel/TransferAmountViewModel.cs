@@ -36,7 +36,7 @@ namespace ZBank.ViewModel
             Reset();
         }
 
-        public Beneficiary SelectedBeneficiary
+        public BeneficiaryBObj SelectedBeneficiary
         {
             get { 
                 return AllBeneficiaries.FirstOrDefault(ben =>
@@ -61,16 +61,14 @@ namespace ZBank.ViewModel
                 Transaction = new Transaction()
                 {
                     Amount = decimal.Parse(FieldValues["Amount"].ToString()),
-                    ToAccountNumber = AllBeneficiaries.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Beneficiary"])).AccountNumber,
-                    FromAccountNumber = UserAccounts.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Account"])).AccountNumber,
+                    RecipientAccountNumber = AllBeneficiaries.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Beneficiary"])).AccountNumber,
+                    SenderAccountNumber = UserAccounts.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Account"])).AccountNumber,
                     Description = FieldValues["Description"].ToString(),
                     RecordedOn = DateTime.Now,
                     ReferenceID = Guid.NewGuid().ToString(),
-                    ModeOfPayment = ModeOfPayment.DIRECT,
-                    Balance = decimal.Parse(FieldValues["Available Balance"].ToString())
                 },
-                OwnerAccount = UserAccounts.FirstOrDefault(acc => acc.Equals(FieldValues["Account"])),
-                Beneficiary = AllBeneficiaries.FirstOrDefault(acc => acc.Equals(FieldValues["Beneficiary"])),
+                OwnerAccount = UserAccounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Account"])),
+                Beneficiary = AllBeneficiaries.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Beneficiary"])),
             };
 
             IPresenterCallback<TransferAmountResponse> presenterCallback = new TransferAmountPresenterCallback(this);
@@ -177,7 +175,7 @@ namespace ZBank.ViewModel
 
         private void UpdateBeneficiariesList(BeneficiaryListUpdatedArgs args)
         {
-            AllBeneficiaries = new ObservableCollection<Beneficiary>(args.BeneficiaryList);
+            AllBeneficiaries = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList);
         }
 
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
@@ -306,9 +304,9 @@ namespace ZBank.ViewModel
             }
         }
 
-        private ObservableCollection<Beneficiary> _beneficiaries { get; set; }
+        private ObservableCollection<BeneficiaryBObj> _beneficiaries { get; set; }
 
-        public ObservableCollection<Beneficiary> AllBeneficiaries
+        public ObservableCollection<BeneficiaryBObj> AllBeneficiaries
         {
             get { return _beneficiaries; }
             set

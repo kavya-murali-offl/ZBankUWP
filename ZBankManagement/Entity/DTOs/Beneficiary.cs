@@ -19,16 +19,20 @@ namespace ZBank.Entities
         public string AccountNumber { get; set; }
 
         public BeneficiaryType BeneficiaryType { get; set; }
+    }
+
+    [Table("ExternalAccounts")]
+    public class ExternalAccount
+    {
+
+        [PrimaryKey]
+        public string AccountNumber { get; set; }
+
+        public string IFSCCode { get; set; }
 
         public string Name { get; set; }
 
         public string ProfilePicture { get; set; }
 
-        public string IFSCCode { get; set; }
-
-        public override string ToString()
-        {
-            return AccountNumber + " - " + Name;
-        }
     }
 }

@@ -18,20 +18,20 @@ namespace ZBank.Entities.BusinessObjects
 
         public void SetDefault(TransactionType type)
         {
-            if (type == TransactionType.DEBIT)
-            {
-                BorderColor = "#be3232";
-                BackgroundColor = "#f5e1dd";
-                ArrowIcon = "\uEDDC";
-                PlusOrMinus = "-";
-            }
-            else if (type == TransactionType.CREDIT)
-            {
-                BackgroundColor = "#eafde8";
-                BorderColor = "#058365";
-                ArrowIcon = "\uEDDB";
-                PlusOrMinus = "+";
-            }
+            //if (type == TransactionType.DEBIT)
+            //{
+            //    BorderColor = "#be3232";
+            //    BackgroundColor = "#f5e1dd";
+            //    ArrowIcon = "\uEDDC";
+            //    PlusOrMinus = "-";
+            //}
+            //else if (type == TransactionType.CREDIT)
+            //{
+            //    BackgroundColor = "#eafde8";
+            //    BorderColor = "#058365";
+            //    ArrowIcon = "\uEDDB";
+            //    PlusOrMinus = "+";
+            //}
         }
     }
 }

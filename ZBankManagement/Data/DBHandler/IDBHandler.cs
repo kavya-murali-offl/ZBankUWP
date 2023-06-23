@@ -7,6 +7,7 @@ using ZBank.DatabaseAdapter;
 using ZBank.Entity;
 using ZBank.Entity.BusinessObjects;
 using Windows.Storage;
+using ZBankManagement.Entity.BusinessObjects;
 
 namespace ZBank.DatabaseHandler
  {
@@ -67,7 +68,7 @@ namespace ZBank.DatabaseHandler
 
         // Beneficiary
 
-        Task<IEnumerable<Beneficiary>> GetBeneficiaries(string customerID);
+        Task<IEnumerable<BeneficiaryBObj>> GetBeneficiaries(string customerID);
 
         Task<int> AddBeneficiary(Beneficiary beneficiary);
 

@@ -13,7 +13,9 @@ using ZBank.Entity;
 using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.EnumerationTypes;
 using ZBankManagement.Controller;
+using ZBankManagement.Entity.BusinessObjects;
 using ZBankManagement.Entity.DTOs;
+using ZBankManagement.Entity.EnumerationTypes;
 
 namespace ZBank.DatabaseHandler
 {
@@ -86,7 +88,14 @@ namespace ZBank.DatabaseHandler
                     AccountNumber="1000 1789 7890 6633",
                      InterestRate=3.4m,
                      MinimumBalance=500,
-                }
+                },
+                 new CurrentAccountDTO()
+                {
+                    AccountNumber="1666 5788 4567 5676",
+                     InterestRate=3.4m,
+                     MinimumBalance=500,
+                },
+
             };
 
             await _databaseAdapter.InsertAll(currentAccountDTOs);
@@ -162,6 +171,19 @@ namespace ZBank.DatabaseHandler
                     IsKYCApproved = true,
                     AccountType = AccountType.TERM_DEPOSIT,
                 },
+                  new Account()
+                  {
+                    AccountNumber="1666 5788 4567 5676",
+                     IFSCCode = "ZBNK1002",
+                      AccountName = "John",
+                    UserID = "2222",
+                    CreatedOn = DateTime.Now,
+                    AccountStatus = AccountStatus.ACTIVE,
+                    Currency = Currency.INR,
+                    Balance = 0m,
+                    IsKYCApproved = true,
+                    AccountType = AccountType.CURRENT,
+                  }
             };
 
             await _databaseAdapter.InsertAll(accounts);
@@ -172,23 +194,58 @@ namespace ZBank.DatabaseHandler
                 new Beneficiary()
                 {
                     ID="1",
-                    AccountNumber="1009 6678 5556 3332",
-                     IFSCCode="HDFC1001",
-                      Name="John",
-                      ProfilePicture="",
-                       UserID="1111"
+                    AccountNumber="1666 5788 4567 5676",
+                    BeneficiaryType = BeneficiaryType.WITHIN_BANK,
+                    UserID="1111"
                 },
                 new Beneficiary()
                 {
                     ID="2",
                     AccountNumber="1234 7654 9876 9874",
-                     IFSCCode="HDFC1002",
-                      Name="Preethi",
-                      ProfilePicture="",
-                       UserID="1111"
+                    BeneficiaryType = BeneficiaryType.OTHER_BANK,
+                    UserID="1111"
                 },
             };
             await _databaseAdapter.InsertAll(beneficiaries);
+
+            List<Transaction> transactions = new List<Transaction>()
+            {
+                new Transaction()
+                {
+                     ReferenceID = Guid.NewGuid().ToString(),
+                     TransactionType = Entities.TransactionType.INTERNAL,
+                      Amount=12000m,
+                         Description="Salary",
+                          RecipientAccountNumber="1666 5788 4567 5676",
+                          SenderAccountNumber="1000 1789 7890 6633",
+                           RecordedOn=DateTime.Now,
+                },
+
+                new Transaction()
+                {
+                     ReferenceID = Guid.NewGuid().ToString(),
+                      Amount=2000m,
+                     TransactionType = Entities.TransactionType.EXTERNAL,
+                         Description="Payment",
+                          RecipientAccountNumber="1234 7654 9876 9874",
+                          SenderAccountNumber="1000 1789 7890 6633",
+                           RecordedOn=DateTime.Now,
+                }
+                };
+
+            await _databaseAdapter.InsertAll(transactions);
+
+            List<ExternalAccount> externalAccounts = new List<ExternalAccount>()
+            {
+                new ExternalAccount()
+                {
+                    AccountNumber="1234 7654 9876 9874",
+                    IFSCCode="HDFC1001",
+                     Name="Preethi",
+                }
+            };
+
+            await _databaseAdapter.InsertAll(externalAccounts);
 
             List<Branch> branches = new List<Branch>()
             {
@@ -297,40 +354,22 @@ namespace ZBank.DatabaseHandler
                 }
             };
 
-            _databaseAdapter.InsertAll(customerCredentials);
+            await _databaseAdapter.InsertAll(customerCredentials);
 
 
-            List<Transaction> transactions = new List<Transaction>()
-            {
-                new Transaction()
-                {
-                     ReferenceID = "123456uhgfuy65",
-                      Amount=12000m,
-                       Balance=12000m,
-                        CardNumber="",
-                         Description="Salary",
-                          ModeOfPayment=Entities.ModeOfPayment.DIRECT,
-                          ToAccountNumber="1009 6678 5556 3332",
-                          FromAccountNumber="1000 1789 7890 6633",
-                           RecordedOn=DateTime.Now,
-                },
+       
 
-                new Transaction()
-                {
-                     ReferenceID = "dfgyhu5678905u",
-                      Amount=2000m,
-                       Balance=10000m,
-                        CardNumber="",
-                         Description="Payment",
-                          ModeOfPayment=Entities.ModeOfPayment.DIRECT,
-                          ToAccountNumber="1234 7654 9876 9874",
-                          FromAccountNumber="1000 1789 7890 6633",
-                           RecordedOn=DateTime.Now,
-                }
-                };
+            //var transactionSenders = new List<TransactionSender>()
+            //{
+            //   new TransactionSender()
+            //   {
+            //        ReferenceID="",
+            //        SenderAccountNumber ="",
+            //         SenderBalance=10000
+            //   },
+            //};
 
-            await _databaseAdapter.InsertAll(transactions);
-
+            //await _databaseAdapter.InsertAll(externalAccounts);
         }
 
 
@@ -361,8 +400,8 @@ namespace ZBank.DatabaseHandler
             Func<Task> action = async () =>
             {
                 await _databaseAdapter.Insert(transaction);
-                await _databaseAdapter.Update(ownerAccount);
-                await _databaseAdapter.Update(beneficiaryAccount);
+                await _databaseAdapter.Update(ownerAccount, typeof(Account));
+                await _databaseAdapter.Update(beneficiaryAccount, typeof(Account));
             };
             await _databaseAdapter.RunInTransactionAsync(action);
         }
@@ -425,6 +464,7 @@ namespace ZBank.DatabaseHandler
             await _databaseAdapter.CreateTable<SavingsAccountDTO>();
             await _databaseAdapter.CreateTable<TermDepositAccountDTO>();
             await _databaseAdapter.CreateTable<Transaction>();
+            await _databaseAdapter.CreateTable<ExternalAccount>();
             await  _databaseAdapter.CreateTable<CreditCardDTO>();
             await _databaseAdapter.CreateTable<DebitCardDTO>();
            await _databaseAdapter.CreateTable<Bank>();
@@ -434,9 +474,12 @@ namespace ZBank.DatabaseHandler
 
         // Beneficiaries
 
-        public async Task<IEnumerable<Beneficiary>> GetBeneficiaries(string customerID)
+        public async Task<IEnumerable<BeneficiaryBObj>> GetBeneficiaries(string customerID)
         {
-            return await _databaseAdapter.Query<Beneficiary>($"Select * from Beneficiary where UserID = ?", "1111");
+            return await _databaseAdapter.Query<BeneficiaryBObj>($"Select Beneficiary.*, ExternalAccounts.*, Account.IFSCCode, Account.AccountName from Beneficiary " +
+                $"LEFT JOIN ExternalAccounts on ExternalAccounts.AccountNumber = Beneficiary.AccountNumber " +
+                $"LEFT JOIN Account on Account.AccountNumber = Beneficiary.AccountNumber " +
+                $"where Beneficiary.UserID = ?", "1111");
         }
 
         public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Update(beneficiary);
@@ -498,14 +541,16 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber)
         {
             var transactionBObjs = await _databaseAdapter.Query<TransactionBObj>(
-                $"Select * from Transactions Left Join Beneficiary on Transactions.ToAccountNumber = Beneficiary.AccountNumber where FromAccountNumber = ?", accountNumber);
+                $"Select * from Transactions" +
+                $" Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
+                $"where SenderAccountNumber = ?");
+                //$"Select * from Transactions Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumbe where SenderAccountNumber = ?", accountNumber);
             return transactionBObjs;
         }
        
 
         public async Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber) =>
             await _databaseAdapter.GetAll<TransactionBObj>()
-            .Where(x => x.CardNumber == cardNumber)
             .OrderByDescending(x => x.RecordedOn)
             .ToListAsync();
 
@@ -514,15 +559,15 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
         {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions " +
-                $"Inner Join Beneficiary on Transactions.ToAccountNumber = Beneficiary.AccountNumber " +
-                "WHERE FromAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
+                $"Inner Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
+                "WHERE SenderAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber);
         }
 
         public async Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber)
         {
             return await _databaseAdapter.Query<TransactionBObj>("SELECT * FROM Transactions " +
-                $"Inner Join Beneficiary on Transactions.ToAccountNumber = Beneficiary.AccountNumber " +
-                "WHERE FromAccountNumber == ?", accountNumber);
+                $"Inner Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
+                "WHERE SenderAccountNumber == ?", accountNumber);
         }
 
     }

@@ -15,28 +15,48 @@ namespace ZBank.Entities
         [PrimaryKey]
         public string ReferenceID { get; set; }
 
-        public TransactionType TransactionType { get; set; }
-
-        public ModeOfPayment ModeOfPayment { get; set; }
-
         public decimal Amount { get; set; }
 
         public DateTime RecordedOn { get; set; }
 
-        public decimal Balance { get; set; }
+        public TransactionType TransactionType { get; set; }
 
-        public string FromAccountNumber { get; set; }
+        public string SenderAccountNumber { get; set; }
 
-        public string ToAccountNumber { get; set; }
+        public string RecipientAccountNumber { get; set; }
 
         public string Description { get; set; }
 
-        public string CardNumber { get; set; }
+        public decimal SenderBalance { get; set; }
+
+        public decimal RecipientBalance { get; set; }
     }
+
+    //[Table("TransactionSenders")]
+    //public class TransactionSender
+    //{
+    //    [PrimaryKey]
+    //    public string ReferenceID { get; set; }
+
+    //    public decimal SenderBalance { get; set; }
+
+    //    public string SenderAccountNumber { get; set; }
+    //}
+
+    //[Table("TransactionRecipients")]
+    //public class TransactionRecipient
+    //{
+    //    [PrimaryKey]
+    //    public string ReferenceID { get; set; }
+
+    //    public string RecipientAccountNumber { get; set; }
+
+    //    public decimal RecipientBalance { get; set; }
+    //}
 
     public enum TransactionType
     {
-        DEBIT, CREDIT
+        INTERNAL, EXTERNAL
     }
 
     public enum ModeOfPayment

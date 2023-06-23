@@ -4,7 +4,6 @@ using ZBankManagement.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using ZBank.DatabaseAdapter;
 using ZBank.DatabaseHandler;
-using ZBank.ZBankManagement.DataLayer.DBHandler;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DataLayer.DataManager;
 using ZBank.AppEvents;
@@ -34,7 +33,6 @@ namespace ZBank.Dependencies
         {
             serviceCollection.AddSingleton<IDatabaseAdapter, SQLiteDatabaseAdapter>();
             serviceCollection.AddSingleton<IDBHandler, DBHandler>();
-            serviceCollection.AddSingleton<IDBInitializationHandler, DBInitializationHandler>();
             return serviceCollection;
         }
 
