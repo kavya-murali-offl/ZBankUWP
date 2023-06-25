@@ -135,11 +135,11 @@
                 VerticalAlignment="Center"
                 MaxWidth="35"
                 MaxHeight="35"
-                Initials="{x:Bind ViewModel.SelectedBeneficiary.Name, Mode=OneWay,Converter={StaticResource InitialsConverter}}" />
+                Initials="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=OneWay,Converter={StaticResource InitialsConverter}}" />
             <TextBlock
                 Margin="0,10,0,10"
                 FontSize="16"
-                Text="{x:Bind ViewModel.SelectedBeneficiary.Name, Mode=OneWay, TargetNullValue='', Converter={StaticResource CurrencyConverter}}" />
+                Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=OneWay, TargetNullValue='', Converter={StaticResource CurrencyConverter}}" />
         </StackPanel>
 
         <TextBlock

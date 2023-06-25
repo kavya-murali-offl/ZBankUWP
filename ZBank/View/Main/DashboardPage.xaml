@@ -353,11 +353,12 @@
                                                     <ColumnDefinition
                                                         Width="*" />
                                                     <ColumnDefinition
-                                                        Width="Auto" /> <ColumnDefinition
-                                                        Width="Auto" /><ColumnDefinition
+                                                        Width="Auto" />
+                                                    <ColumnDefinition
+                                                        Width="Auto" />
+                                                    <ColumnDefinition
                                                         Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                
 
                                                 <TextBlock
                                                     Grid.Column="1"
@@ -370,7 +371,7 @@
                                                     Foreground="Gray"
                                                     FontSize="12"
                                                     Text="{Binding RecordedOn, 
-                    Converter={StaticResource DateFormatConverter}}"
+                                                    Converter={StaticResource DateFormatConverter}}"
                                                     Style="{ThemeResource NormalSubText}" />
 
                                                 <TextBlock
@@ -389,7 +390,7 @@
                                                     HorizontalAlignment="Right"
                                                     TextAlignment="Right"
                                                     Foreground="Gray"
-                                                    Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
+                                                    Text="{Binding ClosingBalance, Converter={StaticResource CurrencyConverter}}"
                                                     Style="{ThemeResource BoldNormalText}" />
                                                 <Grid
                                                     Grid.RowSpan="2"

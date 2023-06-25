@@ -51,7 +51,7 @@
                         <TextBox
                             x:Name="NameBox"
                             MaxWidth="400"
-                            Text="{x:Bind ViewModel.SelectedBeneficiary.Name, Mode=TwoWay}"
+                            Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay}"
                             PlaceholderText="Enter Beneficiary Name" />
                        
                         <TextBlock

@@ -12,11 +12,9 @@ namespace ZBankManagement.Entity.BusinessObjects
     {
         public string IFSCCode { get; set; }
 
-        public string Name { get; set; }
-
         public override string ToString()
         {
-            return AccountNumber + " - " + Name;
+            return AccountNumber + " - " + BeneficiaryName;
         }
     }
 }

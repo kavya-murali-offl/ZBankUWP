@@ -18,6 +18,8 @@ namespace ZBank.Entities
 
         public string AccountNumber { get; set; }
 
+        public string BeneficiaryName { get; set; }
+
         public BeneficiaryType BeneficiaryType { get; set; }
     }
 
@@ -26,11 +28,11 @@ namespace ZBank.Entities
     {
 
         [PrimaryKey]
-        public string AccountNumber { get; set; }
+        public string ExternalAccountNumber { get; set; }
 
-        public string IFSCCode { get; set; }
+        public string ExternalIFSCCode { get; set; }
 
-        public string Name { get; set; }
+        public string ExternalName { get; set; }
 
         public string ProfilePicture { get; set; }
 

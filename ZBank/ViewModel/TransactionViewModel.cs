@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Data;
 using ZBank.ViewModel.VMObjects;
+using Windows.UI.Popups;
 
 namespace ZBank.ViewModel
 {
@@ -111,14 +112,24 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.TransactionListUpdated += UpdateTransactionsData;
+            ViewNotifier.Instance.CancelPaymentRequested += NewTransactionAdded;
             CurrentPageIndex = 0;
             RowsPerPage = DefinedRows.First();
             LoadAllTransactionsData();
         }
 
+        private void NewTransactionAdded(bool isPaymentCompleted)
+        {
+            if (isPaymentCompleted)
+            {
+                LoadAllTransactionsData();
+            }
+        }
+
         public void OnPageUnLoaded()
         {
             ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactionsData;
+            ViewNotifier.Instance.CancelPaymentRequested -= NewTransactionAdded;
         }
 
         private int _currentPageIndex { get; set; }
@@ -202,7 +213,6 @@ namespace ZBank.ViewModel
                 TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
                 {
                     TransactionList = response.Transactions,
-                    BeneficiariesList = response.Beneficiaries
                 };
 
                 ViewNotifier.Instance.OnTransactionsListUpdated(args);

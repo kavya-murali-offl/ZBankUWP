@@ -20,6 +20,7 @@ using Windows.UI.Xaml;
 using ZBank.View.DataTemplates.NewPaymentTemplates;
 using Windows.UI.Xaml.Controls;
 using ZBankManagement.Entity.BusinessObjects;
+using static Microsoft.Toolkit.Uwp.UI.Animations.Expressions.ExpressionValues;
 
 namespace ZBank.ViewModel
 {
@@ -56,6 +57,8 @@ namespace ZBank.ViewModel
 
         private void ProceedToPay(object parameter) 
         {
+            var ReferenceID = Guid.NewGuid().ToString();
+            var userAccount = UserAccounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Account"]));
             TransferAmountRequest request = new TransferAmountRequest()
             {
                 Transaction = new Transaction()
@@ -65,9 +68,9 @@ namespace ZBank.ViewModel
                     SenderAccountNumber = UserAccounts.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Account"])).AccountNumber,
                     Description = FieldValues["Description"].ToString(),
                     RecordedOn = DateTime.Now,
-                    ReferenceID = Guid.NewGuid().ToString(),
+                    ReferenceID  = ReferenceID,
                 },
-                OwnerAccount = UserAccounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Account"])),
+                OwnerAccount = userAccount,
                 Beneficiary = AllBeneficiaries.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Beneficiary"])),
             };
 
@@ -394,13 +397,9 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(TransferAmountResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    //AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
-                    //{
-                    //    AccountsList = new ObservableCollection<Account>(response.Accounts)
-                    //};
-                    //ViewNotifier.Instance.OnAccountsListUpdated(args);
+                    ViewNotifier.Instance.OnCancelPaymentRequested(true);
                 });
             }
 

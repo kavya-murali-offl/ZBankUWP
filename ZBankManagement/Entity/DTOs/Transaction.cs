@@ -26,33 +26,20 @@ namespace ZBank.Entities
         public string RecipientAccountNumber { get; set; }
 
         public string Description { get; set; }
-
-        public decimal SenderBalance { get; set; }
-
-        public decimal RecipientBalance { get; set; }
     }
 
-    //[Table("TransactionSenders")]
-    //public class TransactionSender
-    //{
-    //    [PrimaryKey]
-    //    public string ReferenceID { get; set; }
+    [Table("TransactionMetaData")]
+    public class TransactionMetaData
+    {
+        [PrimaryKey]
+        public string ID { get; set; }  
+        
+        public string ReferenceID { get; set; }
 
-    //    public decimal SenderBalance { get; set; }
+        public string AccountNumber { get; set; }
 
-    //    public string SenderAccountNumber { get; set; }
-    //}
-
-    //[Table("TransactionRecipients")]
-    //public class TransactionRecipient
-    //{
-    //    [PrimaryKey]
-    //    public string ReferenceID { get; set; }
-
-    //    public string RecipientAccountNumber { get; set; }
-
-    //    public decimal RecipientBalance { get; set; }
-    //}
+        public decimal ClosingBalance { get; set; }
+    }
 
     public enum TransactionType
     {

@@ -44,7 +44,7 @@ namespace ZBank.View.Main
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageUnLoaded();
-            ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
+            ViewNotifier.Instance.CancelPaymentRequested -= CancelPaymentRequested;
         }
 
         private void ArrowColumn_Click(object sender, RoutedEventArgs e)
@@ -57,7 +57,7 @@ namespace ZBank.View.Main
             if(PaymentDialog != null)
             {
                 PaymentDialog.Hide();
-                PaymentDialog = null;   
+                PaymentDialog = null;
             }
         }
 

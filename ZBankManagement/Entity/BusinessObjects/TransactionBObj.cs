@@ -6,32 +6,34 @@ namespace ZBank.Entities.BusinessObjects
 {
     public class TransactionBObj : Transaction
     {
-        public string Name { get; set; }
 
-        public string ArrowIcon { get; set; }
+        public string BeneficiaryName { get; set; } 
 
-        public string PlusOrMinus { get; set; }
+        public string ExternalName { get; set; }   
+        
+        public decimal ClosingBalance { get; set; }    
 
-        public string BorderColor { get;  set; }
+        public string Name { get => BeneficiaryName != null ? BeneficiaryName : ExternalName; }
 
-        public string BackgroundColor { get;  set; }
+        public bool IsRecipient { get; set; }   
 
-        public void SetDefault(TransactionType type)
+        public string ArrowIcon 
+        { 
+            get =>  IsRecipient ? "\uEDDB" : "\uEDDC";
+        }
+
+        public string PlusOrMinus { 
+            get =>  IsRecipient ? "+" : "-";
+
+        }
+
+        public string BorderColor { 
+            get =>  IsRecipient ? "#058365" :  "#BE3232";
+        }
+
+        public string BackgroundColor
         {
-            //if (type == TransactionType.DEBIT)
-            //{
-            //    BorderColor = "#be3232";
-            //    BackgroundColor = "#f5e1dd";
-            //    ArrowIcon = "\uEDDC";
-            //    PlusOrMinus = "-";
-            //}
-            //else if (type == TransactionType.CREDIT)
-            //{
-            //    BackgroundColor = "#eafde8";
-            //    BorderColor = "#058365";
-            //    ArrowIcon = "\uEDDB";
-            //    PlusOrMinus = "+";
-            //}
+            get => IsRecipient ? "#EAFDE8" : "#F5E1DD";
         }
     }
 }

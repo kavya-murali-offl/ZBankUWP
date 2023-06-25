@@ -9,6 +9,8 @@ using System;
 using ZBank.Entities.BusinessObjects;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Security.Principal;
+using System.Transactions;
 
 namespace ZBankManagement.DataManager
 {
@@ -26,15 +28,19 @@ namespace ZBankManagement.DataManager
             try
             {
                 var accounts = await DBHandler.GetAllAccounts(request.CustomerID);
+
                 List<TransactionBObj> transactions = new List<TransactionBObj>();    
                 foreach (var account in accounts)
                 {
-                    var accountTransactions = await DBHandler.GetTransactionByAccountNumber(account.AccountNumber);
-                    accountTransactions.Select(transaction =>
+                    var accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber);
+                    foreach (var transaction in accountTransactions)
                     {
-                        return transaction;
-                    });
-                    transactions.AddRange(accountTransactions);
+                        if (transaction.RecipientAccountNumber == account.AccountNumber)
+                        {
+                            transaction.IsRecipient = true;
+                        }
+                        transactions.Add(transaction);
+                    }
                 }
 
                 IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.CustomerID);
@@ -64,7 +70,13 @@ namespace ZBankManagement.DataManager
             try
             {
                 IEnumerable<TransactionBObj> transactionList = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber);
-
+                foreach (var transaction in transactionList)
+                {
+                    if (transaction.RecipientAccountNumber == request.AccountNumber)
+                    {
+                        transaction.IsRecipient = true;
+                    }
+                }
                 GetAllTransactionsResponse response = new GetAllTransactionsResponse
                 {
                     Transactions = transactionList,

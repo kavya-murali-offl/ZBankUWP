@@ -55,10 +55,7 @@ namespace ZBank.DatabaseHandler
 
         // Transaction
 
-        Task<IEnumerable<TransactionBObj>> GetTransactionByAccountNumber(string accountNumber);
-
         Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber);
-
 
         Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber);
 
@@ -78,9 +75,9 @@ namespace ZBank.DatabaseHandler
 
         Task<int> ResetPassword(CustomerCredentials credentials);
 
-        Task InitiateTransactionInternal(Transaction transaction, Account account, Account beneficiaryAccount);
+        Task InitiateTransactionInternal(Account account, Account beneficiaryAccount, Transaction transaction, TransactionMetaData transactionMetaData, TransactionMetaData otherTransactionMetaData);
 
-        Task InitiateTransactionExternal(Transaction transaction, Account account);
+        Task InitiateTransactionExternal(Transaction transaction, Account account, TransactionMetaData metaData);
 
         Task<Account> GetAccountByAccountNumber(string accountNumber);
 

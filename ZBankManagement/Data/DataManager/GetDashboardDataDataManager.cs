@@ -14,7 +14,6 @@ using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 using ZBankManagement.Entity.BusinessObjects;
-using ZBankManagement.Utility;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
 {
@@ -61,9 +60,16 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 foreach(var account in accountsList)
                 {
                     var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber);
-                    transactions.AddRange(list);
-                    income += transactions.Where(tran => tran.RecipientAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
-                    expense += transactions.Where(tran => tran.SenderAccountNumber == account.AccountNumber).Sum(tran => tran.Amount);
+                    foreach(var transaction in list)
+                    {
+                        if(transaction.RecipientAccountNumber == account.AccountNumber)
+                        {
+                            transaction.IsRecipient = true;
+                        }
+                        transactions.Add(transaction);
+                    }
+                    income += transactions.Where(tran => tran.IsRecipient).Sum(tran => tran.Amount);
+                    expense += transactions.Where(tran => !tran.IsRecipient).Sum(tran => tran.Amount);
                 }
 
                 var IncomeExpenseCard = new DashboardCardModel

@@ -20,12 +20,18 @@ namespace ZBankManagement.DataManager
 
         private IDBHandler _dBHandler { get; set; }
 
-
         public async Task InitiateOtherBankTransaction(TransferAmountRequest request, IUseCaseCallback<TransferAmountResponse> callback)
         {
             try
             {
-                await _dBHandler.InitiateTransactionExternal(request.Transaction, request.OwnerAccount);
+                var metaData = new TransactionMetaData()
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    ReferenceID = request.Transaction.ReferenceID,
+                    AccountNumber = request.OwnerAccount.AccountNumber,
+                    ClosingBalance = request.OwnerAccount.Balance -= request.Transaction.Amount,
+                };
+                await _dBHandler.InitiateTransactionExternal(request.Transaction, request.OwnerAccount, metaData);
                 TransferAmountResponse response = new TransferAmountResponse()
                 {
                 };
@@ -71,7 +77,23 @@ namespace ZBankManagement.DataManager
                 Account beneficiaryAccount = await _dBHandler.GetAccountByAccountNumber(request.Beneficiary.AccountNumber);
                 if (beneficiaryAccount != null)
                 {
-                    await _dBHandler.InitiateTransactionInternal(request.Transaction, request.OwnerAccount, beneficiaryAccount);
+                    var metaData = new TransactionMetaData()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        ReferenceID = request.Transaction.ReferenceID,
+                        AccountNumber = request.OwnerAccount.AccountNumber,
+                        ClosingBalance = request.OwnerAccount.Balance -= request.Transaction.Amount,
+                    };
+
+                    var otherMetaData = new TransactionMetaData()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        ReferenceID = request.Transaction.ReferenceID,
+                        AccountNumber = beneficiaryAccount.AccountNumber,
+                        ClosingBalance = beneficiaryAccount.Balance += request.Transaction.Amount,
+                    };
+
+                    await _dBHandler.InitiateTransactionInternal(request.OwnerAccount, beneficiaryAccount, request.Transaction, metaData, otherMetaData);
                     TransferAmountResponse response = new TransferAmountResponse()
                     {
                         Transaction = request.Transaction,
