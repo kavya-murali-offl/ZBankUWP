@@ -1,0 +1,199 @@
+﻿<UserControl
+    x:Class="ZBank.View.UserControls.CardElementView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank.View.UserControls"
+    xmlns:converter="using:ZBank.Utilities.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <converter:NullToVisibilityConverter
+            x:Key="NullToVisibilityConverter" />
+        <converter:CurrencyConverter
+            x:Key="CurrencyConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid
+            CornerRadius="10"
+            x:Name="NoCard"
+            Background="Gray"
+            Visibility="{x:Bind TemplateCard, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}">
+            
+        </Grid>
+        <Grid
+            Padding="10"
+            CornerRadius="10"
+            x:Name="ViewCard" Visibility="{x:Bind TemplateCard, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=1, Mode=OneWay}">
+            <Grid.Height>
+                <Binding
+                    ElementName="ViewCard"
+                    Path="ActualHeight" />
+            </Grid.Height>
+            <Grid.OpacityTransition>
+                <ScalarTransition />
+            </Grid.OpacityTransition>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup
+                    x:Name="VisibilityStates">
+                    <VisualState
+                        x:Name="Visible">
+                        <Storyboard>
+                            <DoubleAnimationUsingKeyFrames
+                                Storyboard.TargetName="SlideIn"
+                                Storyboard.TargetProperty="X">
+                                <SplineDoubleKeyFrame
+                                    KeyTime="0:0:1"
+                                    Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames
+                                Storyboard.TargetName="ViewGrid"
+                                Storyboard.TargetProperty="Opacity">
+                                <SplineDoubleKeyFrame
+                                    KeyTime="0:0:1.55"
+                                    Value="1" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState
+                        x:Name="Collapsed">
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="ViewCard"
+                                Storyboard.TargetProperty="Opacity"
+                                From="1"
+                                To="0"
+                                Duration="0:0:0.4" />
+                            <DoubleAnimation
+                                Storyboard.TargetName="ViewCard"
+                                Storyboard.TargetProperty="Height"
+                                From="{Binding ElementName=ViewCard, Path=ActualHeight}"
+                                To="0"
+                                Duration="0:0:0.4" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <!--<Grid.RenderTransform>
+                <ScaleTransform
+                    ScaleX="1"
+                    ScaleY="1" />
+            </Grid.RenderTransform>
+            <Grid.Resources>
+                <Storyboard
+                    x:Key="ScaleAnimation">
+                    <DoubleAnimation
+                        Storyboard.TargetName="ViewCard"
+                        Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0.1"
+                        To="1"
+                        Duration="0:0:2" />
+                    <DoubleAnimation
+                        Storyboard.TargetName="ViewCard"
+                        Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0.1"
+                        To="1"
+                        Duration="0:0:2" />
+                </Storyboard>
+            </Grid.Resources>-->
+            <!--<VisualStateManager.VisualStateGroups>
+                <VisualStateGroup
+                    x:Name="VisibilityStates">
+                    <VisualState
+                        x:Name="Visible">
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="ViewCard"
+                                Storyboard.TargetProperty="Opacity"
+                                From="0"
+                                To="1"
+                                Duration="0:0:2" />
+                            <StaticResource
+                                ResourceKey="ScaleAnimation" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState
+                        x:Name="Collapsed">
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="ViewCard"
+                                Storyboard.TargetProperty="Opacity"
+                                From="1"
+                                To="0"
+                                Duration="0:0:2" />
+                            <StaticResource
+                                ResourceKey="ScaleAnimation" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>-->
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="*" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.Background>
+                <ImageBrush
+                    ImageSource="{x:Bind TemplateCard.BackgroundImage, Mode=OneWay}"
+                    Stretch="UniformToFill"></ImageBrush>
+            </Grid.Background>
+
+            <TextBlock
+                HorizontalAlignment="Left"
+                FontWeight="Bold"
+                VerticalAlignment="Center"
+                Foreground="Azure"
+                Text="{x:Bind TemplateCard.Type, Mode=OneWay}" />
+            <!--<Image
+                    MaxHeight="35"
+                    HorizontalAlignment="Right"
+                    Source="{Binding BankLogo, Mode=OneWay}" />-->
+            <TextBlock
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                Foreground="Azure"
+                FontSize="23"
+                Margin="0,30,0,30"
+                Text="{x:Bind TemplateCard.CardNumber, Mode=OneWay}" />
+            <TextBlock
+                VerticalAlignment="Bottom"
+                Grid.Row="2"
+                HorizontalAlignment="Left"
+                FontWeight="SemiBold"
+                Foreground="Azure"
+                FontSize="16"
+                MaxWidth="250"
+                TextTrimming="CharacterEllipsis"
+                Padding="0,5,0,0"
+                Text="{x:Bind TemplateCard.CustomText1Key ,Mode=OneWay}" />
+            <TextBlock
+                MaxWidth="250"
+                TextTrimming="CharacterEllipsis"
+                VerticalAlignment="Bottom"
+                Grid.Row="3"
+                HorizontalAlignment="Left"
+                FontWeight="Bold"
+                MinHeight="30"
+                Foreground="Azure"
+                FontSize="20"
+                Padding="0,0,0,0"
+                Text="{x:Bind TemplateCard.CustomText1Value, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
+            <!--<Image
+                    Grid.Row="3"
+                    MaxHeight="30"
+                    HorizontalAlignment="Right"
+                    Source="{x:Bind TemplateCard.ProviderLogo, Mode=OneWay}" />-->
+        </Grid>
+
+    </Grid>
+</UserControl>

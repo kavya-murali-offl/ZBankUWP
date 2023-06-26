@@ -128,6 +128,7 @@
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Utilities\Converters\InitialsConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
+    <Compile Include="Utilities\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\WidthConverter.cs" />
     <Compile Include="Utilities\Helpers\LogoHelper.cs" />
     <Compile Include="Utilities\Validation\FormValidation.cs" />
@@ -221,6 +222,9 @@
     </Compile>
     <Compile Include="View\UserControls\AppNotification.xaml.cs">
       <DependentUpon>AppNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\CardElementView.xaml.cs">
+      <DependentUpon>CardElementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\PaginationRow.xaml.cs">
       <DependentUpon>PaginationRow.xaml</DependentUpon>
@@ -427,6 +431,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\CardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\CardElementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

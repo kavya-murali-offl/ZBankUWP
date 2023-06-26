@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Windows.Devices.PointOfService;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using ZBank.AppEvents;
@@ -12,7 +14,9 @@ using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
+using ZBank.Entity.Constants;
 using ZBank.View;
+using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 
@@ -23,11 +27,42 @@ namespace ZBank.ViewModel
 
         public IView View;
 
+        public ICommand PreviousCardCommand { get; set; }
+
+        public ICommand NextCardCommand { get; set; }
+
         public CardsViewModel(IView view)
         {
             View = view;
-            LoadAllCards();
+            DataModel = new CardPageModel();
+            PreviousCardCommand = new RelayCommand(GoToPreviousCard, () =>
+            {
+                if(AllCards?.Count > 0)
+                {
+                    return AllCards.ElementAtOrDefault(DataModel.OnViewCardIndex - 1) != null;
+                }
+                return false;
+            });
+            NextCardCommand = new RelayCommand(GoToNextCard, () =>
+            {
+                if(AllCards?.Count > 0)
+                {
+                     return AllCards.ElementAtOrDefault(DataModel.OnViewCardIndex + 1) != null;
+                }
+                return false;
+            });
         }
+
+        private void GoToNextCard(object obj)
+        {
+            UpdateView(DataModel.OnViewCardIndex + 1);
+        }
+
+        private void GoToPreviousCard(object obj)
+        {
+            UpdateView(DataModel.OnViewCardIndex - 1);
+        }
+
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.CardsDataUpdated += UpdateCardsList;
@@ -40,14 +75,27 @@ namespace ZBank.ViewModel
         }
 
 
-        private ObservableCollection<CardBObj> AllCards
-        {
-            get { return _allCards; }
-            set { _allCards = value; OnPropertyChanged(nameof(AllCards)); }
-        }
-
         private ObservableCollection<CardBObj> _allCards { get; set; }
 
+        public ObservableCollection<CardBObj> AllCards
+        {
+            get { return _allCards; }
+            set { 
+                _allCards = value; 
+                OnPropertyChanged(nameof(AllCards));
+            }
+        }
+
+        private CardPageModel _dataModel { get; set; }
+
+        public CardPageModel DataModel
+        {
+            get { return _dataModel; }
+            set { 
+                _dataModel = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DataModel)); }
+        }
 
         public void LoadAllCards()
         {
@@ -63,36 +111,74 @@ namespace ZBank.ViewModel
 
         private void UpdateCardsList(CardDataUpdatedArgs args)
         {
+            int index = 0;
+            foreach (var card in args.CardsList)
+            {
+                if (index > Constants.CardBackgrounds.Count)
+                {
+                    index = 0;
+                }
+                card.BackgroundImage = Constants.CardBackgrounds[index];
+                index++;
+            }
             AllCards = new ObservableCollection<CardBObj>(args.CardsList);
+            UpdateView(0);
+        }
+
+        private void UpdateView(int onViewIndex)
+        {
+            DataModel = new CardPageModel()
+            {
+
+                OnViewCardIndex = onViewIndex,
+                OnViewCard = AllCards.ElementAtOrDefault(onViewIndex),
+                LeftCard = AllCards.ElementAtOrDefault(onViewIndex - 1),
+                RightCard = AllCards.ElementAtOrDefault(onViewIndex + 1)
+            };
+            (NextCardCommand as RelayCommand).RaiseCanExecuteChanged();
+            (PreviousCardCommand as RelayCommand).RaiseCanExecuteChanged();
+        }
+
+
+        private class GetAllCardsPresenterCallback : IPresenterCallback<GetAllCardsResponse>
+        {
+            private readonly CardsViewModel ViewModel;
+
+            public GetAllCardsPresenterCallback(CardsViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(GetAllCardsResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    CardDataUpdatedArgs args = new CardDataUpdatedArgs()
+                    {
+                        CardsList = response.Cards
+                    };
+                    ViewNotifier.Instance.OnCardsPageDataUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException exception)
+            {
+                var dialog = new MessageDialog(exception.Message);
+                await dialog.ShowAsync();
+            }
         }
     }
-
-    public class GetAllCardsPresenterCallback : IPresenterCallback<GetAllCardsResponse>
+    public class CardPageModel
     {
-        private readonly CardsViewModel ViewModel;
 
-        public GetAllCardsPresenterCallback(CardsViewModel viewModel)
-        {
-            ViewModel = viewModel;
-        }
+        
+        public CardBObj LeftCard { get; set; }
 
-        public async Task OnSuccess(GetAllCardsResponse response)
-        {
-            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                CardDataUpdatedArgs args = new CardDataUpdatedArgs()
-                {
-                    CardsList = response.Cards
-                };
-                ViewNotifier.Instance.OnCardsPageDataUpdated(args);
-            });
-        }
+        public CardBObj RightCard { get; set; }
 
-        public async Task OnFailure(ZBankException exception)
-        {
-            var dialog = new MessageDialog(exception.Message);
-            await dialog.ShowAsync();
+        public CardBObj OnViewCard { get; set; }
 
-        }
+        public int OnViewCardIndex { get; set; }
+
     }
 }
