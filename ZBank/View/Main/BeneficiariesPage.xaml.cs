@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.ViewModel;
+using ZBankManagement.Entity.EnumerationTypes;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,6 +41,18 @@ namespace ZBank.View.Main
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnUnloaded();
+        }
+
+        private void OtherBankTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            var input = sender.Text;
+            ViewModel.UpdateList(BeneficiaryType.OTHER_BANK, input);
+        }
+
+        private void WithinBankTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            var input = sender.Text;
+            ViewModel.UpdateList(BeneficiaryType.WITHIN_BANK, input);
         }
     }
 }

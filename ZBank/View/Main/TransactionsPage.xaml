@@ -197,7 +197,7 @@
                     Margin="5,0,5,0"
                     Foreground="Gray"
                     HorizontalAlignment="Left"
-                    Text="{Binding OtherAccountNumber}"
+                    Text="{Binding RecipientAccountNumber}"
                     TextTrimming="CharacterEllipsis" />
 
                 <StackPanel
@@ -315,7 +315,7 @@
                     Margin="5,0,5,0"
                     Visibility="{Binding ElementName=IsWideEnough, Converter={StaticResource BoolToVisibilityConverter}}"
                     TextWrapping="Wrap"
-                    Text="{Binding OtherAccountNumber}"
+                    Text="{Binding RecipientAccountNumber}"
                     TextTrimming="CharacterEllipsis" />
 
                 <StackPanel
@@ -356,7 +356,7 @@
                     Grid.RowSpan="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
+                    Text="{Binding ClosingBalance, Converter={StaticResource CurrencyConverter}}"
                     TextTrimming="CharacterEllipsis" />
                 <Button
                     Grid.RowSpan="2"

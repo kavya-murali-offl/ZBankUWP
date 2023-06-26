@@ -4,30 +4,229 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZBank.View.Main"
     xmlns:usercontrols="using:ZBank.View.UserControls"
-    xmlns:model="using:ZBank.Entities"
+    xmlns:converter="using:ZBank.Utilities.Converters"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:businessobjects="using:ZBankManagement.Entities.BusinessObjects"
     mc:Ignorable="d">
+    <Page.Resources>
+        <converter:InitialsConverter
+            x:Key="InitialsConverter" />
+            <DataTemplate
+                x:Name="GridViewTemplate"
+                x:DataType="businessobjects:BeneficiaryBObj">
+                <Grid>
+                    <PersonPicture
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Canvas.ZIndex="40"
+                        Width="50"
+                        Margin="0,15,0,0"
+                        Height="50"
+                        DisplayName="{Binding BeneficiaryName}" />
+                    <Grid
+                        Canvas.ZIndex="20"
+                        Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                        Padding="10,30,10,10"
+                        CornerRadius="8"
+                        HorizontalAlignment="Center"
+                        Margin="10,40,10,10"
+                        MinHeight="200"
+                        MinWidth="200">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
 
-    <Grid>
+                        <TextBlock
+                            Canvas.ZIndex="20"
+                            HorizontalAlignment="Center"
+                            Grid.Row="1"
+                            Margin="10"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Text="{Binding BeneficiaryName}" />
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            Grid.Row="2"
+                            FontSize="12"
+                            HorizontalAlignment="Center"
+                            Canvas.ZIndex="20"
+                            Text="Account Number"
+                            Foreground="Gray" />
+                        <TextBlock
+                            Canvas.ZIndex="20"
+                            FontWeight="SemiBold"
+                            FontSize="16"
+                            HorizontalAlignment="Center"
+                            Grid.Row="3"
+                            Text="{Binding AccountNumber}" />
+
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            Grid.Row="4"
+                            FontSize="12"
+                            HorizontalAlignment="Center"
+                            Canvas.ZIndex="20"
+                            Text="IFSC Code"
+                            Foreground="Gray" />
+                        <TextBlock
+                            Canvas.ZIndex="20"
+                            FontWeight="SemiBold"
+                            FontSize="16"
+                            HorizontalAlignment="Center"
+                            Grid.Row="5"
+                            Text="{Binding IFSCCode}" />
+                    </Grid>
+                </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid Canvas.ZIndex="10">
         <usercontrols:OneByTwoGrid Width1Ratio="2*" Width2Ratio="*">
             <usercontrols:OneByTwoGrid.Column1Content>
-                <Grid 
-                    CornerRadius="8"
-                    Margin="5"
-                    Background="{ThemeResource ApplicationBackground}">
-                    <ListView x:Name="BeneficiaryList"
-                                ItemsSource="{x:Bind ViewModel.BeneficiariesList, Mode=OneWay}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate
-                                x:DataType="model:Beneficiary">
-                                <TextBlock
-                                    Text="{Binding Name}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        </ListView>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="*" /> 
+                        <RowDefinition
+                            Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Padding="20"
+                        HorizontalAlignment="Stretch"
+                        Canvas.ZIndex="20"
+                        CornerRadius="8"
+                        Margin="5"
+                        Background="{ThemeResource ApplicationBackground}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" /> <RowDefinition
+                                Height="Auto" /> <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontSize="17"
+                            Padding="0,0,0,10"
+                            FontWeight="SemiBold"
+                            Text="Within Bank" />
+                        <TextBox
+                            x:Name="WithinBankTextBox"
+                            HorizontalAlignment="Right"
+                            TextChanging="WithinBankTextBox_TextChanging"
+                            MinWidth="200"
+                            PlaceholderText="Search Within Bank " />
+                        <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"
+                            Grid.Row="1">
+                            <GridView
+                                VerticalAlignment="Center"
+                                ItemTemplate="{StaticResource GridViewTemplate}"
+                                ItemsSource="{x:Bind ViewModel.BeneficiariesList, Mode=OneWay}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                SelectionMode="None">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                                <GridView.ItemContainerStyle>
+                                    <Style
+                                        TargetType="GridViewItem">
+                                        <Setter
+                                            Value="10"
+                                            Property="Margin" />
+                                        <Setter
+                                            Value="Auto"
+                                            Property="Width" />
+                                    </Style>
+                                </GridView.ItemContainerStyle>
+                            </GridView>
+
+                        </ScrollViewer>
+                    </Grid>
+                    <Grid
+                        Grid.Row="1"
+                        HorizontalAlignment="Stretch"
+                        Canvas.ZIndex="20"
+                        CornerRadius="8"
+                        Margin="5"
+                        Padding="20"
+                        Background="{ThemeResource ApplicationBackground}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontSize="17"
+                            Padding="0,0,0,10"
+                            FontWeight="SemiBold"
+                            Text="Other Bank" />
+                        <TextBox
+                            x:Name="OtherBankTextBox"
+                            TextChanging="OtherBankTextBox_TextChanging"
+                            HorizontalAlignment="Right"
+                            MinWidth="200"
+                            PlaceholderText="Search Other Bank " />
+                        <ScrollViewer
+                            HorizontalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Hidden"
+                            Grid.Row="1">
+                            <GridView
+                                VerticalAlignment="Center"
+                                ItemTemplate="{StaticResource GridViewTemplate}"
+                                ItemsSource="{x:Bind ViewModel.BeneficiariesList, Mode=OneWay}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                SelectionMode="None">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VariableSizedWrapGrid
+                                            ItemWidth="250"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                                <GridView.ItemContainerStyle>
+                                    <Style
+                                        TargetType="GridViewItem">
+                                        <Setter
+                                            Value="10"
+                                            Property="Margin" />
+                                        <Setter
+                                            Value="Auto"
+                                            Property="Width" />
+                                    </Style>
+                                </GridView.ItemContainerStyle>
+                            </GridView>
+                        </ScrollViewer>
+                    </Grid>
                 </Grid>
             </usercontrols:OneByTwoGrid.Column1Content>
             <usercontrols:OneByTwoGrid.Column2Content>
@@ -45,7 +244,6 @@
                         <Grid.RowDefinitions>
                             <RowDefinition
                                 Height="Auto" />
-                            
                         </Grid.RowDefinitions>
                         <usercontrols:CardControl
                             Height="Auto"
@@ -60,7 +258,6 @@
                         Margin="5"
                         Background="{ThemeResource ApplicationBackground}"
                         Grid.Row="1">
-                        
                     </Grid>
                 </Grid>
             </usercontrols:OneByTwoGrid.Column2Content>

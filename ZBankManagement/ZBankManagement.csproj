@@ -162,6 +162,7 @@
     <Compile Include="Data\DataManager\GetTransactionDataManager.cs" />
     <Compile Include="Data\DataManager\InitializeAppDataManager.cs" />
     <Compile Include="Data\DataManager\InsertAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\InsertBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\InsertCardDataManager.cs" />
     <Compile Include="Data\DataManager\InsertTransactionDataManager.cs" />
     <Compile Include="Data\DataManager\LoginCustomerDataManager.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Data\DataManager\SignupUserDataManager.cs" />
     <Compile Include="Data\DataManager\TransferAmountDataManager.cs" />
     <Compile Include="Data\DataManager\UpdateAccountDataManager.cs" />
+    <Compile Include="Data\DataManager\UpdateBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\UpdateCardDataManager.cs" />
     <Compile Include="Data\DataManager\UpdateCustomerDataManager.cs" />
     <Compile Include="Data\DBAdapter\IDatabaseAdapter.cs" />

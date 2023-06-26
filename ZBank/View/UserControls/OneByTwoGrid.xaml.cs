@@ -24,6 +24,20 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
         }
 
+
+
+        public int NarrowScreenBreakPoint
+        {
+            get { return (int)GetValue(NarrowScreenBreakPointProperty); }
+            set { SetValue(NarrowScreenBreakPointProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for NarrowScreenBreakPoint.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NarrowScreenBreakPointProperty =
+            DependencyProperty.Register("NarrowScreenBreakPoint", typeof(int), typeof(OneByTwoGrid), new PropertyMetadata(800));
+
+
+
         public FrameworkElement Column1Content
         {
             get { return (FrameworkElement)GetValue(Column1ContentProperty); }
@@ -56,7 +70,10 @@ namespace ZBank.View.UserControls
         public string Width1Ratio
         {
             get { return (string)GetValue(Width1RatioProperty); }
-            set { SetValue(Width1RatioProperty, value); }
+            set {
+                if (value == "1*") NarrowScreenBreakPoint = 800;
+                else if (value == "2*") NarrowScreenBreakPoint = 1000;
+                SetValue(Width1RatioProperty, value); }
         }
 
         public static readonly DependencyProperty Width1RatioProperty =

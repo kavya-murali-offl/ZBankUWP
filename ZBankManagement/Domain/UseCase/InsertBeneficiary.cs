@@ -27,6 +27,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             protected override void Action()
             {
+                _request.BeneficiaryToInsert.ID = Guid.NewGuid().ToString();    
                 _insertBeneficiaryDataManager.InsertBeneficiary(_request, new InsertBeneficiaryCallback(this));
             }
 

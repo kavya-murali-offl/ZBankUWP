@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Entities;
 using ZBank.ViewModel;
 using ZBankManagement.Entity.EnumerationTypes;
 
@@ -31,7 +32,29 @@ namespace ZBank.View.UserControls
             ViewModel = new AddEditBeneficiaryViewModel(this);
         }
 
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListView item)
+            {
+                if (item.SelectedIndex >= 0)
+                {
+                    ViewModel.SetBeneficiaryType(item.SelectedIndex);
+                }
+                BeneficiaryButton.Flyout.Hide();
+            }
+        }
+
     
-     
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnLoaded();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OnUnloaded();
+        }
     }
 }

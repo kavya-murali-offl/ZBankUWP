@@ -8,6 +8,7 @@ using ZBank.Entity;
 using ZBank.Entity.BusinessObjects;
 using Windows.Storage;
 using ZBankManagement.Entity.BusinessObjects;
+using ZBankManagement.Entities.BusinessObjects;
 
 namespace ZBank.DatabaseHandler
  {

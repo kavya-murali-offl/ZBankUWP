@@ -14,6 +14,7 @@ using ZBank.Entity;
 using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.EnumerationTypes;
 using ZBankManagement.Controller;
+using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.BusinessObjects;
 using ZBankManagement.Entity.DTOs;
 using ZBankManagement.Entity.EnumerationTypes;
@@ -525,13 +526,13 @@ namespace ZBank.DatabaseHandler
 
         public async Task<IEnumerable<BeneficiaryBObj>> GetBeneficiaries(string customerID)
         {
-            return await _databaseAdapter.Query<BeneficiaryBObj>($"Select Beneficiary.*, ExternalAccounts.*, Account.IFSCCode, Account.AccountName from Beneficiary " +
-                $"LEFT JOIN ExternalAccounts on ExternalAccounts.ExternalAccountNumber = Beneficiary.AccountNumber " +
-                $"LEFT JOIN Account on Account.AccountNumber = Beneficiary.AccountNumber " +
+            return await _databaseAdapter.Query<BeneficiaryBObj>($"Select Beneficiary.*, ExternalAccounts.ExternalIFSCCode, Account.IFSCCode from Beneficiary " +
+                $"Left JOIN ExternalAccounts on ExternalAccounts.ExternalAccountNumber = Beneficiary.AccountNumber " +
+                $"Left JOIN Account on Account.AccountNumber = Beneficiary.AccountNumber " +
                 $"where Beneficiary.UserID = ?", "1111");
         }
 
-        public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Update(beneficiary);
+        public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Insert(beneficiary);
 
         public Task<int> UpdateBeneficiary(Beneficiary beneficiaryToUpdate) => _databaseAdapter.Update(beneficiaryToUpdate);
 

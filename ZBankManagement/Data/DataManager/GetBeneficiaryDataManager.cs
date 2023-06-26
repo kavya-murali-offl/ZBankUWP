@@ -9,6 +9,7 @@ using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.BusinessObjects;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager

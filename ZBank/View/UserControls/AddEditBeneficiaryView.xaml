@@ -8,6 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
+    Unloaded="UserControl_Unloaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
@@ -17,121 +19,109 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition
-                Width="*" /> 
+                Width="*" />
             <ColumnDefinition
                 Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition
-                Height="Auto" />       <RowDefinition
-                Height="Auto" />       <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
-        <ToggleButton
-            x:Name="WithinBankButton"
-            CornerRadius="8,8,0,0"
-            HorizontalAlignment="Stretch"
-            Content="Within Bank" />
-        <ToggleButton
-            x:Name="OtherBankButton"
-            CornerRadius="8,8,0,0"
-            HorizontalAlignment="Stretch"
-            Grid.Column="1"
-            Content="Other Bank" />
+        <TextBlock
+            VerticalAlignment="Center"
+            Text="Type" />
+        <DropDownButton
+            Width="200"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Right"
+            x:Name="BeneficiaryButton"
+            CornerRadius="8">
+            <DropDownButton.Content>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    x:Name="BeneficiaryText"
+                    Text="{x:Bind ViewModel.FieldValues['Beneficiary Type'], Mode=OneWay}" />
+            </DropDownButton.Content>
+            <DropDownButton.Flyout>
+                <Flyout
+                    Placement="Bottom"
+                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                    <ListView
+                        SelectionChanged="ListView_SelectionChanged"
+                        ItemsSource="{x:Bind ViewModel.BeneficiaryTypes, Mode=OneWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Text="{Binding}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Flyout>
+            </DropDownButton.Flyout>
+        </DropDownButton>
         <StackPanel
             MaxWidth="400"
             Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        VerticalAlignment="Top">
-                        <TextBlock
-                            Margin="5,20,5,5"
-                            Text="Name"
-                            Style="{ThemeResource NormalSubText}" />
-
-                        <TextBox
-                            x:Name="NameBox"
-                            MaxWidth="400"
-                            Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay}"
-                            PlaceholderText="Enter Beneficiary Name" />
-                       
-                        <TextBlock
-                            Foreground="Red"
-                            Text="" />
-                        
-                        <TextBlock
-                            Margin="5,10,5,5"
-                            Text="Account Number"
-                            Style="{ThemeResource NormalSubText}" />
-                       
-                        <TextBox
-                            PlaceholderText="Enter Account Number"
-                            Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay}" />
-
-                        <TextBlock
-                            Foreground="Red"
-                            Text="" />
-
-                        <TextBlock
-                            Margin="5,10,5,5"
-                            Text="IFSC Code"
-                            Style="{ThemeResource NormalSubText}" />
-
-                        <TextBox
-                            x:Name="IFSCCodeBox"
-                            PlaceholderText="Enter IFSC Code"
-                            Text="{x:Bind ViewModel.SelectedBeneficiary.IFSCCode, Mode=TwoWay}" />
-
-                        <TextBlock
-                            Foreground="Red"
-                            Text="" />
-
-                        <TextBlock
-                            Margin="5,20,5,5"
-                            Text="Beneficiary Type"
-                            Style="{ThemeResource NormalSubText}" />
-
-                        <DropDownButton
-                            x:Name="BeneficiaryButton"
-                            HorizontalAlignment="Stretch"
-                            CornerRadius="8">
-                            <DropDownButton.Content>
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    x:Name="BeneficiaryText"
-                                    Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryType, Mode=OneWay, TargetNullValue='Select Beneficiary'}" />
-                            </DropDownButton.Content>
-                            <DropDownButton.Flyout>
-                                <Flyout
-                                    Placement="Bottom"
-                                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                        <ListView
-                            ItemsSource="{x:Bind ViewModel.BeneficiaryTypes, Mode=OneWay}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        Text="{Binding}" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Flyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
-
-                         
-                        
-                    </StackPanel>
-        <!--<StackPanel
-            Grid.Row="1"
             Grid.ColumnSpan="2"
-            VerticalAlignment="Top">
-            
-        </StackPanel>-->
+            VerticalAlignment="Center">
+            <TextBlock
+                Margin="5,20,5,5"
+                Text="Name"
+                Style="{ThemeResource NormalSubText}" />
+
+            <TextBox
+                x:Name="NameBox"
+                MaxWidth="400"
+                Text="{x:Bind ViewModel.FieldValues['Beneficiary Name'], Mode=TwoWay}"
+                PlaceholderText="Enter Beneficiary Name" />
+
+            <TextBlock
+                Foreground="Red"
+                Text="{x:Bind ViewModel.FieldErrors['Beneficiary Name'], Mode=OneWay}" />
+
+            <TextBlock
+                Margin="5,10,5,5"
+                Text="Account Number"
+                Style="{ThemeResource NormalSubText}" />
+
+            <TextBox
+                PlaceholderText="Enter Account Number"
+                Text="{x:Bind ViewModel.FieldValues['Account Number'], Mode=TwoWay}" />
+
+            <TextBlock
+                Foreground="Red"
+                Text="{x:Bind ViewModel.FieldErrors['Account Number'], Mode=OneWay}" />
+
+            <TextBlock
+                Margin="5,10,5,5"
+                Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                Text="IFSC Code"
+                Style="{ThemeResource NormalSubText}" />
+
+            <TextBox
+                Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                x:Name="IFSCCodeBox"
+                PlaceholderText="Enter IFSC Code"
+                Text="{x:Bind ViewModel.FieldValues['IFSC Code'], Mode=TwoWay}" />
+
+            <TextBlock
+                Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                
+                Text="{x:Bind ViewModel.FieldErrors['IFSC Code'], Mode=OneWay}"
+                Foreground="Red" />
+
+        </StackPanel>
         <Button
             Grid.ColumnSpan="2"
             Grid.Row="2"
             CornerRadius="8"
             MinWidth="300"
-            Margin="5,40,5,0"
+            Margin="5,20,5,0"
+            Command="{x:Bind ViewModel.SubmitCommand}"
             Style="{ThemeResource PrimaryButton}"
             VerticalAlignment="Bottom"
             HorizontalAlignment="Center">

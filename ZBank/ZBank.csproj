@@ -229,9 +229,6 @@
     <Compile Include="View\UserControls\PaginationRow.xaml.cs">
       <DependentUpon>PaginationRow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\PopupNotification.xaml.cs">
-      <DependentUpon>PopupNotification.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\WindowManager.cs" />
     <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
@@ -467,10 +464,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\PaginationRow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\PopupNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

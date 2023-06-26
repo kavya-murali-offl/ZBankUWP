@@ -21,6 +21,7 @@ using ZBank.View.DataTemplates.NewPaymentTemplates;
 using Windows.UI.Xaml.Controls;
 using ZBankManagement.Entity.BusinessObjects;
 using static Microsoft.Toolkit.Uwp.UI.Animations.Expressions.ExpressionValues;
+using ZBankManagement.Entities.BusinessObjects;
 
 namespace ZBank.ViewModel
 {

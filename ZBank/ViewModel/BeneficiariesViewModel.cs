@@ -4,16 +4,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
-using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entities.BusinessObjects;
+using ZBankManagement.Entity.EnumerationTypes;
 
 namespace ZBank.ViewModel
 {
@@ -24,7 +24,6 @@ namespace ZBank.ViewModel
         public BeneficiariesViewModel(IView view)
         {
             View = view;
-            LoadAllBeneficiaries();
         }
 
         private void LoadAllBeneficiaries()
@@ -42,11 +41,15 @@ namespace ZBank.ViewModel
         public void OnLoaded()
         {
             ViewNotifier.Instance.BeneficiaryListUpdated += UpdateBeneficiaryList;
+            LoadAllBeneficiaries();
+
         }
 
         private void UpdateBeneficiaryList(BeneficiaryListUpdatedArgs args)
         {
-            BeneficiariesList = new ObservableCollection<Beneficiary>(args.BeneficiaryList);
+            BeneficiariesList = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList);
+            OtherBankBeneficiaries = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList.Where(ben => ben.BeneficiaryType == BeneficiaryType.OTHER_BANK));
+            WithinBankBeneficiaries = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList.Where(ben => ben.BeneficiaryType == BeneficiaryType.WITHIN_BANK));
         }
 
         public void OnUnloaded()
@@ -54,9 +57,20 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.BeneficiaryListUpdated -= UpdateBeneficiaryList;
         }
 
-        private ObservableCollection<Beneficiary> _beneficiariesList { get; set; }
+        internal void UpdateList(BeneficiaryType type, string input)
+        {
+            switch(type)
+            {
+                case BeneficiaryType.WITHIN_BANK:
+                    break;
+                case BeneficiaryType.OTHER_BANK:
+                    break;
+            }
+        }
 
-        public ObservableCollection<Beneficiary> BeneficiariesList
+        private ObservableCollection<BeneficiaryBObj> _beneficiariesList { get; set; }
+
+        public ObservableCollection<BeneficiaryBObj> BeneficiariesList
         {
             get { return _beneficiariesList; }
             set
@@ -66,89 +80,31 @@ namespace ZBank.ViewModel
             }
         }
 
-        private class InsertBeneficiaryPresenterCallback : IPresenterCallback<InsertBeneficiaryResponse>
+        private ObservableCollection<BeneficiaryBObj> _withinBankBeneficiaries { get; set; }
+
+        public ObservableCollection<BeneficiaryBObj> WithinBankBeneficiaries
         {
-            public BeneficiariesViewModel ViewModel { get; set; }
-
-            public InsertBeneficiaryPresenterCallback(BeneficiariesViewModel viewModel)
+            get { return _withinBankBeneficiaries; }
+            set
             {
-                ViewModel = viewModel;
-            }
-
-            public async Task OnSuccess(InsertBeneficiaryResponse response)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = "Beneficiary Inserted Successfully",
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                });
-            }
-
-            public async Task OnFailure(ZBankException exception)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = exception,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                });
+                _withinBankBeneficiaries = value;
+                OnPropertyChanged(nameof(WithinBankBeneficiaries));
             }
         }
 
-        private class UpdateBeneficiaryPresenterCallback : IPresenterCallback<UpdateBeneficiaryResponse>
+        private ObservableCollection<BeneficiaryBObj> _otherBankBeneficiaries { get; set; }
+
+        public ObservableCollection<BeneficiaryBObj> OtherBankBeneficiaries
         {
-            public BeneficiariesViewModel ViewModel { get; set; }
-
-            public UpdateBeneficiaryPresenterCallback(BeneficiariesViewModel viewModel)
+            get { return _otherBankBeneficiaries; }
+            set
             {
-                ViewModel = viewModel;
-            }
-
-            public async Task OnSuccess(UpdateBeneficiaryResponse response)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = "Beneficiary Updated Successfully",
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                });
-            }
-
-            public async Task OnFailure(ZBankException exception)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = exception,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                });
+                _otherBankBeneficiaries = value;
+                OnPropertyChanged(nameof(OtherBankBeneficiaries));
             }
         }
+
+
 
         private class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
         {
@@ -171,13 +127,22 @@ namespace ZBank.ViewModel
                 });
             }
 
-            public async Task OnFailure(ZBankException response)
+            public async Task OnFailure(ZBankException exception)
             {
-
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = exception,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
             }
         }
-
-
 
     }
 }
