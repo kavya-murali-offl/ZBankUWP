@@ -75,6 +75,8 @@ namespace ZBank.DatabaseHandler
 
         Task<int> ResetPassword(CustomerCredentials credentials);
 
+        Task<int> ResetPin(string CardNumber, string pin);
+
         Task InitiateTransactionInternal(Account account, Account beneficiaryAccount, Transaction transaction, TransactionMetaData transactionMetaData, TransactionMetaData otherTransactionMetaData);
 
         Task InitiateTransactionExternal(Transaction transaction, Account account, TransactionMetaData metaData);

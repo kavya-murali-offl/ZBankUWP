@@ -147,6 +147,7 @@
     <Compile Include="Data\DataManager\Contracts\IInsertTransactionDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\ILoginCustomerDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IResetPasswordDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IResetPinDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\ISignupUserDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\ITransferAmountDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IUpdateAccountDataManager.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Data\DataManager\InsertTransactionDataManager.cs" />
     <Compile Include="Data\DataManager\LoginCustomerDataManager.cs" />
     <Compile Include="Data\DataManager\ResetPasswordDataManager.cs" />
+    <Compile Include="Data\DataManager\ResetPinDataManager.cs" />
     <Compile Include="Data\DataManager\SignupUserDataManager.cs" />
     <Compile Include="Data\DataManager\TransferAmountDataManager.cs" />
     <Compile Include="Data\DataManager\UpdateAccountDataManager.cs" />
@@ -197,6 +199,7 @@
     <Compile Include="Domain\UseCase\LogoutCustomer.cs" />
     <Compile Include="Domain\UseCase\RemoveBeneficiary.cs" />
     <Compile Include="Domain\UseCase\ResetPassword.cs" />
+    <Compile Include="Domain\UseCase\ResetPin.cs" />
     <Compile Include="Domain\UseCase\SignupUser.cs" />
     <Compile Include="Domain\UseCase\TransferAmount.cs" />
     <Compile Include="Domain\UseCase\UpdateAccount.cs" />
@@ -264,7 +267,6 @@
       <Version>1.8.116</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -21,6 +21,12 @@ namespace ZBank.AppEvents
 
         public bool PaymentInProgress { get; set; }
 
+        public event Action<Beneficiary, bool> BeneficiaryAddOrInserted;
+        public void OnBeneficiaryAddOrInserted(Beneficiary beneficiary, bool isAdded)
+        {
+            BeneficiaryAddOrInserted?.Invoke(beneficiary, isAdded);
+        }
+
         public event Action<int> CurrentPaymentStepChanged;
         public void OnCurrentPaymentStepChanged(int step)
         {

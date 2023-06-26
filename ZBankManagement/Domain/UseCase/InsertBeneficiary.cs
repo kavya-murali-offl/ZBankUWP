@@ -63,17 +63,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public Beneficiary InsertedBeneficiary { get; set; }
         }
-
-        public class InsertBeneficiaryPresenterCallback : IPresenterCallback<InsertBeneficiaryResponse>
-        {
-
-            public async Task OnSuccess(InsertBeneficiaryResponse response)
-            {
-            }
-
-            public async Task OnFailure(ZBankException error)
-            {
-
-            }
-        }
 }

@@ -42,6 +42,7 @@ namespace ZBank.Dependencies
             serviceCollection.AddScoped<IInsertCardDataManager, InsertCardDataManager>();
             serviceCollection.AddScoped<IUpdateCardDataManager, UpdateCardDataManager>();
             serviceCollection.AddScoped<IInitializeAppDataManager, InitializeAppDataManager>();
+            serviceCollection.AddScoped<IResetPinDataManager, ResetPinDataManager>();
             return serviceCollection;
         }
 

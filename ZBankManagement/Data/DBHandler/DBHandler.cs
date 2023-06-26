@@ -435,7 +435,13 @@ namespace ZBank.DatabaseHandler
             return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync();
         }
 
-       public async Task InitiateTransactionInternal(Account ownerAccount, Account beneficiaryAccount, Transaction transaction, TransactionMetaData transactionMetaData, TransactionMetaData otherTransactionMetaData)
+        public async Task<int> ResetPin(string cardNumber, string pin)
+        {
+            return await _databaseAdapter.Execute("Update Card Set Pin = ? where CardNumber = ?", pin, cardNumber);
+        }
+
+
+        public async Task InitiateTransactionInternal(Account ownerAccount, Account beneficiaryAccount, Transaction transaction, TransactionMetaData transactionMetaData, TransactionMetaData otherTransactionMetaData)
         {
             Func<Task> action = async () =>
             {

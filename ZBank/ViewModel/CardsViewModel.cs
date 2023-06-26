@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel.Core;
 using Windows.Devices.PointOfService;
 using Windows.UI.Core;
 using Windows.UI.Popups;
@@ -18,7 +19,9 @@ using ZBank.Entity.Constants;
 using ZBank.View;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
+using static ZBankManagement.Domain.UseCase.ResetPin;
 
 namespace ZBank.ViewModel
 {
@@ -93,7 +96,6 @@ namespace ZBank.ViewModel
             get { return _dataModel; }
             set { 
                 _dataModel = value;
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(DataModel)); }
         }
 
@@ -106,6 +108,19 @@ namespace ZBank.ViewModel
 
             IPresenterCallback<GetAllCardsResponse> presenterCallback = new GetAllCardsPresenterCallback(this);
             UseCaseBase<GetAllCardsResponse> useCase = new GetAllCardsUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        public void ResetPin()
+        {
+            ResetPinRequest request = new ResetPinRequest()
+            {
+                CardNumber = DataModel.OnViewCard.CardNumber,
+                NewPin = "1111"
+            };
+
+            IPresenterCallback<ResetPinResponse> presenterCallback = new ResetPinPresenterCallback(this);
+            UseCaseBase<ResetPinResponse> useCase = new ResetPinUseCase(request, presenterCallback);
             useCase.Execute();
         }
 
@@ -163,15 +178,59 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException exception)
             {
-                var dialog = new MessageDialog(exception.Message);
-                await dialog.ShowAsync();
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = exception.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+            }
+        }
+
+        private class ResetPinPresenterCallback : IPresenterCallback<ResetPinResponse>
+        {
+            private CardsViewModel ViewModel { get; set; }
+
+            public ResetPinPresenterCallback(CardsViewModel cardsViewModel)
+            {
+                ViewModel = cardsViewModel;
+            }
+
+            public async Task OnSuccess(ResetPinResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    // Dialog open
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = response.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+
             }
         }
     }
+
     public class CardPageModel
     {
-
-        
         public CardBObj LeftCard { get; set; }
 
         public CardBObj RightCard { get; set; }
