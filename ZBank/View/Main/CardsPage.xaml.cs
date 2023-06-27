@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -40,5 +41,32 @@ namespace ZBank.View.Main
         {
             ViewModel.OnPageUnLoaded();
         }
-    }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ViewEyeButton_Click(object sender, RoutedEventArgs e)
+        {
+            HideEyeButton.Visibility = Visibility.Visible;
+            ViewEyeButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void HideEyeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewEyeButton.Visibility = Visibility.Visible;
+            HideEyeButton.Visibility = Visibility.Collapsed;
+        }
+
+        private async void ResetPinButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog dialog = new ContentDialog();
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Reset Pin";
+            dialog.Content = new ResetPinContent(dialog, ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand);
+            await dialog.ShowAsync();
+        }
+    } 
 }
+

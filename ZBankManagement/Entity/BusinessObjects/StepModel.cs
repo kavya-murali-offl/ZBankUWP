@@ -15,5 +15,6 @@ namespace ZBankManagement.Entity.BusinessObjects
         public ICommand PrimaryCommand { get; set; }
         public ICommand SecondaryCommand { get; set; }
         public object Content { get; set; }
+        public bool IsPaymentInProgress { get; set; }
     }
 }

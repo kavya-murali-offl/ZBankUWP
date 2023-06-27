@@ -126,8 +126,10 @@
     <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Utilities\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
+    <Compile Include="Utilities\Converters\IndexToPositionConverter.cs" />
     <Compile Include="Utilities\Converters\InitialsConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
+    <Compile Include="Utilities\Converters\MaskConverter.cs" />
     <Compile Include="Utilities\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\WidthConverter.cs" />
     <Compile Include="Utilities\Helpers\LogoHelper.cs" />
@@ -161,6 +163,12 @@
     </Compile>
     <Compile Include="View\DataTemplates\NewAcountTemplates\NewSavingsAccountFormTemplate.xaml.cs">
       <DependentUpon>NewSavingsAccountFormTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewPaymentTemplates\CancelTransferTemplate.xaml.cs">
+      <DependentUpon>CancelTransferTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewPaymentTemplates\DashboardPaymentDetailsView.xaml.cs">
+      <DependentUpon>DashboardPaymentDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\NewPaymentTemplates\PaymentAcknowledgement.xaml.cs">
       <DependentUpon>PaymentAcknowledgement.xaml</DependentUpon>
@@ -228,6 +236,9 @@
     </Compile>
     <Compile Include="View\UserControls\PaginationRow.xaml.cs">
       <DependentUpon>PaginationRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\ResetPinContent.xaml.cs">
+      <DependentUpon>ResetPinContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WindowManager.cs" />
     <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
@@ -320,6 +331,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DataTemplates\NewAcountTemplates\NewSavingsAccountFormTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewPaymentTemplates\CancelTransferTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewPaymentTemplates\DashboardPaymentDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -464,6 +483,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\PaginationRow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\ResetPinContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

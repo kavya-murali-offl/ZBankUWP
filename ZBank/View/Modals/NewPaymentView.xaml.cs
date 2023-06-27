@@ -28,10 +28,17 @@ namespace ZBank.View.Modals
 
         private readonly TransferAmountViewModel ViewModel;
 
-        public NewPaymentView()
+        public NewPaymentView(ContentDialog dialog, TransferAmountViewModel viewModel = null)
         {
             this.InitializeComponent();
-            ViewModel = new TransferAmountViewModel(this);
+            if(viewModel != null )
+            {
+                ViewModel = viewModel;
+            }
+            else
+            {
+                ViewModel = new TransferAmountViewModel(this, dialog);
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -46,6 +53,7 @@ namespace ZBank.View.Modals
 
         private void CancelPayment_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.ResumeAtCurrentStep();
             ViewNotifier.Instance.OnCancelPaymentRequested(false);
         }
 

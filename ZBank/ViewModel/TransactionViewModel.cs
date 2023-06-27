@@ -15,15 +15,23 @@ using System.Windows.Input;
 using Windows.UI.Xaml.Data;
 using ZBank.ViewModel.VMObjects;
 using Windows.UI.Popups;
+using ZBank.Entities;
+using Windows.ApplicationModel.Core;
+using ZBankManagement.AppEvents.AppEventArgs;
 
 namespace ZBank.ViewModel
 {
     public class TransactionViewModel : ViewModelBase
     {
         public IView View;
+
         public ICommand PreviousCommand { get; private set; }
+
         public ICommand NextCommand { get; private set; }
+
         public IList<int> DefinedRows { get; private set; }
+
+        public IEnumerable<TransactionType> TransactionTypes { get => Enum.GetValues(typeof(TransactionType)).Cast<TransactionType>(); }
 
         public TransactionViewModel(IView view)
         {
@@ -65,16 +73,17 @@ namespace ZBank.ViewModel
         public int TotalPages
         {
             get { return _totalPages; }
-            set { 
+            set
+            {
                 _totalPages = value;
                 OnPropertyChanged("TotalPages");
             }
         }
 
-        public IEnumerable<TransactionBObj> AllTransactions { get; set; }
+        public IEnumerable<TransactionBObj> AllTransactions { get; set; } = new List<TransactionBObj>();
 
         public IEnumerable<TransactionBObj> FilteredTransactions { get; set; } = new List<TransactionBObj>();
-        
+
         public void LoadAllTransactionsData()
         {
             GetAllTransactionsRequest request = new GetAllTransactionsRequest()
@@ -90,9 +99,7 @@ namespace ZBank.ViewModel
         private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
         {
             AllTransactions = args.TransactionList;
-            FilteredTransactions = args.TransactionList;
-            UpdateOnViewList();
-            CalculateTotalPages();
+          
         }
 
         private void UpdateOnViewList()
@@ -113,9 +120,56 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.TransactionListUpdated += UpdateTransactionsData;
             ViewNotifier.Instance.CancelPaymentRequested += NewTransactionAdded;
+            ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             CurrentPageIndex = 0;
+            LoadAllAccounts();
             RowsPerPage = DefinedRows.First();
             LoadAllTransactionsData();
+        }
+
+        private ObservableCollection<AccountBObj> _accountsList { get; set; }
+
+        public ObservableCollection<AccountBObj> AccountsList
+        {
+            get { return _accountsList; }
+            set
+            {
+                _accountsList = new ObservableCollection<AccountBObj>(value);
+                OnPropertyChanged(nameof(AccountsList));
+            }
+        }
+
+        private AccountBObj _selectedAccount { get; set; }
+
+        public AccountBObj SelectedAccount
+        {
+            get { return _selectedAccount; }
+            set
+            {
+                _selectedAccount = value;
+                OnPropertyChanged(nameof(SelectedAccount));
+            }
+        }
+
+        private void LoadAllAccounts()
+        {
+            GetAllAccountsRequest request = new GetAllAccountsRequest()
+            {
+                AccountType = null,
+                UserID = "1111"
+            };
+
+            IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
+            UseCaseBase<GetAllAccountsResponse> useCase = new GetAllAccountsUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        private void UpdateAccountsList(AccountsListUpdatedArgs args)
+        {
+            AccountsList = new ObservableCollection<AccountBObj>(args.AccountsList);
+            if(AccountsList.Count > 0 ) { 
+                UpdateSelectedAccount(AccountsList.ElementAt(0));
+            }
         }
 
         private void NewTransactionAdded(bool isPaymentCompleted)
@@ -130,11 +184,13 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactionsData;
             ViewNotifier.Instance.CancelPaymentRequested -= NewTransactionAdded;
+            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
         }
 
         private int _currentPageIndex { get; set; }
 
-        private int CurrentPageIndex { 
+        private int CurrentPageIndex
+        {
             get
             {
                 return _currentPageIndex;
@@ -143,7 +199,7 @@ namespace ZBank.ViewModel
             {
                 _currentPageIndex = value;
                 CurrentPage = value + 1;
-                OnPropertyChanged(nameof(CurrentPageIndex));    
+                OnPropertyChanged(nameof(CurrentPageIndex));
             }
         }
 
@@ -166,6 +222,14 @@ namespace ZBank.ViewModel
             {
                 TotalPages += 1;
             }
+        }
+
+        internal void UpdateSelectedAccount(AccountBObj account)
+        {
+            SelectedAccount = account;
+            FilteredTransactions = AllTransactions;
+            UpdateOnViewList();
+            CalculateTotalPages();
         }
 
         private int _rowsPerPage { get; set; }
@@ -195,58 +259,101 @@ namespace ZBank.ViewModel
             }
         }
 
-    }
 
-    public class GetAllTransactionsPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
-    {
-        public TransactionViewModel ViewModel { get; set; }
-
-        public GetAllTransactionsPresenterCallback(TransactionViewModel viewModel)
+        private class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
         {
-            ViewModel = viewModel;
-        }
+            private TransactionViewModel ViewModel { get; set; }
 
-        public async Task OnSuccess(GetAllTransactionsResponse response)
-        {
-            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public GetAllAccountsPresenterCallback(TransactionViewModel viewModel)
             {
-                TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
-                {
-                    TransactionList = response.Transactions,
-                };
+                ViewModel = viewModel;
+            }
 
-                ViewNotifier.Instance.OnTransactionsListUpdated(args);
-            });
-        }
-
-        public async Task OnFailure(ZBankException response)
-        {
-        }
-    }
-
-    public class GetAllBeneficiariesInTransactionsPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
-    {
-        public TransactionViewModel ViewModel { get; set; }
-
-        public GetAllBeneficiariesInTransactionsPresenterCallback(TransactionViewModel viewModel)
-        {
-            ViewModel = viewModel;
-        }
-
-        public async Task OnSuccess(GetAllBeneficiariesResponse response)
-        {
-            await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            public async Task OnSuccess(GetAllAccountsResponse response)
             {
-                BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    BeneficiaryList = response.Beneficiaries
-                };
-                ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
-            });
+                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
+                    {
+                        AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
+                    };
+                    ViewNotifier.Instance.OnAccountsListUpdated(args);
+
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = response.Message,
+                            Duration = 3000,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+
+            }
+
+
         }
 
-        public async Task OnFailure(ZBankException response)
+        private class GetAllTransactionsPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
         {
+            public TransactionViewModel ViewModel { get; set; }
+
+            public GetAllTransactionsPresenterCallback(TransactionViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(GetAllTransactionsResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
+                    {
+                        TransactionList = response.Transactions,
+                    };
+
+                    ViewNotifier.Instance.OnTransactionsListUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+            }
+        }
+
+        private class GetAllBeneficiariesInTransactionsPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+        {
+            public TransactionViewModel ViewModel { get; set; }
+
+            public GetAllBeneficiariesInTransactionsPresenterCallback(TransactionViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(GetAllBeneficiariesResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                    {
+                        BeneficiaryList = response.Beneficiaries
+                    };
+                    ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+            }
         }
     }
 }

@@ -32,6 +32,8 @@
             <dataTemplates:PaymentAcknowledgement />
         </DataTemplate>
         <converters:CurrencyConverter x:Key="CurrencyConverter"/>
+        <converters:BooleanToVisibilityConverter
+            x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
     <ScrollViewer>
         
@@ -55,7 +57,7 @@
                 HorizontalAlignment="Center"
                 Text="New Payment" />
             
-            <Grid
+            <!--<Grid
                 Padding="20"
                 Grid.Row="1"
                 Canvas.ZIndex="10">
@@ -160,7 +162,7 @@
                     Margin="0,0,-10,0"
                     Grid.ColumnSpan="2"
                     Text="Acknowledgement" />
-            </Grid>
+            </Grid>-->
             
             <ContentControl
                 Grid.Row="2"
@@ -173,6 +175,7 @@
             <Button
                 Grid.Row="3"
                 Click="CancelPayment_Click"
+                Visibility="{x:Bind ViewModel.CurrentStep.IsPaymentInProgress,Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 HorizontalAlignment="Left"
                 MinWidth="100"
                 Margin="0"

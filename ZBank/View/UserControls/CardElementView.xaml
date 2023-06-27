@@ -20,115 +20,12 @@
             CornerRadius="10"
             x:Name="NoCard"
             Background="Gray"
-            Visibility="{x:Bind TemplateCard, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}">
-            
+            Visibility="{x:Bind TemplateCard , Converter={StaticResource NullToVisibilityConverter}}">
         </Grid>
         <Grid
             Padding="10"
             CornerRadius="10"
-            x:Name="ViewCard" Visibility="{x:Bind TemplateCard, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=1, Mode=OneWay}">
-            <Grid.Height>
-                <Binding
-                    ElementName="ViewCard"
-                    Path="ActualHeight" />
-            </Grid.Height>
-            <Grid.OpacityTransition>
-                <ScalarTransition />
-            </Grid.OpacityTransition>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup
-                    x:Name="VisibilityStates">
-                    <VisualState
-                        x:Name="Visible">
-                        <Storyboard>
-                            <DoubleAnimationUsingKeyFrames
-                                Storyboard.TargetName="SlideIn"
-                                Storyboard.TargetProperty="X">
-                                <SplineDoubleKeyFrame
-                                    KeyTime="0:0:1"
-                                    Value="0" />
-                            </DoubleAnimationUsingKeyFrames>
-                            <DoubleAnimationUsingKeyFrames
-                                Storyboard.TargetName="ViewGrid"
-                                Storyboard.TargetProperty="Opacity">
-                                <SplineDoubleKeyFrame
-                                    KeyTime="0:0:1.55"
-                                    Value="1" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState
-                        x:Name="Collapsed">
-                        <Storyboard>
-                            <DoubleAnimation
-                                Storyboard.TargetName="ViewCard"
-                                Storyboard.TargetProperty="Opacity"
-                                From="1"
-                                To="0"
-                                Duration="0:0:0.4" />
-                            <DoubleAnimation
-                                Storyboard.TargetName="ViewCard"
-                                Storyboard.TargetProperty="Height"
-                                From="{Binding ElementName=ViewCard, Path=ActualHeight}"
-                                To="0"
-                                Duration="0:0:0.4" />
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-            <!--<Grid.RenderTransform>
-                <ScaleTransform
-                    ScaleX="1"
-                    ScaleY="1" />
-            </Grid.RenderTransform>
-            <Grid.Resources>
-                <Storyboard
-                    x:Key="ScaleAnimation">
-                    <DoubleAnimation
-                        Storyboard.TargetName="ViewCard"
-                        Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                        From="0.1"
-                        To="1"
-                        Duration="0:0:2" />
-                    <DoubleAnimation
-                        Storyboard.TargetName="ViewCard"
-                        Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                        From="0.1"
-                        To="1"
-                        Duration="0:0:2" />
-                </Storyboard>
-            </Grid.Resources>-->
-            <!--<VisualStateManager.VisualStateGroups>
-                <VisualStateGroup
-                    x:Name="VisibilityStates">
-                    <VisualState
-                        x:Name="Visible">
-                        <Storyboard>
-                            <DoubleAnimation
-                                Storyboard.TargetName="ViewCard"
-                                Storyboard.TargetProperty="Opacity"
-                                From="0"
-                                To="1"
-                                Duration="0:0:2" />
-                            <StaticResource
-                                ResourceKey="ScaleAnimation" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState
-                        x:Name="Collapsed">
-                        <Storyboard>
-                            <DoubleAnimation
-                                Storyboard.TargetName="ViewCard"
-                                Storyboard.TargetProperty="Opacity"
-                                From="1"
-                                To="0"
-                                Duration="0:0:2" />
-                            <StaticResource
-                                ResourceKey="ScaleAnimation" />
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>-->
+            x:Name="ViewCard" Visibility="{x:Bind TemplateCard , Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=1, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition
                     Height="Auto" />
@@ -155,7 +52,7 @@
             <!--<Image
                     MaxHeight="35"
                     HorizontalAlignment="Right"
-                    Source="{Binding BankLogo, Mode=OneWay}" />-->
+                    Source="{x:Bind TemplateCard BankLogo, Mode=OneWay}" />-->
             <TextBlock
                 Grid.Row="1"
                 HorizontalAlignment="Center"

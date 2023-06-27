@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
 using ZBank.View.Modals;
 using ZBank.ViewModel;
 
@@ -37,28 +39,17 @@ namespace ZBank.View.Main
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageLoaded();
-            ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
 
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageUnLoaded();
-            ViewNotifier.Instance.CancelPaymentRequested -= CancelPaymentRequested;
         }
 
         private void ArrowColumn_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void CancelPaymentRequested(bool isPaymentCompleted)
-        {
-            if(PaymentDialog != null)
-            {
-                PaymentDialog.Hide();
-                PaymentDialog = null;
-            }
         }
 
         private void RowsPerPageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -74,9 +65,52 @@ namespace ZBank.View.Main
         private async void NewPaymentButton_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog dialog = new ContentDialog();
-            dialog.Content = new NewPaymentView();
+            dialog.Content = new NewPaymentView(dialog);
             PaymentDialog = dialog;
             await dialog.ShowAsync();
+        }
+
+        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListView item)
+            {
+                if (item.SelectedIndex >= 0)
+                {
+                    var account = (item.SelectedItem as AccountBObj);
+                    ViewModel.UpdateSelectedAccount(account);
+                }
+                AccountNumberDropDownButton.Flyout.Hide();
+            }
+        }
+
+        private void FromAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FromAccountButton.Flyout.Hide();
+        }
+
+        private void ToAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ToAccountButton.Flyout.Hide();  
+        }
+
+        private void TransactionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TransactionTypeButton.Flyout.Hide();    
+        }
+
+        private void CalendarDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+
+        }
+
+        private void ToDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+
+        }
+
+        private void FromDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+
         }
     }
 

@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:usercontrol="using:ZBank.View.UserControls"
+    xmlns:paymentTemplate="using:ZBank.View.DataTemplates.NewPaymentTemplates"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
     xmlns:model="using:ZBank.Entities"
     xmlns:converter="using:ZBank.Utilities.Converters"
@@ -170,144 +171,7 @@
                 <usercontrol:OneByTwoGrid
                     Grid.Row="2">
                     <usercontrol:OneByTwoGrid.Column1Content>
-                        <usercontrol:CardControl
-                            x:Name="Row3Column1"
-                            Height="Auto"
-                            MyTitle="Quick Transfer">
-                            <usercontrol:CardControl.MyControls>
-                                <Button Padding="15,5,15,5" Style="{ThemeResource SecondaryButton}"
-                                    VerticalAlignment="Center"
-                                    x:Name="ResetButton"
-                                        Click="ResetButton_Click"
-                                    HorizontalAlignment="Right">
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <FontIcon
-                                                FontSize="12"
-                                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                                Glyph="&#xE149;" />
-                                            <TextBlock
-                                                Margin="5,0,0,0"
-                                                Text="Reset" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                            </usercontrol:CardControl.MyControls>
-                            <usercontrol:CardControl.MyContent>
-                                <StackPanel
-                                    VerticalAlignment="Top">
-                                    <TextBlock
-                                        MaxWidth="400"
-                                        Margin="5,10,5,5"
-                                        Text="Account"
-                                        Style="{ThemeResource NormalSubText}" />
-                                    <DropDownButton
-                                        x:Name="AccountsDropdownButton"
-                                        MaxWidth="400"
-                                        HorizontalAlignment="Stretch"
-                                        CornerRadius="8">
-                                        <DropDownButton.Content>
-                                            <TextBlock
-                                                HorizontalAlignment="Center"
-                                                x:Name="AccountsText"
-                                                Text="Select Account" />
-                                        </DropDownButton.Content>
-                                        <DropDownButton.Flyout>
-                                            <Flyout
-                                                Placement="Bottom"
-                                                FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                                                <ListView
-                                                    x:Name="AccountsList"
-                                                    SelectionChanged="AccountsList_SelectionChanged"
-                                                    ItemsSource="{x:Bind ViewModel.DashboardModel.AllAccounts, Mode=OneWay}">
-                                                    <ListView.ItemTemplate>
-                                                        <DataTemplate
-                                                            x:DataType="modelBObj:AccountBObj">
-                                                            <TextBlock
-                                                                Text="{x:Bind}" />
-                                                        </DataTemplate>
-                                                    </ListView.ItemTemplate>
-                                                </ListView>
-                                            </Flyout>
-                                        </DropDownButton.Flyout>
-                                    </DropDownButton>
-
-                                    <TextBlock
-                                        MaxWidth="400"
-                                        Margin="5,20,5,5"
-                                        Text="Beneficiary"
-                                        Style="{ThemeResource NormalSubText}" />
-                                    
-                                    <DropDownButton
-                                        Click="BeneficiaryButton_Click"
-                                        x:Name="BeneficiaryButton"
-                                        MaxWidth="400"
-                                        HorizontalAlignment="Stretch"
-                                        CornerRadius="8">
-                                        <DropDownButton.Content>
-                                            <TextBlock
-                                                HorizontalAlignment="Center"
-                                                x:Name="BeneficiaryText"
-                                                Text="Select Beneficiary" />
-                                        </DropDownButton.Content>
-                                        <DropDownButton.Flyout>
-                                            <Flyout
-                                                Placement="Bottom"
-                                                FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                                                <ListView
-                                                    x:Name="BeneficiaryList"
-                                                    SelectionChanged="BeneficiaryList_SelectionChanged"
-                                                    ItemsSource="{x:Bind ViewModel.DashboardModel.AllBeneficiaries, Mode=OneWay}">
-                                                    <ListView.ItemTemplate>
-                                                        <DataTemplate
-                                                            x:DataType="model:Beneficiary">
-                                                            <TextBlock
-                                                                Text="{x:Bind}" />
-                                                        </DataTemplate>
-                                                    </ListView.ItemTemplate>
-                                                </ListView>
-                                            </Flyout>
-                                        </DropDownButton.Flyout>
-                                    </DropDownButton>
-                                    
-                                    <TextBlock
-                                        Margin="5,20,5,5"
-                                        Text="Amount"
-                                        MaxWidth="400"
-                                        Style="{ThemeResource NormalSubText}" />
-                                    
-                                    <TextBox 
-                                        x:Name="AmountTextBox"
-                                        MaxWidth="400"
-                                        Text="{x:Bind EnteredAmount, Mode=TwoWay}"
-                                             TextChanging="AmountTextBox_TextChanging" 
-                                             PlaceholderText="Enter Amount in INR"/>
-                                    
-                                    <TextBlock
-                                        Margin="5,20,5,5"
-                                        Style="{ThemeResource NormalSubText}" />
-
-                                    <TextBox
-                                        x:Name="DescriptionTextBox"
-                                        MaxWidth="400"
-                                        Text="{x:Bind EnteredDescription, Mode=TwoWay}"
-                                        TextChanging="DescriptionTextBox_TextChanging"
-                                        PlaceholderText="Describe the transaction" />
-
-                                    <Button
-                                        Margin="0,40,0,0"
-                                        Style="{ThemeResource PrimaryButton}"
-                                        VerticalAlignment="Bottom"
-                                        HorizontalAlignment="Stretch">
-                                        <Button.Content>
-                                            <TextBlock
-                                                Text="Send" />
-                                        </Button.Content>
-                                    </Button>
-                                    
-                                </StackPanel>
-                            </usercontrol:CardControl.MyContent>
-                        </usercontrol:CardControl>
+                          <paymentTemplate:DashboardPaymentDetailsView />
                     </usercontrol:OneByTwoGrid.Column1Content>
                     <usercontrol:OneByTwoGrid.Column2Content>
                         <usercontrol:CardControl

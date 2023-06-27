@@ -414,17 +414,46 @@
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
+                Height="Auto" /> 
+            <RowDefinition
                 Height="Auto" />
             <RowDefinition
                 Height="*" />
             <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel
-            Orientation="Horizontal"
-            HorizontalAlignment="Right">
+        <Grid>
+            <DropDownButton
+                x:Name="AccountNumberDropDownButton"
+                CornerRadius="8">
+                <DropDownButton.Content>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        x:Name="AccountText"
+                        Text="{x:Bind ViewModel.SelectedAccount.ToString(), Mode=OneWay}" />
+                </DropDownButton.Content>
+                <DropDownButton.Flyout>
+                    <Flyout
+                        Placement="Bottom"
+                        FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                        <ListView
+                            x:Name="AccountsList"
+                            SelectionChanged="AccountsList_SelectionChanged"
+                            ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate
+                                    x:DataType="modelBObj:AccountBObj">
+                                    <TextBlock
+                                        Text="{Binding}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
             <Button
                 Margin="0,10,0,10"
+                HorizontalAlignment="Right"
                 x:Name="NewPaymentButton"
                 Click="NewPaymentButton_Click"
                 Style="{ThemeResource PrimaryButton}">
@@ -435,6 +464,12 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
+
+        </Grid>
+        <StackPanel
+             Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Grid.Row="1">
             <DropDownButton
                 Margin="5"
                 Width="80"
@@ -470,12 +505,11 @@
                 </Button.Content>
             </Button>
         </StackPanel>
-
         <Grid
             Background="{ThemeResource ApplicationBackground}"
             MinHeight="150"
             CornerRadius="8"
-            Grid.Row="1"
+            Grid.Row="2"
             Margin="0,0,0,5"
             Visibility="{x:Bind FilterButton.IsChecked, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
             <GridView
@@ -508,22 +542,12 @@
                             Foreground="Gray"
                             Margin="0,5,0,5"
                             Text="From Date" />
-                        <DropDownButton
-                            Width="200"
-                            CornerRadius="4">
-                            <DropDownButton.Content>
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    Text="Choose Date" />
-                            </DropDownButton.Content>
-                            <DropDownButton.Flyout>
-                                <MenuFlyout
-                                    Placement="Bottom">
-                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
-                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                        <CalendarDatePicker
+                            x:Name="FromDatePicker"
+                            DateChanged="FromDatePicker_DateChanged"
+                            PlaceholderText="Select From Date"
+                            Background="{ThemeResource ApplicationPageBackground}"
+                            Width="200" />
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem>
@@ -532,22 +556,12 @@
                             Foreground="Gray"
                             Margin="0,5,0,5"
                             Text="To Date" />
-                        <DropDownButton
-                            Width="200"
-                            CornerRadius="4">
-                            <DropDownButton.Content>
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    Text="Choose Date" />
-                            </DropDownButton.Content>
-                            <DropDownButton.Flyout>
-                                <MenuFlyout
-                                    Placement="Bottom">
-                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
-                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                        <CalendarDatePicker
+                            x:Name="ToDatePicker"
+                            PlaceholderText="Select To Date"
+                             DateChanged="ToDatePicker_DateChanged"
+                            Background="{ThemeResource ApplicationPageBackground}"
+                            Width="200" />
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
@@ -560,18 +574,30 @@
                             Text="From Account" />
                         <DropDownButton
                             Width="200"
+                            x:Name="FromAccountButton"
                             CornerRadius="4">
                             <DropDownButton.Content>
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    Text="Choose Account" />
+                                    Text="{x:Bind FromAccountsList.SelectedItem, TargetNullValue='Select Account'}" />
                             </DropDownButton.Content>
                             <DropDownButton.Flyout>
-                                <MenuFlyout
-                                    Placement="Bottom">
-                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
-                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
-                                </MenuFlyout>
+                                <Flyout
+                                    Placement="Bottom"
+                                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                                    <ListView
+                                        x:Name="FromAccountsList"
+                                        SelectionChanged="FromAccountsList_SelectionChanged"
+                                        ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate
+                                                x:DataType="modelBObj:AccountBObj">
+                                                <TextBlock
+                                                    Text="{Binding}" />
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Flyout>
                             </DropDownButton.Flyout>
                         </DropDownButton>
                     </StackPanel>
@@ -584,18 +610,30 @@
                             Text="To Account" />
                         <DropDownButton
                             Width="200"
+                            x:Name="ToAccountButton"
                             CornerRadius="4">
                             <DropDownButton.Content>
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    Text="Choose Account" />
+                                    Text="{x:Bind ToAccountsList.SelectedItem, TargetNullValue='Select Account'}" />
                             </DropDownButton.Content>
                             <DropDownButton.Flyout>
-                                <MenuFlyout
-                                    Placement="Bottom">
-                                    <MenuFlyoutItem>Latest Transactions First</MenuFlyoutItem>
-                                    <MenuFlyoutItem>Old Transactions First</MenuFlyoutItem>
-                                </MenuFlyout>
+                                    <Flyout
+                                    Placement="Bottom"
+                                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                                        <ListView
+                                            x:Name="ToAccountsList"
+                                            SelectionChanged="ToAccountsList_SelectionChanged"
+                                            ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate
+                                                    x:DataType="modelBObj:AccountBObj">
+                                                    <TextBlock
+                                                        Text="{Binding}" />
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </Flyout>
                             </DropDownButton.Flyout>
                         </DropDownButton>
                     </StackPanel>
@@ -609,6 +647,7 @@
                             Text="Transaction Type" />
                         <DropDownButton
                             Width="200"
+                            x:Name="TransactionTypeButton"
                             CornerRadius="4">
                             <DropDownButton.Content>
                                 <TextBlock
@@ -616,11 +655,22 @@
                                     Text="Choose" />
                             </DropDownButton.Content>
                             <DropDownButton.Flyout>
-                                <MenuFlyout
-                                    Placement="Bottom">
-                                    <MenuFlyoutItem>Income</MenuFlyoutItem>
-                                    <MenuFlyoutItem>Expenses</MenuFlyoutItem>
-                                </MenuFlyout>
+                                <Flyout
+                                    Placement="Bottom"
+                                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
+                                    <ListView
+                                        x:Name="TransactionType"
+                                        SelectionChanged="TransactionType_SelectionChanged"
+                                        ItemsSource="{x:Bind ViewModel.TransactionTypes}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate
+                                                x:DataType="modelBObj:CreditCardDTO">
+                                                <TextBlock
+                                                    Text="{Binding}" />
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Flyout>
                             </DropDownButton.Flyout>
                         </DropDownButton>
                     </StackPanel>
@@ -629,7 +679,7 @@
             </GridView>
         </Grid>
         <Grid
-            Grid.Row="2"
+            Grid.Row="3"
             BorderBrush="DarkGray"
             BorderThickness="1"
             Background="{ThemeResource ApplicationBackground}"
@@ -644,7 +694,7 @@
             </ListView>
         </Grid>
         <Grid
-            Grid.Row="3"
+            Grid.Row="4"
             Margin="0,10,0,10">
             <DropDownButton
                 x:Name="RowsPerPageButton"

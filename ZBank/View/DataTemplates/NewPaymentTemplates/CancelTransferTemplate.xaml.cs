@@ -12,27 +12,16 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using ZBank.Entity.BusinessObjects;
-using ZBank.ViewModel;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace ZBank.View.UserControls
+namespace ZBank.View.DataTemplates.NewPaymentTemplates
 {
-    public sealed partial class CardElementView : UserControl
+    public sealed partial class CancelTransferTemplate : UserControl
     {
-        public CardElementView()
+        public CancelTransferTemplate()
         {
             this.InitializeComponent();
         }
-
-        public CardBObj TemplateCard
-        {
-            get { return (CardBObj)GetValue(TemplateCardProperty); }
-            set { SetValue(TemplateCardProperty, value); }
-        }
-
-        public static readonly DependencyProperty TemplateCardProperty =
-            DependencyProperty.Register("TemplateCard", typeof(CardBObj), typeof(CardElementView), new PropertyMetadata(null));
     }
 }

@@ -10,6 +10,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Devices.PointOfService;
 using Windows.UI.Core;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
@@ -17,6 +18,7 @@ using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.Constants;
 using ZBank.View;
+using ZBank.View.UserControls;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
@@ -33,11 +35,13 @@ namespace ZBank.ViewModel
         public ICommand PreviousCardCommand { get; set; }
 
         public ICommand NextCardCommand { get; set; }
+        public ICommand ResetPinCommand { get; set; }
 
         public CardsViewModel(IView view)
         {
             View = view;
             DataModel = new CardPageModel();
+            ResetPinCommand = new RelayCommand(ResetPin);
             PreviousCardCommand = new RelayCommand(GoToPreviousCard, () =>
             {
                 if(AllCards?.Count > 0)
@@ -111,17 +115,22 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public void ResetPin()
+        public void ResetPin(object parameter)
         {
-            ResetPinRequest request = new ResetPinRequest()
+            ResetPinArgs args = (ResetPinArgs)parameter;
+            if (args != null)
             {
-                CardNumber = DataModel.OnViewCard.CardNumber,
-                NewPin = "1111"
-            };
+                ResetPinRequest request = new ResetPinRequest()
+                {
+                    CardNumber = args.CardNumber,
+                    NewPin = args.PinNumber
+                };
 
-            IPresenterCallback<ResetPinResponse> presenterCallback = new ResetPinPresenterCallback(this);
-            UseCaseBase<ResetPinResponse> useCase = new ResetPinUseCase(request, presenterCallback);
-            useCase.Execute();
+                IPresenterCallback<ResetPinResponse> presenterCallback = new ResetPinPresenterCallback(this);
+                UseCaseBase<ResetPinResponse> useCase = new ResetPinUseCase(request, presenterCallback);
+                useCase.Execute();
+            }
+           
         }
 
         private void UpdateCardsList(CardDataUpdatedArgs args)
@@ -206,7 +215,15 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    // Dialog open
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = "Reset Pin Successful",
+                            Type = NotificationType.SUCCESS
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
                 });
             }
 

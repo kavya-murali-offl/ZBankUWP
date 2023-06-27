@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="ZBank.View.DataTemplates.NewPaymentTemplates.PaymentAcknowledgement"
+    x:Class="ZBank.View.DataTemplates.NewPaymentTemplates.CancelTransferTemplate"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZBank.View.DataTemplates.NewPaymentTemplates"
@@ -10,8 +10,6 @@
     d:DesignWidth="400">
 
     <Grid>
-        <TextBlock
-            FontSize="18"
-            Text="Payment Success" />
+
     </Grid>
 </UserControl>

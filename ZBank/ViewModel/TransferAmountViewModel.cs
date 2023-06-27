@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Controls;
 using ZBankManagement.Entity.BusinessObjects;
 using static Microsoft.Toolkit.Uwp.UI.Animations.Expressions.ExpressionValues;
 using ZBankManagement.Entities.BusinessObjects;
+using ZBank.View.Modals;
 
 namespace ZBank.ViewModel
 {
@@ -32,11 +33,14 @@ namespace ZBank.ViewModel
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
         public ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
 
-        public TransferAmountViewModel(IView view) {
+        public TransferAmountViewModel(IView view, ContentDialog dialog = null) {
             View = view;
+            ContentDialog = dialog;
             InitializeSteps();
             Reset();
         }
+
+        private ContentDialog ContentDialog { get; set; }   
 
         public BeneficiaryBObj SelectedBeneficiary
         {
@@ -97,7 +101,14 @@ namespace ZBank.ViewModel
                 var inText = FieldValues["Amount"].ToString();
                 if (decimal.TryParse(inText, out decimal amountInDecimal))
                 {
-                    FieldErrors["Amount"] = string.Empty;
+                    if (amountInDecimal <= 0)
+                    {
+                        FieldErrors["Amount"] = "Amount should be greater than zero";
+                    }
+                    else
+                    {
+                        FieldErrors["Amount"] = string.Empty;
+                    }
                 }
                 else
                 {
@@ -173,8 +184,36 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BeneficiaryListUpdated += UpdateBeneficiariesList;
+            ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
             LoadAllBeneficiaries();
             LoadAllAccounts();
+        }
+        private StepModel ResumeAtStep { get; set; }    
+
+        public void ResumeAtCurrentStep()
+        {
+            ResumeAtStep = CurrentStep;
+        }
+
+        private void CancelPaymentRequested(bool isPaymentCompleted)
+        {
+            if(isPaymentCompleted)
+            {
+                 GoToNextStep();
+            }
+            else
+            {
+                CurrentStep = new StepModel
+                {
+                    IsPaymentInProgress = false,
+                    StepNumber = 4,
+                    PrimaryCommandText = "Continue Payment",
+                    PrimaryCommand = new RelayCommand(ResumePayment),
+                    SecondaryCommandText = "Exit",
+                    SecondaryCommand = new RelayCommand(CloseDialog),
+                    Content = new CancelTransferTemplate()
+                };
+            }
         }
 
         private void UpdateBeneficiariesList(BeneficiaryListUpdatedArgs args)
@@ -191,6 +230,8 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BeneficiaryListUpdated -= UpdateBeneficiariesList;
+            ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
+
         }
 
         private bool ValidateFields()
@@ -206,15 +247,25 @@ namespace ZBank.ViewModel
         }
 
 
-        private void GoToNextStep(object parameter = null)
+        private async void GoToNextStep(object parameter = null)
         {
-            int currentIndex = Steps.IndexOf(CurrentStep);
-            switch (currentIndex)
+            int previousIndex = Steps.IndexOf(CurrentStep);
+            if (Steps.Count > previousIndex + 1)
+            {
+                CurrentStep = Steps[previousIndex + 1];
+            }
+            switch (previousIndex)
             {
                 case 0:
                     if (ValidateFields() && CheckBalance())
                     {
-                        CurrentStep = Steps[currentIndex + 1];
+                        if (ContentDialog == null)
+                        {
+                            ContentDialog dialog = new ContentDialog();
+                            dialog.Content = new NewPaymentView(dialog, this);
+                            ContentDialog = dialog;
+                            await dialog.ShowAsync();
+                        }
                     }
                     break;
                 case 1:
@@ -225,7 +276,7 @@ namespace ZBank.ViewModel
         }
 
 
-        private ObservableCollection<StepModel> Steps { get;  set; }  
+        public ObservableCollection<StepModel> Steps { get;  set; }  
 
         private StepModel _currentStep;
         public StepModel CurrentStep
@@ -238,13 +289,13 @@ namespace ZBank.ViewModel
             }
         }
 
-
         private void InitializeSteps()
         {
             Steps = new ObservableCollection<StepModel>
         {
             new StepModel
             {
+                IsPaymentInProgress = true,
                 StepNumber = 1,
                 PrimaryCommandText = "Next",
                 SecondaryCommandText = "Reset",
@@ -254,26 +305,39 @@ namespace ZBank.ViewModel
             },
             new StepModel
             {
+                IsPaymentInProgress = true,
+
                 StepNumber = 2,
                 PrimaryCommandText = "Proceed To Pay",
-                SecondaryCommandText = "Back",
+                SecondaryCommandText = "Edit",
                 PrimaryCommand = new RelayCommand(ProceedToPay),
                 SecondaryCommand = new RelayCommand(GoToPreviousStep),
                 Content = new PaymentConfirmation()
             },
             new StepModel
             {
+                IsPaymentInProgress = false,
                 StepNumber = 3,
+                SecondaryCommandText="View Bill",
+                SecondaryCommand=new RelayCommand(DownloadStatement),
                 PrimaryCommandText = "Finish",
-                SecondaryCommandText = "Back",
-                // PrimaryCommand = new RelayCommand(Finish),
-                // SecondaryCommand = new RelayCommand(GoToPreviousStep),
+                PrimaryCommand = new RelayCommand(CloseDialog),
                 Content = new PaymentAcknowledgement()
-            }
-        };
+            },
+
+            };
 
             // Set the initial current step
             CurrentStep = Steps.FirstOrDefault();
+        }
+
+        private void DownloadStatement(object obj)
+        {
+        }
+
+        private void ResumePayment(object obj)
+        {
+            CurrentStep = ResumeAtStep;
         }
 
         private void GoToPreviousStep(object parameter = null)
@@ -295,7 +359,13 @@ namespace ZBank.ViewModel
             }
             return true;
         }
-    
+
+        internal void CloseDialog(object args = null)
+        {
+            ContentDialog.Hide();
+            Reset();
+        }
+
         private ObservableCollection<AccountBObj> _accounts { get; set; }
 
         public ObservableCollection<AccountBObj> UserAccounts

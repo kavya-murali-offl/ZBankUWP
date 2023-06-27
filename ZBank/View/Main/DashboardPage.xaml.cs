@@ -64,7 +64,6 @@ namespace ZBank.View
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnLoaded();
-           
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -72,76 +71,6 @@ namespace ZBank.View
             ViewModel.OnUnLoaded();
         }
 
-        private void QuickTransferAccount_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-
-        private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListView item = null;
-            if (sender is ListView view)
-            {
-                 item = view;
-            }
-            if(item.SelectedIndex >= 0)
-            {
-                var beneficiaries = ViewModel.DashboardModel.AllBeneficiaries;
-                SelectedBeneficiary = beneficiaries[item.SelectedIndex];
-                BeneficiaryText.Text = beneficiaries[item.SelectedIndex]?.ToString();
-            }
-
-            BeneficiaryButton.Flyout.Hide();
-
-        }
-
-        private void BeneficiaryButton_Click(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListView item = null;
-            if (sender is ListView view)
-            {
-                item = view;
-            }
-            if(item.SelectedIndex >= 0)
-            {
-                var accountsList = ViewModel.DashboardModel.AllAccounts;
-                SelectedAccount = accountsList[item.SelectedIndex];
-                AccountsText.Text = accountsList[item.SelectedIndex]?.ToString();
-            }
-            AccountsDropdownButton.Flyout.Hide();
-        }
-
-        private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
-        {
-            string newText = sender.Text;
-            newText = new string(newText.Where(c => char.IsDigit(c) || c == '.').ToArray());
-            sender.Text = newText;
-            sender.SelectionStart = newText.Length;
-        }
-
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedAccount = null;
-            SelectedBeneficiary = null;
-            SelectedPaymentMode = ModeOfPayment.NONE;
-            AmountTextBox.Text = string.Empty;
-            BeneficiaryList.SelectedIndex = -1;
-            AccountsList.SelectedIndex = -1;
-            BeneficiaryText.Text = "Select Beneficiary";
-            AccountsText.Text = "Select Account";
-            DescriptionTextBox.Text = string.Empty;
-        }
-
-        private void DescriptionTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
-        {
-
-        }
 
         private void Transactions_ViewMoreButton_Click(object sender, RoutedEventArgs e)
         {
