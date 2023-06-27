@@ -38,47 +38,14 @@ namespace ZBank.ViewModel
             View = view;
             DefinedRows = new List<int>()
             {
-               1, 5, 10, 25, 50
+               5, 10, 25, 50
             };
             NextCommand = new RelayCommand(GoToNextPage, IsNextButtonEnabled);
             PreviousCommand = new RelayCommand(GoToPreviousPage, IsPreviousButtonEnabled);
-            RowsPerPage = DefinedRows.First();
+            RowsPerPage = DefinedRows.FirstOrDefault();
         }
 
-        private bool IsPreviousButtonEnabled()
-        {
-            return CurrentPageIndex > 0;
-        }
 
-        private bool IsNextButtonEnabled()
-        {
-            return CurrentPageIndex + 1 < FilteredTransactions.Count() / RowsPerPage;
-        }
-
-        private void GoToPreviousPage(object parameter)
-        {
-            CurrentPageIndex--;
-            UpdateOnViewList();
-            UpdatePageNavigation();
-        }
-
-        private void GoToNextPage(object parameter)
-        {
-            CurrentPageIndex++;
-            UpdateOnViewList();
-            UpdatePageNavigation();
-        }
-
-        private int _totalPages;
-        public int TotalPages
-        {
-            get { return _totalPages; }
-            set
-            {
-                _totalPages = value;
-                OnPropertyChanged("TotalPages");
-            }
-        }
 
         public IEnumerable<TransactionBObj> AllTransactions { get; set; } = new List<TransactionBObj>();
 
@@ -99,7 +66,7 @@ namespace ZBank.ViewModel
         private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
         {
             AllTransactions = args.TransactionList;
-          
+            UpdateSelectedAccount(SelectedAccount);
         }
 
         private void UpdateOnViewList()
@@ -107,6 +74,7 @@ namespace ZBank.ViewModel
             int startIndex = (CurrentPageIndex) * RowsPerPage;
             InViewTransactions = new ObservableCollection<TransactionBObj>(FilteredTransactions.Skip(startIndex).Take(RowsPerPage));
             UpdatePageNavigation();
+            CalculateTotalPages();
         }
 
         private void UpdatePageNavigation()
@@ -122,9 +90,25 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.CancelPaymentRequested += NewTransactionAdded;
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             CurrentPageIndex = 0;
-            LoadAllAccounts();
             RowsPerPage = DefinedRows.First();
+            LoadAllAccounts();
             LoadAllTransactionsData();
+        }
+
+        internal void UpdateSelectedAccount(AccountBObj accountBObj)
+        {
+            SelectedAccount = accountBObj;
+            FilteredTransactions = AllTransactions.Where(trans => trans.SenderAccountNumber == SelectedAccount.AccountNumber || trans.RecipientAccountNumber == SelectedAccount.AccountNumber);
+            UpdateOnViewList();
+        }
+
+        private void UpdateAccountsList(AccountsListUpdatedArgs args)
+        {
+            AccountsList = new ObservableCollection<AccountBObj>(args.AccountsList);
+            if (AccountsList.Count > 0)
+            {
+                UpdateSelectedAccount(AccountsList.ElementAt(0));
+            }
         }
 
         private ObservableCollection<AccountBObj> _accountsList { get; set; }
@@ -164,14 +148,6 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        private void UpdateAccountsList(AccountsListUpdatedArgs args)
-        {
-            AccountsList = new ObservableCollection<AccountBObj>(args.AccountsList);
-            if(AccountsList.Count > 0 ) { 
-                UpdateSelectedAccount(AccountsList.ElementAt(0));
-            }
-        }
-
         private void NewTransactionAdded(bool isPaymentCompleted)
         {
             if (isPaymentCompleted)
@@ -185,6 +161,21 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactionsData;
             ViewNotifier.Instance.CancelPaymentRequested -= NewTransactionAdded;
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+        }
+
+        private ObservableDictionary<string, object> _filterValues { get; set; }
+
+        private ObservableDictionary<string, object> FilterValues
+        {
+            get
+            {
+                return _filterValues;
+            }
+            set
+            {
+                _filterValues = value;
+                OnPropertyChanged(nameof(FilterValues));
+            }
         }
 
         private int _currentPageIndex { get; set; }
@@ -224,14 +215,42 @@ namespace ZBank.ViewModel
             }
         }
 
-        internal void UpdateSelectedAccount(AccountBObj account)
+        private bool IsPreviousButtonEnabled()
         {
-            SelectedAccount = account;
-            FilteredTransactions = AllTransactions;
-            UpdateOnViewList();
-            CalculateTotalPages();
+            return CurrentPageIndex > 0;
         }
 
+        private bool IsNextButtonEnabled()
+        {
+            return CurrentPageIndex  < (FilteredTransactions.Count() / RowsPerPage) ;
+        }
+
+        private void GoToPreviousPage(object parameter)
+        {
+            CurrentPageIndex--;
+            UpdateOnViewList();
+            UpdatePageNavigation();
+        }
+
+        private void GoToNextPage(object parameter)
+        {
+            CurrentPageIndex++;
+            UpdateOnViewList();
+            UpdatePageNavigation();
+        }
+
+        private int _totalPages;
+        public int TotalPages
+        {
+            get { return _totalPages; }
+            set
+            {
+                _totalPages = value;
+                OnPropertyChanged("TotalPages");
+            }
+        }
+
+    
         private int _rowsPerPage { get; set; }
 
         public int RowsPerPage

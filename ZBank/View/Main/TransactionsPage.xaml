@@ -245,7 +245,6 @@
         <DataTemplate
             x:Key="WideDataTemplate">
             <Grid
-                BorderThickness="0,0.5,0,0.5"
                 BorderBrush="DarkGray"
                 Padding="0,15,0,15"
                 x:Name="TemplateGrid">
@@ -679,13 +678,13 @@
             </GridView>
         </Grid>
         <Grid
+            Height="600"
             Grid.Row="3"
             BorderBrush="DarkGray"
             BorderThickness="1"
             Background="{ThemeResource ApplicationBackground}"
             CornerRadius="8">
             <ListView
-                MinHeight="500"
                 x:Name="ListView"
                 ItemsSource="{x:Bind ViewModel.InViewTransactions, Mode=OneWay}"
                 AllowDrop="True"
@@ -713,6 +712,7 @@
                 <DropDownButton.Flyout>
                     <Flyout>
                         <ListView
+                            SelectedValue="{x:Bind ViewModel.RowsPerPage, Mode=OneWay}"
                             x:Name="RowsPerPageList"
                             SelectionChanged="RowsPerPageList_SelectionChanged"
                             ItemsSource="{x:Bind ViewModel.DefinedRows}" />

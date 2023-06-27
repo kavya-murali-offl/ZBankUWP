@@ -36,6 +36,7 @@ namespace ZBank.View.Main
             ViewModel = new TransactionViewModel(this);
         }
 
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageLoaded();
