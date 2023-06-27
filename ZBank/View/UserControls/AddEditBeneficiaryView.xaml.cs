@@ -14,8 +14,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
 using ZBank.Entities;
 using ZBank.ViewModel;
+using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.EnumerationTypes;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -30,6 +32,16 @@ namespace ZBank.View.UserControls
         {
             this.InitializeComponent();
             ViewModel = new AddEditBeneficiaryViewModel(this);
+        }
+
+        private ContentDialog Dialog { get;
+            set; }  
+
+        public AddEditBeneficiaryView(ContentDialog contentDialog, BeneficiaryBObj beneficiaryBObj)
+        {
+            this.InitializeComponent();
+            CancelButton.Visibility = Visibility.Visible;
+            ViewModel = new AddEditBeneficiaryViewModel(this, beneficiaryBObj, contentDialog);
         }
 
 
@@ -55,6 +67,11 @@ namespace ZBank.View.UserControls
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnUnloaded();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewNotifier.Instance.OnCloseDialog(true);
         }
     }
 }

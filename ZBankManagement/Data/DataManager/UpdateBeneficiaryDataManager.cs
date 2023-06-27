@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.DatabaseHandler;
 using ZBank.Entity.EnumerationTypes;
+using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 
 namespace ZBankManagement.Data.DataManager
 {
-   class UpdateBeneficiaryDataManager
+   class UpdateBeneficiaryDataManager : IUpdateBeneficiaryDataManager
     {
         public UpdateBeneficiaryDataManager(IDBHandler dbHandler)
         {
@@ -23,7 +24,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                int rowsModified = await DBHandler.AddBeneficiary(request.BeneficiaryToUpdate);
+                int rowsModified = await DBHandler.UpdateBeneficiary(request.BeneficiaryToUpdate);
                 if (rowsModified > 0)
                 {
                     UpdateBeneficiaryResponse response = new UpdateBeneficiaryResponse

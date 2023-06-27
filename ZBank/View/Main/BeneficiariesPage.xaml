@@ -91,7 +91,31 @@
                             HorizontalAlignment="Center"
                             Grid.Row="5"
                             Text="{Binding IFSCCode}" />
-                    </Grid>
+
+                    <Button 
+                        x:Name="NotAFavouriteButton"
+                        Click="NotAFavouriteButton_Click"
+                        HorizontalAlignment="Left" Grid.Row="6" Margin="10,20,10,0" Style="{ThemeResource IconButton}">
+                        <Button.Content>
+                            <FontIcon
+                                FontSize="16"
+                                Glyph="&#xE734;" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        x:Name="EditButton"
+                        Click="EditButton_Click"
+                        HorizontalAlignment="Right"
+                        Grid.Row="6"
+                        Margin="10,20,10,0"
+                        Style="{ThemeResource IconButton}">
+                        <Button.Content>
+                            <FontIcon
+                                FontSize="16"
+                                Glyph="&#xE70F;" />
+                        </Button.Content>
+                    </Button>
+                </Grid>
                 </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -137,7 +161,7 @@
                             <GridView
                                 VerticalAlignment="Center"
                                 ItemTemplate="{StaticResource GridViewTemplate}"
-                                ItemsSource="{x:Bind ViewModel.BeneficiariesList, Mode=OneWay}"
+                                ItemsSource="{x:Bind ViewModel.WithinBankBeneficiaries, Mode=OneWay}"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 SelectionMode="None">
@@ -200,7 +224,7 @@
                             <GridView
                                 VerticalAlignment="Center"
                                 ItemTemplate="{StaticResource GridViewTemplate}"
-                                ItemsSource="{x:Bind ViewModel.BeneficiariesList, Mode=OneWay}"
+                                ItemsSource="{x:Bind ViewModel.OtherBankBeneficiaries, Mode=OneWay}"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 SelectionMode="None">

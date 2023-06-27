@@ -10,6 +10,6 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
     interface IUpdateBeneficiaryDataManager
     {
-        void UpdateBeneficiary(UpdateBeneficiaryRequest request, IUseCaseCallback<UpdateBeneficiaryResponse> callback);
+        Task UpdateBeneficiary(UpdateBeneficiaryRequest request, IUseCaseCallback<UpdateBeneficiaryResponse> callback);
     }
 }

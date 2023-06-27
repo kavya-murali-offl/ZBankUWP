@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.UI.Core;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
+using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
@@ -41,6 +42,7 @@ namespace ZBank.ViewModel
         public void OnLoaded()
         {
             ViewNotifier.Instance.BeneficiaryListUpdated += UpdateBeneficiaryList;
+            ViewNotifier.Instance.BeneficiaryAddOrUpdated += OnBeneficiaryAddedOrUpdated;
             LoadAllBeneficiaries();
 
         }
@@ -55,6 +57,12 @@ namespace ZBank.ViewModel
         public void OnUnloaded()
         {
             ViewNotifier.Instance.BeneficiaryListUpdated -= UpdateBeneficiaryList;
+            ViewNotifier.Instance.BeneficiaryAddOrUpdated -= OnBeneficiaryAddedOrUpdated;
+        }
+
+        private void OnBeneficiaryAddedOrUpdated(Beneficiary arg1, bool arg2)
+        {
+            LoadAllBeneficiaries();
         }
 
         internal void UpdateList(BeneficiaryType type, string input)

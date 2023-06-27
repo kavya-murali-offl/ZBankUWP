@@ -17,6 +17,8 @@ namespace ZBank.Entities
         public string UserID { get; set; }
 
         public string AccountNumber { get; set; }
+  
+        public bool IsFavourite { get; set; }
 
         public string BeneficiaryName { get; set; }
 
