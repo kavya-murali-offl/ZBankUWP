@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BankManagementDB.Utility;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using ZBank.Dependencies;
@@ -29,12 +31,27 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
+            _request.Customer.ID = GenerateCustomerID();
+            _request.Customer.CreatedOn = DateTime.Now;
             InsertCustomerRequest request = new InsertCustomerRequest()
             {
                 Customer = _request.Customer,
                 CustomerCredentials = GenerateCredentialsForCustomer(),
             };
             _signupUserDataManager.SignupUser(request, new SignupUserCallback(this));
+        }
+
+        private string GenerateCustomerID()
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < 8; i++)
+            {
+                int digit = random.Next(0, 10);
+                builder.Append(digit);
+            }
+
+            return builder.ToString();
         }
 
         private CustomerCredentials GenerateCredentialsForCustomer()
@@ -89,22 +106,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     {
         public bool IsSuccess { get; set; }
 
-        public Customer InsertedAccount { get; set; }
+        public Customer InsertedCustomer { get; set; }
     }
 
-    public class SignupUserPresenterCallback : IPresenterCallback<SignupUserResponse>
-    {
-
-        public SignupUserPresenterCallback()
-        {
-        }
-
-        public async Task OnSuccess(SignupUserResponse response)
-        {
-        }
-
-        public async Task OnFailure(ZBankException error)
-        {
-        }
-    }
 }

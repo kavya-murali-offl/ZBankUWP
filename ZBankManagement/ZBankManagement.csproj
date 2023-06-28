@@ -145,6 +145,7 @@
     <Compile Include="Data\DataManager\Contracts\IInsertAccountDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IInsertBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IInsertCardDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IInsertCustomerDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IInsertTransactionDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\ILoginCustomerDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IResetPasswordDataManager.cs" />

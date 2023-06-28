@@ -23,13 +23,25 @@ namespace ZBankManagement.DataManager
             try{
                 IEnumerable<Customer> customers = await DBHandler.GetCustomer(request.CustomerID);
                 Customer customer = customers.FirstOrDefault();
-
-                GetCustomerResponse response = new GetCustomerResponse()
+                if (customer != null)
                 {
-                    Customer = customer,
-                };
+                    GetCustomerResponse response = new GetCustomerResponse()
+                    {
+                        Customer = customer,
+                    };
 
-                callback.OnSuccess(response);
+                    callback.OnSuccess(response);
+                }
+                else
+                {
+                    ZBankException exception = new ZBankException()
+                    {
+                        Message = "Customer not found",
+                        Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN
+                    };
+
+                    callback.OnFailure(exception);
+                }
             }
             catch(Exception e)
             {

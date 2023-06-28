@@ -21,6 +21,7 @@ using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Dependencies;
 using ZBank.Services;
+using ZBank.View.Main;
 using ZBank.ViewModel;
 using ZBank.ZBankManagement;
 
@@ -78,7 +79,7 @@ namespace ZBank
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(EntryPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using ZBank.DatabaseHandler;
 using ZBank.Entities;
 using ZBank.Entity.EnumerationTypes;
+using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ZBankManagement.DataLayer.DataManager
 {
-    class SignupUserDataManager
+    class SignupUserDataManager : ISignupUserDataManager
     {
         public SignupUserDataManager(IDBHandler dbHandler)
         {
@@ -24,13 +25,12 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                
                 await DBHandler.InsertCustomer(request.Customer, request.CustomerCredentials);
 
                 SignupUserResponse response = new SignupUserResponse
                 {
                     IsSuccess = true,
-                    InsertedAccount = request.Customer
+                    InsertedCustomer = request.Customer
                 };
                 callback.OnSuccess(response);
             }

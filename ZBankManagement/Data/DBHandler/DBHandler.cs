@@ -561,21 +561,26 @@ namespace ZBank.DatabaseHandler
         // =========================================== \\ // ========================================== \\
         // Customer
 
-        public Task<int> InsertCustomer(Customer customer, CustomerCredentials credentials)
+        public async Task InsertCustomer(Customer customer, CustomerCredentials credentials)
         {
-            return null;
+            Func<Task> action = async () =>
+            {
+                await _databaseAdapter.Insert(customer);
+                await _databaseAdapter.Insert(credentials);
+            };
+            await _databaseAdapter.RunInTransactionAsync(action);
         }
 
         public Task<int> UpdateCustomer(Customer customer) => _databaseAdapter.Update(customer);
 
-        public Task<List<Customer>> GetCustomer(string phoneNumber) => _databaseAdapter.GetAll<Customer>().Where(customer => customer.Phone.Equals(phoneNumber)).ToListAsync();
+        public Task<List<Customer>> GetCustomer(string customerId) => _databaseAdapter.GetAll<Customer>().Where(customer => customerId.Equals(customer.ID)).ToListAsync();
 
 
         // Customer Credentials
 
         public async Task<CustomerCredentials> GetCredentials(string customerID)
         {
-            return await _databaseAdapter.GetScalar<CustomerCredentials>($"Select * from CustomerCredentials Where CustomerCredentials.CustomerID = ?", customerID);
+            return await _databaseAdapter.GetAll<CustomerCredentials>().Where(cred => cred.ID == customerID).FirstOrDefaultAsync();
         }
 
         public Task<int> InsertCredentials(CustomerCredentials customerCredentials) => _databaseAdapter.Insert(customerCredentials);

@@ -11,5 +11,6 @@ namespace ZBank.AppEvents.AppEventArgs
         public Type PageType { get; set; }
 
         public object Params { get; set; }
+
     }
 }

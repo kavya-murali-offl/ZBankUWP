@@ -282,6 +282,11 @@ namespace ZBank
             ClosePane();
             MySplitView.IsPaneOpen = false;
         }
+
+        private void SignoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Signout();
+        }
     }
 
     public class Navigation

@@ -13,20 +13,31 @@ namespace ZBank.Utilities.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            int maskLength = 4;
-            string unMaskedString = value.ToString();
-            if(parameter is int)
+            if(value == null) return "";
+
+            string input = value as string;
+            if (!string.IsNullOrEmpty(input))
             {
-                maskLength = (int)parameter; 
+                return new string('*', input.Length);
             }
-            return MaskText(unMaskedString, maskLength); ;
+            return string.Empty;
+            //string unMaskedString = value.ToString();
+            //if(parameter is int)
+            //{
+            //    var maskLength = (int)parameter; 
+            //    return MaskText(unMaskedString, maskLength);
+            //}
+            //else
+            //{
+            //    return new string('*', unMaskedString.Length);
+            //}
         }
 
         private string MaskText(string unMaskedString, int maskLength)
         {
             if (unMaskedString.Length <= maskLength)
             {
-                return new string('*', unMaskedString.Length);
+                return MaskText(unMaskedString);
             }
             else
             {
@@ -35,9 +46,14 @@ namespace ZBank.Utilities.Converters
             }
         }
 
+        private string MaskText(string unMaskedString)
+        {
+            return new string('*', unMaskedString.Length);
+        }
+
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new NotImplementedException();
+            return value?.ToString();
         }
     }
 }

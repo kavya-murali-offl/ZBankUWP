@@ -4,6 +4,11 @@ using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using System;
 using System.Threading.Tasks;
+using ZBank.Entity.EnumerationTypes;
+using System.Collections;
+using ZBank.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ZBankManagement.DataManager
 {
@@ -18,12 +23,65 @@ namespace ZBankManagement.DataManager
 
         public async Task UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback)
         {
-            int rowsModified = await DBHandler.UpdateCustomer(request.CustomerToUpdate);
+            try
+            {
+                int rowsModified = await DBHandler.UpdateCustomer(request.CustomerToUpdate);
+                if (rowsModified > 0)
+                {
+                    UpdateCustomerResponse response = new UpdateCustomerResponse
+                    {
+                        InsertedAccount = request.CustomerToUpdate
+                    };
+                    callback.OnSuccess(response);
+                }
+                else
+                {
+                    ZBankException error = new ZBankException();
+                    error.Message = "Customer not updated";
+                    error.Type = ErrorType.UNKNOWN;
+                    callback.OnFailure(error);
+                }
+            }
+            catch (Exception err)
+            {
+                ZBankException error = new ZBankException();
+                error.Message = err.Message;
+                error.Type = ErrorType.DATABASE_ERROR;
+                callback.OnFailure(error);
+            }
         }
 
-        public async Task LogoutCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback)
+        public async Task UpdateCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback)
         {
-            int rowsModified = await DBHandler.UpdateCustomer(request.LoggedInCustomer);
+            try
+            {
+                IEnumerable<Customer> customers = await DBHandler.GetCustomer(request.CustomerID);
+                if (customers.Count() > 0)
+                {
+                    var customer = customers.First();
+                    customer.LastLoggedOn = DateTime.Now;
+                    LogoutCustomerResponse response = new LogoutCustomerResponse
+                    {
+                         UpdatedCustomer = customer,
+                    };
+                    callback.OnSuccess(response);
+                }
+                else
+                {
+                    ZBankException error = new ZBankException();
+                    error.Message = "Customer not found";
+                    error.Type = ErrorType.UNKNOWN;
+                    callback.OnFailure(error);
+                }
+            }
+            catch (Exception err)
+            {
+                ZBankException error = new ZBankException();
+                error.Message = err.Message;
+                error.Type = ErrorType.DATABASE_ERROR;
+                callback.OnFailure(error);
+            }
         }
+       
     }
 }

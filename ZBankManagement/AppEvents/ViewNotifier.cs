@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
 using ZBankManagement.AppEvents.AppEventArgs;
@@ -20,6 +21,18 @@ namespace ZBank.AppEvents
         }
 
         public bool PaymentInProgress { get; set; }
+
+        public event Action<string> LoginError;
+        public void OnLoginError(string error)
+        {
+            LoginError?.Invoke(error);
+        }
+
+        public event Action<string> CurrentUserChanged;
+        public void OnCurrentUserChanged(string id)
+        {
+            CurrentUserChanged?.Invoke(id);
+        }
 
         public event Action<bool> RequestFailed;
         public void OnRequestFailed(bool close)
@@ -124,6 +137,13 @@ namespace ZBank.AppEvents
         public void OnThemeChanged(ElementTheme theme)
         {
             ThemeChanged?.Invoke(theme);
+        }
+
+        public event Action<Customer> SignupSuccess;
+
+        public void OnSignupSuccess(Customer insertedCustomer)
+        {
+            SignupSuccess?.Invoke(insertedCustomer);
         }
 
         private ViewNotifier() { }

@@ -54,7 +54,15 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             public void OnSuccess(GetCredentialsResponse response)
             {
-                if (_useCase.CheckPassword(response.CustomerCredentials.Password, response.CustomerCredentials.Salt))
+                if(response.CustomerCredentials == null)
+                {
+                    ZBankException error = new ZBankException
+                    {
+                        Message = "Not a valid Customer ID"
+                    };
+                    _useCase.PresenterCallback.OnFailure(error);
+                }
+                else if (_useCase.CheckPassword(response.CustomerCredentials.Password, response.CustomerCredentials.Salt))
                 {
                     GetCustomerRequest getCustomerRequest = new GetCustomerRequest
                     {

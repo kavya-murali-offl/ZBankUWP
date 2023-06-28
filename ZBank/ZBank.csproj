@@ -119,7 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\AppSettings.cs" />
     <Compile Include="Services\DispatcherService.cs" />
+    <Compile Include="Services\ILoginService.cs" />
     <Compile Include="Services\ViewLifetimeControl.cs" />
     <Compile Include="Services\WindowManagerService.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
@@ -140,6 +142,8 @@
     <Compile Include="ViewModel\AddEditBeneficiaryViewModel.cs" />
     <Compile Include="ViewModel\AddOrEditAccountViewModel.cs" />
     <Compile Include="ViewModel\BeneficiariesViewModel.cs" />
+    <Compile Include="ViewModel\EntryPageViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
@@ -195,6 +199,12 @@
     </Compile>
     <Compile Include="View\Main\CardsPage.xaml.cs">
       <DependentUpon>CardsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Main\EntryPage.xaml.cs">
+      <DependentUpon>EntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Main\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -371,6 +381,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Main\CardsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Main\EntryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Main\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

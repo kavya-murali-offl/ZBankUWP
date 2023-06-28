@@ -26,8 +26,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         }
         protected override void Action()
         {
-            _request.LoggedInCustomer.LastLoggedOn = DateTime.Now;
-            _updateCustomerDataManager.LogoutCustomer(_request, new LogoutCustomerCallback(this));
+            _updateCustomerDataManager.UpdateCustomer(_request, new LogoutCustomerCallback(this));
         }
 
         private class LogoutCustomerCallback : IUseCaseCallback<LogoutCustomerResponse>
@@ -53,7 +52,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
     public class LogoutCustomerRequest : RequestObjectBase
     {
-        public Customer LoggedInCustomer { get; set; }
+        public string CustomerID { get; set; }
     }
 
     public class LogoutCustomerResponse
@@ -62,17 +61,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public Customer UpdatedCustomer { get; set; }
     }
 
-    public class LogoutCustomerPresenterCallback : IPresenterCallback<LogoutCustomerResponse>
-    {
-
-
-        public async Task OnSuccess(LogoutCustomerResponse response)
-        {
-        }
-
-        public async Task OnFailure(ZBankException response)
-        {
-
-        }
-    }
 }

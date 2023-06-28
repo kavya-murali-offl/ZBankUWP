@@ -8,7 +8,7 @@ namespace ZBankManagement.Interface
     interface IUpdateCustomerDataManager
     {
         Task UpdateCustomer(UpdateCustomerRequest request, IUseCaseCallback<UpdateCustomerResponse> callback);
+        Task UpdateCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback);
 
-        Task LogoutCustomer(LogoutCustomerRequest request, IUseCaseCallback<LogoutCustomerResponse> callback);
     }
 }

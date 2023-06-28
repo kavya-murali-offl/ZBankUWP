@@ -305,6 +305,22 @@
                                                 Glyph="&#xE713;" />
                                         </Button.Content>
                                     </Button>
+                                    <Button
+                                        x:Name="SignoutButton"
+                                        Margin="5,0,5,0"
+                                        Click="SignoutButton_Click"
+                                        Style="{ThemeResource IconButton}">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                Content="Logout"
+                                                Placement="Bottom" />
+                                        </ToolTipService.ToolTip>
+                                        <Button.Content>
+                                            <FontIcon
+                                                FontSize="18"
+                                                Glyph="&#xF3B1;" />
+                                        </Button.Content>
+                                    </Button>
 
                                 </StackPanel>
                             </Grid>

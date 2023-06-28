@@ -10,6 +10,5 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase.Common
     public abstract class RequestObjectBase
     {
         public CancellationToken Token;
-        public bool IsSuccess;
     }
 }

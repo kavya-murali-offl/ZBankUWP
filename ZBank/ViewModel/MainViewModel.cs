@@ -20,6 +20,9 @@ using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 using static ZBankManagement.Domain.UseCase.InitializeApp;
 using System.IO;
+using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
+using ZBankManagement.AppEvents.AppEventArgs;
 
 namespace ZBank.ViewModel
 {
@@ -40,9 +43,7 @@ namespace ZBank.ViewModel
         }
         public void OnLoaded()
         {
-            InitializeAppRequest request = new InitializeAppRequest()
-            {
-            };
+            InitializeAppRequest request = new InitializeAppRequest();
 
             IPresenterCallback<InitializeAppResponse> presenterCallback = new InitializeAppPresenterCallback(this);
             UseCaseBase<InitializeAppResponse> useCase = new InitializeAppUseCase(request, presenterCallback);
@@ -99,12 +100,24 @@ namespace ZBank.ViewModel
                 case "Cards":
                     return typeof(CardsPage);
                 case "Transactions":
-                    return typeof(TransactionsPage); 
+                    return typeof(TransactionsPage);
                 case "Beneficiaries":
                     return typeof(BeneficiariesPage);
                 default:
                     return typeof(DashboardPage);
             }
+        }
+
+        public void Signout()
+        {
+            LogoutCustomerRequest request = new LogoutCustomerRequest()
+            {
+                CustomerID = AppSettings.Current.CustomerID,
+            };
+
+            IPresenterCallback<LogoutCustomerResponse> presenterCallback = new LogoutUserPresenterCallback(this);
+            UseCaseBase<LogoutCustomerResponse> useCase = new LogoutCustomerUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         private class InitializeAppPresenterCallback : IPresenterCallback<InitializeAppResponse>
@@ -130,5 +143,55 @@ namespace ZBank.ViewModel
             }
         }
 
+        private class LogoutUserPresenterCallback : IPresenterCallback<LogoutCustomerResponse>
+        {
+            public MainViewModel ViewModel { get; set; }
+
+            public LogoutUserPresenterCallback(MainViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(LogoutCustomerResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                        NotifyUserArgs args = new NotifyUserArgs()
+                        {
+                            Notification = new Notification()
+                            {
+                                Message = "Signout Successful",
+                                Duration = 3000,
+                                Type = NotificationType.SUCCESS
+                            }
+                        };
+                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        ViewNotifier.Instance.OnCurrentUserChanged(null);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = "Signout failed",
+                            Duration = 3000,
+                            Type = NotificationType.SUCCESS
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+            }
+        }
+
+    }
+
+    public class MainPageArgs
+    {
+        public string CustomerID { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace ZBank.DatabaseHandler
         Task<IEnumerable<Branch>> GetBranchByIfscCode(string ifscCode);
 
         // Customer
-        Task<int> InsertCustomer(Customer customer, CustomerCredentials credentials);
+        Task InsertCustomer(Customer customer, CustomerCredentials credentials);
 
         Task<int> UpdateCustomer(Customer customer);
 

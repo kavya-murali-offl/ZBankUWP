@@ -39,5 +39,17 @@ namespace ZBank.ViewModel
                 }
             return FieldErrors;
         }
+
+        protected bool Set<T>(ref T field, T newValue = default(T), [CallerMemberName] string propertyName = null)
+        {
+            if (!EqualityComparer<T>.Default.Equals(field, newValue))
+            {
+                field = newValue;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+            return false;
+        }
+
     }
 }
