@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.View.Modals;
@@ -35,6 +36,7 @@ namespace ZBank.View.Main
             this.InitializeComponent();
             ViewModel = new TransactionViewModel(this);
         }
+
 
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -66,6 +68,7 @@ namespace ZBank.View.Main
         private async void NewPaymentButton_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog dialog = new ContentDialog();
+            dialog.RequestedTheme = ThemeSelector.Theme;
             dialog.Content = new NewPaymentView(dialog);
             PaymentDialog = dialog;
             await dialog.ShowAsync();
@@ -73,24 +76,19 @@ namespace ZBank.View.Main
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ListView item)
-            {
-                if (item.SelectedIndex >= 0)
-                {
-                    var account = (item.SelectedItem as AccountBObj);
-                    ViewModel.UpdateSelectedAccount(account);
-                }
-                AccountNumberDropDownButton.Flyout.Hide();
-            }
+            ViewModel.UpdateSelectedAccount(AccountsList.SelectedItem as AccountBObj);
+            AccountNumberDropDownButton.Flyout.Hide();
         }
 
         private void FromAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ViewModel.FilterValues["FromAccount"] = FromAccountsList.SelectedItem as AccountBObj;
             FromAccountButton.Flyout.Hide();
         }
 
         private void ToAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ViewModel.FilterValues["ToAccount"] = ToAccountsList.SelectedItem as AccountBObj;
             ToAccountButton.Flyout.Hide();  
         }
 
@@ -99,19 +97,15 @@ namespace ZBank.View.Main
             TransactionTypeButton.Flyout.Hide();    
         }
 
-        private void CalendarDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
-        {
-
-        }
-
         private void ToDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
 
+            ViewModel.FilterValues["ToDate"] = ToDatePicker.Date.ToString();
         }
 
         private void FromDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
-
+            ViewModel.FilterValues["FromDate"] = FromDatePicker.Date.ToString();
         }
     }
 

@@ -27,5 +27,8 @@ namespace ZBank.DatabaseAdapter
         Task<int> Execute(string query, params object[] args);
 
         Task RunInTransactionAsync(Func<Task> action);
+
+        Task<int> Delete<T>(T instance);
+
     }
 }

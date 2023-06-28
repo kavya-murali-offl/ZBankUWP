@@ -23,6 +23,7 @@ using ZBankManagement.Entity.BusinessObjects;
 using static Microsoft.Toolkit.Uwp.UI.Animations.Expressions.ExpressionValues;
 using ZBankManagement.Entities.BusinessObjects;
 using ZBank.View.Modals;
+using ZBank.Config;
 
 namespace ZBank.ViewModel
 {
@@ -250,25 +251,28 @@ namespace ZBank.ViewModel
         private async void GoToNextStep(object parameter = null)
         {
             int previousIndex = Steps.IndexOf(CurrentStep);
-            if (Steps.Count > previousIndex + 1)
-            {
-                CurrentStep = Steps[previousIndex + 1];
-            }
             switch (previousIndex)
             {
                 case 0:
                     if (ValidateFields() && CheckBalance())
                     {
+                        CurrentStep = Steps[previousIndex + 1];
                         if (ContentDialog == null)
                         {
                             ContentDialog dialog = new ContentDialog();
+                            dialog.RequestedTheme = ThemeSelector.Theme;
                             dialog.Content = new NewPaymentView(dialog, this);
                             ContentDialog = dialog;
                             await dialog.ShowAsync();
                         }
                     }
+                    else
+                    {
+                        CurrentStep = Steps[previousIndex]; 
+                    }
                     break;
                 case 1:
+                    CurrentStep = Steps[previousIndex + 1];
                     break;
                 default:
                     break;

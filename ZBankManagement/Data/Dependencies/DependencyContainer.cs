@@ -64,6 +64,7 @@ namespace ZBank.Dependencies
             serviceCollection.AddScoped<IUpdateBeneficiaryDataManager, UpdateBeneficiaryDataManager>();
             serviceCollection.AddScoped<IGetBranchDetailsDataManager, GetBranchDetailsDataManager>();
             serviceCollection.AddScoped<ITransferAmountDataManager, TransferAmountDataManager>();
+            serviceCollection.AddScoped<IDeleteBeneficiaryDataManager, DeleteBeneficiaryDataManager>();
             serviceCollection.AddSingleton<ViewNotifier>();
             return serviceCollection;
         }

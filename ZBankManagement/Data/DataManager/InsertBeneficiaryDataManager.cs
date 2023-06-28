@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZBank.DatabaseHandler;
+using ZBank.Entities;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entity.EnumerationTypes;
 
 namespace ZBankManagement.Data.DataManager
 {
@@ -24,19 +26,60 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                int rowsModified = await DBHandler.AddBeneficiary(request.BeneficiaryToInsert);
-                if (rowsModified > 0)
+                bool isIFSCCodeValidated = false;
+                if (request.BeneficiaryToInsert.BeneficiaryType == BeneficiaryType.WITHIN_BANK)
                 {
-                    InsertBeneficiaryResponse response = new InsertBeneficiaryResponse
+                    IEnumerable<Account> accounts = await DBHandler.GetIFSCCodeByAccountNumber(request.BeneficiaryToInsert.AccountNumber);
+                    if (accounts.Count() > 0)
                     {
-                        InsertedBeneficiary = request.BeneficiaryToInsert
-                    };
-                    callback.OnSuccess(response);
+                        isIFSCCodeValidated = true;
+                    }
+                }
+                else if (request.BeneficiaryToInsert.BeneficiaryType == BeneficiaryType.OTHER_BANK)
+                {
+                    IEnumerable<ExternalAccount> accounts = await DBHandler.ValidateExternalAccount(request.BeneficiaryToInsert.AccountNumber, request.IFSCCode);
+                    if (accounts?.Count() > 0)
+                    {
+                        isIFSCCodeValidated = true;
+                    }
+                }
+
+                if (isIFSCCodeValidated)
+                {
+                    IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.BeneficiaryToInsert.UserID);
+                    var alreadyAddedBeneficiary = beneficiaries.Where(ben => ben.AccountNumber == request.BeneficiaryToInsert.AccountNumber);
+                    if(alreadyAddedBeneficiary?.Count() > 0)
+                    {
+                        ZBankException error = new ZBankException();
+                        error.Message = "Beneficiary already added";
+                        error.Type = ErrorType.UNKNOWN;
+                        callback.OnFailure(error);
+                    }
+                    else
+                    {
+                        int rowsModified = await DBHandler.AddBeneficiary(request.BeneficiaryToInsert);
+                        if (rowsModified > 0)
+                        {
+                            InsertBeneficiaryResponse response = new InsertBeneficiaryResponse
+                            {
+                                InsertedBeneficiary = request.BeneficiaryToInsert
+                            };
+                            callback.OnSuccess(response);
+                        }
+                        else
+                        {
+                            ZBankException error = new ZBankException();
+                            error.Message = "Beneficiary not inserted";
+                            error.Type = ErrorType.UNKNOWN;
+                            callback.OnFailure(error);
+                        }
+                    }
+                    
                 }
                 else
                 {
                     ZBankException error = new ZBankException();
-                    error.Message = "Beneficiary not inserted";
+                    error.Message = "Account not found";
                     error.Type = ErrorType.UNKNOWN;
                     callback.OnFailure(error);
                 }

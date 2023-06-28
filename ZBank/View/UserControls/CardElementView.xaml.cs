@@ -12,7 +12,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Entities;
 using ZBank.Entity.BusinessObjects;
+using ZBank.Entity.Constants;
 using ZBank.ViewModel;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -26,12 +28,16 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
         }
 
+        public bool IsCreditCard { get; set; }  
+
         public CardBObj TemplateCard
         {
             get { return (CardBObj)GetValue(TemplateCardProperty); }
-            set { SetValue(TemplateCardProperty, value); }
+            set { 
+                SetValue(TemplateCardProperty, value); }
         }
 
+        public string BankLogo { get; set; } = Constants.ZBankLogo;
         public static readonly DependencyProperty TemplateCardProperty =
             DependencyProperty.Register("TemplateCard", typeof(CardBObj), typeof(CardElementView), new PropertyMetadata(null));
     }

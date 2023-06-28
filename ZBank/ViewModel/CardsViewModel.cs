@@ -144,6 +144,7 @@ namespace ZBank.ViewModel
                 }
                 card.BackgroundImage = Constants.CardBackgrounds[index];
                 index++;
+                card.SetDefaultValues();
             }
             AllCards = new ObservableCollection<CardBObj>(args.CardsList);
             UpdateView(0);
@@ -153,7 +154,6 @@ namespace ZBank.ViewModel
         {
             DataModel = new CardPageModel()
             {
-
                 OnViewCardIndex = onViewIndex,
                 OnViewCard = AllCards.ElementAtOrDefault(onViewIndex),
                 LeftCard = AllCards.ElementAtOrDefault(onViewIndex - 1),

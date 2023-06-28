@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.Config;
 using ZBank.Entities;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
@@ -79,23 +80,23 @@ namespace ZBank.View.Main
             BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = this.XamlRoot;
+            dialog.RequestedTheme = ThemeSelector.Theme;
             dialog.Title = "Update Beneficiary";
-            Dialog = dialog;
             dialog.Content = new AddEditBeneficiaryView(dialog, selectedBeneficiary);
+            Dialog = dialog;
             await dialog.ShowAsync();
         }
 
         private void NotAFavouriteButton_Click(object sender, RoutedEventArgs e)
         {
-
+            BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
+            ViewModel.SwitchFavourite(selectedBeneficiary);
         }
 
-        private void CloseDialog()
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Dialog != null)
-            {
-                Dialog.Hide();
-            }
+            BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
+            ViewModel.DeleteBeneficiary(selectedBeneficiary);
         }
     }
 }

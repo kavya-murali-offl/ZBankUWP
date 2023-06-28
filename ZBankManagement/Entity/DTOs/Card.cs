@@ -21,11 +21,14 @@ namespace ZBank.Entities
 
         public CardType Type { get; set; }
 
+        public decimal SpendingLimit { get; set; }
+
         public string CustomerID { get; set; }
 
         public string CVV { get; set; }
 
         public string ExpiryMonth { get; set; }
+
         public string ExpiryYear { get; set; }
 
     }

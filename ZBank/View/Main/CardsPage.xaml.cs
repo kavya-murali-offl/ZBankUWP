@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Config;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
@@ -63,10 +64,21 @@ namespace ZBank.View.Main
         {
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = this.XamlRoot;
+            dialog.RequestedTheme = ThemeSelector.Theme;
             dialog.Title = "Reset Pin";
             dialog.Content = new ResetPinContent(dialog, ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand);
             await dialog.ShowAsync();
         }
+
+        private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if(ViewModel?.DataModel?.OnViewCard != null)
+            {
+                ViewModel.DataModel.OnViewCard.SpendingLimit = decimal.Parse(LimitSlider.Value.ToString());
+            }
+        }
+
+
     } 
 }
 

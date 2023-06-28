@@ -18,7 +18,7 @@ namespace ZBank.Utilities.Converters
             {
                 if(parameter != null && bool.TryParse(parameter.ToString(), out bool invert))
                 {
-                    return invert ? Visibility.Collapsed : Visibility.Visible;
+                    return boolValue? Visibility.Collapsed: Visibility.Visible; ;
                 }
                 return boolValue ? Visibility.Visible : Visibility.Collapsed;
             }

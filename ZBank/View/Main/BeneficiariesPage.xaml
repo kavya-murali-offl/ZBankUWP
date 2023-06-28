@@ -12,6 +12,8 @@
     xmlns:businessobjects="using:ZBankManagement.Entities.BusinessObjects"
     mc:Ignorable="d">
     <Page.Resources>
+        <converter:BooleanToVisibilityConverter
+            x:Key="BoolToVisibilityConverter"/>
         <converter:InitialsConverter
             x:Key="InitialsConverter" />
             <DataTemplate
@@ -92,7 +94,8 @@
                             Grid.Row="5"
                             Text="{Binding IFSCCode}" />
 
-                    <Button 
+                    <Button
+                        Visibility="{Binding IsFavourite, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                         x:Name="NotAFavouriteButton"
                         Click="NotAFavouriteButton_Click"
                         HorizontalAlignment="Left" Grid.Row="6" Margin="10,20,10,0" Style="{ThemeResource IconButton}">
@@ -102,10 +105,26 @@
                                 Glyph="&#xE734;" />
                         </Button.Content>
                     </Button>
+
+                    <Button
+                        Visibility="{Binding IsFavourite, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, ConverterParameter=true}"
+                        x:Name="FavouriteButton"
+                        Click="NotAFavouriteButton_Click"
+                        HorizontalAlignment="Left"
+                        Grid.Row="6"
+                        Margin="10,20,10,0"
+                        Style="{ThemeResource IconButton}">
+                        <Button.Content>
+                            <FontIcon
+                                FontSize="16"
+                                Glyph="&#xE735;" />
+                        </Button.Content>
+                    </Button>
+                        
                     <Button
                         x:Name="EditButton"
                         Click="EditButton_Click"
-                        HorizontalAlignment="Right"
+                        HorizontalAlignment="Center"
                         Grid.Row="6"
                         Margin="10,20,10,0"
                         Style="{ThemeResource IconButton}">
@@ -113,6 +132,20 @@
                             <FontIcon
                                 FontSize="16"
                                 Glyph="&#xE70F;" />
+                        </Button.Content>
+                    </Button>
+
+                    <Button
+                        x:Name="DeleteButton"
+                        Click="DeleteButton_Click"
+                        HorizontalAlignment="Right"
+                        Grid.Row="6"
+                        Margin="10,20,10,0"
+                        Style="{ThemeResource IconButton}">
+                        <Button.Content>
+                            <FontIcon
+                                FontSize="16"
+                                Glyph="&#xE107;" />
                         </Button.Content>
                     </Button>
                 </Grid>
@@ -185,7 +218,6 @@
                                     </Style>
                                 </GridView.ItemContainerStyle>
                             </GridView>
-
                         </ScrollViewer>
                     </Grid>
                     <Grid
@@ -265,10 +297,6 @@
                         CornerRadius="8"
                         Margin="5"
                         Background="{ThemeResource ApplicationBackground}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition
-                                Height="Auto" />
-                        </Grid.RowDefinitions>
                         <usercontrols:CardControl
                             Height="Auto"
                             MyTitle="Add Beneficiary">
@@ -277,12 +305,48 @@
                             </usercontrols:CardControl.MyContent>
                         </usercontrols:CardControl>
                     </Grid>
-                    <Grid
+                    <StackPanel
                         CornerRadius="8"
                         Margin="5"
+                        Padding="20"
+                        Orientation="Vertical"
                         Background="{ThemeResource ApplicationBackground}"
                         Grid.Row="1">
-                    </Grid>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontSize="17"
+                            Padding="0,0,0,10"
+                            FontWeight="SemiBold"
+                            Text="Favourites" />
+                        <GridView
+                            VerticalAlignment="Center"
+                            ItemTemplate="{StaticResource GridViewTemplate}"
+                            ItemsSource="{x:Bind ViewModel.FavouriteBeneficiaries, Mode=OneWay}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            SelectionMode="None">
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsStackPanel
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                            <GridView.ItemContainerStyle>
+                                <Style
+                                    TargetType="GridViewItem">
+                                    <Setter
+                                        Value="10"
+                                        Property="Margin" />
+                                    <Setter
+                                        Value="Auto"
+                                        Property="Width" />
+                                </Style>
+                            </GridView.ItemContainerStyle>
+                        </GridView>
+                    </StackPanel>
                 </Grid>
             </usercontrols:OneByTwoGrid.Column2Content>
         </usercontrols:OneByTwoGrid>

@@ -21,11 +21,24 @@ namespace ZBank.AppEvents
 
         public bool PaymentInProgress { get; set; }
 
+        public event Action<bool> RequestFailed;
+        public void OnRequestFailed(bool close)
+        {
+            RequestFailed?.Invoke(close);
+        }
+
         public event Action<bool> CloseDialog;
         public void OnCloseDialog(bool close)
         {
             CloseDialog?.Invoke(close);
         }
+
+        public event Action<Beneficiary> BeneficiaryRemoved;
+        public void OnBeneficiaryRemoved(Beneficiary beneficiary)
+        {
+            BeneficiaryRemoved?.Invoke(beneficiary);
+        }
+
 
         public event Action<Beneficiary, bool> BeneficiaryAddOrUpdated;
         public void OnBeneficiaryAddOrUpdated(Beneficiary beneficiary, bool isAdded)

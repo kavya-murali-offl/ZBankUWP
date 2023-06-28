@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace BankManagementDB.Utility
@@ -31,7 +32,7 @@ namespace BankManagementDB.Utility
                 return false;
             }
         }
-
+        
         public bool IsValidPin(string input)
         {
             string pattern = "0000";

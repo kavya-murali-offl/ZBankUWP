@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Core;
+using Windows.Data.Xml.Dom;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
@@ -30,8 +32,8 @@ namespace ZBank.ViewModel
         public ICommand SubmitCommand { get; set; }
 
         public BeneficiaryBObj SelectedBeneficiary { get; set; }
+
         public BeneficiaryBObj InitialBeneficiary { get; set; }
-        private ContentDialog Dialog { get; set; }
 
         public string SubmitText { get; set; }
 
@@ -56,6 +58,7 @@ namespace ZBank.ViewModel
             {
                 IsAdd = true;
                 SelectedBeneficiary = new BeneficiaryBObj();
+                SelectedBeneficiary.BeneficiaryType = BeneficiaryType.WITHIN_BANK;
                 SubmitText = "Add";
             }
             else
@@ -64,52 +67,46 @@ namespace ZBank.ViewModel
                 InitialBeneficiary = beneficiary;
                 SelectedBeneficiary = beneficiary;
                 SubmitText = "Update";
-                Dialog = dialog;
             }
             SubmitCommand = new RelayCommand(ValidateAndSubmit);
             Reset();
         }
 
-        private bool ValidateFields(BeneficiaryType type)
+        private bool ValidateFields()
         {
-            foreach (var key in FieldValues.Keys)
+            var list = new List<string>()
             {
+                "AccountNumber", "BeneficiaryName"
+            };
 
-                if(key != "IFSC Code" && type == BeneficiaryType.WITHIN_BANK)
-                    ValidateField(key);
+            if (IsOtherBankSelected)
+            {
+                list.Add("IFSCCode");
             }
+
+            FieldErrors = ValidateField(FieldErrors, typeof(BeneficiaryBObj), list, SelectedBeneficiary);
 
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;
+
             return true;
         }
 
-        public void ValidateField(string fieldName)
-        {
-            if (!FieldValues.TryGetValue(fieldName, out object val) || string.IsNullOrEmpty(FieldValues[fieldName]?.ToString()))
-            {
-                FieldErrors[fieldName] = $"{fieldName} is required.";
-            }
-            else
-            {
-                FieldErrors[fieldName] = string.Empty;
-            }
-        }
+       
 
         private void ValidateAndSubmit(object obj)
         {
-            var beneficiaryType = SelectedBeneficiary.BeneficiaryType;
-            if (ValidateFields(beneficiaryType))
+            if (ValidateFields())
             {
                
                 if (IsAdd)
                 {
                     Beneficiary beneficiary = new Beneficiary()
                     {
-                        AccountNumber = FieldValues["Account Number"].ToString(),
-                        BeneficiaryName = FieldValues["Beneficiary Name"].ToString(),
+                        AccountNumber = SelectedBeneficiary.AccountNumber,
+                        BeneficiaryName =SelectedBeneficiary.BeneficiaryName,
                         UserID = "1111",
-                        BeneficiaryType = beneficiaryType
+                        BeneficiaryType = IsOtherBankSelected ? BeneficiaryType.OTHER_BANK : BeneficiaryType.WITHIN_BANK
                     };
                     AddBeneficiary(beneficiary);
                 }
@@ -136,6 +133,7 @@ namespace ZBank.ViewModel
         {
             InsertBeneficiaryRequest request = new InsertBeneficiaryRequest()
             {
+                IFSCCode = SelectedBeneficiary.IFSCCode,
                 BeneficiaryToInsert = beneficiary,
             };
 
@@ -146,31 +144,27 @@ namespace ZBank.ViewModel
 
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
-        public ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
 
         private void Reset()
         {
             SelectedBeneficiary = IsAdd ? new BeneficiaryBObj() : InitialBeneficiary;
-            FieldErrors["Account Number"] = string.Empty;
-            FieldErrors["IFSC Code"] = string.Empty;
-            FieldErrors["Beneficiary Type"] = string.Empty;
-            FieldErrors["Beneficiary Name"] = string.Empty;
+            FieldErrors["AccountNumber"] = string.Empty;
+            FieldErrors["IFSCCode"] = string.Empty;
+            FieldErrors["BeneficiaryType"] = string.Empty;
+            FieldErrors["BeneficiaryName"] = string.Empty;
         }
 
         public void SetBeneficiaryType(int index)
         {
-            FieldValues["Beneficiary Type"] = BeneficiaryTypes.ElementAt(index).ToString();
-            UpdateTemplate(BeneficiaryTypes.ElementAt(index));
+            SelectedBeneficiary.BeneficiaryType = BeneficiaryTypes.ElementAt(index);
+            UpdateTemplate();
             Reset();
         }
 
-        internal void OnLoaded()
+            
+        private void UpdateTemplate()
         {
-        }
-
-        private void UpdateTemplate(BeneficiaryType type)
-        {
-            switch (type)
+            switch (SelectedBeneficiary.BeneficiaryType)
             {
                 case BeneficiaryType.WITHIN_BANK:
                     IsOtherBankSelected = false;
@@ -181,14 +175,25 @@ namespace ZBank.ViewModel
                 default: 
                     break; 
             }
+            Reset();
         }
 
+        internal void OnLoaded()
+        {
+            ViewNotifier.Instance.BeneficiaryAddOrUpdated += BeneficiaryAddedOrUpdated;
+            Reset();
+        }
 
         internal void OnUnloaded()
         {
+            ViewNotifier.Instance.BeneficiaryAddOrUpdated -= BeneficiaryAddedOrUpdated;
         }
 
-       
+        private void BeneficiaryAddedOrUpdated(Beneficiary arg1, bool arg2)
+        {
+            Reset();
+        }
+
         public IEnumerable<BeneficiaryType> BeneficiaryTypes
         {
             get
@@ -211,11 +216,6 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertBeneficiaryResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    ViewNotifier.Instance.OnCloseDialog(true);
-                });
-
                 await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.InsertedBeneficiary, true);
@@ -228,6 +228,7 @@ namespace ZBank.ViewModel
                         }
                     };
                     ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                    ViewNotifier.Instance.OnCloseDialog(true);
                 });
             }
 
@@ -235,11 +236,12 @@ namespace ZBank.ViewModel
             {
                 await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
+                    ViewNotifier.Instance.OnRequestFailed(true);
                     NotifyUserArgs args = new NotifyUserArgs()
                     {
                         Notification = new Notification()
                         {
-                            Message = exception,
+                            Message = exception.Message,
                             Type = NotificationType.ERROR
                         }
                     };
@@ -259,9 +261,9 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(UpdateBeneficiaryResponse response)
             {
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.UpdatedBeneficiary, false);
+                    ViewNotifier.Instance.OnCloseDialog(true);
                     NotifyUserArgs args = new NotifyUserArgs()
                     {
                         Notification = new Notification()
@@ -278,6 +280,7 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
+                    ViewNotifier.Instance.OnRequestFailed(true);
                     NotifyUserArgs args = new NotifyUserArgs()
                     {
                         Notification = new Notification()

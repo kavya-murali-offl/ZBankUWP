@@ -43,6 +43,12 @@ namespace ZBank.ViewModel
             NextCommand = new RelayCommand(GoToNextPage, IsNextButtonEnabled);
             PreviousCommand = new RelayCommand(GoToPreviousPage, IsPreviousButtonEnabled);
             RowsPerPage = DefinedRows.FirstOrDefault();
+            FilterValues = new ObservableDictionary<string, object>();
+            ResetFilterValues();
+            FilterConditions["FromAccount"] = item => item.SenderAccountNumber == FilterValues["FromAccount"];
+            FilterConditions["ToAccount"] = item => item.RecipientAccountNumber == FilterValues["ToAccount"];
+            //FilterConditions["FromDate"] = item => item.RecordedOn > FilterValues["FromDate"];
+            //FilterConditions["ToDate"] = item => item.RecordedOn < FilterValues["ToDate"];
         }
 
 
@@ -102,6 +108,22 @@ namespace ZBank.ViewModel
             UpdateOnViewList();
         }
 
+        private void ResetFilterValues()
+        {
+            FilterValues["FromAccount"] = null;
+            FilterValues["ToAccount"] = null;
+            FilterValues["FromDate"] = null;
+            FilterValues["ToDate"] = null;
+            FilterValues["TransactionType"] = null;
+        }
+
+
+        public void ApplyFilter()
+        {
+
+        }
+
+
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
             AccountsList = new ObservableCollection<AccountBObj>(args.AccountsList);
@@ -148,6 +170,7 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
+
         private void NewTransactionAdded(bool isPaymentCompleted)
         {
             if (isPaymentCompleted)
@@ -165,7 +188,7 @@ namespace ZBank.ViewModel
 
         private ObservableDictionary<string, object> _filterValues { get; set; }
 
-        private ObservableDictionary<string, object> FilterValues
+        public ObservableDictionary<string, object> FilterValues
         {
             get
             {
@@ -214,6 +237,10 @@ namespace ZBank.ViewModel
                 TotalPages += 1;
             }
         }
+
+        private IDictionary<string, Func<TransactionBObj, bool>> FilterConditions = new Dictionary<string, Func<TransactionBObj, bool>>();
+            
+
 
         private bool IsPreviousButtonEnabled()
         {

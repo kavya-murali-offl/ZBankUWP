@@ -19,6 +19,12 @@ namespace ZBank.DatabaseHandler
 
         Task<List<Branch>> GetBranchDetails();
 
+        Task<int> DeleteBeneficiary(Beneficiary beneficiary);
+
+        Task<IEnumerable<Account>> GetIFSCCodeByAccountNumber(string accountNumber);
+       
+        Task<IEnumerable<ExternalAccount>> ValidateExternalAccount(string accountNumber, string IFSCCode);
+
         Task<IEnumerable<Branch>> GetBranchByIfscCode(string ifscCode);
 
         // Customer

@@ -19,8 +19,9 @@ namespace ZBank.Entity.BusinessObjects
         public object CustomText1Value { get; set; }
 
         public string BackgroundImage { get; set; } =   string.Empty;
+        public decimal SpendingLimit { get; set; }
 
-        public string ProviderLogo { get; set; } = string.Empty;
+        public string ProviderLogo { get; set; } = null;
 
         public void SetDefaultValues()
         {

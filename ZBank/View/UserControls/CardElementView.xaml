@@ -11,7 +11,9 @@
     d:DesignWidth="400">
     <UserControl.Resources>
         <converter:NullToVisibilityConverter
-            x:Key="NullToVisibilityConverter" />
+            x:Key="NullToVisibilityConverter" /> 
+        <converter:BooleanToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
         <converter:CurrencyConverter
             x:Key="CurrencyConverter" />
     </UserControl.Resources>
@@ -49,10 +51,10 @@
                 VerticalAlignment="Center"
                 Foreground="Azure"
                 Text="{x:Bind TemplateCard.Type, Mode=OneWay}" />
-            <!--<Image
+            <Image
                     MaxHeight="35"
                     HorizontalAlignment="Right"
-                    Source="{x:Bind TemplateCard BankLogo, Mode=OneWay}" />-->
+                    Source="{x:Bind BankLogo, Mode=OneWay}" />
             <TextBlock
                 Grid.Row="1"
                 HorizontalAlignment="Center"
@@ -86,6 +88,8 @@
                 Padding="0,0,0,0"
                 Text="{x:Bind TemplateCard.CustomText1Value, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
             <!--<Image
+                x:Name="ProviderLogo"
+                Visibility="Collapsed"
                     Grid.Row="3"
                     MaxHeight="30"
                     HorizontalAlignment="Right"

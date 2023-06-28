@@ -486,7 +486,7 @@
                     </MenuFlyout>
                 </DropDownButton.Flyout>
             </DropDownButton>
-            <ToggleButton
+            <!--<ToggleButton
                 Background="{ThemeResource ApplicationPageBackground}"
                 Width="80"
                 x:Name="FilterButton">
@@ -494,7 +494,7 @@
                     <TextBlock
                         Text="Filter" />
                 </ToggleButton.Content>
-            </ToggleButton>
+            </ToggleButton>-->
             <Button
                 Margin="5"
                 Width="80">
@@ -505,12 +505,12 @@
             </Button>
         </StackPanel>
         <Grid
+            Visibility="Collapsed"
             Background="{ThemeResource ApplicationBackground}"
             MinHeight="150"
             CornerRadius="8"
             Grid.Row="2"
-            Margin="0,0,0,5"
-            Visibility="{x:Bind FilterButton.IsChecked, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            Margin="0,0,0,5">
             <GridView
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
@@ -578,7 +578,7 @@
                             <DropDownButton.Content>
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    Text="{x:Bind FromAccountsList.SelectedItem, TargetNullValue='Select Account'}" />
+                                    Text="{x:Bind ViewModel.FilterValues['FromAccount'].ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
                             </DropDownButton.Content>
                             <DropDownButton.Flyout>
                                 <Flyout
@@ -614,14 +614,14 @@
                             <DropDownButton.Content>
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    Text="{x:Bind ToAccountsList.SelectedItem, TargetNullValue='Select Account'}" />
+                                    Text="{x:Bind ViewModel.FilterValues['ToAccount'].ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
                             </DropDownButton.Content>
                             <DropDownButton.Flyout>
                                     <Flyout
                                     Placement="Bottom"
                                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                                         <ListView
-                                            x:Name="ToAccountsList"
+                                        x:Name="ToAccountsList"
                                             SelectionChanged="ToAccountsList_SelectionChanged"
                                             ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
                                             <ListView.ItemTemplate>
@@ -636,7 +636,6 @@
                             </DropDownButton.Flyout>
                         </DropDownButton>
                     </StackPanel>
-
                 </GridViewItem>
                 <GridViewItem>
                     <StackPanel>
@@ -651,13 +650,14 @@
                             <DropDownButton.Content>
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    Text="Choose" />
+                                    Text="{x:Bind ViewModel.FilterValues['TransactionType'],Mode=OneWay}" />
                             </DropDownButton.Content>
                             <DropDownButton.Flyout>
                                 <Flyout
                                     Placement="Bottom"
                                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                                     <ListView
+                                        SelectedValue="{x:Bind ViewModel.FilterValues['TransactionType'], Mode=OneWay}"
                                         x:Name="TransactionType"
                                         SelectionChanged="TransactionType_SelectionChanged"
                                         ItemsSource="{x:Bind ViewModel.TransactionTypes}">
@@ -678,7 +678,7 @@
             </GridView>
         </Grid>
         <Grid
-            Height="600"
+            MaxHeight="600"
             Grid.Row="3"
             BorderBrush="DarkGray"
             BorderThickness="1"

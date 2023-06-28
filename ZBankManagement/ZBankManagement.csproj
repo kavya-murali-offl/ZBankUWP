@@ -155,6 +155,7 @@
     <Compile Include="Data\DataManager\Contracts\IUpdateBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IUpdateCardDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IUpdateCustomerDataManager.cs" />
+    <Compile Include="Data\DataManager\DeleteBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\GetAccountDataManager.cs" />
     <Compile Include="Data\DataManager\GetBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\GetBranchDetailsDataManager.cs" />

@@ -1,10 +1,12 @@
 ﻿using SQLite;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using ZBank.Entities;
 using ZBankManagement.Data;
 
 namespace ZBank.DatabaseAdapter
@@ -37,19 +39,24 @@ namespace ZBank.DatabaseAdapter
             await Connection.CreateTableAsync<T>();
         }
 
-        public Task<int> Insert<T>(T instance, Type insertionType=null)
+        public async Task<int> Insert<T>(T instance, Type insertionType=null)
         {
-           return insertionType == null ?  Connection.InsertAsync(instance) : Connection.InsertAsync(instance, insertionType);
+           return insertionType == null ? await Connection.InsertAsync(instance) : await Connection.InsertAsync(instance, insertionType);
         }
 
-        public Task<int> InsertAll<T>(IEnumerable<T> list)
+        public async Task<int> Delete<T>(T instance)
         {
-            return Connection.InsertAllAsync(list);
+            return await Connection.DeleteAsync(instance);
         }
 
-        public Task<int> Update<T>(T instance, Type type = null)
+        public async Task<int> InsertAll<T>(IEnumerable<T> list)
         {
-            return Connection.UpdateAsync(instance, type);
+            return await Connection.InsertAllAsync(list);
+        }
+
+        public async Task<int> Update<T>(T instance, Type type = null)
+        {
+            return await Connection.UpdateAsync(instance, type);
         }
 
         public AsyncTableQuery<T> GetAll<T>() where T : new()
@@ -67,6 +74,8 @@ namespace ZBank.DatabaseAdapter
             return await Connection.ExecuteAsync(query, args);
         }
 
+
+       
         public async Task<IEnumerable<T>> Query<T>(string query, params object[] args) where T : new() => await Connection.QueryAsync<T>(query, args);
 
         public async Task RunInTransactionAsync(Func<Task> action)

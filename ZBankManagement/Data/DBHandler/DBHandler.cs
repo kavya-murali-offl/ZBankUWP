@@ -27,6 +27,16 @@ namespace ZBank.DatabaseHandler
         {
             _databaseAdapter = databaseAdapter;
         }
+        public Task<IEnumerable<Account>> GetIFSCCodeByAccountNumber(string accountNumber)
+        {
+            return _databaseAdapter.Query<Account>("Select IFSCCode From Account where AccountNumber = ?", accountNumber);
+        }
+
+        public async Task<IEnumerable<ExternalAccount>> ValidateExternalAccount(string accountNumber, string IFSCCode)
+        {
+            return await _databaseAdapter.Query<ExternalAccount>("Select * from ExternalAccounts where ExternalAccountNumber = ? and ExternalIFSCCode = ?", accountNumber, IFSCCode);
+        }
+
 
         public async Task InsertAccount(Account account, IReadOnlyList<StorageFile> documents)
         {
@@ -51,6 +61,7 @@ namespace ZBank.DatabaseHandler
             };
             await _databaseAdapter.RunInTransactionAsync(func);
         }
+
         public async Task<byte[]> GetBytesFromFile(StorageFile file)
         {
             var stream = await file.OpenStreamForReadAsync();
@@ -75,6 +86,7 @@ namespace ZBank.DatabaseHandler
             cardsList.AddRange(debitCards);
             return cardsList;
         }
+
         public async Task PopulateData()
         {
             await _databaseAdapter.Insert(new Bank()
@@ -413,6 +425,11 @@ namespace ZBank.DatabaseHandler
 
         
         }
+        
+        public async Task<int> DeleteBeneficiary(Beneficiary beneficiary)
+        {
+            return await _databaseAdapter.Delete(beneficiary);
+        }
 
 
         public Task<List<Branch>> GetBranchDetails()
@@ -608,10 +625,11 @@ namespace ZBank.DatabaseHandler
             var expenseTransactions = await _databaseAdapter.Query<TransactionBObj>(
                "SELECT Transactions.*, TransactionMetaData.ClosingBalance, " +
                "ExternalAccounts.ExternalName, Beneficiary.BeneficiaryName FROM Transactions " +
-                "Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
+               "Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
                "Left Join ExternalAccounts on Transactions.RecipientAccountNumber = ExternalAccounts.ExternalAccountNumber " +
                "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
                "WHERE  Transactions.SenderAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
+            
             allTransactions.AddRange(incomeTransactions);
             allTransactions.AddRange(expenseTransactions);
             return allTransactions.OrderByDescending(tran => tran.RecordedOn);

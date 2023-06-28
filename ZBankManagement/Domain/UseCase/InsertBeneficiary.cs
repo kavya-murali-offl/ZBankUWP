@@ -11,6 +11,7 @@ using ZBank.Dependencies;
 using ZBank.Entities;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
+using ZBankManagement.Entity.EnumerationTypes;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -27,7 +28,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
             protected override void Action()
             {
-                _request.BeneficiaryToInsert.ID = Guid.NewGuid().ToString();    
+                _request.BeneficiaryToInsert.ID = Guid.NewGuid().ToString();
                 _insertBeneficiaryDataManager.InsertBeneficiary(_request, new InsertBeneficiaryCallback(this));
             }
 
@@ -55,6 +56,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public class InsertBeneficiaryRequest : RequestObjectBase
         {
+           public string IFSCCode { get; set; } 
+
             public Beneficiary BeneficiaryToInsert { get; set; }
         }
 

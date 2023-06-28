@@ -32,10 +32,10 @@ namespace ZBank.View.UserControls
         {
             this.InitializeComponent();
             ViewModel = new AddEditBeneficiaryViewModel(this);
+            BeneficiaryButton.Content = ViewModel.BeneficiaryTypes.ElementAt(0).ToString();
         }
 
-        private ContentDialog Dialog { get;
-            set; }  
+        private ContentDialog Dialog { get; set; }
 
         public AddEditBeneficiaryView(ContentDialog contentDialog, BeneficiaryBObj beneficiaryBObj)
         {
@@ -52,6 +52,7 @@ namespace ZBank.View.UserControls
                 if (item.SelectedIndex >= 0)
                 {
                     ViewModel.SetBeneficiaryType(item.SelectedIndex);
+                    BeneficiaryButton.Content = item.SelectedValue.ToString();
                 }
                 BeneficiaryButton.Flyout.Hide();
             }
@@ -64,9 +65,12 @@ namespace ZBank.View.UserControls
             ViewModel.OnLoaded();
         }
 
+   
+
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnUnloaded();
+
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

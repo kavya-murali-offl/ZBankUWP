@@ -43,8 +43,14 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.BeneficiaryListUpdated += UpdateBeneficiaryList;
             ViewNotifier.Instance.BeneficiaryAddOrUpdated += OnBeneficiaryAddedOrUpdated;
+            ViewNotifier.Instance.BeneficiaryRemoved += OnBeneficiaryRemoved;
             LoadAllBeneficiaries();
 
+        }
+
+        private void OnBeneficiaryRemoved(Beneficiary obj)
+        {
+            LoadAllBeneficiaries();
         }
 
         private void UpdateBeneficiaryList(BeneficiaryListUpdatedArgs args)
@@ -52,12 +58,14 @@ namespace ZBank.ViewModel
             BeneficiariesList = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList);
             OtherBankBeneficiaries = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList.Where(ben => ben.BeneficiaryType == BeneficiaryType.OTHER_BANK));
             WithinBankBeneficiaries = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList.Where(ben => ben.BeneficiaryType == BeneficiaryType.WITHIN_BANK));
+            FavouriteBeneficiaries = new ObservableCollection<BeneficiaryBObj>(args.BeneficiaryList.Where(ben => ben.IsFavourite));
         }
 
         public void OnUnloaded()
         {
             ViewNotifier.Instance.BeneficiaryListUpdated -= UpdateBeneficiaryList;
             ViewNotifier.Instance.BeneficiaryAddOrUpdated -= OnBeneficiaryAddedOrUpdated;
+            ViewNotifier.Instance.BeneficiaryRemoved -= OnBeneficiaryRemoved;
         }
 
         private void OnBeneficiaryAddedOrUpdated(Beneficiary arg1, bool arg2)
@@ -74,6 +82,39 @@ namespace ZBank.ViewModel
                 case BeneficiaryType.OTHER_BANK:
                     break;
             }
+        }
+
+        internal void DeleteBeneficiary(BeneficiaryBObj selectedBeneficiary)
+        {
+            RemoveBeneficiaryRequest request = new RemoveBeneficiaryRequest()
+            {
+                BeneficiaryToRemove = new Beneficiary()
+                {
+                    ID = selectedBeneficiary.ID,
+                }
+            };
+
+            IPresenterCallback<RemoveBeneficiaryResponse> presenterCallback = new RemoveBeneficiaryPresenterCallback(this);
+            UseCaseBase<RemoveBeneficiaryResponse> useCase = new RemoveBeneficiaryUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        internal void SwitchFavourite(BeneficiaryBObj selectedBeneficiary)
+        {
+            selectedBeneficiary.IsFavourite = !selectedBeneficiary.IsFavourite;
+            UpdateBeneficiary(selectedBeneficiary);
+        }
+
+        private void UpdateBeneficiary(Beneficiary beneficiary)
+        {
+            UpdateBeneficiaryRequest request = new UpdateBeneficiaryRequest()
+            {
+                BeneficiaryToUpdate = beneficiary,
+            };
+
+            IPresenterCallback<UpdateBeneficiaryResponse> presenterCallback = new UpdateBeneficiaryPresenterCallback(this);
+            UseCaseBase<UpdateBeneficiaryResponse> useCase = new UpdateBeneficiaryUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         private ObservableCollection<BeneficiaryBObj> _beneficiariesList { get; set; }
@@ -100,6 +141,18 @@ namespace ZBank.ViewModel
             }
         }
 
+        private ObservableCollection<BeneficiaryBObj> _favouriteBeneficiaries { get; set; }
+
+        public ObservableCollection<BeneficiaryBObj> FavouriteBeneficiaries
+        {
+            get { return _favouriteBeneficiaries; }
+            set
+            {
+                _favouriteBeneficiaries = value;
+                OnPropertyChanged(nameof(FavouriteBeneficiaries));
+            }
+        }
+
         private ObservableCollection<BeneficiaryBObj> _otherBankBeneficiaries { get; set; }
 
         public ObservableCollection<BeneficiaryBObj> OtherBankBeneficiaries
@@ -112,26 +165,29 @@ namespace ZBank.ViewModel
             }
         }
 
-
-
-        private class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+        private class RemoveBeneficiaryPresenterCallback : IPresenterCallback<RemoveBeneficiaryResponse>
         {
             public BeneficiariesViewModel ViewModel { get; set; }
 
-            public GetAllBeneficiariesPresenterCallback(BeneficiariesViewModel viewModel)
+            public RemoveBeneficiaryPresenterCallback(BeneficiariesViewModel viewModel)
             {
                 ViewModel = viewModel;
             }
 
-            public async Task OnSuccess(GetAllBeneficiariesResponse response)
+            public async Task OnSuccess(RemoveBeneficiaryResponse response)
             {
                 await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                    ViewNotifier.Instance.OnBeneficiaryRemoved(response.RemovedBeneficiary);
+                    NotifyUserArgs args = new NotifyUserArgs()
                     {
-                        BeneficiaryList = response.Beneficiaries
+                        Notification = new Notification()
+                        {
+                            Message = $"Beneficiary {response.RemovedBeneficiary.BeneficiaryName} Removed Successfully",
+                            Type = NotificationType.SUCCESS
+                        }
                     };
-                    ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
                 });
             }
 
@@ -143,7 +199,7 @@ namespace ZBank.ViewModel
                     {
                         Notification = new Notification()
                         {
-                            Message = exception,
+                            Message = exception.Message,
                             Type = NotificationType.ERROR
                         }
                     };
@@ -151,6 +207,87 @@ namespace ZBank.ViewModel
                 });
             }
         }
+            private class UpdateBeneficiaryPresenterCallback : IPresenterCallback<UpdateBeneficiaryResponse>
+            {
+                public BeneficiariesViewModel ViewModel { get; set; }
 
+                public UpdateBeneficiaryPresenterCallback(BeneficiariesViewModel viewModel)
+                {
+                    ViewModel = viewModel;
+                }
+
+                public async Task OnSuccess(UpdateBeneficiaryResponse response)
+                {
+                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ViewNotifier.Instance.OnCloseDialog(true);
+                        ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.UpdatedBeneficiary, false);
+                        NotifyUserArgs args = new NotifyUserArgs()
+                        {
+                            Notification = new Notification()
+                            {
+                                Message = "Beneficiary Updated Successfully",
+                                Type = NotificationType.SUCCESS
+                            }
+                        };
+                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                    });
+                }
+
+                public async Task OnFailure(ZBankException exception)
+                {
+                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ViewNotifier.Instance.OnRequestFailed(true);
+                        NotifyUserArgs args = new NotifyUserArgs()
+                        {
+                            Notification = new Notification()
+                            {
+                                Message = exception,
+                                Type = NotificationType.ERROR
+                            }
+                        };
+                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                    });
+                }
+            }
+
+            private class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
+            {
+                public BeneficiariesViewModel ViewModel { get; set; }
+
+                public GetAllBeneficiariesPresenterCallback(BeneficiariesViewModel viewModel)
+                {
+                    ViewModel = viewModel;
+                }
+
+                public async Task OnSuccess(GetAllBeneficiariesResponse response)
+                {
+                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
+                        {
+                            BeneficiaryList = response.Beneficiaries
+                        };
+                        ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+                    });
+                }
+
+                public async Task OnFailure(ZBankException exception)
+                {
+                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        NotifyUserArgs args = new NotifyUserArgs()
+                        {
+                            Notification = new Notification()
+                            {
+                                Message = exception,
+                                Type = NotificationType.ERROR
+                            }
+                        };
+                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                    });
+            }
+        }
     }
 }

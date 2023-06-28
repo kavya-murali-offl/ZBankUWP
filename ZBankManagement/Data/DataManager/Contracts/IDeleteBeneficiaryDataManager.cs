@@ -10,7 +10,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager.Contracts
 {
     interface IDeleteBeneficiaryDataManager
     {
-        void DeleteBeneficiary(RemoveBeneficiaryRequest request, IUseCaseCallback<RemoveBeneficiaryResponse> callback);
+        Task DeleteBeneficiary(RemoveBeneficiaryRequest request, IUseCaseCallback<RemoveBeneficiaryResponse> callback);
 
     }
 }

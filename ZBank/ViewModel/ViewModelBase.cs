@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using ZBank.ViewModel.VMObjects;
 
 namespace ZBank.ViewModel
 {
@@ -19,6 +20,24 @@ namespace ZBank.ViewModel
         protected void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public ObservableDictionary<string, string> ValidateField(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
+        {
+                foreach(var field in fieldsToValidate)
+                {
+                    var property = type.GetProperty(field);
+                    var value = property.GetValue(objectToCompare);
+                    if (value is null || string.IsNullOrEmpty(value.ToString()) || string.IsNullOrWhiteSpace(value.ToString()))
+                    {
+                        FieldErrors[property.Name] = $"{property.Name} is required.";
+                    }
+                    else
+                    {
+                        FieldErrors[property.Name] = string.Empty;
+                    }
+                }
+            return FieldErrors;
         }
     }
 }
