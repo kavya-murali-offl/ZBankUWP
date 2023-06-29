@@ -71,7 +71,6 @@ namespace ZBank.View.UserControls
                 NotificationStack.Add(obj.Notification);
             }
         }
-
        
 
         private void CloseNotification(DispatcherQueueTimer sender, object args)

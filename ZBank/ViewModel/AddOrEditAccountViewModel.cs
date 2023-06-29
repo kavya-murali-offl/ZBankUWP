@@ -21,6 +21,7 @@ using ZBank.Entities.EnumerationType;
 using Windows.Storage;
 using ZBank.Services;
 using ZBank.Entity.EnumerationTypes;
+using ZBank.DataStore;
 
 namespace ZBank.ViewModel
 {
@@ -106,47 +107,26 @@ namespace ZBank.ViewModel
 
         private Account GetAccount()
         {
+            Account account = null;
             switch (SelectedAccountType)
             {
                 case AccountType.CURRENT:
-                   return new CurrentAccount()
+                   account =  new CurrentAccount()
                     {
-                        IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode,
-                        AccountName = "Kavya",
-                        AccountStatus = AccountStatus.INACTIVE,
-                        Balance = decimal.Parse(FieldValues["Amount"].ToString()),
-                        AccountType = AccountType.CURRENT,
-                        UserID = "1111",
-                        CreatedOn = DateTime.Now,
-                        Currency = Currency.INR,
                         InterestRate = 3.2m,
-                        MinimumBalance = 500m
+                        MinimumBalance=500m
                     };
+                    break;
                 case AccountType.SAVINGS:
-                    return new SavingsAccount()
+                    account = new SavingsAccount()
                     {
-                        IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode,
-                        AccountName = "Kavya",
-                        AccountStatus = AccountStatus.INACTIVE,
-                        Balance = decimal.Parse(FieldValues["Amount"].ToString()),
-                        AccountType = AccountType.SAVINGS,
-                        UserID = "1111",
-                        CreatedOn = DateTime.Now,
-                        Currency = Currency.INR,
                         InterestRate = 4.8m,
                         MinimumBalance = 500m
                     };
+                    break;
                 case AccountType.TERM_DEPOSIT:
                     TermDepositAccount depositAccount = new TermDepositAccount()
                     {
-                        IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode,
-                        AccountName = "Kavya",
-                        AccountStatus = AccountStatus.INACTIVE,
-                        Balance = decimal.Parse(FieldValues["Amount"].ToString()),
-                        AccountType = AccountType.TERM_DEPOSIT,
-                        UserID = "1111",
-                        CreatedOn = DateTime.Now,
-                        Currency = Currency.INR,
                         TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
                         DepositType = DepositType.OnMaturity,
                         DepositStartDate = DateTime.Now,
@@ -154,10 +134,22 @@ namespace ZBank.ViewModel
                         FromAccountNumber = Accounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["From Account Number"].ToString())).AccountNumber,
                     };
                     depositAccount.SetDefault();
-                    return depositAccount;
-                 default: return null;
+                    account = depositAccount;
+                    break;
+                 default: break;
             }
-                
+            if(account != null)
+            {
+                account.IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode;
+                account.AccountName = "Kavya";
+                account.UserID = Repository.CurrentUserID;
+                account.AccountStatus = AccountStatus.INACTIVE;
+                account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
+                account.AccountType = AccountType.CURRENT;
+                account.CreatedOn = DateTime.Now;
+                account.Currency = Currency.INR;
+            }
+            return account;
         }
 
         private ObservableCollection<Account> _accounts { get; set; }
@@ -228,7 +220,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = "1111"
+                UserID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsInAddPresenterCallback(this);

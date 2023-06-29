@@ -38,38 +38,23 @@ namespace ZBank.DatabaseHandler
         }
 
 
-        public async Task InsertAccount(Account account, IReadOnlyList<StorageFile> documents)
+        public async Task InsertAccount(Account account, IEnumerable<KYCDocuments> documents)
         {
             object dtoObject = AccountFactory.GetDTOObject(account);
             Func<Task> func = async () =>
             {
                 await _databaseAdapter.Insert(account, typeof(Account));
                 await _databaseAdapter.Insert(dtoObject);
-                foreach (var file in documents)
+                foreach (var kycDoc in documents)
                 {
-                    byte[] fileBytes = await GetBytesFromFile(file);
-                    KYCDocuments kycDoc = new KYCDocuments()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        File = fileBytes,
-                        FileName = file.Name,
-                        UploadedOn = DateTime.Now,
 
-                    };
                     await _databaseAdapter.Insert(kycDoc);
                 }
             };
             await _databaseAdapter.RunInTransactionAsync(func);
         }
 
-        public async Task<byte[]> GetBytesFromFile(StorageFile file)
-        {
-            var stream = await file.OpenStreamForReadAsync();
-            byte[] bytes = new byte[stream.Length];
-            await stream.ReadAsync(bytes, 0, bytes.Length);
-            stream.Seek(0, SeekOrigin.Begin);
-            return bytes;
-        }
+
 
         private IDatabaseAdapter _databaseAdapter { get; set; }
 
@@ -78,10 +63,10 @@ namespace ZBank.DatabaseHandler
             List<CardBObj> cardsList = new List<CardBObj>();
             var creditCards = await _databaseAdapter.Query<CreditCard>($"Select * from Card" +
                 $" Inner Join CreditCard on CreditCard.CardNumber = Card.CardNumber " +
-                $"where CustomerID = ?", "1111");
+                $"where CustomerID = ?", customerID);
             var debitCards = await _databaseAdapter.Query<DebitCard>($"Select * from Card " +
                 $"Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber " +
-                $"where CustomerID = ?", "1111");
+                $"where CustomerID = ?", customerID);
             cardsList.AddRange(creditCards);
             cardsList.AddRange(debitCards);
             return cardsList;
@@ -149,7 +134,7 @@ namespace ZBank.DatabaseHandler
                     AccountNumber = "1000 1789 7890 6633",
                     IFSCCode = "ZBNK1001",
                     AccountName = "Kavya",
-                    UserID = "1111",
+                    UserID = "80600504",
                     CreatedOn = DateTime.Now,
                     AccountStatus = AccountStatus.ACTIVE,
                     Currency = Currency.INR,
@@ -163,7 +148,7 @@ namespace ZBank.DatabaseHandler
                     AccountNumber = "1001 1000 1789 7890",
                     IFSCCode = "ZBNK1002",
                     AccountName = "Kavya",
-                    UserID = "1111",
+                    UserID = "80600504",
                     CreatedOn = DateTime.Now,
                     AccountStatus = AccountStatus.ACTIVE,
                     Currency = Currency.INR,
@@ -177,7 +162,7 @@ namespace ZBank.DatabaseHandler
                     AccountNumber = "1009 6678 5556 3332",
                     IFSCCode = "ZBNK1001",
                     AccountName = "Kavya",
-                    UserID = "1111",
+                    UserID = "80600504",
                     CreatedOn = DateTime.Now,
                     AccountStatus = AccountStatus.ACTIVE,
                     Currency = Currency.INR,
@@ -211,7 +196,7 @@ namespace ZBank.DatabaseHandler
                     BeneficiaryName="John",
                     AccountNumber="1666 5788 4567 5676",
                     BeneficiaryType = BeneficiaryType.WITHIN_BANK,
-                    UserID="1111"
+                    UserID="80600504"
                 },
                 new Beneficiary()
                 {
@@ -219,7 +204,7 @@ namespace ZBank.DatabaseHandler
                     BeneficiaryName="Preethi",
                     AccountNumber="1234 7654 9876 9874",
                     BeneficiaryType = BeneficiaryType.OTHER_BANK,
-                    UserID="1111"
+                    UserID="80600504"
                 },
             };
             await _databaseAdapter.InsertAll(beneficiaries);
@@ -294,7 +279,7 @@ namespace ZBank.DatabaseHandler
                     AccountNumber ="1666 5788 4567 5676",
                     ClosingBalance=100m
                },
-                 
+
             };
 
             await _databaseAdapter.InsertAll(metaData);
@@ -342,7 +327,7 @@ namespace ZBank.DatabaseHandler
                 new Card()
                 {
                      CardNumber="1245 6888 0087 56788",
-                      CustomerID="1111",
+                      CustomerID="80600504",
                        CVV="122",
                          ExpiryMonth="12",
                           ExpiryYear="2027",
@@ -354,7 +339,7 @@ namespace ZBank.DatabaseHandler
                  new Card()
                 {
                      CardNumber="7678 6667 0087 56788",
-                      CustomerID="1111",
+                      CustomerID="80600504",
                        CVV="122",
                          ExpiryMonth="12",
                           ExpiryYear="2027",
@@ -399,10 +384,21 @@ namespace ZBank.DatabaseHandler
                      Age=23,
                       CreatedOn=DateTime.Now,
                        Email="kav@gmail.com",
-                        ID="1111",
+                        ID="80600504",
                          LastLoggedOn=DateTime.Now,
                          Name="Kavya",
                           Phone="1234567890"
+                },
+                new Customer()
+                {
+
+                    ID="82248458",
+                    Name="John",
+                     Age=32,
+                      LastLoggedOn=DateTime.Now,
+                       Phone="1234567890",
+                       Email="john@gmail.com",
+                       CreatedOn=DateTime.Now,
                 }
             };
 
@@ -412,20 +408,22 @@ namespace ZBank.DatabaseHandler
             {
                 new CustomerCredentials()
                 {
-                    ID="1111",
-                    Password="1122",
-                    Salt="1111"
+                    ID="80600504",
+                    Password="KXNtoOlsyUhNdfxB4B9UeSOFM+yr7UB5GOJL+0Ed2wkrVAS/voIxHlP22rYGVPu5FqRxXrx8C6fG/XhsrizRuWXzkW5KCg==",
+                    Salt="OJ8r4j1wWa+bcFBJMM5B3Ik0Z3VuLfKyO6TCezKekwzutnnB7zWFxiyuFMbXF0HzrMDix8rfxzs4owbqfkiwm+Mpn3YktgdAMS0FRohhWMZDqfPAFD/tl3DV4OemeK7CkWgbgw=="
+                },
+                new CustomerCredentials()
+                {
+                    ID="82248458",
+                    Password="O9zoKu4z/b+/nKO5Sitcjvccc7Gg/j64kKUSmnj4w5UVj9Xv3qvMwe9/TQ1hpCeMgR4uJoODb5kzYywepPq2P96jcsaHKw==",
+                    Salt="07ESMtqq/jMGVGd8tsuRowELpvur+IPqEKBcuS4jXBCXiMw4C7E9HgZ+RjayBohsGUgHbqB14i5vBoK64bqYeGNAGYGAuBRvUclKIT9kEq+NOf159jf47lLvBc0rTcEzXAx2vw=="
                 }
             };
 
             await _databaseAdapter.InsertAll(customerCredentials);
 
-
-
-
-        
         }
-        
+
         public async Task<int> DeleteBeneficiary(Beneficiary beneficiary)
         {
             return await _databaseAdapter.Delete(beneficiary);
@@ -501,17 +499,17 @@ namespace ZBank.DatabaseHandler
                 $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                $"where IsKYCApproved and UserID = ?", "1111");
+                $"where IsKYCApproved and UserID = ?", customerID);
             var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
                 $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                $"where IsKYCApproved and UserID = ?", "1111");
+                $"where IsKYCApproved and UserID = ?", customerID);
             var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
                 $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-                $"where IsKYCApproved and UserID = ?", "1111");
+                $"where IsKYCApproved and UserID = ?", customerID);
 
             accountsList.AddRange(currentAccount);
             accountsList.AddRange(savingsAccount);
@@ -546,7 +544,7 @@ namespace ZBank.DatabaseHandler
             return await _databaseAdapter.Query<BeneficiaryBObj>($"Select Beneficiary.*, ExternalAccounts.ExternalIFSCCode, Account.IFSCCode from Beneficiary " +
                 $"Left JOIN ExternalAccounts on ExternalAccounts.ExternalAccountNumber = Beneficiary.AccountNumber " +
                 $"Left JOIN Account on Account.AccountNumber = Beneficiary.AccountNumber " +
-                $"where Beneficiary.UserID = ?", "1111");
+                $"where Beneficiary.UserID = ?", customerID);
         }
 
         public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Insert(beneficiary);
@@ -619,7 +617,7 @@ namespace ZBank.DatabaseHandler
 
         public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
         {
-            var allTransactions = new List<TransactionBObj>(); 
+            var allTransactions = new List<TransactionBObj>();
             var incomeTransactions = await _databaseAdapter.Query<TransactionBObj>(
                 "SELECT Transactions.*, TransactionMetaData.ClosingBalance, ExternalAccounts.ExternalName, Beneficiary.BeneficiaryName FROM Transactions " +
                  "Left Join Beneficiary on Transactions.SenderAccountNumber = Beneficiary.AccountNumber " +
@@ -634,7 +632,7 @@ namespace ZBank.DatabaseHandler
                "Left Join ExternalAccounts on Transactions.RecipientAccountNumber = ExternalAccounts.ExternalAccountNumber " +
                "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
                "WHERE  Transactions.SenderAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
-            
+
             allTransactions.AddRange(incomeTransactions);
             allTransactions.AddRange(expenseTransactions);
             return allTransactions.OrderByDescending(tran => tran.RecordedOn);

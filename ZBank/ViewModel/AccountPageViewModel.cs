@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using ZBankManagement.AppEvents.AppEventArgs;
 using Windows.UI.Xaml.Controls.Primitives;
+using ZBank.DataStore;
 
 namespace ZBank.ViewModel
 {
@@ -70,7 +71,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = "1111"
+                UserID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);

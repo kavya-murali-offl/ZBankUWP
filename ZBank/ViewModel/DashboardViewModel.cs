@@ -6,6 +6,7 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
+using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
@@ -111,7 +112,7 @@ namespace ZBank.ViewModel
         {
             GetDashboardDataRequest request = new GetDashboardDataRequest()
             {
-                UserID = "1111"
+                UserID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetDashboardDataResponse> presenterCallback = new GetDashboardDataPresenterCallback(this);

@@ -1,1 +1,32 @@
-﻿
+﻿Usecases
+
+Add Card
+Close deposit
+Notification success
+Self transfer
+Update limit
+
+
+Bugs
+
+Add Beneficiary close not there
+Dashboard cards not updating
+Accounts dropdown not show deposits
+
+Additional
+
+Edit account
+profile
+close account
+
+
+In progress
+
+Notification
+Transaction View as SplitView pane
+
+
+Completed
+
+Curentuser
+

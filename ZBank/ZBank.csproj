@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataStore\Repository.cs" />
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="Services\DispatcherService.cs" />
     <Compile Include="Services\ILoginService.cs" />

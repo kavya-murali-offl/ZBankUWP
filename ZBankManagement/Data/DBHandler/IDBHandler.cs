@@ -9,6 +9,7 @@ using ZBank.Entity.BusinessObjects;
 using Windows.Storage;
 using ZBankManagement.Entity.BusinessObjects;
 using ZBankManagement.Entities.BusinessObjects;
+using ZBankManagement.Entity.DTOs;
 
 namespace ZBank.DatabaseHandler
  {
@@ -49,7 +50,7 @@ namespace ZBank.DatabaseHandler
 
         Task<int> UpdateAccount<T>(T account);
 
-        Task InsertAccount(Account account, IReadOnlyList<StorageFile> storageFiles);
+        Task InsertAccount(Account account, IEnumerable<KYCDocuments> documents);
 
         // Card
         Task<int> InsertCard(Card card);

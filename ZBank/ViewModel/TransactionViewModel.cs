@@ -18,6 +18,7 @@ using Windows.UI.Popups;
 using ZBank.Entities;
 using Windows.ApplicationModel.Core;
 using ZBankManagement.AppEvents.AppEventArgs;
+using ZBank.DataStore;
 
 namespace ZBank.ViewModel
 {
@@ -61,7 +62,7 @@ namespace ZBank.ViewModel
         {
             GetAllTransactionsRequest request = new GetAllTransactionsRequest()
             {
-                CustomerID = "1111"
+                CustomerID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsPresenterCallback(this);
@@ -162,7 +163,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = "1111"
+                UserID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);

@@ -24,6 +24,7 @@ using static Microsoft.Toolkit.Uwp.UI.Animations.Expressions.ExpressionValues;
 using ZBankManagement.Entities.BusinessObjects;
 using ZBank.View.Modals;
 using ZBank.Config;
+using ZBank.DataStore;
 
 namespace ZBank.ViewModel
 {
@@ -137,7 +138,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = "1111"
+                UserID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
@@ -149,7 +150,7 @@ namespace ZBank.ViewModel
         {
             GetAllBeneficiariesRequest request = new GetAllBeneficiariesRequest()
             {
-                UserID = "1111"
+                UserID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback = new GetAllBeneficiariesPresenterCallback(this);

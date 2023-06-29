@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.UI.Core;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
+using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.View;
@@ -31,7 +32,7 @@ namespace ZBank.ViewModel
         {
             GetAllBeneficiariesRequest request = new GetAllBeneficiariesRequest()
             {
-                UserID = "1111"
+                UserID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback = new GetAllBeneficiariesPresenterCallback(this);

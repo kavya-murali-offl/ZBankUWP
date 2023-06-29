@@ -45,6 +45,7 @@ namespace ZBank.View.Main
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.Reset();
             SignupPopup.IsOpen = true;
         }
 

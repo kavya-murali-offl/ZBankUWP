@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.DataStore;
 using ZBank.Services;
 using ZBank.ViewModel;
 
@@ -68,6 +69,7 @@ namespace ZBank.View.Main
         private void CurrentUserChanged(string id)
         {
             AppSettings.Current.CustomerID = id;
+            Repository.UpdateCurrentUserID(id);
             UpdateFrame(id);
         }
     }

@@ -13,6 +13,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
+using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
@@ -107,7 +108,7 @@ namespace ZBank.ViewModel
         {
             GetAllCardsRequest request = new GetAllCardsRequest()
             {
-                CustomerID = "1111"
+                CustomerID = Repository.CurrentUserID
             };
 
             IPresenterCallback<GetAllCardsResponse> presenterCallback = new GetAllCardsPresenterCallback(this);

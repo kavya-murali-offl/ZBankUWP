@@ -36,7 +36,7 @@ namespace ZBank.ViewModel
 
         public void Reset()
         {
-            SignupCustomer = null;
+            SignupCustomer = new Customer();
             Password = null;
             CustomerID = null;
             ErrorText = null;
@@ -126,7 +126,6 @@ namespace ZBank.ViewModel
 
         internal void OnLoaded()
         {
-            ViewNotifier.Instance.CurrentUserChanged += OnCurrentUserChanged;
             ViewNotifier.Instance.LoginError += OnErrorLoggingIn;
             ViewNotifier.Instance.SignupSuccess += SignupSuccess;
         }
@@ -141,17 +140,8 @@ namespace ZBank.ViewModel
             ErrorText = obj;
 ;        }
 
-        private void OnCurrentUserChanged(string obj)
-        {
-            if(!string.IsNullOrEmpty(obj)) 
-            {
-                AppSettings.Current.CustomerID = obj;
-            }
-        }
-
         internal void OnUnloaded()
         {
-            ViewNotifier.Instance.CurrentUserChanged -= OnCurrentUserChanged;
             ViewNotifier.Instance.LoginError -= OnErrorLoggingIn;
             ViewNotifier.Instance.SignupSuccess -= SignupSuccess;
         }

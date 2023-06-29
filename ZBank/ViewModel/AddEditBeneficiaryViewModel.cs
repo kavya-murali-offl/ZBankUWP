@@ -10,6 +10,7 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
+using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.View;
@@ -105,7 +106,7 @@ namespace ZBank.ViewModel
                     {
                         AccountNumber = SelectedBeneficiary.AccountNumber,
                         BeneficiaryName =SelectedBeneficiary.BeneficiaryName,
-                        UserID = "1111",
+                        UserID = Repository.CurrentUserID,
                         BeneficiaryType = IsOtherBankSelected ? BeneficiaryType.OTHER_BANK : BeneficiaryType.WITHIN_BANK
                     };
                     AddBeneficiary(beneficiary);
