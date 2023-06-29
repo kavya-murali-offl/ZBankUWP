@@ -138,7 +138,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = Repository.CurrentUserID
+                UserID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
@@ -150,7 +150,7 @@ namespace ZBank.ViewModel
         {
             GetAllBeneficiariesRequest request = new GetAllBeneficiariesRequest()
             {
-                UserID = Repository.CurrentUserID
+                UserID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback = new GetAllBeneficiariesPresenterCallback(this);

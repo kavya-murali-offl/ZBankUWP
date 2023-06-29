@@ -31,29 +31,17 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
-            ViewNotifier.Instance.AccountInserted += OnAccountInsertSuccess;
             LoadAllAccounts();
         }
 
-        private void OnAccountInsertSuccess(bool obj)
-        {
-           
-        }
+    
 
         public void OnPageUnLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
         }
 
-        public void GoToAccountInfoPage(object parameter)
-        {
-            var paras = parameter;
-        }
-        public void UpdateNotification(NotifyUserArgs args)
-        {
-
-        }
-
+    
         private ObservableCollection<Account> _accounts { get; set; }
 
         public ObservableCollection<Account> Accounts
@@ -71,7 +59,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = Repository.CurrentUserID
+                UserID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
@@ -86,23 +74,44 @@ namespace ZBank.ViewModel
 
         private class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>
         {
-            private AccountPageViewModel AccountPageViewModel { get; set; }
+            private AccountPageViewModel ViewModel { get; set; }
 
             public UpdateAccountPresenterCallback(AccountPageViewModel accountPageViewModel)
             {
-                AccountPageViewModel = accountPageViewModel;
+                ViewModel = accountPageViewModel;
             }
 
             public async Task OnSuccess(UpdateAccountResponse response)
             {
-                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = "Account updated successfully",
+                            Type = NotificationType.SUCCESS
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
                 });
             }
 
-            public async Task OnFailure(ZBankException response)
+            public async Task OnFailure(ZBankException exception)
             {
+
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = exception.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
             }
         }
 
@@ -119,6 +128,7 @@ namespace ZBank.ViewModel
             {
                 await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
+
                 });
             }
 
@@ -167,8 +177,6 @@ namespace ZBank.ViewModel
                 });
 
             }
-
-
         }
     }
 

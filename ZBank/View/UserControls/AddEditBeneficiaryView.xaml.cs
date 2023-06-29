@@ -32,6 +32,7 @@ namespace ZBank.View.UserControls
         {
             this.InitializeComponent();
             ViewModel = new AddEditBeneficiaryViewModel(this);
+            CancelButton.Visibility = Visibility.Collapsed;
             BeneficiaryButton.Content = ViewModel.BeneficiaryTypes.ElementAt(0).ToString();
         }
 
@@ -40,6 +41,7 @@ namespace ZBank.View.UserControls
         public AddEditBeneficiaryView(ContentDialog contentDialog, BeneficiaryBObj beneficiaryBObj)
         {
             this.InitializeComponent();
+            Dialog = contentDialog;
             CancelButton.Visibility = Visibility.Visible;
             ViewModel = new AddEditBeneficiaryViewModel(this, beneficiaryBObj, contentDialog);
         }
@@ -75,7 +77,7 @@ namespace ZBank.View.UserControls
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.OnCloseDialog(true);
+            Dialog?.Hide();
         }
     }
 }

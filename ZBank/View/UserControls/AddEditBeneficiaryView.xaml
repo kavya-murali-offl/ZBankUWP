@@ -82,7 +82,7 @@
             <TextBox
                 x:Name="NameBox"
                 MaxWidth="400"
-                Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay}"
+                Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
                 PlaceholderText="Enter Beneficiary Name" />
 
             <TextBlock
@@ -97,7 +97,7 @@
             <TextBox
                 IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
                 PlaceholderText="Enter Account Number"
-                Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay}" />
+                Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay, TargetNullValue=''}" />
 
             <TextBlock
                 Foreground="Red"

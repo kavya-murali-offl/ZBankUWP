@@ -12,6 +12,8 @@ Bugs
 Add Beneficiary close not there
 Dashboard cards not updating
 Accounts dropdown not show deposits
+Payment page design
+Reset cancel not working
 
 Additional
 

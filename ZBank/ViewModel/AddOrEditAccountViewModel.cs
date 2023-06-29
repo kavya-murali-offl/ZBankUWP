@@ -142,7 +142,7 @@ namespace ZBank.ViewModel
             {
                 account.IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode;
                 account.AccountName = "Kavya";
-                account.UserID = Repository.CurrentUserID;
+                account.UserID = Repository.Current.CurrentUserID;
                 account.AccountStatus = AccountStatus.INACTIVE;
                 account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
                 account.AccountType = AccountType.CURRENT;
@@ -220,7 +220,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = Repository.CurrentUserID
+                UserID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsInAddPresenterCallback(this);

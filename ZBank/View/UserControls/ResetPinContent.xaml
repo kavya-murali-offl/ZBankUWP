@@ -53,6 +53,7 @@
             Text="{x:Bind ErrorText, Mode=OneWay}" />
 
         <Button
+            Click="CancelButton_Click"
             Margin="0,20,0,0"
             x:Name="CancelButton" Grid.Row="6" MinWidth="100" Content="Cancel" Style="{ThemeResource SecondaryButton}">
            

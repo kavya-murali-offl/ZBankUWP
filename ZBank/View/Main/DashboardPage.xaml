@@ -354,11 +354,15 @@
                                 <RowDefinition
                                     Height="Auto" />
                             </Grid.RowDefinitions>
-                            <templates:ViewOrNoCardTemplate
-                                Grid.Row="0"
-                                VerticalAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                SelectedCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                <usercontrol:CardElementView
+                                    Grid.Row="0"
+                                    Margin="10"
+                                    MinWidth="350"
+                                    VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    TemplateCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />
+                            </ScrollViewer>
                             <Button
                                 Grid.Row="1"
                                 Margin="10"

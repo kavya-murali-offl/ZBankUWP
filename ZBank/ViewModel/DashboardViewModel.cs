@@ -45,7 +45,7 @@ namespace ZBank.ViewModel
         {
             if (DashboardModel.AllCards.Count > 0)
             {
-                if (_onViewCardIndex < 0 || _onViewCardIndex < DashboardModel.AllCards.Count)
+                if (_onViewCardIndex < 0 || _onViewCardIndex >= DashboardModel.AllCards.Count)
                 {
                     _onViewCardIndex = 0;
                 }
@@ -112,7 +112,7 @@ namespace ZBank.ViewModel
         {
             GetDashboardDataRequest request = new GetDashboardDataRequest()
             {
-                UserID = Repository.CurrentUserID
+                UserID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetDashboardDataResponse> presenterCallback = new GetDashboardDataPresenterCallback(this);

@@ -62,7 +62,7 @@ namespace ZBank.ViewModel
         {
             GetAllTransactionsRequest request = new GetAllTransactionsRequest()
             {
-                CustomerID = Repository.CurrentUserID
+                CustomerID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsPresenterCallback(this);
@@ -163,7 +163,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
-                UserID = Repository.CurrentUserID
+                UserID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);

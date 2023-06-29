@@ -32,7 +32,13 @@ namespace ZBank.ViewModel
 
         public ICommand SubmitCommand { get; set; }
 
-        public BeneficiaryBObj SelectedBeneficiary { get; set; }
+        private BeneficiaryBObj _selectedBeneficiary = new BeneficiaryBObj();
+        
+        public BeneficiaryBObj SelectedBeneficiary
+        {
+            get { return _selectedBeneficiary; }
+            set { Set(ref _selectedBeneficiary, value); }
+        }
 
         public BeneficiaryBObj InitialBeneficiary { get; set; }
 
@@ -70,7 +76,7 @@ namespace ZBank.ViewModel
                 SubmitText = "Update";
             }
             SubmitCommand = new RelayCommand(ValidateAndSubmit);
-            Reset();
+            Reset(SelectedBeneficiary.BeneficiaryType);
         }
 
         private bool ValidateFields()
@@ -106,7 +112,7 @@ namespace ZBank.ViewModel
                     {
                         AccountNumber = SelectedBeneficiary.AccountNumber,
                         BeneficiaryName =SelectedBeneficiary.BeneficiaryName,
-                        UserID = Repository.CurrentUserID,
+                        UserID = Repository.Current.CurrentUserID,
                         BeneficiaryType = IsOtherBankSelected ? BeneficiaryType.OTHER_BANK : BeneficiaryType.WITHIN_BANK
                     };
                     AddBeneficiary(beneficiary);
@@ -146,9 +152,10 @@ namespace ZBank.ViewModel
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
 
-        private void Reset()
+        private void Reset(BeneficiaryType type)
         {
             SelectedBeneficiary = IsAdd ? new BeneficiaryBObj() : InitialBeneficiary;
+            SelectedBeneficiary.BeneficiaryType = type;
             FieldErrors["AccountNumber"] = string.Empty;
             FieldErrors["IFSCCode"] = string.Empty;
             FieldErrors["BeneficiaryType"] = string.Empty;
@@ -157,13 +164,14 @@ namespace ZBank.ViewModel
 
         public void SetBeneficiaryType(int index)
         {
-            SelectedBeneficiary.BeneficiaryType = BeneficiaryTypes.ElementAt(index);
-            UpdateTemplate();
-            Reset();
+            var type = BeneficiaryTypes.ElementAt(index);
+            SelectedBeneficiary.BeneficiaryType = type;
+            UpdateTemplate(type);
+            Reset(type);
         }
 
             
-        private void UpdateTemplate()
+        private void UpdateTemplate(BeneficiaryType type)
         {
             switch (SelectedBeneficiary.BeneficiaryType)
             {
@@ -176,23 +184,29 @@ namespace ZBank.ViewModel
                 default: 
                     break; 
             }
-            Reset();
         }
 
         internal void OnLoaded()
         {
             ViewNotifier.Instance.BeneficiaryAddOrUpdated += BeneficiaryAddedOrUpdated;
-            Reset();
+            ViewNotifier.Instance.RequestFailed += AddEditRequestFailed;
+            Reset(SelectedBeneficiary.BeneficiaryType);
+        }
+
+        private void AddEditRequestFailed(bool obj)
+        {
+            Reset(SelectedBeneficiary.BeneficiaryType);
         }
 
         internal void OnUnloaded()
         {
             ViewNotifier.Instance.BeneficiaryAddOrUpdated -= BeneficiaryAddedOrUpdated;
+            ViewNotifier.Instance.RequestFailed -= AddEditRequestFailed;
         }
 
         private void BeneficiaryAddedOrUpdated(Beneficiary arg1, bool arg2)
         {
-            Reset();
+            Reset(SelectedBeneficiary.BeneficiaryType);
         }
 
         public IEnumerable<BeneficiaryType> BeneficiaryTypes

@@ -32,7 +32,7 @@ namespace ZBank.ViewModel
         {
             GetAllBeneficiariesRequest request = new GetAllBeneficiariesRequest()
             {
-                UserID = Repository.CurrentUserID
+                UserID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllBeneficiariesResponse> presenterCallback = new GetAllBeneficiariesPresenterCallback(this);

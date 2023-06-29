@@ -38,6 +38,7 @@ namespace ZBank.View.Main
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var customerID = AppSettings.Current.CustomerID;
+            Repository.Current.CurrentUserID = customerID;
             UpdateFrame(customerID);
         }
 
@@ -69,7 +70,7 @@ namespace ZBank.View.Main
         private void CurrentUserChanged(string id)
         {
             AppSettings.Current.CustomerID = id;
-            Repository.UpdateCurrentUserID(id);
+            Repository.Current.CurrentUserID = id;
             UpdateFrame(id);
         }
     }

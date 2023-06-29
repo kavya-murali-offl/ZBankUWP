@@ -108,7 +108,7 @@ namespace ZBank.ViewModel
         {
             GetAllCardsRequest request = new GetAllCardsRequest()
             {
-                CustomerID = Repository.CurrentUserID
+                CustomerID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<GetAllCardsResponse> presenterCallback = new GetAllCardsPresenterCallback(this);

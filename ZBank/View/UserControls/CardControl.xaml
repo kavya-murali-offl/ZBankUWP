@@ -28,7 +28,6 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 FontSize="17"
-                Padding="0,0,0,10"
                 FontWeight="SemiBold"
                 Text="{x:Bind MyTitle}" />
             <Button

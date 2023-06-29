@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZBank.Entities;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.Services;
 
@@ -10,12 +11,8 @@ namespace ZBank.DataStore
 {
     internal class Repository
     {
-        public static string CurrentUserID { get; set; }
 
-        public static void UpdateCurrentUserID(string id)
-        {
-            CurrentUserID = id;
-        }
+        public string CurrentUserID { get; set; }
 
         static Repository()
         {
@@ -23,6 +20,7 @@ namespace ZBank.DataStore
         }
 
         static public Repository Current { get; }
+
     }
 
 }

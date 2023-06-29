@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
+using ZBank.Entities.BusinessObjects;
 using ZBank.Entities.EnumerationType;
 
 namespace ZBank.Utilities.Converters
@@ -28,10 +30,14 @@ namespace ZBank.Utilities.Converters
                     return new SolidColorBrush(Colors.IndianRed);
                 case AccountType.TERM_DEPOSIT:
                     return new SolidColorBrush(Colors.Brown);
+                case NotificationType.SUCCESS:
+                    return (AcrylicBrush)Application.Current.Resources["NotificationSuccessAcrylicBrush"];
+                case NotificationType.ERROR:
+                    return (AcrylicBrush)Application.Current.Resources["NotificationErrorAcrylicBrush"];
             }
 
 
-            
+
             return new SolidColorBrush(Colors.White);
         }
 
