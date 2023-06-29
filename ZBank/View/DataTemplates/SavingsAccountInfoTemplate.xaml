@@ -423,6 +423,8 @@
                             Grid.Row="1"
                             Margin="10"
                             MinWidth="200"
+                            x:Name="AddBeneficiary"
+                            Click="AddBeneficiary_Click"
                             HorizontalAlignment="Center"
                             Style="{ThemeResource PrimaryButton}"
                             Content="Add Beneficiary" />

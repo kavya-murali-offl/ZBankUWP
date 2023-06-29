@@ -109,15 +109,17 @@ namespace ZBank.View.UserControls
 
         private string NewPin { get; set; }
 
-        private void PinBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
-        {
-            NewPin = sender.Text;
-            ErrorText = string.Empty;   
-        }
+     
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog.Hide();   
+        }
+
+        private void PinBox_PasswordChanging(PasswordBox sender, PasswordBoxPasswordChangingEventArgs args)
+        {
+            NewPin = sender.Password;
+            ErrorText = string.Empty;
         }
     }
 }

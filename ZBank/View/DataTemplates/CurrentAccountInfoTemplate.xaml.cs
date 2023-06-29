@@ -67,7 +67,7 @@ namespace ZBank.View.DataTemplates
             ContentDialog dialog = new ContentDialog();
             dialog.RequestedTheme = ThemeSelector.Theme;
             dialog.Title = "Add Beneficiary";
-            dialog.Content = new AddEditBeneficiaryView();
+            dialog.Content = new AddEditBeneficiaryView(dialog);
             await dialog.ShowAsync();
         }
     }

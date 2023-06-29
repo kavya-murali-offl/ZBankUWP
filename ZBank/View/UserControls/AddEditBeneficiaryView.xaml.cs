@@ -43,8 +43,17 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
             Dialog = contentDialog;
             CancelButton.Visibility = Visibility.Visible;
-            ViewModel = new AddEditBeneficiaryViewModel(this, beneficiaryBObj, contentDialog);
+            ViewModel = new AddEditBeneficiaryViewModel(this, contentDialog, beneficiaryBObj);
         }
+
+        public AddEditBeneficiaryView(ContentDialog contentDialog)
+        {
+            this.InitializeComponent();
+            Dialog = contentDialog;
+            CancelButton.Visibility = Visibility.Visible;
+            ViewModel = new AddEditBeneficiaryViewModel(this, contentDialog);
+        }
+
 
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

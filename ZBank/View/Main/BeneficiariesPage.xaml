@@ -95,7 +95,7 @@
                             Text="{Binding IFSCCode}" />
 
                     <Button
-                        Visibility="{Binding IsFavourite, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                        Visibility="{Binding IsFavourite, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, ConverterParameter=true}"
                         x:Name="NotAFavouriteButton"
                         Click="NotAFavouriteButton_Click"
                         HorizontalAlignment="Left" Grid.Row="6" Margin="10,20,10,0" Style="{ThemeResource IconButton}">
@@ -107,7 +107,7 @@
                     </Button>
 
                     <Button
-                        Visibility="{Binding IsFavourite, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, ConverterParameter=true}"
+                        Visibility="{Binding IsFavourite, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                         x:Name="FavouriteButton"
                         Click="NotAFavouriteButton_Click"
                         HorizontalAlignment="Left"

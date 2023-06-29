@@ -128,6 +128,7 @@
     <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Utilities\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
+    <Compile Include="Utilities\Converters\DecimalToDoubleConverter.cs" />
     <Compile Include="Utilities\Converters\IndexToPositionConverter.cs" />
     <Compile Include="Utilities\Converters\InitialsConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />

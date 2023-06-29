@@ -19,6 +19,7 @@
                 Height="Auto" /> <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
+        
         <TextBlock
             Grid.Row="3"
             Margin="0,30,30,0"

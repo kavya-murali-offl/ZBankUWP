@@ -138,6 +138,7 @@ namespace ZBank.ViewModel
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
                 AccountType = null,
+                IsTransactionAccounts = true,
                 UserID = Repository.Current.CurrentUserID
             };
 

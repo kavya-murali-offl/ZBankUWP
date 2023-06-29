@@ -17,8 +17,10 @@
             x:Key="BoolToVisibilityConverter" /> 
         <converter:IndexToPositionConverter
             x:Key="IndexToPositionConverter" />  
+        <converter:DecimalToDoubleConverter
+            x:Key="DecimalToDoubleConverter" />   
         <converter:MaskConverter
-            x:Key="MaskConverter" />
+            x:Key="MaskConverter" />  
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -223,12 +225,12 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition
-                            Width="*" />
+                            Width="*" MaxWidth="200" />
                         <ColumnDefinition
-                            Width="*" />
+                            Width="*"
+                            MaxWidth="200" />
                     </Grid.ColumnDefinitions>
                     <TextBlock
-                        Margin="0,0,0,30"
                         FontWeight="SemiBold"
                         Grid.ColumnSpan="2"
                         FontSize="18"
@@ -247,14 +249,12 @@
                     </Button>
 
                     <TextBlock
-                        MaxWidth="400"
                         Margin="0,10,0,10"
                         Grid.Row="2"
                         Grid.ColumnSpan="2"
                         Text="Card Number" />
 
                     <Grid
-                        MaxWidth="400"
                         Grid.Row="4"
                         Grid.ColumnSpan="2"
                         CornerRadius="5"
@@ -267,19 +267,18 @@
                             Text="{x:Bind ViewModel.DataModel.OnViewCard.CardNumber, Mode=OneWay}" />
                     </Grid>
                     <TextBlock
-                        MaxWidth="200"
-                        Margin="0,20,10,0"
+                        HorizontalAlignment="Center"
+                        Margin="0,10,0,0"
                         Grid.Row="5"
                         Grid.Column="1"
-                        HorizontalAlignment="Center"
                         Text="CVV" />
                     <Grid
-                        MaxWidth="180"
                         Grid.Row="6"
                         Grid.Column="1"
-                        Margin="5,10,25,10"
                         CornerRadius="5"
+                        Margin="0,10,0,10"
                         Background="{ThemeResource ApplicationBackgroundThemeBrush}">
+                        
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="18"
@@ -289,10 +288,11 @@
                             Text="{x:Bind ViewModel.DataModel.OnViewCard.CVV, 
                                 Mode=OneWay,
                                 Converter={StaticResource MaskConverter}}" />
+                        
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            FontSize="18"
+                            FontSize="16"
                             Visibility="{x:Bind ViewEyeButton.Visibility,Mode=OneWay}"
                             FontWeight="Bold"
                             Padding="5"
@@ -307,6 +307,7 @@
                             HorizontalAlignment="Right"
                             Style="{ThemeResource IconButton}">
                             <FontIcon
+                                FontSize="14"
                                 Glyph="&#xE7B3;" />
                         </Button>
                         <Button
@@ -318,19 +319,18 @@
                             HorizontalAlignment="Right"
                             Style="{ThemeResource IconButton}">
                             <FontIcon
+                                FontSize="14"
                                 Glyph="&#xED1A;" />
                         </Button>
                     </Grid>
                     <TextBlock
-                        MaxWidth="200"
                         HorizontalAlignment="Center"
-                        Margin="25,20,0,0"
+                        Margin="0,10,0,0"
                         Grid.Row="5"
                         Text="Expiry Date" />
                     <Grid
-                        MaxWidth="150"
                         Grid.Row="6"
-                        Margin="25,10,5,10"
+                        Margin="0,10,5,10"
                         CornerRadius="5"
                         Background="{ThemeResource ApplicationBackgroundThemeBrush}">
 
@@ -342,16 +342,14 @@
                             Text="{x:Bind ViewModel.DataModel.OnViewCard.ExpiryMonth, Mode=OneWay}" />
                     </Grid>
                     <TextBlock
-                        MaxWidth="200"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
-                        Margin="25,20,0,0"
+                        Margin="0,20,0,0"
                         Grid.Row="7"
                         Text="CardType" />
 
                     <TextBlock
                         FontWeight="SemiBold"
-                        MaxWidth="200"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Margin="25,20,0,0"
@@ -363,7 +361,7 @@
             <usercontrols:OneByTwoGrid.Column2Content>
                 <Grid
                     HorizontalAlignment="Stretch"
-                    Padding="20"
+                    Padding="20,0,20,20"
                     Margin="5"
                     CornerRadius="8"
                     Background="{ThemeResource ApplicationBackground}">
@@ -400,11 +398,11 @@
                         Grid.Row="3"
                         VerticalAlignment="Center"
                         FontSize="18"
-                        Text="Credit Limit" />
+                        Text="Daily Transaction Limit" />
                     <ToggleButton
                         Grid.Column="1"
                         Grid.Row="3"
-                        x:Name="ChangeLimit"
+                        x:Name="ChangeLimitButton"
                         Margin="0,20,0,10"
                         FontWeight="SemiBold"
                         VerticalAlignment="Center"
@@ -415,8 +413,9 @@
                         Grid.Row="5"
                         Grid.ColumnSpan="2"
                         Minimum="10000"
+                        Value="{x:Bind ViewModel.DataModel.OnViewCard.SpendingLimit, Mode=OneWay, Converter={StaticResource DecimalToDoubleConverter}}"
                         Maximum="50000"
-                        IsEnabled="{x:Bind ChangeLimit.IsChecked.GetValueOrDefault(), Mode=OneWay}"
+                        IsEnabled="{x:Bind ChangeLimitButton.IsChecked.GetValueOrDefault(), Mode=OneWay}"
                         StepFrequency="100"
                         x:Name="LimitSlider"
                         ValueChanged="Slider_ValueChanged"
@@ -426,14 +425,14 @@
                         Grid.Row="6"
                         FontSize="16"
                         FontWeight="SemiBold"
-                        Text="{x:Bind LimitSlider.Minimum, Mode=OneWay}" />
+                        Text="{x:Bind LimitSlider.Minimum, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
                     <TextBlock
                         Grid.ColumnSpan="2"
                         Grid.Row="6"
                         HorizontalAlignment="Right"
                         FontSize="16"
                         FontWeight="SemiBold"
-                        Text="{x:Bind LimitSlider.Maximum, Mode=OneWay}" />
+                        Text="{x:Bind LimitSlider.Maximum, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
                     <TextBlock
                         Margin="10"
                         FontSize="16"
@@ -449,7 +448,7 @@
                         Grid.Row="8"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
-                        Text="{x:Bind LimitSlider.Value,Mode=OneWay}" />
+                        Text="{x:Bind LimitSlider.Value,Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
 
                 </Grid>
             </usercontrols:OneByTwoGrid.Column2Content>

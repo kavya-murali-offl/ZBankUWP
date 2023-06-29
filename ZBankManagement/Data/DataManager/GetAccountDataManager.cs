@@ -47,5 +47,29 @@ namespace ZBankManagement.DataManager
             
         }
 
+        public async Task GetAllTransactionAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback)
+        {
+            try
+            {
+                IEnumerable<AccountBObj> accountsList = await DBHandler.GetAllAccounts(request.UserID);
+                var transactionAccounts = accountsList.Where(acc => acc.AccountType != AccountType.TERM_DEPOSIT);
+                GetAllAccountsResponse response = new GetAllAccountsResponse()
+                {
+                    Accounts = transactionAccounts
+                };
+                callback.OnSuccess(response);
+            }
+            catch (Exception ex)
+            {
+                ZBankException error = new ZBankException()
+                {
+                    Type = ErrorType.UNKNOWN,
+                    Message = ex.Message,
+                };
+                callback.OnFailure(error);
+            }
+
+        }
+
     }
 }

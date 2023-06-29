@@ -29,7 +29,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            _getAccountDataManager.GetAllAccounts(_request, new GetAllAccountsCallback(this));
+            if(_request.IsTransactionAccounts) _getAccountDataManager.GetAllTransactionAccounts(_request, new GetAllAccountsCallback(this));
+            else _getAccountDataManager.GetAllAccounts(_request, new GetAllAccountsCallback(this));
         }
 
         private class GetAllAccountsCallback : IUseCaseCallback<GetAllAccountsResponse>
@@ -56,6 +57,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllAccountsRequest : RequestObjectBase
     {
         public AccountType? AccountType { get; set; }
+
+        public bool IsTransactionAccounts { get; set; }
 
         public string UserID { get; set; }
     }

@@ -244,7 +244,7 @@ namespace ZBank.ViewModel
                         {
                             Notification = new Notification()
                             {
-                                Message = exception,
+                                Message = exception.Message,
                                 Type = NotificationType.ERROR
                             }
                         };

@@ -12,9 +12,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
+using ZBank.View.UserControls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -62,6 +64,14 @@ namespace ZBank.View.DataTemplates
         public static readonly DependencyProperty TransactionsProperty =
             DependencyProperty.Register("Transactions", typeof(IEnumerable<TransactionBObj>), typeof(SavingsAccountInfoTemplate), new PropertyMetadata(new List<TransactionBObj>()));
 
+        private async void AddBeneficiary_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog dialog = new ContentDialog();
+            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.Title = "Add Beneficiary";
+            dialog.Content = new AddEditBeneficiaryView(dialog);
+            await dialog.ShowAsync();
+        }
     }
 
 }

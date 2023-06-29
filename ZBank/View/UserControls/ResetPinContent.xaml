@@ -37,12 +37,12 @@
             Margin="0,10,0,0"
             Foreground="Gray"
             Text="New Pin" />
-        <TextBox
+        <PasswordBox
             x:Name="PinBox"
             Margin="10"
             Grid.Row="4"
             PlaceholderText="Enter New Pin"
-            TextChanging="PinBox_TextChanging"
+            PasswordChanging="PinBox_PasswordChanging"
             />
 
         <TextBlock

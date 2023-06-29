@@ -58,7 +58,7 @@ namespace ZBank.ViewModel
         }
 
   
-        public AddEditBeneficiaryViewModel(IView view, BeneficiaryBObj beneficiary=null, ContentDialog dialog=null) 
+        public AddEditBeneficiaryViewModel(IView view, ContentDialog dialog = null, BeneficiaryBObj beneficiary=null) 
         { 
             View = view;
             if(beneficiary == null)

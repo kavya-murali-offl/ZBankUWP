@@ -24,7 +24,11 @@ namespace ZBank.Utilities.Converters
                 {
                     return ((decimal)value).ToString("C");
                 }
-                return value.ToString();
+                else if (value is double)
+                {
+                    return ((double)value).ToString("C");
+                }
+            return value.ToString();
 
         }
 

@@ -12,8 +12,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entity.BusinessObjects;
+using ZBank.View.UserControls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -46,6 +48,20 @@ namespace ZBank.View.DataTemplates
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void AddBeneficiary_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog dialog = new ContentDialog();
+            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.Title = "Add Beneficiary";
+            dialog.Content = new AddEditBeneficiaryView(dialog);
+            await dialog.ShowAsync();
         }
     }
 }
