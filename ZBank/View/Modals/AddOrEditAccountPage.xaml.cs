@@ -190,7 +190,7 @@ namespace ZBank.View.Modals
             }
             else
             {
-                PickFilesOutputTextBlock.Text = "Operation cancelled.";
+                PickFilesOutputTextBlock.Text = "";
             }
         }
     }

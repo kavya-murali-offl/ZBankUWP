@@ -11,23 +11,26 @@ namespace ZBank.Utilities.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null) return string.Empty;
-            
-                else if(bool.TryParse(parameter?.ToString(), out bool convert))
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            else if (bool.TryParse(parameter?.ToString(), out bool convert))
+            {
+                if (convert && decimal.TryParse(value.ToString(), out decimal decimalValue))
                 {
-                    if (convert && decimal.TryParse(value.ToString(), out decimal decimalValue))
-                    {
-                        return decimalValue.ToString("C");
-                    }
+                    return decimalValue.ToString("C");
                 }
-               else if (value is decimal)
-                {
-                    return ((decimal)value).ToString("C");
-                }
-                else if (value is double)
-                {
-                    return ((double)value).ToString("C");
-                }
+            }
+            else if (value is decimal)
+            {
+                return ((decimal)value).ToString("C");
+            }
+            else if (value is double)
+            {
+                return ((double)value).ToString("C");
+            }
             return value.ToString();
 
         }

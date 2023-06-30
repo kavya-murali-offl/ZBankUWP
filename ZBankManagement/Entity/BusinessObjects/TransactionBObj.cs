@@ -9,11 +9,21 @@ namespace ZBank.Entities.BusinessObjects
 
         public string BeneficiaryName { get; set; } 
 
-        public string ExternalName { get; set; }   
+        public string ExternalName { get; set; } 
         
         public decimal ClosingBalance { get; set; }    
 
-        public string Name { get => BeneficiaryName != null ? BeneficiaryName : ExternalName; }
+        public string Name { get => string.IsNullOrEmpty(BeneficiaryName) ? ExternalName : BeneficiaryName; }
+
+        public string SenderName 
+        { 
+            get => IsRecipient ? Name : "Me";
+        }
+
+        public string Recipient
+        { 
+            get => IsRecipient ? "Me" : Name; 
+        }
 
         public bool IsRecipient { get; set; }   
 
@@ -22,9 +32,9 @@ namespace ZBank.Entities.BusinessObjects
             get =>  IsRecipient ? "\uEDDB" : "\uEDDC";
         }
 
-        public string PlusOrMinus { 
+        public string PlusOrMinus
+        { 
             get =>  IsRecipient ? "+" : "-";
-
         }
 
         public string BorderColor { 

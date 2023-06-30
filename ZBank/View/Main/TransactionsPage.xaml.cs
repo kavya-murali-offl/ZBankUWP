@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,15 +30,19 @@ namespace ZBank.View.Main
     public sealed partial class TransactionsPage : Page, IView
     {
         public TransactionViewModel ViewModel { get; set; }  
-        public ContentDialog PaymentDialog { get; set; }  
+
+        public ContentDialog PaymentDialog { get; set; }
 
         public TransactionsPage()
         {
             this.InitializeComponent();
             ViewModel = new TransactionViewModel(this);
         }
-
-
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            ViewNotifier.Instance.OnRightPaneContentUpdated(null);
+        }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -48,11 +53,6 @@ namespace ZBank.View.Main
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageUnLoaded();
-        }
-
-        private void ArrowColumn_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void RowsPerPageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -106,6 +106,15 @@ namespace ZBank.View.Main
         private void FromDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
             ViewModel.FilterValues["FromDate"] = FromDatePicker.Date.ToString();
+        }
+
+        private void TransactionListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TransactionListView.SelectedValue != null)
+            {
+                TransactionBObj transactionBObj = (TransactionBObj)TransactionListView.SelectedItem;
+                ViewModel.UpdateView(transactionBObj);
+            }
         }
     }
 

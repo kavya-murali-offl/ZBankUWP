@@ -19,6 +19,9 @@ using ZBank.Entities;
 using Windows.ApplicationModel.Core;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBank.DataStore;
+using ZBank.View.UserControls;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml;
 
 namespace ZBank.ViewModel
 {
@@ -46,6 +49,7 @@ namespace ZBank.ViewModel
             RowsPerPage = DefinedRows.FirstOrDefault();
             FilterValues = new ObservableDictionary<string, object>();
             ResetFilterValues();
+            SelectedAccount = AccountsList.FirstOrDefault();
             FilterConditions["FromAccount"] = item => item.SenderAccountNumber == FilterValues["FromAccount"];
             FilterConditions["ToAccount"] = item => item.RecipientAccountNumber == FilterValues["ToAccount"];
             //FilterConditions["FromDate"] = item => item.RecordedOn > FilterValues["FromDate"];
@@ -96,10 +100,19 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.TransactionListUpdated += UpdateTransactionsData;
             ViewNotifier.Instance.CancelPaymentRequested += NewTransactionAdded;
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            ViewNotifier.Instance.RightPaneContentUpdated += PaneClosed;
             CurrentPageIndex = 0;
             RowsPerPage = DefinedRows.First();
             LoadAllAccounts();
             LoadAllTransactionsData();
+        }
+
+        private void PaneClosed(FrameworkElement obj)
+        {
+            if(obj == null)
+            {
+                InViewTransaction = null;
+            }
         }
 
         internal void UpdateSelectedAccount(AccountBObj accountBObj)
@@ -134,16 +147,12 @@ namespace ZBank.ViewModel
             }
         }
 
-        private ObservableCollection<AccountBObj> _accountsList { get; set; }
+        private ObservableCollection<AccountBObj> _accountsList = new ObservableCollection<AccountBObj>();
 
         public ObservableCollection<AccountBObj> AccountsList
         {
             get { return _accountsList; }
-            set
-            {
-                _accountsList = new ObservableCollection<AccountBObj>(value);
-                OnPropertyChanged(nameof(AccountsList));
-            }
+            set { Set(ref  _accountsList, value); } 
         }
 
         private AccountBObj _selectedAccount { get; set; }
@@ -186,6 +195,7 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactionsData;
             ViewNotifier.Instance.CancelPaymentRequested -= NewTransactionAdded;
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+            ViewNotifier.Instance.RightPaneContentUpdated -= PaneClosed;
         }
 
         private ObservableDictionary<string, object> _filterValues { get; set; }
@@ -268,6 +278,14 @@ namespace ZBank.ViewModel
             UpdatePageNavigation();
         }
 
+        internal void UpdateView(TransactionBObj transaction)
+        {
+            InViewTransaction = transaction;
+            ViewTransaction viewTransaction = new ViewTransaction();
+            viewTransaction.InViewTransaction = transaction;
+            ViewNotifier.Instance.OnRightPaneContentUpdated(viewTransaction);
+        }
+
         private int _totalPages;
         public int TotalPages
         {
@@ -304,6 +322,18 @@ namespace ZBank.ViewModel
             {
                 _inViewTransactions = value;
                 OnPropertyChanged(nameof(InViewTransactions));
+            }
+        }
+
+        private TransactionBObj _inViewTransaction { get; set; }
+
+        public TransactionBObj InViewTransaction
+        {
+            get { return _inViewTransaction; }
+            set
+            {
+                _inViewTransaction = value;
+                OnPropertyChanged(nameof(InViewTransaction));
             }
         }
 

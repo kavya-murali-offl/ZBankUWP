@@ -20,6 +20,13 @@ namespace ZBank.AppEvents
             LoadApp?.Invoke();
         }
 
+
+        public event Action<FrameworkElement> RightPaneContentUpdated;
+        public void OnRightPaneContentUpdated(FrameworkElement frameworkElement)
+        {
+            RightPaneContentUpdated?.Invoke(frameworkElement);
+        }
+
         public bool PaymentInProgress { get; set; }
 
         public event Action<string> LoginError;

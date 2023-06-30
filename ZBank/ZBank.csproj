@@ -251,6 +251,9 @@
     <Compile Include="View\UserControls\ResetPinContent.xaml.cs">
       <DependentUpon>ResetPinContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\ViewTransaction.xaml.cs">
+      <DependentUpon>ViewTransaction.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowManager.cs" />
     <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
@@ -510,6 +513,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\Toast.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\ViewTransaction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

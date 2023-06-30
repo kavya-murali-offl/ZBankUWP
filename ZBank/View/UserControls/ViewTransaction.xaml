@@ -1,0 +1,205 @@
+﻿<UserControl
+    x:Class="ZBank.View.UserControls.ViewTransaction"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZBank.View.UserControls"
+    xmlns:converter="using:ZBank.Utilities.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <converter:CurrencyConverter
+            x:Name="CurrencyConverter" />
+        <converter:DateFormatter
+            x:Name="DateFormatter" />
+        <converter:BackgroundColorConverter
+            x:Name="BackgroundColorConverter"/>
+    </UserControl.Resources>
+        <Grid
+            Margin="5,10,10,10"
+            Padding="10"
+            HorizontalAlignment="Center"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+            CornerRadius="8">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" /> <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />     <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <Button
+            x:Name="CloseRightPaneButton"
+            Click="CloseRightPaneButton_Click"
+            Style="{ThemeResource IconButton}" HorizontalAlignment="Left" ToolTipService.ToolTip="Close View">
+            <Button.Content>
+                <FontIcon
+                    FontSize="14"
+                    Glyph="&#xE8BB;" />
+            </Button.Content>
+        </Button>
+            <TextBlock
+            Grid.Row="1"
+            Foreground="Gray"
+                Margin="0,20,0,10"
+                FontSize="16"
+                HorizontalAlignment="Left"
+                Text="Reference ID" />
+            <TextBlock
+                Grid.Row="2"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                HorizontalAlignment="Left"
+                FontSize="16"
+                Text="{x:Bind InViewTransaction.ReferenceID, Mode=OneWay}" />
+            <Grid
+            Grid.Row="2"
+            Margin="0,20,0,20"
+                CornerRadius="8"
+                Padding="20"
+                Background="{ThemeResource ApplicationBackgroundThemeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />  
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Foreground="Gray"
+                    Margin="0,0,0,10"
+                    FontSize="16"
+                    HorizontalAlignment="Left"
+                    Text="From" />
+                <TextBlock
+                    Grid.Row="1"
+                    HorizontalAlignment="Left"
+                    FontSize="16"
+                    Text="{x:Bind InViewTransaction.SenderName, Mode=OneWay}" />
+                <TextBlock
+                    Foreground="Gray"
+                    Margin="0,10,0,10"
+                    FontSize="16"
+                    Grid.Row="2"
+                    HorizontalAlignment="Left"
+                    Text="Account Number" />
+                <TextBlock
+                    Grid.Row="3"
+                    HorizontalAlignment="Left"
+                    FontSize="16"
+                    Text="{x:Bind InViewTransaction.SenderAccountNumber, Mode=OneWay}" />
+        </Grid>
+        <Grid
+            Grid.Row="3"
+            Margin="0,20,0,20"
+            CornerRadius="8"
+            Padding="20"
+            Background="{ThemeResource ApplicationBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Foreground="Gray"
+                Margin="0,0,0,10"
+                FontSize="16"
+                HorizontalAlignment="Left"
+                Text="From" />
+            <TextBlock
+                Grid.Row="1"
+                HorizontalAlignment="Left"
+                FontSize="16"
+                Text="{x:Bind InViewTransaction.SenderName, Mode=OneWay}" />
+            <TextBlock
+                Foreground="Gray"
+                Margin="0,10,0,10"
+                FontSize="16"
+                Grid.Row="2"
+                HorizontalAlignment="Left"
+                Text="Account Number" />
+            <TextBlock
+                Grid.Row="3"
+                HorizontalAlignment="Left"
+                FontSize="16"
+                Text="{x:Bind InViewTransaction.SenderAccountNumber, Mode=OneWay}" />
+        </Grid>
+
+
+        <TextBlock
+            Grid.Row="4"
+            Foreground="Gray"
+                Margin="0,20,0,10"
+                FontSize="16"
+                HorizontalAlignment="Center"
+                Text="Amount" />
+            <TextBlock
+                Grid.Row="5"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontWeight="SemiBold"
+                Foreground="{x:Bind InViewTransaction.BorderColor}"
+                Text="{x:Bind InViewTransaction.Amount, Converter={StaticResource CurrencyConverter}}" />
+
+  
+            <TextBlock
+            Grid.Row="6"
+            Foreground="Gray"
+                Margin="0,20,0,10"
+                FontSize="16"
+                HorizontalAlignment="Center"
+                Text="Closing Balance" />
+            <TextBlock
+                
+                Grid.Row="7"
+                HorizontalAlignment="Center"
+                FontSize="16"
+                Text="{x:Bind InViewTransaction.ClosingBalance, Converter={StaticResource CurrencyConverter}}" />
+
+            <TextBlock
+            Grid.Row="7"
+            Foreground="Gray"
+                Margin="0,20,0,10"
+                FontSize="16"
+                HorizontalAlignment="Center"
+                Text="Description" />
+            <TextBlock
+                Grid.Row="8"
+                HorizontalAlignment="Center"
+                FontSize="16"
+                Text="{x:Bind InViewTransaction.Description}" />
+            
+            <TextBlock
+                Foreground="Gray"
+                Margin="0,20,0,10"
+                FontSize="16"
+            Grid.Row="9"
+            HorizontalAlignment="Center"
+                Text="Transaction Date" />
+            <TextBlock
+                Grid.Row="10"
+                HorizontalAlignment="Center"
+                FontSize="16"
+                Text="{x:Bind InViewTransaction.RecordedOn, Converter={StaticResource DateFormatter}}" />
+     
+    </Grid>
+            
+</UserControl>

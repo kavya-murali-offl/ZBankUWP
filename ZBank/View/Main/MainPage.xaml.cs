@@ -62,6 +62,7 @@ namespace ZBank
             initialPaneWidth = MySplitView.OpenPaneLength;
             LoadTheme();
             LoadToggleButton();
+            ViewNotifier.Instance.RightPaneContentUpdated += OnRightPaneContentUpdated;
             ViewNotifier.Instance.ThemeChanged += SwitchTheme;
             ViewNotifier.Instance.FrameContentChanged += ChangeFrame;
             ContentFrame.Navigate(typeof(DashboardPage));
@@ -70,14 +71,48 @@ namespace ZBank
 
         private string ErrorText { get; set; }
 
+        private FrameworkElement SecondarySplitViewContent { get; set; }
 
+        private void SecondarySplitView_PaneClosed(SplitView sender, object args)
+        {
+            //if (SecondarySplitViewContent != null)
+            //{
+            //    SecondarySplitView.IsPaneOpen = true;
+            //}
+
+        }
+
+        private void SecondarySplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
+        {
+            //if (SecondarySplitViewContent != null)
+            //{
+            //    SecondarySplitView.IsPaneOpen = true;
+            //}
+        }
 
         public void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.RightPaneContentUpdated -= OnRightPaneContentUpdated;
             ViewNotifier.Instance.ThemeChanged -= SwitchTheme;
             ViewNotifier.Instance.FrameContentChanged -= ChangeFrame;
             ContentFrame.Navigated -= OnNavigated;
             ViewNotifier.Instance.LoadApp -= OnLoadApp;
+        }
+
+        private void OnRightPaneContentUpdated(FrameworkElement obj)
+        {
+            if (obj != null)
+            {
+                SecondarySplitView.IsPaneOpen = true;
+                RightPaneContent.Content = obj;
+                SecondarySplitViewContent = obj;
+            }
+            else
+            {
+                SecondarySplitView.IsPaneOpen = false;
+                RightPaneContent.Content = SecondarySplitViewContent = obj;
+            }
+            
         }
 
         public void OnNavigated(object sender, NavigationEventArgs e)
@@ -287,6 +322,8 @@ namespace ZBank
         {
             ViewModel.Signout();
         }
+
+        
     }
 
     public class Navigation
@@ -306,7 +343,6 @@ namespace ZBank
         public string IconSource { get; set; }
 
         public Type[] PageTypes { get; set; }
-
     }
 }
 

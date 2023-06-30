@@ -499,17 +499,17 @@ namespace ZBank.DatabaseHandler
                 $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                $"where IsKYCApproved and UserID = ?", customerID);
+                $"where UserID = ?", customerID);
             var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
                 $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                $"where IsKYCApproved and UserID = ?", customerID);
+                $"where UserID = ?", customerID);
             var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
                 $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-                $"where IsKYCApproved and UserID = ?", customerID);
+                $"where UserID = ?", customerID);
 
             accountsList.AddRange(currentAccount);
             accountsList.AddRange(savingsAccount);
