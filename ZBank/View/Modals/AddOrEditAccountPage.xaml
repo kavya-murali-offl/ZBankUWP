@@ -78,6 +78,7 @@
                 </Grid.RowDefinitions>
                 
                 <allTemplates:PersonalDetailsVerificationTemplate
+                    CurrentCustomer="{x:Bind ViewModel.CurrentCustomer, Mode=OneWay}"
                     Grid.Row="1" />
 
                 <TextBlock

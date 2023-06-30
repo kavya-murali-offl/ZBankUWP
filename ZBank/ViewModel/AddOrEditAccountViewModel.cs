@@ -55,9 +55,6 @@ namespace ZBank.ViewModel
                         ApplyNewAccount(account, files);
                     }
                 }
-                else
-                {
-                }
             }
         }
 
@@ -141,15 +138,22 @@ namespace ZBank.ViewModel
             if(account != null)
             {
                 account.IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode;
-                account.AccountName = "Kavya";
                 account.UserID = Repository.Current.CurrentUserID;
-                account.AccountStatus = AccountStatus.INACTIVE;
+                account.AccountStatus = AccountStatus.ACTIVE;
                 account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
                 account.AccountType = AccountType.CURRENT;
                 account.CreatedOn = DateTime.Now;
                 account.Currency = Currency.INR;
             }
             return account;
+        }
+
+        private Customer _currentCustomer = null;
+
+        public Customer CurrentCustomer
+        {
+            get { return _currentCustomer; }
+            set{ Set(ref _currentCustomer, value);}
         }
 
         private ObservableCollection<Account> _accounts { get; set; }
@@ -190,8 +194,27 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
+            ViewNotifier.Instance.GetCustomerSuccess += OnCustomerFetched;
             LoadAllAccounts();
             LoadAllBranches();
+            GetCustomer();
+        }
+
+        private void OnCustomerFetched(Customer customer)
+        {
+            CurrentCustomer = customer;
+        }
+
+        private void GetCustomer()
+        {
+            GetCustomerRequest request = new GetCustomerRequest()
+            {
+                 CustomerID = Repository.Current.CurrentUserID
+            };
+
+            IPresenterCallback<GetCustomerResponse> presenterCallback = new GetCustomerPresenterCallback(this);
+            UseCaseBase<GetCustomerResponse> useCase = new GetCustomerUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         public async void CloseView()
@@ -203,6 +226,8 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
+            ViewNotifier.Instance.GetCustomerSuccess -= OnCustomerFetched;
+
         }
 
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
@@ -277,6 +302,39 @@ namespace ZBank.ViewModel
             });
         }
 
+        private class GetCustomerPresenterCallback : IPresenterCallback<GetCustomerResponse>
+        {
+            private AddOrEditAccountViewModel ViewModel { get; set; }
+
+            public GetCustomerPresenterCallback(AddOrEditAccountViewModel accountPageViewModel)
+            {
+                ViewModel = accountPageViewModel;
+            }
+
+            public async Task OnSuccess(GetCustomerResponse response)
+            {
+                await ViewModel.View.Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
+                });
+            }
+
+            public async Task OnFailure(ZBankException error)
+            {
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = error.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    });
+                });
+            }
+        }
+
         private class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
         {
             private AddOrEditAccountViewModel ViewModel { get; set; }
@@ -292,13 +350,11 @@ namespace ZBank.ViewModel
                 {
                     ViewNotifier.Instance.OnAccountInserted(true);
                 });
-
-                
             }
 
             public async Task OnFailure(ZBankException error)
             {
-                await WindowManagerService.Current.MainDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
                     {

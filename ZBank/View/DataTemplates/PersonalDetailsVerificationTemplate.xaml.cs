@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.Entities;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -23,5 +24,17 @@ namespace ZBank.View.DataTemplates
         {
             this.InitializeComponent();
         }
+
+        public Customer CurrentCustomer
+        {
+            get { return (Customer)GetValue(CurrentCustomerProperty); }
+            set { SetValue(CurrentCustomerProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CurrentCustomer.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CurrentCustomerProperty =
+            DependencyProperty.Register("CurrentCustomer", typeof(Customer), typeof(PersonalDetailsVerificationTemplate), new PropertyMetadata(null));
+
+
     }
 }

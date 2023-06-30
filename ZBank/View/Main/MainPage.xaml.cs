@@ -97,6 +97,7 @@ namespace ZBank
             ViewNotifier.Instance.FrameContentChanged -= ChangeFrame;
             ContentFrame.Navigated -= OnNavigated;
             ViewNotifier.Instance.LoadApp -= OnLoadApp;
+            ViewModel.OnUnloaded();
         }
 
         private void OnRightPaneContentUpdated(FrameworkElement obj)

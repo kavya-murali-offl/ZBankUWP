@@ -291,7 +291,26 @@ namespace ZBank.DatabaseHandler
                     ExternalAccountNumber="1234 7654 9876 9874",
                     ExternalIFSCCode="HDFC1001",
                     ExternalName="Preethi",
+                },
+                 new ExternalAccount()
+                {
+                    ExternalAccountNumber="1235 4567 5678 6787",
+                    ExternalIFSCCode="HDFC1002",
+                    ExternalName="Govind",
+                },
+                  new ExternalAccount()
+                {
+                    ExternalAccountNumber="2002 7899 7890 9008",
+                    ExternalIFSCCode="HDFC1004",
+                    ExternalName="Yash Singh",
+                },
+                   new ExternalAccount()
+                {
+                    ExternalAccountNumber="6788 6788 7898 5890",
+                    ExternalIFSCCode="HDFC1001",
+                    ExternalName="Menon",
                 }
+
             };
 
             await _databaseAdapter.InsertAll(externalAccounts);
@@ -399,6 +418,27 @@ namespace ZBank.DatabaseHandler
                        Phone="1234567890",
                        Email="john@gmail.com",
                        CreatedOn=DateTime.Now,
+                },
+                new Customer()
+                {
+                     Age=23,
+                      CreatedOn=DateTime.Now,
+                       Email="kav@gmail.com",
+                        ID="73506694",
+                         LastLoggedOn=DateTime.Now,
+                         Name="Henry",
+                          Phone="1234567890"
+                },
+                new Customer()
+                {
+
+                    ID="37369343",
+                    Name="Rose Mary",
+                     Age=32,
+                      LastLoggedOn=DateTime.Now,
+                       Phone="1234567890",
+                       Email="john@gmail.com",
+                       CreatedOn=DateTime.Now,
                 }
             };
 
@@ -417,6 +457,18 @@ namespace ZBank.DatabaseHandler
                     ID="82248458",
                     Password="O9zoKu4z/b+/nKO5Sitcjvccc7Gg/j64kKUSmnj4w5UVj9Xv3qvMwe9/TQ1hpCeMgR4uJoODb5kzYywepPq2P96jcsaHKw==",
                     Salt="07ESMtqq/jMGVGd8tsuRowELpvur+IPqEKBcuS4jXBCXiMw4C7E9HgZ+RjayBohsGUgHbqB14i5vBoK64bqYeGNAGYGAuBRvUclKIT9kEq+NOf159jf47lLvBc0rTcEzXAx2vw=="
+                },
+                new CustomerCredentials()
+                {
+                    ID="73506694",
+                    Password="aM04c25M/TNFslg7jsLHypfH8QU1uxP7cS/fmAtcJ1ScK8aJpHBerAXbzOkwmj3NYcTpJAIe6t0G1c5rKvq1KomHMXbQwQ==",
+                Salt="EjqHVbYKBlUXdjcDzKKBkpdWDmvk3x1j1adkG/oPE2AY1drXaxBLdmbwgYHRT9LPFsyprX1MZ6uy1KYCUyxz6UimE9pb0xBxCM/6PyXTpUPpd81LgwVZdawe9UVjaaB+dyqt8A=="
+                },
+                new CustomerCredentials()
+                {
+                    ID="37369343",
+                    Password="w1F6KANAsfDKT28Qkq3f3BtSEL0/ksiCfNfHvE+gUbAsRC77fFOvFKoNd88jCfneP46BCFNbJKQyACagX3Vpyw9fzOzO7w==",
+                    Salt="Z5eizKS4/7q+fTZHHwgax4oHiV/OxFR+M4qynARMl0f+fHzTmMXiLqUkYW65eX4+PBeISKpKc//bFCShbUuQhq20XlntrG/KuyZAqytSfWziO2wdkSkya6QsQOzGSwF43+YH1Q=="
                 }
             };
 

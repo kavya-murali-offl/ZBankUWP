@@ -194,6 +194,7 @@
     <Compile Include="Domain\UseCase\GetAllBranches.cs" />
     <Compile Include="Domain\UseCase\GetAllCards.cs" />
     <Compile Include="Domain\UseCase\GetAllTransactions.cs" />
+    <Compile Include="Domain\UseCase\GetCustomer.cs" />
     <Compile Include="Domain\UseCase\GetDashboardData.cs" />
     <Compile Include="Domain\UseCase\InitializeApp.cs" />
     <Compile Include="Domain\UseCase\InsertAccount.cs" />

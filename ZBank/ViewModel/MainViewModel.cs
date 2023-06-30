@@ -23,6 +23,7 @@ using System.IO;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBankManagement.AppEvents.AppEventArgs;
+using ZBank.DataStore;
 
 namespace ZBank.ViewModel
 {
@@ -41,7 +42,43 @@ namespace ZBank.ViewModel
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }
+
+        private Customer _currentCustomer;
+
+        public Customer CurrentCustomer
+        {
+            get { return _currentCustomer; }
+            set
+            {
+                _currentCustomer = value;
+                OnPropertyChanged(nameof(CurrentCustomer));
+            }
+        }
         public void OnLoaded()
+        {
+            InitializeAppData();
+            GetCustomerData();
+            ViewNotifier.Instance.GetCustomerSuccess += CustomerFetched;
+        }
+
+        private void CustomerFetched(Customer obj)
+        {
+            CurrentCustomer = obj;
+        }
+
+        private void GetCustomerData()
+        {
+            GetCustomerRequest request = new GetCustomerRequest()
+            {
+                CustomerID = Repository.Current.CurrentUserID
+            };
+
+            IPresenterCallback<GetCustomerResponse> presenterCallback = new GetCustomerPresenterCallback(this);
+            UseCaseBase<GetCustomerResponse> useCase = new GetCustomerUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        private void InitializeAppData()
         {
             InitializeAppRequest request = new InitializeAppRequest();
 
@@ -119,6 +156,45 @@ namespace ZBank.ViewModel
             UseCaseBase<LogoutCustomerResponse> useCase = new LogoutCustomerUseCase(request, presenterCallback);
             useCase.Execute();
         }
+
+        internal void OnUnloaded()
+        {
+            ViewNotifier.Instance.GetCustomerSuccess -= CustomerFetched;
+        }
+
+        private class GetCustomerPresenterCallback : IPresenterCallback<GetCustomerResponse>
+        {
+            private MainViewModel ViewModel { get; set; }
+
+            public GetCustomerPresenterCallback(MainViewModel accountPageViewModel)
+            {
+                ViewModel = accountPageViewModel;
+            }
+
+            public async Task OnSuccess(GetCustomerResponse response)
+            {
+                await ViewModel.View.Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    //ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
+                });
+            }
+
+            public async Task OnFailure(ZBankException error)
+            {
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = error.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    });
+                });
+            }
+        }
+
 
         private class InitializeAppPresenterCallback : IPresenterCallback<InitializeAppResponse>
         {

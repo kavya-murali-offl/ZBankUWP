@@ -54,7 +54,7 @@
             Grid.ColumnSpan="2"
             Text="Personal Details" />
 
-        <Button
+        <!--<Button
             Grid.ColumnSpan="2"
             HorizontalAlignment="Right"
             Style="{ThemeResource SecondaryButton}" Margin="0">
@@ -64,7 +64,7 @@
                     FontFamily="{StaticResource SymbolThemeFontFamily}"
                     Glyph="&#xE104;" />
             </Button.Content>
-        </Button>
+        </Button>-->
         
         <Border
             Margin="0,5,0,20"
@@ -82,7 +82,7 @@
             FontWeight="SemiBold"
             Grid.Row="3"
             Grid.Column="1"
-            Text="Name" />
+            Text="{x:Bind CurrentCustomer.Name}" />
 
         <TextBlock TextTrimming="CharacterEllipsis" FontSize="14"
             Grid.Row="4"
@@ -93,7 +93,7 @@
             FontWeight="SemiBold"
             
             Grid.Column="1"
-            Text="23" />
+            Text="{x:Bind CurrentCustomer.Age}" />
 
         <TextBlock TextTrimming="CharacterEllipsis" FontSize="14"
             Grid.Row="5"
@@ -103,17 +103,17 @@
             Grid.Row="5"
             FontWeight="SemiBold"
             Grid.Column="1"
-            Text="123456789" />
+            Text="{x:Bind CurrentCustomer.Phone}" />
 
         <TextBlock TextTrimming="CharacterEllipsis" FontSize="14"
             Grid.Row="6"
-            Text="Address" />
+            Text="Email" />
 
         <TextBlock TextTrimming="CharacterEllipsis"
                    TextWrapping="WrapWholeWords" FontSize="14"
             Grid.Row="6"
             FontWeight="SemiBold"
             Grid.Column="1"
-            Text="Address" />
+            Text="{x:Bind CurrentCustomer.Email}" />
     </Grid>
 </UserControl>

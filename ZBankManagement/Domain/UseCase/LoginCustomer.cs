@@ -121,7 +121,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public string CustomerID { get; set; }
     }
 
-    public class GetCustomerRequest
+    public class GetCustomerRequest : RequestObjectBase
     {
         public string CustomerID { get; set; }
     }

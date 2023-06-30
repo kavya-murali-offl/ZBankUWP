@@ -31,17 +31,22 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            ViewNotifier.Instance.AccountInserted += OnAccountInserted;
             LoadAllAccounts();
         }
 
-    
+        private void OnAccountInserted(bool obj)
+        {
+            LoadAllAccounts();
+        }
 
         public void OnPageUnLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+            ViewNotifier.Instance.AccountInserted -= OnAccountInserted;
         }
 
-    
+
         private ObservableCollection<Account> _accounts { get; set; }
 
         public ObservableCollection<Account> Accounts

@@ -21,6 +21,13 @@ namespace ZBank.AppEvents
         }
 
 
+        public event Action<Customer> GetCustomerSuccess;
+        public void OnGetCustomerSuccess(Customer customer)
+        {
+            GetCustomerSuccess?.Invoke(customer);
+        }
+
+
         public event Action<FrameworkElement> RightPaneContentUpdated;
         public void OnRightPaneContentUpdated(FrameworkElement frameworkElement)
         {
