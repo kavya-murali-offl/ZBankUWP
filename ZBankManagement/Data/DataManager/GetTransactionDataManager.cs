@@ -32,7 +32,7 @@ namespace ZBankManagement.DataManager
                 List<TransactionBObj> transactions = new List<TransactionBObj>();    
                 foreach (var account in accounts)
                 {
-                    var accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber);
+                    var accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber, request.CustomerID);
                     foreach (var transaction in accountTransactions)
                     {
                         if (transaction.RecipientAccountNumber == account.AccountNumber)
@@ -69,7 +69,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<TransactionBObj> transactionList = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber);
+                IEnumerable<TransactionBObj> transactionList = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber, request.CustomerID);
                 foreach (var transaction in transactionList)
                 {
                     if (transaction.RecipientAccountNumber == request.AccountNumber)

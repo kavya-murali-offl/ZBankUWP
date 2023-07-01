@@ -52,16 +52,28 @@ namespace ZBank.Entities
 
         public static decimal GetFDInterestRate(int tenureInMonths)
         {
+          
             switch (tenureInMonths)
             {
-                case 3: return 9m;
-                case 6: return 10m;
-                case 9: return 11m;
-                case 12: return 12m;
-                case 24: return 12.5m;
-                case 48: return 14m;
+                case int n when (n <= 3): return 9m;
+                case int n when (n <= 6): return 10m;
+                case int n when (n <= 9): return 11m;
+                case int n when (n <= 10): return 12m;
+                case int n when (n <= 24): return 12.5m;
+                case int n when (n <= 36): return 14m;
                 default: return 0;
             }
+        }
+
+        internal decimal CalculateClosingAmount(DateTime now)
+        {
+            int? months = ((now.Year - DepositStartDate?.Year) * 12) + now.Month - DepositStartDate?.Month;
+            if(months.HasValue)
+            {
+                decimal interestRate = GetFDInterestRate(months.Value);
+                return MaturityAmountCalculator(Balance, interestRate);
+            }
+            return 0;
         }
     }
 }

@@ -24,19 +24,38 @@ namespace ZBank.ViewModel
 
         public ObservableDictionary<string, string> ValidateField(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
         {
-                foreach(var field in fieldsToValidate)
+            foreach (var field in fieldsToValidate)
+            {
+                var property = type.GetProperty(field);
+                var value = property.GetValue(objectToCompare);
+                if (value is null || string.IsNullOrEmpty(value.ToString()) || string.IsNullOrWhiteSpace(value.ToString()))
                 {
-                    var property = type.GetProperty(field);
-                    var value = property.GetValue(objectToCompare);
-                    if (value is null || string.IsNullOrEmpty(value.ToString()) || string.IsNullOrWhiteSpace(value.ToString()))
+                    FieldErrors[property.Name] = $"{property.Name} is required.";
+                }
+                else
+                {
+                    FieldErrors[property.Name] = string.Empty;
+                    if (property.Name == "Amount" || property.Name == "Balance")
                     {
-                        FieldErrors[property.Name] = $"{property.Name} is required.";
-                    }
-                    else
-                    {
-                        FieldErrors[property.Name] = string.Empty;
+                        var inText = property.GetValue(objectToCompare);
+                        if (decimal.TryParse(inText.ToString(), out decimal amountInDecimal))
+                        {
+                            if (amountInDecimal <= 0)
+                            {
+                                FieldErrors["Amount"] = "Amount should be greater than zero";
+                            }
+                            else
+                            {
+                                FieldErrors["Amount"] = string.Empty;
+                            }
+                        }
+                        else
+                        {
+                            FieldErrors["Amount"] = "Please enter a valid Amount";
+                        }
                     }
                 }
+            }
             return FieldErrors;
         }
 

@@ -23,36 +23,21 @@ namespace ZBank.ViewModel
     {
         private IView View { get; set; }
         public ICommand LoginCommand { get; set; }
-        public ICommand SignupCommand { get; set; }
 
         public LoginViewModel(IView view) {
 
             View = view;
             LoginCommand = new RelayCommand(ValidateLogin);
-            SignupCommand = new RelayCommand(SignupUser);
         }
 
 
 
         public void Reset()
         {
-            SignupCustomer = new Customer();
             Password = null;
             CustomerID = null;
             ErrorText = null;
             SuccessText = null;
-        }
-
-        private void SignupUser(object obj)
-        {
-            SignupUserRequest request = new SignupUserRequest()
-            {
-                Customer = SignupCustomer,
-                Password = Password
-            };
-            IPresenterCallback<SignupUserResponse> presenterCallback = new SignupUserPresenterCallback(this);
-            UseCaseBase<SignupUserResponse> useCase = new SignupUserUseCase(request, presenterCallback);
-            useCase.Execute();
         }
 
         private void ValidateLogin(object parameter)
@@ -67,15 +52,6 @@ namespace ZBank.ViewModel
                 LoginCustomer();
             }
         }
-
-        private Customer _signupCustomer = new Customer();
-
-        public Customer SignupCustomer
-        {
-            get { return _signupCustomer; }
-            set { Set(ref _signupCustomer, value); }
-        }
-
 
         private string _customerID = null;
 
@@ -144,32 +120,6 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.LoginError -= OnErrorLoggingIn;
             ViewNotifier.Instance.SignupSuccess -= SignupSuccess;
-        }
-
-        private class SignupUserPresenterCallback : IPresenterCallback<SignupUserResponse>
-        {
-            public LoginViewModel ViewModel { get; set; }
-
-            public SignupUserPresenterCallback(LoginViewModel viewModel)
-            {
-                ViewModel = viewModel;
-            }
-
-            public async Task OnSuccess(SignupUserResponse response)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    ViewNotifier.Instance.OnSignupSuccess(response.InsertedCustomer);
-                });
-            }
-
-            public async Task OnFailure(ZBankException exception)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    ViewNotifier.Instance.OnLoginError(exception.Message);
-                });
-            }
         }
 
         private class LoginCustomerPresenterCallback : IPresenterCallback<LoginCustomerResponse>

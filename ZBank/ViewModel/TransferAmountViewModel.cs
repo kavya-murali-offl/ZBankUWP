@@ -20,7 +20,6 @@ using Windows.UI.Xaml;
 using ZBank.View.DataTemplates.NewPaymentTemplates;
 using Windows.UI.Xaml.Controls;
 using ZBankManagement.Entity.BusinessObjects;
-using static Microsoft.Toolkit.Uwp.UI.Animations.Expressions.ExpressionValues;
 using ZBankManagement.Entities.BusinessObjects;
 using ZBank.View.Modals;
 using ZBank.Config;
@@ -33,7 +32,6 @@ namespace ZBank.ViewModel
         private IView View { get; set; }
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
-        public ObservableDictionary<string, object> FieldValues = new ObservableDictionary<string, object>();
 
         public TransferAmountViewModel(IView view, ContentDialog dialog = null) {
             View = view;
@@ -42,90 +40,50 @@ namespace ZBank.ViewModel
             Reset();
         }
 
-        private ContentDialog ContentDialog { get; set; }   
-
-        public BeneficiaryBObj SelectedBeneficiary
+        public decimal AvailableBalance
         {
-            get { 
-                return AllBeneficiaries.FirstOrDefault(ben =>
-                ben.ToString().Equals(FieldValues["Beneficiary"].ToString())
-            ); }
+            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction?.SenderAccountNumber).Balance;
         }
 
         public AccountBObj SelectedAccount
         {
-            get
-            {
-                return UserAccounts.FirstOrDefault(ben =>
-                 ben.ToString().Equals(FieldValues["Account"].ToString())
-            );
-            }
+            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.SenderAccountNumber);
         }
 
-        private void ProceedToPay(object parameter) 
+        public AccountBObj SelectedOtherAccount
+        {
+            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber);
+        }
+
+        public BeneficiaryBObj SelectedBeneficiary
+        {
+            get => AllBeneficiaries.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber);
+        }
+
+        private ContentDialog ContentDialog { get; set; }
+
+        private void ProceedToPay(object parameter)
         {
             var ReferenceID = Guid.NewGuid().ToString();
-            var userAccount = UserAccounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Account"]));
+            CurrentTransaction.ReferenceID = ReferenceID;   
+            CurrentTransaction.RecordedOn = DateTime.Now;
+
             TransferAmountRequest request = new TransferAmountRequest()
             {
-                Transaction = new Transaction()
-                {
-                    Amount = decimal.Parse(FieldValues["Amount"].ToString()),
-                    RecipientAccountNumber = AllBeneficiaries.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Beneficiary"])).AccountNumber,
-                    SenderAccountNumber = UserAccounts.FirstOrDefault(ben => ben.ToString().Equals(FieldValues["Account"])).AccountNumber,
-                    Description = FieldValues["Description"].ToString(),
-                    RecordedOn = DateTime.Now,
-                    ReferenceID  = ReferenceID,
-                },
-                OwnerAccount = userAccount,
-                Beneficiary = AllBeneficiaries.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Beneficiary"])),
+                Transaction = CurrentTransaction,
+                OwnerAccount = UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.SenderAccountNumber),
+                Beneficiary = AllBeneficiaries.FirstOrDefault(ben => ben.AccountNumber == CurrentTransaction.RecipientAccountNumber),
+                OtherAccount = UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber)
             };
 
             IPresenterCallback<TransferAmountResponse> presenterCallback = new TransferAmountPresenterCallback(this);
             UseCaseBase<TransferAmountResponse> useCase = new TransferAmountUseCase(request, presenterCallback);
             useCase.Execute();
-
         }
 
-        public void ValidateField(string fieldName)
+        public void Reset(object parameter=null) 
         {
-            if (!FieldValues.TryGetValue(fieldName, out object val) || string.IsNullOrEmpty(FieldValues[fieldName]?.ToString()))
-            {
-                FieldErrors[fieldName] = $"{fieldName} is required.";
-            }
-            else
-            {
-                FieldErrors[fieldName] = string.Empty;
-            }
-
-            if (fieldName == "Amount")
-            {
-                var inText = FieldValues["Amount"].ToString();
-                if (decimal.TryParse(inText, out decimal amountInDecimal))
-                {
-                    if (amountInDecimal <= 0)
-                    {
-                        FieldErrors["Amount"] = "Amount should be greater than zero";
-                    }
-                    else
-                    {
-                        FieldErrors["Amount"] = string.Empty;
-                    }
-                }
-                else
-                {
-                    FieldErrors["Amount"] = "Please enter a valid Amount";
-                }
-            }
-        }
-
-        private void Reset(object parameter=null) 
-        {
-            FieldValues["Amount"] = string.Empty;
-            FieldValues["Description"] = string.Empty;
-            FieldValues["Account"] = null;
-            FieldValues["Beneficiary"] = null;
-            FieldValues["Available Balance"] = 0.0m;
+            CurrentTransaction = new Transaction();
             FieldErrors["Amount"] = string.Empty;
             FieldErrors["Description"] = string.Empty;
             FieldErrors["Account"] = string.Empty;
@@ -159,29 +117,6 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public void UpdateBeneficiary(int index)
-        {
-            FieldValues["Beneficiary"] = AllBeneficiaries[index].ToString();
-            ValidateField("Beneficiary");
-
-        }
-
-        public void UpdateUserAccount(int index)
-        {
-            FieldValues["Account"] = UserAccounts[index].ToString();
-            FieldValues["Available Balance"] = UserAccounts[index].Balance;
-            ValidateField("Account");
-        }
-
-        public string UpdateAndGetAmount(string text)
-        {
-            text = new string(text.Where(c => char.IsDigit(c) || c == '.').ToArray());
-            //sender.SelectionStart = newText.Length;
-            FieldValues["Amount"] = text;
-            ValidateField("Amount");
-            return text;
-
-        }
 
         public void OnLoaded()
         {
@@ -202,7 +137,8 @@ namespace ZBank.ViewModel
         {
             if(isPaymentCompleted)
             {
-                 GoToNextStep();
+                Reset();
+                GoToNextStep();
             }
             else
             {
@@ -227,23 +163,33 @@ namespace ZBank.ViewModel
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
             UserAccounts = new ObservableCollection<AccountBObj>(args.AccountsList);
+            OtherAccounts = new ObservableCollection<AccountBObj>(args.AccountsList);
         }
+
+        public void ResetOtherAccounts()
+        {
+            OtherAccounts = UserAccounts;
+        }
+
 
         public void OnUnloaded()
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BeneficiaryListUpdated -= UpdateBeneficiariesList;
-            ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
-
+            ViewNotifier.Instance.CancelPaymentRequested -= CancelPaymentRequested;
         }
 
         private bool ValidateFields()
         {
-            foreach (var key in FieldValues.Keys)
-            {
-                ValidateField(key);
-            }
 
+            var list = new List<string>()
+            {
+                "Amount", "SenderAccountNumber", "RecipientAccountNumber"
+            };
+
+            FieldErrors = ValidateField(FieldErrors, typeof(Transaction), list, CurrentTransaction);
+            FieldErrors["Beneficiary"] = FieldErrors["RecipientAccountNumber"].Replace("RecipientAccountNumber", "To Account");
+            FieldErrors["Account"] = FieldErrors["SenderAccountNumber"].Replace("SenderAccountNumber", "From Account");
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;
             return true;
@@ -356,9 +302,8 @@ namespace ZBank.ViewModel
 
         private bool CheckBalance()
         {
-            decimal availableBalance = decimal.Parse(FieldValues["Available Balance"].ToString());
-            decimal amount = decimal.Parse(FieldValues["Amount"].ToString());
-            if (availableBalance < amount)
+            decimal availableBalance = UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.SenderAccountNumber).Balance;
+            if (availableBalance < CurrentTransaction.Amount)
             {
                 FieldErrors["Amount"] = $"Insufficient Balance. Amount should be less than Rs. {availableBalance.ToString("C")}";
                 return false;
@@ -384,6 +329,18 @@ namespace ZBank.ViewModel
             }
         }
 
+        private ObservableCollection<AccountBObj> _otherAccounts { get; set; }
+
+        public ObservableCollection<AccountBObj> OtherAccounts
+        {
+            get { return _otherAccounts; }
+            set
+            {
+                _otherAccounts = value;
+                OnPropertyChanged(nameof(OtherAccounts));
+            }
+        }
+
         private ObservableCollection<BeneficiaryBObj> _beneficiaries { get; set; }
 
         public ObservableCollection<BeneficiaryBObj> AllBeneficiaries
@@ -393,6 +350,18 @@ namespace ZBank.ViewModel
             {
                 _beneficiaries = value;
                 OnPropertyChanged(nameof(AllBeneficiaries));
+            }
+        }
+
+        private Transaction _currentTransaction { get; set; }
+
+        public Transaction CurrentTransaction
+        {
+            get { return _currentTransaction; }
+            set
+            {
+                _currentTransaction = value;
+                OnPropertyChanged(nameof(CurrentTransaction));
             }
         }
 
@@ -474,7 +443,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(TransferAmountResponse response)
             {
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnCancelPaymentRequested(true);
                 });

@@ -16,8 +16,9 @@
         <converter:MaskConverter
             x:Key="MaskConverter" />
     </Page.Resources>
-    <Grid Background="{ThemeResource ApplicationPageBackground}">
-        <Grid 
+    <Grid
+        Background="{ThemeResource ApplicationPageBackground}">
+        <Grid
             x:Name="LoginGrid"
             Margin="10"
             MaxWidth="500"
@@ -26,16 +27,24 @@
             Padding="30"
             Background="{ThemeResource ApplicationBackground}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="*" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
             </Grid.RowDefinitions>
-            
+
             <TextBlock
                 FontWeight="SemiBold"
                 FontSize="20"
@@ -47,18 +56,17 @@
                 Grid.Row="1"
                 Text="Customer ID" />
 
-            <TextBox 
+            <TextBox
                 Margin="10"
                 Grid.Row="2"
                 PlaceholderText="Enter Customer ID"
-                Text="{x:Bind ViewModel.CustomerID, Mode=TwoWay}"
-                />
+                Text="{x:Bind ViewModel.CustomerID, Mode=TwoWay}" />
 
             <TextBlock
                 Margin="0,20,0,0"
                 Grid.Row="3"
                 Text="Password" />
-            
+
             <PasswordBox
                 HorizontalAlignment="Stretch"
                 Margin="10"
@@ -89,91 +97,6 @@
                         Text="Login" />
                 </Button.Content>
             </Button>
-
-            <Button
-                Grid.Row="7"
-                MinWidth="200"
-                x:Name="SignUp"
-                Click="SignUp_Click"
-                Margin="0,10,0,20"
-                HorizontalAlignment="Center"
-                Style="{StaticResource PrimaryButton}">
-                <Button.Content>
-                    <TextBlock
-                        Text="Signup" />
-                </Button.Content>
-            </Button>
         </Grid>
-        <Popup
-            Canvas.ZIndex="200"
-            LightDismissOverlayMode="On"
-            x:Name="SignupPopup"
-            IsOpen="False"
-            IsLightDismissEnabled="True">
-            <StackPanel
-                MinHeight="500"
-                MinWidth="500"
-                Padding="30"
-                CornerRadius="8"
-                Background="{ThemeResource ApplicationBackgroundThemeBrush}">
-                <TextBlock
-                    FontSize="20"
-                    Margin="10"
-                    HorizontalAlignment="Center"
-                    FontWeight="SemiBold"
-                    Text="Signup" />
-                <TextBlock
-                    Margin="10"
-                    Text="Name" />
-                <TextBox
-                    Margin="10"
-                    Text="{x:Bind ViewModel.SignupCustomer.Name, Mode=TwoWay}" />
-                <TextBlock
-                    Margin="10"
-                    
-                    Text="Phone" />
-                <TextBox
-                    Margin="10"
-                    
-                    Text="{x:Bind ViewModel.SignupCustomer.Phone, Mode=TwoWay}" />
-                <TextBlock
-                    Margin="10"
-                    
-                    Text="Age" />
-                <TextBox
-                    Margin="10"
-                    
-                    Text="{x:Bind ViewModel.SignupCustomer.Age, Mode=TwoWay}" />
-                <TextBlock
-                    Margin="10"
-                    
-                    Text="Password" />
-                <TextBox
-                    Margin="10"
-                    Text="{x:Bind ViewModel.Password, Mode=TwoWay}" />
-                
-                <TextBlock
-                    Margin="10"
-                    Text="{x:Bind ViewModel.SuccessText, Mode=OneWay}" />
-
-                <Button
-                    Margin="10"
-                    MinWidth="200"
-                    HorizontalAlignment="Center"
-                    Style="{ThemeResource PrimaryButton}"
-                    Command="{x:Bind ViewModel.SignupCommand, Mode=TwoWay}"
-                    Content="Signup" />
-
-                <Button
-                    HorizontalAlignment="Center"
-                    Margin="10"
-                    MinWidth="200"
-                    Style="{ThemeResource SecondaryButton}"
-                    Click="Button_Click"
-                    Content="Close" />
-            </StackPanel>
-        </Popup>
     </Grid>
-
-  
 </Page>

@@ -63,11 +63,9 @@ namespace ZBank.DatabaseHandler
 
         // Transaction
 
-        Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber);
+        Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber, string customerID);
 
-        Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber);
-
-        Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber);
+        Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber, string customerID);
 
         Task<int> InsertTransaction(Transaction transaction);
 
@@ -92,6 +90,9 @@ namespace ZBank.DatabaseHandler
         Task<Account> GetAccountByAccountNumber(string accountNumber);
 
         Task CreateTables();
+
         Task PopulateData();
+
+        Task CloseDeposit(TermDepositAccount termDepositAccount, Transaction transaction);
     }
 }

@@ -133,7 +133,9 @@
     <Compile Include="AppEvents\ViewNotifier.cs" />
     <Compile Include="Data\Config.cs" />
     <Compile Include="Data\DataManager\AccountFactory.cs" />
+    <Compile Include="Data\DataManager\CloseDepositDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IAccountFactory.cs" />
+    <Compile Include="Data\DataManager\Contracts\ICloseDepositDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IDeleteBeneficiaryDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IGetAccountDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IGetBeneficiaryDataManager.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Data\Dependencies\DependencyContainer.cs" />
     <Compile Include="Domain\Services\Contracts\IPasswordHasherService.cs" />
     <Compile Include="Domain\Services\PasswordHasherService.cs" />
+    <Compile Include="Domain\UseCase\CloseDeposit.cs" />
     <Compile Include="Domain\UseCase\Common\IPresenterCallback.cs" />
     <Compile Include="Domain\UseCase\Common\IUseCaseCallback.cs" />
     <Compile Include="Domain\UseCase\Common\RequestObjectBase.cs" />
@@ -251,7 +254,6 @@
     <Compile Include="Entity\EnumerationTypes\ErrorType.cs" />
     <Compile Include="Entity\EnumerationTypes\ModeOfPayment.cs" />
     <Compile Include="Entity\EnumerationTypes\NavigationCases.cs" />
-    <Compile Include="Entity\EnumerationTypes\TransactionType.cs" />
     <Compile Include="Helpers\LogoHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AuthServices.cs" />

@@ -74,8 +74,9 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account beneficiaryAccount = await _dBHandler.GetAccountByAccountNumber(request.Beneficiary.AccountNumber);
-                if (beneficiaryAccount != null)
+                Account otherAccount = request.OtherAccount != null ? request.OtherAccount : await _dBHandler.GetAccountByAccountNumber(request.Beneficiary.AccountNumber); ;
+                
+                if (otherAccount != null)
                 {
                     var metaData = new TransactionMetaData()
                     {
@@ -89,11 +90,11 @@ namespace ZBankManagement.DataManager
                     {
                         ID = Guid.NewGuid().ToString(),
                         ReferenceID = request.Transaction.ReferenceID,
-                        AccountNumber = beneficiaryAccount.AccountNumber,
-                        ClosingBalance = beneficiaryAccount.Balance += request.Transaction.Amount,
+                        AccountNumber = otherAccount.AccountNumber,
+                        ClosingBalance = otherAccount.Balance += request.Transaction.Amount,
                     };
 
-                    await _dBHandler.InitiateTransactionInternal(request.OwnerAccount, beneficiaryAccount, request.Transaction, metaData, otherMetaData);
+                    await _dBHandler.InitiateTransactionInternal(request.OwnerAccount, otherAccount, request.Transaction, metaData, otherMetaData);
                     TransferAmountResponse response = new TransferAmountResponse()
                     {
                         Transaction = request.Transaction,

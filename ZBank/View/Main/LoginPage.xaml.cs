@@ -42,16 +42,8 @@ namespace ZBank.View.Main
             ViewModel.OnUnloaded();
         }
 
-
-        private void SignUp_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Reset();
-            SignupPopup.IsOpen = true;
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SignupPopup.IsOpen = false;
             ViewModel.Reset();
         }
     }

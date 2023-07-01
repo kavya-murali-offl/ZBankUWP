@@ -13,11 +13,14 @@ namespace ZBank.Utilities.Converters
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is null && parameter?.ToString() == "1")
+            if (value is null)
             {
-                return Visibility.Collapsed;
+               return parameter?.ToString() == "1" ? Visibility.Visible : Visibility.Collapsed;
             }
-            return Visibility.Visible;
+            else
+            {
+                return parameter?.ToString() == "1" ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

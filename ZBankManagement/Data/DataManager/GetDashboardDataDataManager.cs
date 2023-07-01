@@ -60,7 +60,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 decimal expense = 0;
                 foreach(var account in accountsList)
                 {
-                    var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber);
+                    var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber, request.UserID);
                     foreach(var transaction in list)
                     {
                         if(transaction.RecipientAccountNumber == account.AccountNumber)

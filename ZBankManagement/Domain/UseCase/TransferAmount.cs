@@ -28,15 +28,22 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
+           if(_request.Beneficiary != null)
+           {
+                if (_request.Beneficiary.BeneficiaryType == BeneficiaryType.WITHIN_BANK)
+                {
+                    _transferAmountDataManager.GetBeneficiaryAccount(_request, new GetBeneficiaryAccountCallback(this));
+                }
+                else if (_request.Beneficiary.BeneficiaryType == BeneficiaryType.OTHER_BANK)
+                {
+                    MakeExternalTransaction();
+                }
+            }
+            else if(_request.OtherAccount != null)
+            {
+                _transferAmountDataManager.InitiateWithinBankTransaction(_request, new TransferAmountCallback(this));   
+            }
            
-            if (_request.Beneficiary.BeneficiaryType == BeneficiaryType.WITHIN_BANK)
-            {
-                _transferAmountDataManager.GetBeneficiaryAccount(_request, new GetBeneficiaryAccountCallback(this));
-            }
-            else if(_request.Beneficiary.BeneficiaryType == BeneficiaryType.OTHER_BANK)
-            {
-                MakeExternalTransaction();
-            }
         }
 
         private void MakeExternalTransaction()
@@ -112,7 +119,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public Beneficiary Beneficiary { get; set; }  
 
-        public Account BeneficiaryAccount { get; set; }   
+        public Account OtherAccount { get; set; }   
     }
 
 

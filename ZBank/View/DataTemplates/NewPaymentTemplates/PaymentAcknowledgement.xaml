@@ -9,9 +9,29 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
+    <Grid MinHeight="300"
+          VerticalAlignment="Stretch"
+        HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" /> <RowDefinition
+                Height="Auto" /> <RowDefinition
+                Height="Auto" /> 
+        </Grid.RowDefinitions>
+        <FontIcon
+            VerticalAlignment="Center"
+HorizontalAlignment="Center"
+            Grid.Row="1"
+            Glyph="&#xE930;"
+            Margin="10"
+            Foreground="Green"
+            FontSize="200" />
+
         <TextBlock
+            Grid.Row="2"
+            Margin="20"
             FontSize="18"
-            Text="Payment Success" />
+            Text="Payment Successful" />
+
     </Grid>
 </UserControl>

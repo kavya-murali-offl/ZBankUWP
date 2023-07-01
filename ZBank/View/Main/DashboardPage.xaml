@@ -20,6 +20,8 @@
             x:Name="DateFormatConverter" />
         <converter:WidthConverter
             x:Name="WidthConverter" />
+        <converter:NullToVisibilityConverter
+            x:Name="NullToVisibilityConverter" />
         <DataTemplate
             x:Key="FlyoutItemTemplate"
             x:DataType="model:Beneficiary">
@@ -297,24 +299,22 @@
             </Grid>
 
             <Grid
+                VerticalAlignment="Stretch"
                 x:Name="RightGrid"
                 Grid.Column="1">
-
                 <Grid.RowDefinitions>
                     <RowDefinition
                         Height="*" />
                     <RowDefinition
                         Height="*" />
-                    <RowDefinition
-                        Height="2*" />
                 </Grid.RowDefinitions>
-
                 <usercontrol:CardControl
                     MyTitle="Cards">
                     <usercontrol:CardControl.MyControls>
                         <StackPanel
+                            
                             Orientation="Horizontal"
-                            VerticalAlignment="Center"
+                            VerticalAlignment="Stretch"
                             HorizontalAlignment="Right">
                             <Button
                                 Click="BackButton_Click"
@@ -347,13 +347,7 @@
                         </StackPanel>
                     </usercontrol:CardControl.MyControls>
                     <usercontrol:CardControl.MyContent>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition
-                                    Height="Auto" />
-                                <RowDefinition
-                                    Height="Auto" />
-                            </Grid.RowDefinitions>
+                        <StackPanel>
                             <ScrollViewer HorizontalScrollBarVisibility="Auto">
                                 <usercontrol:CardElementView
                                     Grid.Row="0"
@@ -364,7 +358,7 @@
                                     TemplateCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />
                             </ScrollViewer>
                             <Button
-                                Grid.Row="1"
+                                Visibility="{x:Bind ViewModel.OnViewCard, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"
                                 Margin="10"
                                 HorizontalAlignment="Center"
                                 MinWidth="230"
@@ -374,12 +368,15 @@
                                         Text="Manage Card" />
                                 </Button.Content>
                             </Button>
-                        </Grid>
+                        </StackPanel>
                         
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
-
-                <usercontrol:CardControl
+            
+                   <paymentTemplate:SelfTransferPaymentDetails
+                       Grid.Row="1"
+                      />
+                <!--<usercontrol:CardControl
                     Grid.Row="1"
                     MyTitle="Quick Actions">
                     <usercontrol:CardControl.MyContent>
@@ -441,7 +438,7 @@
                 <usercontrol:CardControl
                     Grid.Row="2"
                     MyTitle="Notifications">
-                </usercontrol:CardControl>
+                </usercontrol:CardControl>-->
             </Grid>
         </Grid>
     </Grid>

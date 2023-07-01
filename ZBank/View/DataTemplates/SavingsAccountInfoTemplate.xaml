@@ -345,7 +345,7 @@
                                             HorizontalAlignment="Right"
                                             TextAlignment="Right"
                                             Foreground="Gray"
-                                            Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}"
+                                            Text="{Binding ClosingBalance, Converter={StaticResource CurrencyConverter}}"
                                             Style="{ThemeResource BoldNormalText}" />
 
                                     </StackPanel>

@@ -129,6 +129,7 @@
     <Compile Include="Utilities\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Utilities\Converters\DecimalToDoubleConverter.cs" />
+    <Compile Include="Utilities\Converters\StringConverter.cs" />
     <Compile Include="Utilities\Converters\IndexToPositionConverter.cs" />
     <Compile Include="Utilities\Converters\InitialsConverter.cs" />
     <Compile Include="Utilities\Converters\LocalizationConverter.cs" />
@@ -183,6 +184,9 @@
     </Compile>
     <Compile Include="View\DataTemplates\NewPaymentTemplates\PaymentDetails.xaml.cs">
       <DependentUpon>PaymentDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataTemplates\NewPaymentTemplates\SelfTransferPaymentDetails.xaml.cs">
+      <DependentUpon>SelfTransferPaymentDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\PersonalDetailsVerificationTemplate.xaml.cs">
       <DependentUpon>PersonalDetailsVerificationTemplate.xaml</DependentUpon>
@@ -365,6 +369,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DataTemplates\NewPaymentTemplates\PaymentDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataTemplates\NewPaymentTemplates\SelfTransferPaymentDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

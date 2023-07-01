@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -14,7 +15,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Entities.BusinessObjects;
-using ZBank.View.Modals;
 using ZBank.ViewModel;
 using ZBankManagement.Entities.BusinessObjects;
 
@@ -22,23 +22,21 @@ using ZBankManagement.Entities.BusinessObjects;
 
 namespace ZBank.View.DataTemplates.NewPaymentTemplates
 {
-    public sealed partial class DashboardPaymentDetailsView : UserControl, IView
+    public sealed partial class SelfTransferPaymentDetails : UserControl, IView
     {
         private TransferAmountViewModel ViewModel { get; set; }
-        private bool IsConfirmed { get; set; }  
-
-        public DashboardPaymentDetailsView()
+        private bool IsConfirmed { get ; set; } 
+        public SelfTransferPaymentDetails()
         {
             this.InitializeComponent();
             ViewModel = new TransferAmountViewModel(this);
             Reset();
         }
 
-
         private void Reset()
         {
-            AccountsText.Text = "Select Account";
-            BeneficiaryText.Text = "Select Beneficiary";
+            AccountsText.Text = "Select From Account";
+            BeneficiaryText.Text = "Select To Acount";
         }
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -47,6 +45,17 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             {
                 ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
                 ViewModel.FieldErrors["Account"] = string.Empty;
+                ViewModel.OtherAccounts = new ObservableCollection<AccountBObj>();
+                foreach (var account in ViewModel.UserAccounts)
+                {
+                    if ((AccountsList?.SelectedValue as AccountBObj)?.AccountNumber != account.AccountNumber)
+                    {
+                        ViewModel.OtherAccounts.Add(account);
+                    }
+                }
+                BeneficiaryText.Text = "Select To Acount";
+                ViewModel.CurrentTransaction.RecipientAccountNumber = null;
+                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
                 AccountsDropdownButton.Flyout.Hide();
             }
         }
@@ -55,7 +64,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         {
             if (!IsConfirmed)
             {
-                ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as BeneficiaryBObj)?.AccountNumber;
+                ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as AccountBObj)?.AccountNumber;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
                 BeneficiaryButton.Flyout.Hide();
             }
@@ -80,12 +89,12 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         {
             ViewModel.OnLoaded();
             ViewNotifier.Instance.CancelPaymentRequested += CancelPaymentRequested;
-
         }
 
         private void CancelPaymentRequested(bool obj)
         {
             Reset();
+            ViewModel.Reset();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -102,12 +111,33 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void AccountsList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            
+            if (!IsConfirmed)
+            {
+                ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
+                ViewModel.FieldErrors["Account"] = string.Empty;
+                ViewModel.OtherAccounts = new ObservableCollection<AccountBObj>();
+                foreach (var account in ViewModel.UserAccounts)
+                {
+                    if ((AccountsList?.SelectedValue as AccountBObj)?.AccountNumber != account.AccountNumber)
+                    {
+                        ViewModel.OtherAccounts.Add(account);
+                    }
+                }
+                BeneficiaryText.Text = "Select To Acount";
+                ViewModel.CurrentTransaction.RecipientAccountNumber = null;
+                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
+                AccountsDropdownButton.Flyout.Hide();
+            }
         }
 
         private void BeneficiaryList_ItemClick(object sender, ItemClickEventArgs e)
         {
- 
+            if (!IsConfirmed)
+            {
+                ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as AccountBObj)?.AccountNumber;
+                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
+                BeneficiaryButton.Flyout.Hide();
+            }
         }
     }
 }

@@ -50,8 +50,8 @@ namespace ZBank.ViewModel
             FilterValues = new ObservableDictionary<string, object>();
             ResetFilterValues();
             SelectedAccount = AccountsList.FirstOrDefault();
-            FilterConditions["FromAccount"] = item => item.SenderAccountNumber == FilterValues["FromAccount"];
-            FilterConditions["ToAccount"] = item => item.RecipientAccountNumber == FilterValues["ToAccount"];
+            FilterConditions["FromAccount"] = item => item.SenderAccountNumber == FilterValues["FromAccount"].ToString();
+            FilterConditions["ToAccount"] = item => item.RecipientAccountNumber == FilterValues["ToAccount"].ToString();
             //FilterConditions["FromDate"] = item => item.RecordedOn > FilterValues["FromDate"];
             //FilterConditions["ToDate"] = item => item.RecordedOn < FilterValues["ToDate"];
         }
@@ -118,7 +118,7 @@ namespace ZBank.ViewModel
         internal void UpdateSelectedAccount(AccountBObj accountBObj)
         {
             SelectedAccount = accountBObj;
-            FilteredTransactions = AllTransactions.Where(trans => trans.SenderAccountNumber == SelectedAccount.AccountNumber || trans.RecipientAccountNumber == SelectedAccount.AccountNumber);
+            FilteredTransactions = AllTransactions.Where(trans => trans.SenderAccountNumber == SelectedAccount?.AccountNumber || trans.RecipientAccountNumber == SelectedAccount?.AccountNumber);
             UpdateOnViewList();
         }
 
@@ -261,7 +261,7 @@ namespace ZBank.ViewModel
 
         private bool IsNextButtonEnabled()
         {
-            return CurrentPageIndex  < (FilteredTransactions.Count() / RowsPerPage) ;
+            return CurrentPageIndex  < (FilteredTransactions.Count() / RowsPerPage);
         }
 
         private void GoToPreviousPage(object parameter)

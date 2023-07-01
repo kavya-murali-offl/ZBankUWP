@@ -34,32 +34,18 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ListView item)
-            {
-                if (item.SelectedIndex >= 0)
-                {
-                    ViewModel.UpdateUserAccount(item.SelectedIndex);
-                }
-                AccountsDropdownButton.Flyout.Hide();
-            }
+           AccountsDropdownButton.Flyout.Hide();
         }
 
         private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ListView item)
-            {
-                if (item.SelectedIndex >= 0)
-                {
-                    ViewModel.UpdateBeneficiary(item.SelectedIndex);
-                }
-                BeneficiaryButton.Flyout.Hide();
-            }
+            BeneficiaryButton.Flyout.Hide();
         }
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
-            string newText = ViewModel.UpdateAndGetAmount(sender.Text);
-            sender.Text = newText;
+            string newText = sender.Text;
+            sender.Text = new string(newText.Where(c => char.IsDigit(c) || c == '.').ToArray());
             sender.SelectionStart = newText.Length;
         }
 

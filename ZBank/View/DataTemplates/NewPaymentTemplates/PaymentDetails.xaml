@@ -26,7 +26,7 @@
             <DropDownButton.Content>
                 <TextBlock
                     HorizontalAlignment="Center"
-                    Text="{x:Bind ViewModel.FieldValues['Account'], TargetNullValue='Select Account', Mode=OneWay}" />
+                    Text="{x:Bind AccountsList.SelectedValue.ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
             </DropDownButton.Content>
             <DropDownButton.Flyout>
                 <Flyout
@@ -66,7 +66,7 @@
                 Margin="15,0,5,0"
                 HorizontalAlignment="Left"
                 FontWeight="SemiBold"
-                Text="{x:Bind ViewModel.FieldValues['Available Balance'], Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
+                Text="{x:Bind ViewModel.AvailableBalance, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
         </StackPanel>
         <TextBlock
             Margin="5,20,5,5"
@@ -79,7 +79,7 @@
             <DropDownButton.Content>
                 <TextBlock
                     HorizontalAlignment="Center"
-                    Text="{x:Bind ViewModel.FieldValues['Beneficiary'], TargetNullValue='Select Beneficiary', Mode=OneWay}" 
+                    Text="{x:Bind BeneficiaryList.SelectedValue.ToString(), TargetNullValue='Select Beneficiary', Mode=OneWay}" 
                 x:Name="BeneficiaryText" />
             </DropDownButton.Content>
             <DropDownButton.Flyout>
@@ -148,7 +148,7 @@
 
         <TextBox
             x:Name="AmountTextBox"
-            Text="{x:Bind ViewModel.FieldValues['Amount'], Mode=TwoWay}"
+            Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay}"
             TextChanging="AmountTextBox_TextChanging"
             PlaceholderText="Enter Amount in INR" />
 
@@ -167,7 +167,7 @@
         <TextBox
             x:Name="DescriptionTextBox"
             
-            Text="{x:Bind ViewModel.FieldValues['Description'], Mode=TwoWay}"
+            Text="{x:Bind ViewModel.CurrentTransaction.Description, Mode=TwoWay}"
             TextChanging="DescriptionTextBox_TextChanging"
             PlaceholderText="Describe the transaction" />
         <TextBlock

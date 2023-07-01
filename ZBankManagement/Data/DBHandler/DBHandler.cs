@@ -27,6 +27,7 @@ namespace ZBank.DatabaseHandler
         {
             _databaseAdapter = databaseAdapter;
         }
+
         public Task<IEnumerable<Account>> GetIFSCCodeByAccountNumber(string accountNumber)
         {
             return _databaseAdapter.Query<Account>("Select IFSCCode From Account where AccountNumber = ?", accountNumber);
@@ -498,6 +499,16 @@ namespace ZBank.DatabaseHandler
             await _databaseAdapter.RunInTransactionAsync(action);
         }
 
+        public async Task CloseDeposit(TermDepositAccount depositAccount ,Transaction transaction)
+        {
+            Func<Task> action = async () =>
+            {
+                await _databaseAdapter.Insert(transaction);
+                await _databaseAdapter.Update(depositAccount);
+            };
+            await _databaseAdapter.RunInTransactionAsync(action);
+        }
+
         public async Task<Account> GetAccountByAccountNumber(string accountNumber)
         {
             return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync();
@@ -652,67 +663,50 @@ namespace ZBank.DatabaseHandler
         public Task<int> UpdateCard(Card card) => _databaseAdapter.Update(card);
 
 
-        // Credit Card
-
-        public async Task<IEnumerable<CreditCard>> GetCreditCardByCustomerID(string customerID) =>
-             await _databaseAdapter.Query<CreditCard>($"Select * from Card Inner Join CreditCard on Card.ID = CreditCard.ID where CustomerID = ?", customerID);
-
-
-        // Transaction
-
-        public async Task<IEnumerable<TransactionBObj>> GetTransactionByCardNumber(string cardNumber) =>
-            await _databaseAdapter.GetAll<TransactionBObj>()
-            .OrderByDescending(x => x.RecordedOn)
-            .ToListAsync();
-
         public Task<int> InsertTransaction(Transaction transaction) => _databaseAdapter.Insert(transaction);
 
-        public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber)
+        public async Task<IEnumerable<TransactionBObj>> GetLatestMonthTransactionByAccountNumber(string accountNumber, string customerID)
         {
             var allTransactions = new List<TransactionBObj>();
             var incomeTransactions = await _databaseAdapter.Query<TransactionBObj>(
-                "SELECT Transactions.*, TransactionMetaData.ClosingBalance, ExternalAccounts.ExternalName, Beneficiary.BeneficiaryName FROM Transactions " +
-                 "Left Join Beneficiary on Transactions.SenderAccountNumber = Beneficiary.AccountNumber " +
-                "Left Join ExternalAccounts on Transactions.SenderAccountNumber = ExternalAccounts.ExternalAccountNumber " +
-                "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ? " +
-                "WHERE  Transactions.RecipientAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
+                incomingTransactionQuery + "AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
 
             var expenseTransactions = await _databaseAdapter.Query<TransactionBObj>(
-               "SELECT Transactions.*, TransactionMetaData.ClosingBalance, " +
-               "ExternalAccounts.ExternalName, Beneficiary.BeneficiaryName FROM Transactions " +
-               "Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
-               "Left Join ExternalAccounts on Transactions.RecipientAccountNumber = ExternalAccounts.ExternalAccountNumber " +
-               "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
-               "WHERE  Transactions.SenderAccountNumber == ? AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
+               expenseTransactionsQuery + " AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
 
             allTransactions.AddRange(incomeTransactions);
             allTransactions.AddRange(expenseTransactions);
             return allTransactions.OrderByDescending(tran => tran.RecordedOn);
         }
 
-        public async Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber)
-        {
-            var allTransactions = new List<TransactionBObj>();
-
-            var incomeTransactions = await _databaseAdapter.Query<TransactionBObj>(
-                "SELECT Transactions.*, TransactionMetaData.ClosingBalance," +
-                " ExternalAccounts.ExternalName, Beneficiary.BeneficiaryName FROM Transactions " +
+        private string incomingTransactionQuery = "SELECT Transactions.*, TransactionMetaData.ClosingBalance, " +
+                " ExternalAccounts.ExternalName, Beneficiary.BeneficiaryName, Account.AccountName FROM Transactions " +
                  "Left Join Beneficiary on Transactions.SenderAccountNumber = Beneficiary.AccountNumber " +
-                "Left Join ExternalAccounts on Transactions.SenderAccountNumber = ExternalAccounts.ExternalAccountNumber " +
+                 "Left Join Account on Transactions.SenderAccountNumber = Account.AccountNumber " +
+                 "Left Join ExternalAccounts on Transactions.SenderAccountNumber = ExternalAccounts.ExternalAccountNumber " +
                 "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
-                "WHERE  Transactions.RecipientAccountNumber == ?", accountNumber, accountNumber);
+                "WHERE Transactions.RecipientAccountNumber == ? ";
+        private string expenseTransactionsQuery = "SELECT Transactions.*, TransactionMetaData.ClosingBalance, ExternalAccounts.ExternalName, Account.AccountName, Beneficiary.BeneficiaryName FROM Transactions " +
+                "Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
+                 "Left Join Account on Transactions.SenderAccountNumber = Account.AccountNumber " +
+                "Left Join ExternalAccounts on Transactions.RecipientAccountNumber = ExternalAccounts.ExternalAccountNumber " +
+               "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
+               "WHERE  Transactions.SenderAccountNumber == ? ";
+
+
+        public async Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber, string customerID)
+        {
+            var allTransactions = new List<TransactionBObj>();
+
+            var incomeTransactions = await _databaseAdapter.Query<TransactionBObj>(
+                incomingTransactionQuery, accountNumber, accountNumber);
 
             var expenseTransactions = await _databaseAdapter.Query<TransactionBObj>(
-               "SELECT Transactions.*, TransactionMetaData.ClosingBalance, ExternalAccounts.ExternalName as ExternalName, Beneficiary.BeneficiaryName as BeneficiaryName FROM Transactions " +
-                "Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
-               "Left Join ExternalAccounts on Transactions.RecipientAccountNumber = ExternalAccounts.ExternalAccountNumber " +
-               "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
-               "WHERE  Transactions.SenderAccountNumber == ?", accountNumber, accountNumber);
+            expenseTransactionsQuery, accountNumber, accountNumber);
 
             allTransactions.AddRange(incomeTransactions);
             allTransactions.AddRange(expenseTransactions);
             return allTransactions.OrderByDescending(tran => tran.RecordedOn);
         }
-
     }
 }

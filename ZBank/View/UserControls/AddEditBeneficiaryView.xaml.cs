@@ -54,8 +54,6 @@ namespace ZBank.View.UserControls
             ViewModel = new AddEditBeneficiaryViewModel(this, contentDialog);
         }
 
-
-
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ListView item)

@@ -20,7 +20,7 @@
                     x:Name="wideScreen">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger
-                            MinWindowWidth="800" />
+                            MinWindowWidth="{x:Bind NarrowScreenBreakPoint, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter
