@@ -13,8 +13,6 @@
     d:DesignWidth="400">
     
     <UserControl.Resources>
-        <converter:AmountConverter
-            x:Name="AmountConverter" />
         <converter:CurrencyConverter
             x:Key="CurrencyConverter"
             x:Name="CurrencyConverter" />

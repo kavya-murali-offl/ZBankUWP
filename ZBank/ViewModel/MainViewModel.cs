@@ -175,7 +175,7 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    //ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
+                    ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
                 });
             }
 

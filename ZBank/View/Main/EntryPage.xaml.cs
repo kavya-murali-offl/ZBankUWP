@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -13,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.Config;
 using ZBank.DataStore;
 using ZBank.Services;
 using ZBank.ViewModel;
@@ -24,16 +27,38 @@ namespace ZBank.View.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class EntryPage : Page
+    public sealed partial class EntryPage : Page, IView
     {
         public EntryPageViewModel ViewModel { get; set; }   
 
         public EntryPage()
         {
             this.InitializeComponent();
-            ViewModel = new EntryPageViewModel();
+            ViewModel = new EntryPageViewModel(this);
+            InitializeThemeSettings();
+        }
+        private void InitializeThemeSettings()
+        {
+            ThemeSelector.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+            ViewNotifier.Instance.ThemeChanged += ThemeSelector_OnThemeChanged;
+            ViewNotifier.Instance.AccentColorChanged += ThemeSelector_OnAccentColorChanged;
         }
 
+        private async void ThemeSelector_OnAccentColorChanged(Color color)
+        {
+            await Dispatcher.CallOnUIThreadAsync(()=> {
+                ThemeSelector.SetRequestedAccentColor();
+                ThemeSelector.ApplyThemeForTitleBarButtons(ApplicationView.GetForCurrentView().TitleBar, ThemeSelector.Theme);
+            });
+        }
+
+        private async void ThemeSelector_OnThemeChanged(ElementTheme theme)
+        {
+            await Dispatcher.CallOnUIThreadAsync(() =>
+            {
+                ThemeSelector.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+            });
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

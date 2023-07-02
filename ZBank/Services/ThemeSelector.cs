@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,10 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using ZBank.AppEvents;
+using ZBank.DataStore;
 
 namespace ZBank.Config
 {
@@ -16,22 +21,244 @@ namespace ZBank.Config
     {
         public static readonly string DarkThemeIcon = "\uEC46";
         public static readonly string LightThemeIcon = "\uE793";
-        private const string key = "Theme";
-
+        private const string themeKey = "Theme";
+        public static ElementTheme Theme { get; set; } = ElementTheme.Light;
+        
         private static readonly ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        private static readonly UISettings UISettings = new UISettings();
 
-
-        public static ElementTheme Theme { get; set; } = ElementTheme.Dark;
+        public static void Initialize()
+        {
+            InitializeAppAccentColor();
+            InitializeCustomAccentColor();
+        }
 
         public static void InitializeTheme()
         {
             LoadCacheTheme();
         }
 
-        public static void SwitchTheme(ElementTheme theme)
+        private static Color _customAccentColor;
+
+        public static Color CustomAccentColor
         {
-            LocalSettings.Values[key] = theme.ToString();
-            Theme = theme;
+            get => _customAccentColor;
+            set
+            {
+                _customAccentColor = value;
+                LocalSettings.Values["CustomAccentColorHexStr"] = value.ToHex();
+            }
+        }
+
+        private static Color _appAccentColor;
+        public static Color AppAccentColor
+        {
+            get => _appAccentColor;
+            set
+            {
+                _appAccentColor = value;
+                ViewNotifier.Instance.OnAccentColorChanged(_appAccentColor);
+                LocalSettings.Values["AppAccentColorHexStr"] = value.ToHex();
+            }
+        }
+
+        public static void SetRequestedTheme(Panel backgroundPanel, UIElement currentContent, ApplicationViewTitleBar titleBar)
+        {
+
+            if (currentContent is FrameworkElement frameworkElement)
+            {
+                frameworkElement.RequestedTheme = Theme;
+            }
+
+          
+
+        ((SolidColorBrush)Application.Current.Resources["SystemControlPageBackgroundMediumAltMediumBrush"]).Color =
+            Theme == ElementTheme.Dark ? Color.FromArgb(153, 0, 0, 0) : Color.FromArgb(153, 255, 255, 255);
+
+
+            UpdateSystemAccentColorAndBrushes(AppAccentColor);
+
+            if (titleBar != null)
+            {
+                ApplyThemeForTitleBarButtons(titleBar, Theme);
+            }
+        }
+
+        private static bool _useWindowsAccentColor;
+
+        public static bool UseWindowsAccentColor
+        {
+            get => _useWindowsAccentColor;
+            set
+            {
+                _useWindowsAccentColor = value;
+                if (value)
+                {
+                    AppAccentColor = UISettings.GetColorValue(UIColorType.Accent);
+                }
+                LocalSettings.Values["UseWindowsAccentColorBool"] = _useWindowsAccentColor;
+            }
+        }
+
+        private static void InitializeCustomAccentColor()
+        {
+            if (LocalSettings.Values["CustomAccentColorHexStr"] is string customAccentColorHexStr)
+            {
+                _customAccentColor = customAccentColorHexStr.ToColor();
+            }
+            else
+            {
+                _customAccentColor = _appAccentColor;
+            }
+        }
+        private static void InitializeAppAccentColor()
+        {
+            if (LocalSettings.Values["UseWindowsAccentColorBool"] is bool useWindowsAccentColor)
+            {
+                _useWindowsAccentColor = useWindowsAccentColor;
+            }
+            else
+            {
+                _useWindowsAccentColor = true;
+            }
+
+            UISettings.ColorValuesChanged += UiSettings_ColorValuesChanged;
+
+            _appAccentColor = UISettings.GetColorValue(UIColorType.Accent);
+
+            if (!UseWindowsAccentColor)
+            {
+                if (LocalSettings.Values["AppAccentColorHexStr"] is string accentColorHexStr)
+                {
+                    _appAccentColor = accentColorHexStr.ToColor();
+                }
+            }
+        }
+
+        private static void UiSettings_ColorValuesChanged(UISettings sender, object args)
+        {
+            if (UseWindowsAccentColor)
+            {
+                AppAccentColor = sender.GetColorValue(UIColorType.Accent);
+            }
+        }
+
+        public static void ApplyThemeForTitleBarButtons(ApplicationViewTitleBar titleBar, ElementTheme theme)
+        {
+            if (theme == ElementTheme.Dark)
+            {
+                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
+                titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
+                // Set active window color
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+
+                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
+                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];                
+                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            }
+            else
+            {
+                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
+                titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+
+                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
+                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"]; titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
+                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+               
+            }
+
+            titleBar.ButtonHoverBackgroundColor = ((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color;
+
+            //    if (Theme == ElementTheme.Light)
+            //    {
+            //        titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+            //        titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+            //    }
+            //    else
+            //    {
+            //        titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
+            //        titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
+            //    }
+
+            //    titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAccentColorDark3"];
+            //    titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
+            //}
+        }
+
+        private static void UpdateSystemAccentColorAndBrushes(Color color)
+        {
+            //AccentColor ColorsHelper.AccentBrushes.FirstOrDefault(brush => brush.AccentColor.Color == color);
+            SolidColorBrush customAccentBrush = (SolidColorBrush)Application.Current.Resources["AccentColorBrush"];
+            customAccentBrush.Color = color;
+
+            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorDark1.Color;
+            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorDark2.Color;
+            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorDark3.Color;
+            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorLight1.Color;
+            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorLight2.Color;
+            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorLight3.Color;
+            var brushes = new string[]
+            {
+                "SystemControlBackgroundAccentBrush",
+                "SystemControlDisabledAccentBrush",
+                "SystemControlForegroundAccentBrush",
+                "SystemControlHighlightAccentBrush",
+                "SystemControlHighlightAltAccentBrush",
+                "SystemControlHighlightAltListAccentHighBrush",
+                "SystemControlHighlightAltListAccentLowBrush",
+                "SystemControlHighlightAltListAccentMediumBrush",
+                "SystemControlHighlightListAccentHighBrush",
+                "SystemControlHighlightListAccentLowBrush",
+                "SystemControlHighlightListAccentMediumBrush",
+                "SystemControlHyperlinkTextBrush",
+                "ContentDialogBorderThemeBrush",
+                "JumpListDefaultEnabledBackground"
+            };
+
+            foreach (var brush in brushes)
+            {
+                try
+                {
+                    ((SolidColorBrush)Application.Current.Resources[brush]).Color = color;
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
+            try
+            {
+                // Overwrite MenuFlyoutSubItemRevealBackgroundSubMenuOpened resource color
+                ((RevealBackgroundBrush)Application.Current.Resources["SystemControlHighlightAccent3RevealBackgroundBrush"]).Color = color;
+            }
+            catch (Exception)
+            {
+                // ignore
+            }
+        }
+
+        public static void SetRequestedAccentColor()
+        {
+            UpdateSystemAccentColorAndBrushes(AppAccentColor);
+            ApplyThemeForTitleBarButtons(ApplicationView.GetForCurrentView().TitleBar, Theme);
+        }
+
+
+        public static void SetTheme(ElementTheme theme)
+        {
+            if (Theme != theme)
+            {
+                Theme = theme;
+                LocalSettings.Values[themeKey] = theme.ToString();
+                ViewNotifier.Instance.OnThemeChanged(theme);
+            }
         }
 
         public static string GetIcon()
@@ -43,7 +270,7 @@ namespace ZBank.Config
         {
             ElementTheme localTheme = ElementTheme.Dark;
 
-            string themeName = (string)LocalSettings.Values[key];
+            string themeName = (string)LocalSettings.Values[themeKey];
 
             if (!string.IsNullOrEmpty(themeName))
             {

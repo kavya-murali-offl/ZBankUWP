@@ -4,15 +4,135 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZBank.View.Main"
     xmlns:userControls="using:ZBank.View.UserControls"
+    xmlns:modelBObj="using:ZBank.Entity.BusinessObjects"
+    xmlns:converters="using:ZBank.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
     Unloaded="Page_UnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter
+            x:Name="BooleanToVisibilityConverter" />
+        <converters:ColorToBrushConverter
+            x:Name="ColorToBrushConverter" />
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="34" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <userControls:CustomTitleBar
+            Title="Settings" />
+        <StackPanel
+            MaxWidth="600"
+            Grid.Row="1"
+            Margin="10"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Stretch"
+            Padding="20"
+            CornerRadius="4"
+            Background="{ThemeResource ApplicationBackgroundThemeBrush}">
 
-    <Grid>
-        <userControls:CustomTitleBar Title="Settings"/>
-        <Button Click="Button_Click" Content="Switch Theme"/>
+            <TextBlock
+                FontSize="18"
+                Margin="10"
+                FontWeight="SemiBold"
+                Text="Appearance" />
+            <Border
+                BorderThickness="1"
+                CornerRadius="2"
+                BorderBrush="{ThemeResource AccentColorBrush}" />
+            <TextBlock
+                Margin="15"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Text="Theme" />
+
+            <TextBlock
+                Margin="20"
+                FontSize="14"
+                Text="Mode" />
+
+            <StackPanel 
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <ToggleButton
+                    Style="{ThemeResource PrimaryToggleButton}"
+                    Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                    Width="100"
+                    Margin="10"
+                    Click="SystemToggleButton_Click"
+                    x:Name="SystemToggleButton"
+                    BorderThickness="1"
+                    Content="System" />
+                <ToggleButton
+                    Style="{ThemeResource PrimaryToggleButton}"
+                    Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                    Width="100"
+                    Margin="10"
+                    Click="SystemToggleButton_Click"
+                    x:Name="LightToggleButton"
+                    BorderThickness="1"
+                    Content="Light" />
+                <ToggleButton
+                    Style="{ThemeResource PrimaryToggleButton}"
+                    Background="{ThemeResource ApplicationBackgroundThemeBrush}"
+                    Width="100"
+                    Margin="10"
+                    Click="SystemToggleButton_Click"
+                    x:Name="DarkToggleButton"
+                    BorderThickness="1"
+                    Content="Dark" />
+            </StackPanel>
+            
+            <TextBlock
+                Margin="10"
+                FontSize="14"
+                Text="Accent Color" />
+
+            <ToggleSwitch
+                Toggled="UseWindowsAccentColor_Toggled"
+                x:Name="UseWindowsAccentColor" />
+
+            <ListView
+                Visibility="{x:Bind UseWindowsAccentColor.IsOn, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}"
+                SelectionMode="None"
+                x:Name="AccentColorList"
+                ItemsSource="{x:Bind ViewModel.AccentColors, Mode=OneWay}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid
+                            ItemWidth="70"
+                            Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button
+                            x:Name="AccentButton"
+                            Click="AccentButton_Click"
+                            Style="{ThemeResource IconButton}">
+                            <Button.Content>
+                                <Grid>
+                                    <Ellipse
+                                        Width="30"
+                                        Height="30"
+                                        Fill="{Binding}" />
+                                    <!--<FontIcon
+                                        
+                                        FontSize="14"
+                                        Glyph="&#xF13E;" />-->
+                                </Grid>
+                               
+                            </Button.Content>
+                        </Button>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
 </Page>

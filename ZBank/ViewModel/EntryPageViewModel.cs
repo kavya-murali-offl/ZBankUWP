@@ -7,11 +7,24 @@ using ZBank.AppEvents.AppEventArgs;
 using ZBank.AppEvents;
 using ZBank.Entities;
 using ZBank.Services;
+using ZBank.Config;
+using ZBank.View;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
+using Windows.UI;
 
 namespace ZBank.ViewModel
 {
     public class EntryPageViewModel
     {
+        private IView View { get; set; }
+
+        public EntryPageViewModel(IView view) 
+        { 
+            View = view; 
+            ThemeSelector.Initialize();
+        }
+
         internal void OnNavigatedTo()
         {
             EnterApplication();

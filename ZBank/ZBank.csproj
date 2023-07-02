@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataStore\ColorsHelper.cs" />
     <Compile Include="DataStore\Repository.cs" />
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="Services\DispatcherService.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
     <Compile Include="Services\ThemeSelector.cs" />
     <Compile Include="Utilities\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Utilities\Converters\ColorToBrushConverter.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Utilities\Converters\DecimalToDoubleConverter.cs" />
     <Compile Include="Utilities\Converters\StringConverter.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="ViewModel\EntryPageViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
@@ -215,7 +218,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\Converters\AmountConverter.cs" />
     <Compile Include="Utilities\Converters\DateFormatter.cs" />
     <Compile Include="ViewModel\CardsViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />

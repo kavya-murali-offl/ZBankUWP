@@ -70,7 +70,7 @@
             Margin="0,5,0,20"
             Grid.ColumnSpan="2"
             Grid.Row="2"
-            Background="{ThemeResource SystemAccentColor}"
+            Background="{ThemeResource AccentColorBrush}"
             Height="1" />
         
         <TextBlock 

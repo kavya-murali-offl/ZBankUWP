@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.AppEvents.AppEventArgs;
@@ -20,6 +21,11 @@ namespace ZBank.AppEvents
             LoadApp?.Invoke();
         }
 
+        public event Action<Color> AccentColorChanged;
+        public void OnAccentColorChanged(Color color)
+        {
+            AccentColorChanged?.Invoke(color);
+        }
 
         public event Action<Customer> GetCustomerSuccess;
         public void OnGetCustomerSuccess(Customer customer)

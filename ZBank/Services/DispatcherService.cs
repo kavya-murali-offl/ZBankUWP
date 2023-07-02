@@ -8,13 +8,12 @@ using Windows.UI.Core;
 
 namespace ZBank.Services
 {
-    public class DispatcherService
+    public static class DispatcherService
     {
-        public static async Task CallOnUiThreadAsync(CoreDispatcher dispatcher, DispatchedHandler handler) =>
+        public static async Task CallOnUIThreadAsync(this CoreDispatcher dispatcher, DispatchedHandler handler) =>
        await dispatcher.RunAsync(CoreDispatcherPriority.Normal, handler);
 
         public static async Task CallOnMainViewUiThreadAsync(DispatchedHandler handler) =>
-            await CallOnUiThreadAsync(CoreApplication.MainView.CoreWindow.Dispatcher, handler);
-
+            await CallOnUIThreadAsync(CoreApplication.MainView.CoreWindow.Dispatcher, handler);
     }
 }

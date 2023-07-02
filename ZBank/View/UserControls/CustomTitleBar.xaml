@@ -22,7 +22,6 @@
                 Source="/Assets/banklogo.png" 
                 Stretch="UniformToFill"
                 />
-        
             <TextBlock
                 FontWeight="Bold"
                 x:Name="AppTitleTextBlock"

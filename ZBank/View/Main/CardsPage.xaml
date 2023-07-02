@@ -402,6 +402,7 @@
                     <ToggleButton
                         Grid.Column="1"
                         Grid.Row="3"
+                        Style="{ThemeResource PrimaryToggleButton}"
                         x:Name="ChangeLimitButton"
                         Margin="0,20,0,10"
                         FontWeight="SemiBold"

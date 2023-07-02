@@ -678,7 +678,7 @@
                             <TextBlock
                                 Text="Rows Per Page: " />
                             <TextBlock
-                                Foreground="{ThemeResource SystemAccentColorLight1}"
+                                Foreground="{ThemeResource AccentColorBrush}"
                                 Margin="15,0,0,0"
                                 Text="{x:Bind ViewModel.RowsPerPage, Mode=OneWay}" />
                         </StackPanel>
@@ -712,7 +712,7 @@
                         </Button.Content>
                     </Button>
                     <TextBlock
-                        Foreground="{ThemeResource SystemAccentColorLight1}"
+                        Foreground="{ThemeResource AccentColorBrush}"
                         VerticalAlignment="Center"
                         FontSize="16"
                         Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}"

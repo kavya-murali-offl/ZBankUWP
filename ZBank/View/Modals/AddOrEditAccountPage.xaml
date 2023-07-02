@@ -51,7 +51,8 @@
                 FontWeight="Bold"
                 Text="Create New Account" />
 
-            <Grid Grid.Row="1">
+            <Grid
+                Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition
                         Height="Auto" />
@@ -68,7 +69,7 @@
                     <RowDefinition
                         Height="Auto" />
                     <RowDefinition
-                        Height="Auto" />     
+                        Height="Auto" />
                     <RowDefinition
                         Height="Auto" />
                     <RowDefinition
@@ -76,7 +77,7 @@
                     <RowDefinition
                         Height="Auto" />
                 </Grid.RowDefinitions>
-                
+
                 <allTemplates:PersonalDetailsVerificationTemplate
                     CurrentCustomer="{x:Bind ViewModel.CurrentCustomer, Mode=OneWay}"
                     Grid.Row="1" />
@@ -94,7 +95,7 @@
                 <Border
                     Margin="20,5,20,20"
                     Grid.Row="3"
-                    Background="{ThemeResource SystemAccentColor}"
+                    Background="{ThemeResource AccentColorBrush}"
                     Height="1" />
 
                 <TextBlock
@@ -107,7 +108,7 @@
                     FontWeight="SemiBold"
                     MinHeight="22"
                     Text="Branch" />
-                
+
                 <DropDownButton
                     Grid.Row="5"
                     x:Name="BranchDropdown"
@@ -158,11 +159,11 @@
                     FontWeight="SemiBold"
                     MinHeight="22"
                     Text="KYC Details" />
-                
+
                 <Border
                     Margin="20,5,20,20"
                     Grid.Row="8"
-                    Background="{ThemeResource SystemAccentColor}"
+                    Background="{ThemeResource AccentColorBrush}"
                     Height="1" />
 
                 <Button
@@ -188,27 +189,7 @@
                     Width="400"
                     Text="{x:Bind ViewModel.FieldErrors['KYC'], Mode=OneWay}" />
             </Grid>
-
-
-
-            <!--<TextBlock
-                TextTrimming="CharacterEllipsis"
-                FontSize="14"
-                Margin="20,40,20,0"
-                Grid.Row="5"
-                VerticalAlignment="Center"
-                Foreground="Gray"
-                FontWeight="SemiBold"
-                MinHeight="22"
-                Text="Nominee Details" />
-
-            <Border
-                Margin="20,5,20,20"
-                Grid.Row="6"
-                Background="{ThemeResource SystemAccentColor}"
-                Height="1" />
-
-            <allTemplates:AddNomineeTemplate Grid.Row="7"/>-->
+            
             <Grid
                 Grid.Row="1"
                     BorderThickness="1,0,0,0"
@@ -241,7 +222,7 @@
                     Margin="0,5,0,20"
                     Grid.ColumnSpan="2"
                     Grid.Row="2"
-                Background="{ThemeResource SystemAccentColor}"
+                Background="{ThemeResource AccentColorBrush}"
                     Height="1" />
                 <TextBlock
                     Grid.Row="3"

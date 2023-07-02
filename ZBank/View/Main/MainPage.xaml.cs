@@ -159,7 +159,7 @@ namespace ZBank
 
         private async void SwitchTheme(ElementTheme theme)
         {
-            ThemeSelector.SwitchTheme(theme);
+            ThemeSelector.SetTheme(theme);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;

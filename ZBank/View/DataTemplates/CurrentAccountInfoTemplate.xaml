@@ -13,10 +13,7 @@
 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <UserControl.Resources>
-        <converter:AmountConverter
-            x:Name="AmountConverter" />
         <converter:CurrencyConverter
-            x:Key="CurrencyConverter"
             x:Name="CurrencyConverter" />
         <converter:BackgroundColorConverter
             x:Name="BackgroundColorConverter" />

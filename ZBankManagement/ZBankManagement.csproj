@@ -215,6 +215,7 @@
     <Compile Include="Domain\UseCase\UpdateBeneficiary.cs" />
     <Compile Include="Domain\UseCase\UpdateCard.cs" />
     <Compile Include="Domain\UseCase\UpdateCustomer.cs" />
+    <Compile Include="Entity\BusinessObjects\AccentBrush.cs" />
     <Compile Include="Entity\BusinessObjects\AccountBObj.cs" />
     <Compile Include="Entity\BusinessObjects\BeneficiaryBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />

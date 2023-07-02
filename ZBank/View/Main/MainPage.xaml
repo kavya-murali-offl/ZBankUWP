@@ -114,13 +114,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid x:Name="ContentGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="34" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <userControls:CustomTitleBar
-                Title="ZBank" />
+            
             <SplitView
                 PointerReleased="Content_PointerReleased"
                 x:Name="MySplitView"
@@ -319,7 +313,7 @@
                                                     </ToolTipService.ToolTip>
                                                     <FontIcon
                                                         x:Name="ThemeIcon"
-                                                        Foreground="{ThemeResource SystemAccentColorDark1}"
+                                                        Foreground="{ThemeResource AccentColorBrush}"
                                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                         FontSize="18" />
                                                 </ToggleButton>

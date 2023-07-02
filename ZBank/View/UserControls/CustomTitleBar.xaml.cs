@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using ZBank.AppEvents;
 using ZBank.Config;
+using ZBank.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -86,24 +87,12 @@ namespace ZBank.View.UserControls
             ViewNotifier.Instance.ThemeChanged -= UpdateTitleBarTheme;
         }
 
-        private void UpdateTitleBarTheme(ElementTheme Theme)
+        private async void UpdateTitleBarTheme(ElementTheme Theme)
         {
-                ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-
-                if (Theme == ElementTheme.Light)
-                {
-                    titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
-                    titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
-                }
-                else
-                {
-                    titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
-                    titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
-                }
-
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAccentColorDark3"];
-                titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
-            
+            await Dispatcher.CallOnUIThreadAsync(() =>
+            {
+                ThemeSelector.SetRequestedTheme(AppTitleBar, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+            });
         }
     }
 }

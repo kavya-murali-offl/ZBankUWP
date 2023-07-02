@@ -102,7 +102,7 @@
                 Padding="20"
                 Margin="10"
                 CornerRadius="8"
-                BorderBrush="{ThemeResource SystemAccentColor}">
+                BorderBrush="{ThemeResource AccentColorBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition
                         Height="*" />
