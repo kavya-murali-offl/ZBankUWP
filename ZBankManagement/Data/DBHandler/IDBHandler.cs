@@ -50,7 +50,7 @@ namespace ZBank.DatabaseHandler
         Task<IEnumerable<CardBObj>> GetAllCards(string customerID);
 
 
-        Task<int> UpdateAccount<T>(T account);
+        Task UpdateAccount(TermDepositAccount account);
 
         Task InsertAccount(Account account, IEnumerable<KYCDocuments> documents);
 
@@ -91,12 +91,12 @@ namespace ZBank.DatabaseHandler
 
         Task InitiateTransactionExternal(Transaction transaction, Account account, TransactionMetaData metaData);
 
-        Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber, AccountType accountType);
+        Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber);
 
         Task CreateTables();
 
         Task PopulateData();
 
-        Task CloseDeposit(TermDepositAccount termDepositAccount, Transaction transaction);
+        Task CloseDeposit(TermDepositAccount termDepositAccount, Account repaymentAccount, Transaction transaction);
     }
 }

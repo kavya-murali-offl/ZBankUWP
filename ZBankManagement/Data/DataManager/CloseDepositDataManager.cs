@@ -26,25 +26,27 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                Account account = await DBHandler.GetAccountByAccountNumber(request.CustomerID, request.DepositAccount.RepaymentAccountNumber, AccountType.TERM_DEPOSIT);
-                if(account != null)
+                Account repaymentAccount = await DBHandler.GetAccountByAccountNumber(request.CustomerID, request.DepositAccount.RepaymentAccountNumber);
+                if(repaymentAccount != null)
                 {
                     decimal totalAmount = request.DepositAccount.CalculateClosingAmount(DateTime.Now);
                     Transaction transaction = new Transaction()
                     {
                         Amount = totalAmount,
                         Description = $"FD Account {request.DepositAccount.AccountNumber} Closed",
-                        RecipientAccountNumber = account.AccountNumber,
+                        RecipientAccountNumber = repaymentAccount.AccountNumber,
                         RecordedOn = DateTime.Now,
                         ReferenceID = Guid.NewGuid().ToString(),
                         SenderAccountNumber = request.DepositAccount.AccountNumber,
                         TransactionType = TransactionType.INTERNAL
                     };
+                    request.DepositAccount.IFSCCode = request.DepositAccount.IfscCode;
                     request.DepositAccount.AccountStatus = AccountStatus.CLOSED;
                     request.DepositAccount.MaturityDate = DateTime.Now;
                     request.DepositAccount.Balance = totalAmount;
 
-                    await DBHandler.CloseDeposit(request.DepositAccount, transaction);
+                    repaymentAccount.Balance -= totalAmount;
+                    await DBHandler.CloseDeposit(request.DepositAccount, repaymentAccount, transaction);
                     CloseDepositResponse response = new CloseDepositResponse()
                     {
                         DepositAccount = request.DepositAccount,
@@ -60,8 +62,6 @@ namespace ZBankManagement.Data.DataManager
                     };
                     callback.OnFailure(error);
                 }
-                   
-
             }
             catch (Exception ex)
             {

@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.Entities;
+using ZBank.Entities.BusinessObjects;
 using ZBankManagement.AppEvents.AppEventArgs;
 
 namespace ZBank.AppEvents
@@ -19,6 +20,18 @@ namespace ZBank.AppEvents
         public void OnLoadApp()
         {
             LoadApp?.Invoke();
+        }
+
+        public event Action<bool, AccountBObj> AccountUpdated;
+        public void OnAccountUpdated(bool updated, AccountBObj account=null)
+        {
+            AccountUpdated?.Invoke(updated, account);
+        }
+
+        public event Action<TermDepositAccount> DepositClosed;
+        public void OnDepositClosed(TermDepositAccount account)
+        {
+            DepositClosed?.Invoke(account);
         }
 
         public event Action<Color> AccentColorChanged;

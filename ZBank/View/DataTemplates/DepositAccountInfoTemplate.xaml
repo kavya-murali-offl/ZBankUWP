@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿    <UserControl
     x:Class="ZBank.View.DataTemplates.DepositAccountInfoTemplate"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,7 +8,9 @@
     xmlns:converter="using:ZBank.Utilities.Converters"
     xmlns:usercontrol="using:ZBank.View.UserControls"
     xmlns:modelBObj="using:ZBank.Entities.BusinessObjects"
-    mc:Ignorable="d"
+        Loaded="UserControl_Loaded"
+Unloaded="UserControl_Unloaded"
+        mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     
@@ -20,6 +22,8 @@
             x:Name="BackgroundColorConverter" />
         <converter:DateFormatter
             x:Name="DateFormatConverter" />
+        <converter:BooleanToVisibilityConverter
+            x:Name="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
     <!--To do set width and text trimming
@@ -66,28 +70,28 @@
                 MinHeight="30"
                 FontWeight="SemiBold"
                 Text="{x:Bind SelectedAccount.AccountNumber}" />
-            <!--<StackPanel
-                Padding="30,10,30,10"
+            <StackPanel
+                Padding="20,10,20,10"
                 CornerRadius="4"
                 Grid.RowSpan="2"
+                MaxWidth="200"
                 Background="Green"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">
                 <TextBlock  TextTrimming="CharacterEllipsis"
-
                     FontSize="18"
                     HorizontalAlignment="Center"
                     FontWeight="SemiBold"
                     Foreground="Azure"
-                    Text="Balance" />
+                    Text="Deposit Amount" />
                 <TextBlock  TextTrimming="CharacterEllipsis"
 
                     FontSize="20"
                     HorizontalAlignment="Center"
                     Foreground="Azure"
                     FontWeight="ExtraBold"
-                    Text="{x:Bind SelectedAccount.Amount, Converter={StaticResource CurrencyConverter}}" />
-            </StackPanel>-->
+                    Text="{x:Bind SelectedAccount.Balance, Converter={StaticResource CurrencyConverter}}" />
+            </StackPanel>
 
             <TextBlock  TextTrimming="CharacterEllipsis"
                 Margin="0,20,0,20"
@@ -168,7 +172,7 @@
                             TextTrimming="CharacterEllipsis"
                             Margin="0,10,0,0"
                             FontSize="14"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             FontWeight="SemiBold"
                             Text="{x:Bind SelectedAccount.AccountName}" />
                     </StackPanel>
@@ -315,7 +319,7 @@
                         Grid.Row="1"
                         VerticalAlignment="Center"
                         Margin="250,0,0,0" FontSize="16"
-                        Text="{x:Bind SelectedAccount.TenureInMonths}"/>
+                        Text="{x:Bind SelectedAccount.Tenure, Mode=OneWay}"/>
 
 
                     <TextBlock  
@@ -329,12 +333,10 @@
                         Foreground="Gray"
                         Text="Maturity Amount" />
                     <TextBlock  TextTrimming="CharacterEllipsis"
-
                         VerticalAlignment="Center"
-                        
                         Grid.Row="2"
                         Margin="250,0,0,0" FontSize="16"
-                        Text="{x:Bind SelectedAccount.MaturityAmount}" />
+                        Text="{x:Bind SelectedAccount.MaturityAmount, Converter={StaticResource CurrencyConverter}}" />
 
                     <TextBlock  TextTrimming="CharacterEllipsis"
 
@@ -353,7 +355,7 @@
                         
                         Grid.Row="3"
                         Margin="250,0,0,0" FontSize="16"
-                        Text="{x:Bind SelectedAccount.MaturityDate}" />
+                        Text="{x:Bind SelectedAccount.MaturityDate, Converter={StaticResource DateFormatConverter}}" />
 
                     <TextBlock  TextTrimming="CharacterEllipsis"
 
@@ -388,10 +390,8 @@
                         VerticalAlignment="Center"
                         Margin="250,0,0,0"
                         FontSize="16"
-                        Text="{x:Bind SelectedAccount.Balance}" />
-
-
-                </Grid>
+                        Text="{x:Bind SelectedAccount.Balance, Converter={StaticResource CurrencyConverter}}" />
+                    </Grid>
             </usercontrol:OneByTwoGrid.Column1Content>
             <usercontrol:OneByTwoGrid.Column2Content>
                 <Grid
@@ -410,24 +410,68 @@
                         CornerRadius="8">
                         <Grid.RowDefinitions>
                             <RowDefinition
+                                Height="Auto" />  <RowDefinition
+                                Height="Auto" />  <RowDefinition
+                                Height="Auto" />  <RowDefinition
+                                Height="Auto" />  <RowDefinition
                                 Height="Auto" />
-                            <RowDefinition
-                                Height="*" />
                         </Grid.RowDefinitions>
 
                         <TextBlock  TextTrimming="CharacterEllipsis"
-
                             Margin="10"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
-                            Text="FD Calculator"
+                            Text="Edit Account"
                             FontWeight="Bold"
                             FontSize="19" />
 
-                        <Grid MinHeight="250" Margin="0,10,0,0">
+                        <TextBlock
+                            Grid.Row="1"
+                            Text="Repayment Account Number"
+                            Margin="20,10,0,10"
+                            MaxWidth="400"
+                            HorizontalAlignment="Left"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Foreground="Gray" />
+
+                        <TextBox
+                            Grid.Row="2"
+                            MaxWidth="400"
+                            IsEnabled="{x:Bind IsActive, Mode=OneWay}"  
+                            TextChanged="RepaymentAccountNumberText_TextChanged"
+                            x:Name="RepaymentAccountNumberText"
+                            Text="{x:Bind SelectedAccount.RepaymentAccountNumber, Mode=OneWay}"
+                            PlaceholderText="Enter Updated Account Number"
+                            Margin="20,10,20,10" />
+
+                        <TextBlock
+                            Grid.Row="3"
+                            HorizontalAlignment="Center"
+                            Foreground="Red"
+                            x:Name="UpdateErrorText" />
+                        
+                        <Button
+                            Grid.Row="4"
+                            IsEnabled="{x:Bind IsActive, Mode=OneWay}"
+                            Style="{ThemeResource PrimaryButton}"
+                            HorizontalAlignment="Right"
+                            Content="Update"
+                            MinWidth="100"
+                            Margin="20"
                             
-                        </Grid>
-                    
+                            Click="UpdateButton_Click"
+                            Name="UpdateButton" />
+                        <Button
+                            Grid.Row="4"
+                            Margin="20"
+                            IsEnabled="{x:Bind IsActive, Mode=OneWay}"
+                            Style="{ThemeResource SecondaryButton}"
+                            HorizontalAlignment="Left"
+                            Content="Reset"
+                            MinWidth="100"
+                            Click="ResetUpdateButton_Click"
+                            Name="ResetUpdateButton" />
                     </Grid>
                     <Grid
                         Grid.Row="1"
@@ -436,6 +480,7 @@
                         VerticalAlignment="Stretch"
                         Background="{ThemeResource ApplicationBackground}"
                         CornerRadius="8">
+                        
                         <Grid.RowDefinitions>
                             <RowDefinition
                                 Height="Auto" />
@@ -450,8 +495,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock  TextTrimming="CharacterEllipsis"
-
-                            Margin="10"
+                            Margin="20"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Text="Account Settings"
@@ -459,29 +503,29 @@
                             FontSize="19" />
 
                         <Button
-                            Grid.Row="1"
-                            Margin="10"
-                            x:Name="AddBeneficiary"
-                            Click="AddBeneficiary_Click"
-                            MinWidth="250"
-                            HorizontalAlignment="Center"
-                            Style="{ThemeResource PrimaryButton}"
-                            Content="Add Beneficiary" />
-
-                        <Button
                             Grid.Row="2"
                             Style="{ThemeResource PrimaryButton}"
                             Margin="10"
                             HorizontalAlignment="Center"
-                            MinWidth="250" 
+                            MinWidth="250"
+                            IsEnabled="{x:Bind IsActive, Mode=OneWay}"
                             Content="Edit Account" />
                         <Button
+                            IsEnabled="{x:Bind IsActive, Mode=OneWay}"
                             HorizontalAlignment="Center"
                             Grid.Row="3"
                             MinWidth="250" 
+                            x:Name="CloseAccountButton"
+                            Click="CloseAccountButton_Click"
                             Style="{ThemeResource PrimaryButton}"
                             Margin="10"
                             Content="Close Account" />
+                        <TextBlock
+                            Visibility="{x:Bind IsActive, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, ConverterParameter=true}"
+                            HorizontalAlignment="Center"
+                            Grid.Row="3"
+                            Margin="10"
+                            Text="No Actions To Show" />
                     </Grid>
                 </Grid>
 

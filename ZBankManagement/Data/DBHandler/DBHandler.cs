@@ -501,48 +501,25 @@ namespace ZBank.DatabaseHandler
             await _databaseAdapter.RunInTransactionAsync(action);
         }
 
-        public async Task CloseDeposit(TermDepositAccount depositAccount ,Transaction transaction)
+        public async Task CloseDeposit(TermDepositAccount depositAccount ,Account repaymentAccount, Transaction transaction)
         {
+            TermDepositAccountDTO depositAccountDTO = await _databaseAdapter.GetAll<TermDepositAccountDTO>().Where(acc => acc.AccountNumber == depositAccount.AccountNumber).FirstOrDefaultAsync();
+            depositAccount.MaturityAmount = depositAccountDTO.MaturityAmount;   
+            depositAccount.MaturityDate = depositAccountDTO.MaturityDate;
+
             Func<Task> action = async () =>
             {
                 await _databaseAdapter.Insert(transaction);
-                await _databaseAdapter.Update(depositAccount);
+                await _databaseAdapter.Update(depositAccount, typeof(Account));
+                await _databaseAdapter.Update(depositAccountDTO);
+                await _databaseAdapter.Update(repaymentAccount, typeof(Account));
             };
             await _databaseAdapter.RunInTransactionAsync(action);
         }
 
-        public async Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber, AccountType accountType)
+        public async Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber)
         {
-            if(accountType == AccountType.CURRENT)
-            {
-                var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
-$"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
-$"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-$"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-$"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
-                return currentAccount.FirstOrDefault();
-            }
-            else if(accountType == AccountType.SAVINGS)
-            {
-                var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
-               $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
-               $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-               $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-               $"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
-                return savingsAccount.FirstOrDefault();
-
-            }else if(accountType == AccountType.TERM_DEPOSIT)
-            {
-
-                var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
-                    $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
-                    $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                    $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-                    $"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
-                return termDepositAccounts.FirstOrDefault();    
-            }
-            return null;
-        
+            return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync();
         }
 
         public async Task<int> ResetPin(string cardNumber, string pin)
@@ -601,7 +578,6 @@ $"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
                 $"where UserID = ?", customerID);
             var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
                 $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
-                $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
                 $"where UserID = ?", customerID);
 
@@ -682,10 +658,9 @@ $"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
 
 
 
-        public async Task<int> UpdateAccount<T>(T account)
+        public async Task UpdateAccount(TermDepositAccount account)
         {
-            await _databaseAdapter.Update<T>(account);
-            return await _databaseAdapter.Update(account as Entities.Account);
+            await _databaseAdapter.Execute("Update TermDepositAccount Set RepaymentAccountNumber = ? where AccountNumber = ?", account.RepaymentAccountNumber, account.AccountNumber);
         }
 
         //Card

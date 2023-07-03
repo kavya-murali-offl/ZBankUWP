@@ -16,9 +16,9 @@
             x:Name="BackgroundColorConverter" />
     </UserControl.Resources>
     <Grid
-        MaxWidth="300"
+        MaxWidth="500"
         MaxHeight="200"
-        MinWidth="300"
+        MinWidth="400"
         Visibility="Collapsed"
         Background="{x:Bind OnViewNotification.Type, Converter={StaticResource BackgroundColorConverter}, Mode=OneWay}"
         CornerRadius="8"

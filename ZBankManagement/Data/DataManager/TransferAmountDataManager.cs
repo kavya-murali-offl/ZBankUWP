@@ -30,7 +30,7 @@ namespace ZBankManagement.DataManager
                 if (request.OwnerAccount.AccountType == AccountType.CURRENT || request.OwnerAccount.AccountType == AccountType.SAVINGS)
                 {
                     IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.OwnerAccount.AccountNumber, request.CustomerID);
-                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.OwnerAccount.AccountNumber, request.OwnerAccount.AccountType);
+                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.OwnerAccount.AccountNumber);
                     var amountTransacted = transactionsMadeToday.Sum(x => x.Amount);
                     decimal limit = 0;
                     if (request.OwnerAccount is CurrentAccount)
@@ -90,7 +90,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account account = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber, request.OwnerAccount.AccountType);
+                Account account = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber);
                 GetBeneficiaryAccountResponse response = new GetBeneficiaryAccountResponse()
                 {
                     Account = account
@@ -112,7 +112,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account otherAccount = request.OtherAccount != null ? request.OtherAccount : await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber, request.OwnerAccount.AccountType);
+                Account otherAccount = request.OtherAccount != null ? request.OtherAccount : await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber);
                 
                 if (otherAccount != null)
                 {

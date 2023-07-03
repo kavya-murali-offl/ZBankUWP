@@ -110,6 +110,7 @@ namespace ZBank.ViewModel
                 case AccountType.CURRENT:
                    account =  new CurrentAccount()
                     {
+                       AccountType = AccountType.CURRENT,
                         InterestRate = 3.2m,
                         MinimumBalance=500m
                     };
@@ -117,6 +118,7 @@ namespace ZBank.ViewModel
                 case AccountType.SAVINGS:
                     account = new SavingsAccount()
                     {
+                        AccountType = AccountType.SAVINGS,
                         InterestRate = 4.8m,
                         MinimumBalance = 500m
                     };
@@ -124,7 +126,9 @@ namespace ZBank.ViewModel
                 case AccountType.TERM_DEPOSIT:
                     TermDepositAccount depositAccount = new TermDepositAccount()
                     {
-                        TenureInMonths = int.Parse(FieldValues["Tenure"].ToString()),
+                        Balance = decimal.Parse(FieldValues["Amount"].ToString()),
+                        AccountType = AccountType.TERM_DEPOSIT,
+                        Tenure = int.Parse(FieldValues["Tenure"].ToString()),
                         DepositType = DepositType.OnMaturity,
                         DepositStartDate = DateTime.Now,
                         RepaymentAccountNumber = Accounts.FirstOrDefault(acc => acc.ToString().Equals(FieldValues["Repayment Account Number"].ToString())).AccountNumber,
@@ -137,13 +141,14 @@ namespace ZBank.ViewModel
             }
             if(account != null)
             {
+                account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
                 account.IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode;
                 account.UserID = Repository.Current.CurrentUserID;
                 account.AccountStatus = AccountStatus.ACTIVE;
                 account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
-                account.AccountType = AccountType.CURRENT;
                 account.CreatedOn = DateTime.Now;
                 account.Currency = Currency.INR;
+                account.AccountName=CurrentCustomer.Name;
             }
             return account;
         }
@@ -313,7 +318,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetCustomerResponse response)
             {
-                await ViewModel.View.Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
+                await WindowManagerService.Current.MainDispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
                 });
@@ -346,7 +351,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertAccountResponse response)
             {
-                await WindowManagerService.Current.MainDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnAccountInserted(true);
                 });
@@ -391,7 +396,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
                     {

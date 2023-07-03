@@ -15,16 +15,16 @@ namespace ZBank.Entities
 
         public void SetDefault()
         {
-            InterestRate = GetFDInterestRate(TenureInMonths);
-            MaturityAmount = MaturityAmountCalculator(Balance, TenureInMonths);
-            MaturityDate = MaturityDateCalculator(DateTime.Now, TenureInMonths);
+            InterestRate = GetFDInterestRate(Tenure);
+            MaturityAmount = MaturityAmountCalculator(Balance, Tenure);
+            MaturityDate = MaturityDateCalculator(DateTime.Now, Tenure);
         }
 
-        public decimal InterestRate { get; private set; }
+        public decimal InterestRate { get; set; }
 
         public decimal MaturityAmount { get; set; }
 
-        public int TenureInMonths { get; set; }
+        public int Tenure { get; set; }
 
         public string FromAccountNumber { get; set; }   
 

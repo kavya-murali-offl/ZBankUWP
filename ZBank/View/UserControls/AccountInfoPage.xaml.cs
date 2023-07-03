@@ -37,6 +37,7 @@ namespace ZBank.View.UserControls
         {
             if(e.Parameter is AccountInfoPageParams) { 
                 var parameters = (e.Parameter) as AccountInfoPageParams;
+
                 AccountBObj SelectedAccount = parameters.SelectedAccount;
 
                 ViewModel.SelectedAccount = SelectedAccount;

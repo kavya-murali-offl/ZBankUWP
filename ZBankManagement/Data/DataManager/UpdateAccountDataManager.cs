@@ -4,6 +4,8 @@ using ZBank.DatabaseHandler;
 using ZBankManagement.Domain.UseCase;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using System.Threading.Tasks;
+using System;
+using ZBank.Entity.EnumerationTypes;
 
 namespace ZBankManagement.DataManager
 {
@@ -18,20 +20,49 @@ namespace ZBankManagement.DataManager
 
         public async Task UpdateAccount(UpdateAccountRequest request, IUseCaseCallback<UpdateAccountResponse> callback)
         {
-            int rowsModified = await DBHandler.UpdateAccount(request.UpdatedAccount);
-
-            if(rowsModified > 0)
+            try
             {
-                UpdateAccountResponse response = new UpdateAccountResponse();
-                response.IsSuccess = rowsModified > 0;
-                response.UpdatedAccount = request.UpdatedAccount;
-                callback.OnSuccess(response);
+                if(request.UpdatedAccount is TermDepositAccount)
+                {
+                    Account account = await DBHandler.GetAccountByAccountNumber(request.CustomerID, (request.UpdatedAccount as TermDepositAccount).RepaymentAccountNumber);
+                    if(account != null)
+                    {
+                        await DBHandler.UpdateAccount(request.UpdatedAccount as TermDepositAccount);
+                        UpdateAccountResponse response = new UpdateAccountResponse()
+                        {
+                            UpdatedAccount = request.UpdatedAccount
+                        };
+                        callback.OnSuccess(response);
+                    }
+                    else
+                    {
+                        ZBankException error = new ZBankException()
+                        {
+                            Type = ErrorType.UNKNOWN,
+                            Message = "Please enter a valid Repayment Account Number",
+                        };
+                        callback.OnFailure(error);
+                    }
+                }
+                else
+                {
+                    ZBankException error = new ZBankException()
+                    {
+                        Type = ErrorType.UNKNOWN,
+                        Message = "Update denied",
+                    };
+                    callback.OnFailure(error);
+                }
+             
             }
-            else
+            catch(Exception ex)
             {
-                ZBankException error = new ZBankException();
-                error.Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN;
-                callback.OnFailure(error);  
+                ZBankException error = new ZBankException()
+                {
+                    Type = ErrorType.UNKNOWN,
+                    Message = ex.Message,
+                };
+                callback.OnFailure(error);
             }
         }
     }

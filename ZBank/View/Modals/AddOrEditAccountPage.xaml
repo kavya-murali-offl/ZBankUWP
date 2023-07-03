@@ -78,9 +78,9 @@
                         Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <allTemplates:PersonalDetailsVerificationTemplate
+                <!--<allTemplates:PersonalDetailsVerificationTemplate
                     CurrentCustomer="{x:Bind ViewModel.CurrentCustomer, Mode=OneWay}"
-                    Grid.Row="1" />
+                    Grid.Row="1" />-->
 
                 <TextBlock
                     TextTrimming="CharacterEllipsis"

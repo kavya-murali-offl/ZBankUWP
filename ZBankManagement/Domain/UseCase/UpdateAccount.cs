@@ -50,6 +50,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public class UpdateAccountRequest : RequestObjectBase
         {
             public Account UpdatedAccount { get; set; }
+            public string CustomerID { get; set; }
         }
 
         public class UpdateAccountResponse

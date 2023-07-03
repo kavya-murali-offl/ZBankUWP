@@ -32,7 +32,9 @@
         <DataTemplate
             x:Key="DepositAccountTemplate">
             <templates:DepositAccountInfoTemplate
-                SelectedAccount="{Binding SelectedAccount}" />
+                CloseAccountCommand="{Binding CloseAccountCommand, Mode=OneWay}"
+                UpdateAccountCommand="{Binding UpdateAccountCommand, Mode=OneWay}"
+                SelectedAccount="{Binding SelectedAccount, Mode=OneWay}" />
         </DataTemplate>
     </Page.Resources>
     <Grid>
