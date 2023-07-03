@@ -50,7 +50,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public class UpdateCardRequest : RequestObjectBase
         {
-            public Card UpdatedCard { get; set; }
+            public Card CardToUpdate { get; set; }
         }
 
         public class UpdateCardResponse
@@ -60,17 +60,5 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             public Card UpdatedCard { get; set; }
         }
 
-        public class UpdateCardPresenterCallback : IPresenterCallback<UpdateCardResponse>
-        {
-
-            public async Task OnSuccess(UpdateCardResponse response)
-            {
-            }
-
-            public async Task OnFailure(ZBankException response)
-            {
-
-            }
-        }
     }
 }

@@ -70,6 +70,7 @@ namespace ZBank.ViewModel
 
             TransferAmountRequest request = new TransferAmountRequest()
             {
+                CustomerID = Repository.Current.CurrentUserID,
                 Transaction = CurrentTransaction,
                 OwnerAccount = UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.SenderAccountNumber),
                 Beneficiary = AllBeneficiaries.FirstOrDefault(ben => ben.AccountNumber == CurrentTransaction.RecipientAccountNumber),

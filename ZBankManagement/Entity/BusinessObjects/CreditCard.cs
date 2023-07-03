@@ -17,7 +17,6 @@ namespace ZBank.Entities
         public decimal Interest { get; set; }
 
         public decimal CreditLimit { get; set; }
-
     }
 
     public enum CreditCardProvider

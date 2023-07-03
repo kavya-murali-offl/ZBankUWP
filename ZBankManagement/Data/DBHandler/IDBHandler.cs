@@ -10,6 +10,7 @@ using Windows.Storage;
 using ZBankManagement.Entity.BusinessObjects;
 using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.DTOs;
+using ZBank.Entities.EnumerationType;
 
 namespace ZBank.DatabaseHandler
  {
@@ -34,8 +35,9 @@ namespace ZBank.DatabaseHandler
         Task<int> UpdateCustomer(Customer customer);
 
         Task<List<Customer>> GetCustomer(string phoneNumber);
+        Task<IEnumerable<TransactionBObj>> FetchAllTodayTransactions(string accountNumber, string customerID);
 
-        
+
         // Customer Credentials
 
         Task<CustomerCredentials> GetCredentials(string customerID);
@@ -53,7 +55,9 @@ namespace ZBank.DatabaseHandler
         Task InsertAccount(Account account, IEnumerable<KYCDocuments> documents);
 
         // Card
-        Task<int> InsertCard(Card card);
+        Task InsertCreditCard(Card card, CreditCardDTO creditCardDTO);
+
+        Task InsertDebitCard(Card card, DebitCardDTO debitCardDTO);
 
         Task<int> UpdateCard(Card card);
 
@@ -87,7 +91,7 @@ namespace ZBank.DatabaseHandler
 
         Task InitiateTransactionExternal(Transaction transaction, Account account, TransactionMetaData metaData);
 
-        Task<Account> GetAccountByAccountNumber(string accountNumber);
+        Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber, AccountType accountType);
 
         Task CreateTables();
 

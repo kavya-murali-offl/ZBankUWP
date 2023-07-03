@@ -21,11 +21,11 @@ namespace ZBankManagement.DataManager
 
         public async Task UpdateCard(UpdateCardRequest request, IUseCaseCallback<UpdateCardResponse> callback)
         {
-            int rowsModified = await DBHandler.UpdateCard(request.UpdatedCard);
+            int rowsModified = await DBHandler.UpdateCard(request.CardToUpdate);
             if(rowsModified > 0)
             {
                 UpdateCardResponse response = new UpdateCardResponse();
-                response.UpdatedCard = request.UpdatedCard;
+                response.UpdatedCard = request.CardToUpdate;
                 response.IsSuccess = true;
                 callback.OnSuccess(response);   
             }

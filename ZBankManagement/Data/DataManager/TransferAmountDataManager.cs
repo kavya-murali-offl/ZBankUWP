@@ -8,6 +8,8 @@ using ZBankManagement.Domain.UseCase;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.Entities;
+using System.Linq;
+using ZBank.Entities.EnumerationType;
 
 namespace ZBankManagement.DataManager
 {
@@ -24,18 +26,54 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                var metaData = new TransactionMetaData()
+                bool validated = false;
+                if (request.OwnerAccount.AccountType == AccountType.CURRENT || request.OwnerAccount.AccountType == AccountType.SAVINGS)
                 {
-                    ID = Guid.NewGuid().ToString(),
-                    ReferenceID = request.Transaction.ReferenceID,
-                    AccountNumber = request.OwnerAccount.AccountNumber,
-                    ClosingBalance = request.OwnerAccount.Balance -= request.Transaction.Amount,
-                };
-                await _dBHandler.InitiateTransactionExternal(request.Transaction, request.OwnerAccount, metaData);
-                TransferAmountResponse response = new TransferAmountResponse()
+                    IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.OwnerAccount.AccountNumber, request.CustomerID);
+                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.OwnerAccount.AccountNumber, request.OwnerAccount.AccountType);
+                    var amountTransacted = transactionsMadeToday.Sum(x => x.Amount);
+                    decimal limit = 0;
+                    if (request.OwnerAccount is CurrentAccount)
+                    {
+                       limit = (request.OwnerAccount as CurrentAccount).TransactionLimit;
+                      
+                    }else if(request.OwnerAccount is SavingsAccount) {
+                        limit = (request.OwnerAccount as SavingsAccount).TransactionLimit;
+                    }
+
+                    if (amountTransacted + request.Transaction.Amount > limit)
+                    {
+                        ZBankException error = new ZBankException()
+                        {
+                            Type = ErrorType.UNKNOWN,
+                            Message = "Daily Transaction Limit Exceeded. Try again later",
+                        };
+                        callback.OnFailure(error);
+                    }
+                    else
+                    {
+                        validated = true;
+                    }
+                }
+                else
                 {
-                };
-                callback.OnSuccess(response);
+                    validated = true;
+                }
+                if (validated)
+                {
+                    var metaData = new TransactionMetaData()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        ReferenceID = request.Transaction.ReferenceID,
+                        AccountNumber = request.OwnerAccount.AccountNumber,
+                        ClosingBalance = request.OwnerAccount.Balance -= request.Transaction.Amount,
+                    };
+                    await _dBHandler.InitiateTransactionExternal(request.Transaction, request.OwnerAccount, metaData);
+                    TransferAmountResponse response = new TransferAmountResponse()
+                    {
+                    };
+                    callback.OnSuccess(response);
+                }
             }
             catch (Exception ex)
             {
@@ -52,7 +90,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account account = await _dBHandler.GetAccountByAccountNumber(request.Beneficiary.AccountNumber);
+                Account account = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber, request.OwnerAccount.AccountType);
                 GetBeneficiaryAccountResponse response = new GetBeneficiaryAccountResponse()
                 {
                     Account = account
@@ -74,7 +112,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account otherAccount = request.OtherAccount != null ? request.OtherAccount : await _dBHandler.GetAccountByAccountNumber(request.Beneficiary.AccountNumber); ;
+                Account otherAccount = request.OtherAccount != null ? request.OtherAccount : await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber, request.OwnerAccount.AccountType);
                 
                 if (otherAccount != null)
                 {

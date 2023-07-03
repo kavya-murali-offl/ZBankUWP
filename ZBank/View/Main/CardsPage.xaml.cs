@@ -78,7 +78,10 @@ namespace ZBank.View.Main
             }
         }
 
+        private void AddCardButton_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
     } 
 }
 

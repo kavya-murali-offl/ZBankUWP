@@ -33,67 +33,117 @@
             <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid
-            Margin="0,10,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    Width="*" />
-                <ColumnDefinition
-                    Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid
-                Margin="5"
-                Padding="20"
-                CornerRadius="8"
-                Background="{ThemeResource ApplicationBackground}">
-                <Grid.RowDefinitions>
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    FontWeight="Bold"
-                    FontSize="16"
-                    HorizontalAlignment="Center"
-                    Text="Total Credit Cards" />
-                <TextBlock
-                    Padding="10"
-                    FontWeight="Bold"
-                    FontSize="20"
-                    HorizontalAlignment="Center"
-                    Grid.Row="1"
-                    Text="1" />
-            </Grid>
-            <Grid
-                Margin="5"
-                Grid.Column="1"
-                Padding="20"
-                CornerRadius="8"
-                Background="{ThemeResource ApplicationBackground}">
-                <Grid.RowDefinitions>
-                    <RowDefinition
-                        Height="Auto" />
-                    <RowDefinition
-                        Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    FontWeight="Bold"
-                    FontSize="16"
-                    HorizontalAlignment="Center"
-                    Text="Total Debit Cards" />
-                <TextBlock
-                    Padding="10"
-                    FontWeight="Bold"
-                    FontSize="20"
-                    HorizontalAlignment="Center"
-                    Grid.Row="1"
-                    Text="1" />
-            </Grid>
+        <Grid>
+            <Button
+                Margin="10,10,30,10"
+                Style="{ThemeResource PrimaryButton}"
+                HorizontalAlignment="Right"
+                x:Name="AddCardButton"
+                Click="AddCardButton_Click"
+                Content="Add Credit Card" />
         </Grid>
+        <GridView
+            Grid.Row="1"
+            SelectionMode="None">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid
+                        HorizontalAlignment="Center"
+                        ItemWidth="300"
+                        Orientation="Horizontal"
+                        MaximumRowsOrColumns="4" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemContainerStyle>
+                <Style
+                    TargetType="GridViewItem">
+                    <Setter
+                        Property="HorizontalContentAlignment"
+                        Value="Stretch" />
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridViewItem>
+                <Grid
+                    Margin="5"
+                    Padding="20"
+                    CornerRadius="8"
+                    Background="{ThemeResource ApplicationBackground}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        FontWeight="Bold"
+                        FontSize="16"
+                        HorizontalAlignment="Center"
+                        Text="Total Credit Cards" />
+                    <TextBlock
+                        Padding="10"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        HorizontalAlignment="Center"
+                        Grid.Row="1"
+                        Text="1" />
+                </Grid>
+            </GridViewItem>
+            <GridViewItem>
+                <Grid
+                    Margin="5"
+                    Padding="20"
+                    CornerRadius="8"
+                    Background="{ThemeResource ApplicationBackground}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        FontWeight="Bold"
+                        FontSize="16"
+                        HorizontalAlignment="Center"
+                        Text="Total Debit Cards" />
+                    <TextBlock
+                        Padding="10"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        HorizontalAlignment="Center"
+                        Grid.Row="1"
+                        Text="1" />
+                </Grid>
+            </GridViewItem>
+            <GridViewItem>
+                <Grid
+                    Margin="5"
+                    Padding="20"
+                    CornerRadius="8"
+                    Background="{ThemeResource ApplicationBackground}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        FontWeight="Bold"
+                        FontSize="16"
+                        HorizontalAlignment="Center"
+                        Text="Maximum Credit Cards" />
+                    <TextBlock
+                        Padding="10"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        HorizontalAlignment="Center"
+                        Grid.Row="1"
+                        Text="3" />
+                </Grid>
+            </GridViewItem>
+        </GridView>
         <Grid
             Margin="10"
-            Grid.Row="1"
+            Grid.Row="2"
             Background="Transparent"
             MaxWidth="800"
             HorizontalAlignment="Stretch">
@@ -137,11 +187,12 @@
                 <usercontrols:CardElementView
                     TemplateCard="{x:Bind ViewModel.DataModel.RightCard, Mode=OneWay}" />
             </Grid>
+           
             <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Orientation="Horizontal"
-                Grid.Row="1">
+                Grid.Row="2">
                 <Button
                     BorderThickness="1"
                     VerticalAlignment="Center"
@@ -190,13 +241,40 @@
                 </Button>
             </StackPanel>
         </Grid>
-
-        <usercontrols:OneByTwoGrid
-            Grid.Row="2">
-            <usercontrols:OneByTwoGrid.Column1Content>
+        <GridView 
+            SelectionMode="None"
+            Grid.Row="3">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        MinWidth="400"
+                        MaximumRowsOrColumns="2" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemContainerStyle>
+                <Style
+                    TargetType="GridViewItem">
+                    <Setter
+                        Property="HorizontalContentAlignment"
+                        Value="Stretch" />   
+                    <Setter
+                        Property="HorizontalAlignment"
+                        Value="Center" />
+                    <Setter
+                        Property="VerticalContentAlignment"
+                        Value="Stretch" />
+                    <Setter
+                        Property="VerticalAlignment"
+                        Value="Stretch" />
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridViewItem>
                 <Grid
-                    HorizontalAlignment="Stretch"
-                    Padding="20"
+                    MinWidth="400"
+                    Padding="30"
+                    MinHeight="250"
                     Margin="5"
                     CornerRadius="8"
                     Background="{ThemeResource ApplicationBackground}">
@@ -218,28 +296,31 @@
                         <RowDefinition
                             Height="Auto" />
                         <RowDefinition
-                            Height="Auto" />       <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
                             Height="Auto" />
                         <RowDefinition
                             Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition
-                            Width="*" MaxWidth="200" />
+                            Width="*"
+                            MaxWidth="250" />
                         <ColumnDefinition
                             Width="*"
-                            MaxWidth="200" />
+                            MaxWidth="250" />
                     </Grid.ColumnDefinitions>
                     <TextBlock
                         FontWeight="SemiBold"
                         Grid.ColumnSpan="2"
                         FontSize="18"
+                        Margin="0,0,0,20"
                         Text="Card Details" />
-
                     <Button
                         x:Name="ResetPinButton"
                         Click="ResetPinButton_Click"
                         Grid.Column="1"
+                        Margin="0,0,0,20"
                         HorizontalAlignment="Right"
                         Style="{ThemeResource PrimaryButton}">
                         <Button.Content>
@@ -278,7 +359,7 @@
                         CornerRadius="5"
                         Margin="0,10,0,10"
                         Background="{ThemeResource ApplicationBackgroundThemeBrush}">
-                        
+
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="18"
@@ -288,7 +369,7 @@
                             Text="{x:Bind ViewModel.DataModel.OnViewCard.CVV, 
                                 Mode=OneWay,
                                 Converter={StaticResource MaskConverter}}" />
-                        
+
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -341,7 +422,7 @@
                             Padding="5"
                             Text="{x:Bind ViewModel.DataModel.OnViewCard.ExpiryMonth, Mode=OneWay}" />
                     </Grid>
-                    <TextBlock
+                    <!--<TextBlock
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Margin="0,20,0,0"
@@ -354,14 +435,15 @@
                         HorizontalAlignment="Center"
                         Margin="25,20,0,0"
                         Grid.Row="8"
-                        Text="{x:Bind ViewModel.DataModel.OnViewCard.Type, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.DataModel.OnViewCard.Type, Mode=OneWay}" />-->
 
                 </Grid>
-            </usercontrols:OneByTwoGrid.Column1Content>
-            <usercontrols:OneByTwoGrid.Column2Content>
+            </GridViewItem>
+            <GridViewItem>
                 <Grid
-                    HorizontalAlignment="Stretch"
-                    Padding="20,0,20,20"
+                    VerticalAlignment="Stretch"
+                    MinWidth="400"
+                    Padding="20"
                     Margin="5"
                     CornerRadius="8"
                     Background="{ThemeResource ApplicationBackground}">
@@ -393,7 +475,6 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock
                         Grid.ColumnSpan="2"
-                        Margin="0,20,0,10"
                         FontWeight="SemiBold"
                         Grid.Row="3"
                         VerticalAlignment="Center"
@@ -450,10 +531,9 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Text="{x:Bind LimitSlider.Value,Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
-
                 </Grid>
-            </usercontrols:OneByTwoGrid.Column2Content>
-        </usercontrols:OneByTwoGrid>
+            </GridViewItem>
+        </GridView>
     </Grid>
 </Page>
  

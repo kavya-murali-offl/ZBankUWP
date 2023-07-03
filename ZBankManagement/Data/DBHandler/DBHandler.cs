@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Provider;
 using ZBank.DatabaseAdapter;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
@@ -509,9 +511,38 @@ namespace ZBank.DatabaseHandler
             await _databaseAdapter.RunInTransactionAsync(action);
         }
 
-        public async Task<Account> GetAccountByAccountNumber(string accountNumber)
+        public async Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber, AccountType accountType)
         {
-            return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync();
+            if(accountType == AccountType.CURRENT)
+            {
+                var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
+$"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
+$"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+$"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+$"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
+                return currentAccount.FirstOrDefault();
+            }
+            else if(accountType == AccountType.SAVINGS)
+            {
+                var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
+               $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
+               $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+               $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+               $"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
+                return savingsAccount.FirstOrDefault();
+
+            }else if(accountType == AccountType.TERM_DEPOSIT)
+            {
+
+                var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
+                    $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
+                    $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+                    $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+                    $"where UserID = ? And AccountNumber = ? ", customerID, accountNumber);
+                return termDepositAccounts.FirstOrDefault();    
+            }
+            return null;
+        
         }
 
         public async Task<int> ResetPin(string cardNumber, string pin)
@@ -577,6 +608,7 @@ namespace ZBank.DatabaseHandler
             accountsList.AddRange(currentAccount);
             accountsList.AddRange(savingsAccount);
             accountsList.AddRange(termDepositAccounts);
+            
             return accountsList;
         }
 
@@ -679,6 +711,14 @@ namespace ZBank.DatabaseHandler
             return allTransactions.OrderByDescending(tran => tran.RecordedOn);
         }
 
+        public async Task<IEnumerable<TransactionBObj>> FetchAllTodayTransactions(string accountNumber, string customerID)
+        {
+                var expenseTransactions = await _databaseAdapter.Query<TransactionBObj>(
+                   expenseTransactionsQuery + " AND RecordedOn >= date('now', 'start of day')", accountNumber, accountNumber);
+
+              return expenseTransactions.OrderByDescending(tran => tran.RecordedOn);
+        }
+
         private string incomingTransactionQuery = "SELECT Transactions.*, TransactionMetaData.ClosingBalance, " +
                 " ExternalAccounts.ExternalName, Beneficiary.BeneficiaryName, Account.AccountName FROM Transactions " +
                  "Left Join Beneficiary on Transactions.SenderAccountNumber = Beneficiary.AccountNumber " +
@@ -693,7 +733,7 @@ namespace ZBank.DatabaseHandler
                "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
                "WHERE  Transactions.SenderAccountNumber == ? ";
 
-
+        
         public async Task<IEnumerable<TransactionBObj>> GetAllTransactionByAccountNumber(string accountNumber, string customerID)
         {
             var allTransactions = new List<TransactionBObj>();
@@ -708,5 +748,26 @@ namespace ZBank.DatabaseHandler
             allTransactions.AddRange(expenseTransactions);
             return allTransactions.OrderByDescending(tran => tran.RecordedOn);
         }
+
+        public async Task InsertCreditCard(Card card, CreditCardDTO creditCardDTO)
+        {
+            Func<Task> action = async () =>
+            {
+                await _databaseAdapter.Insert(card);
+                await _databaseAdapter.Insert(creditCardDTO);
+            };
+            await _databaseAdapter.RunInTransactionAsync(action);
+        }
+
+        public async Task InsertDebitCard(Card card, DebitCardDTO debitCardDTO)
+        {
+            Func<Task> action = async () =>
+            {
+                await _databaseAdapter.Insert(card);
+                await _databaseAdapter.Insert(debitCardDTO);
+            };
+            await _databaseAdapter.RunInTransactionAsync(action);
+        }
+
     }
 }

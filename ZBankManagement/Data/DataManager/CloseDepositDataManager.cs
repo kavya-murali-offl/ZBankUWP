@@ -8,11 +8,12 @@ using ZBank.Entities;
 using ZBank.Entities.EnumerationType;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
+using ZBankManagement.Data.DataManager.Contracts;
 using ZBankManagement.Domain.UseCase;
 
 namespace ZBankManagement.Data.DataManager
 {
-    class CloseDepositDataManager
+    class CloseDepositDataManager : ICloseDepositDataManager
     {
         public CloseDepositDataManager(IDBHandler dBHandler)
         {
@@ -25,7 +26,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                Account account = await DBHandler.GetAccountByAccountNumber(request.DepositAccount.RepaymentAccountNumber);
+                Account account = await DBHandler.GetAccountByAccountNumber(request.CustomerID, request.DepositAccount.RepaymentAccountNumber, AccountType.TERM_DEPOSIT);
                 if(account != null)
                 {
                     decimal totalAmount = request.DepositAccount.CalculateClosingAmount(DateTime.Now);

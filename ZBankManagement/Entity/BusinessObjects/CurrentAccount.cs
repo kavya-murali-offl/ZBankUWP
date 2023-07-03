@@ -13,6 +13,10 @@ namespace ZBank.Entities
         public decimal CHARGES = 100;
 
         public decimal InterestRate { get; set; }
+
         public decimal MinimumBalance { get; set; }
+
+        public decimal TransactionLimit { get; set; }
+
     }
 }

@@ -117,6 +117,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public Account OwnerAccount { get; set; }
 
+        public string CustomerID { get; set; }
+
         public Beneficiary Beneficiary { get; set; }  
 
         public Account OtherAccount { get; set; }   

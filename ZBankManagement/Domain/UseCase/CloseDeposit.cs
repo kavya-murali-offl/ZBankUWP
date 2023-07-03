@@ -57,6 +57,7 @@ namespace ZBankManagement.Domain.UseCase
         public TermDepositAccount DepositAccount { get; set; }
 
         public string CardNumber { get; set; }
+        public string CustomerID { get; set; }
     }
 
 
