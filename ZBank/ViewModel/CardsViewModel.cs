@@ -18,12 +18,14 @@ using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.Constants;
+using ZBank.Services;
 using ZBank.View;
 using ZBank.View.UserControls;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
+using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCard;
 using static ZBankManagement.Domain.UseCase.ResetPin;
 
 namespace ZBank.ViewModel
@@ -162,6 +164,67 @@ namespace ZBank.ViewModel
             };
             (NextCardCommand as RelayCommand).RaiseCanExecuteChanged();
             (PreviousCardCommand as RelayCommand).RaiseCanExecuteChanged();
+        }
+
+        internal void UpdateTransactionLimit(double value)
+        {
+            
+            UpdateCardRequest request = new UpdateCardRequest()
+            {
+                CustomerID = Repository.Current.CurrentUserID,
+                CardToUpdate = DataModel.OnViewCard,
+            };
+
+            request.CardToUpdate.TransactionLimit = decimal.Parse(value.ToString());
+
+            IPresenterCallback<UpdateCardResponse> presenterCallback = new UpdateLimitPresenterCallback(this);
+            UseCaseBase<UpdateCardResponse> useCase = new UpdateCardUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        private class UpdateLimitPresenterCallback : IPresenterCallback<UpdateCardResponse>
+        {
+            private CardsViewModel ViewModel { get; set; }
+
+            public UpdateLimitPresenterCallback(CardsViewModel cardsViewModel)
+            {
+                ViewModel = cardsViewModel;
+            }
+
+            public async Task OnSuccess(UpdateCardResponse response)
+            {
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnUpdatedLimit(true, response.UpdatedCard);
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = "Transaction Limit Update Successful",
+                            Type = NotificationType.SUCCESS
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnUpdatedLimit(false, null);
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = response.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+
+            }
         }
 
 

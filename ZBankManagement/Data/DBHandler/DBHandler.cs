@@ -667,7 +667,7 @@ namespace ZBank.DatabaseHandler
 
         public Task<int> InsertCard(Card card) => _databaseAdapter.Insert(card);
 
-        public Task<int> UpdateCard(Card card) => _databaseAdapter.Update(card);
+        public async Task<int> UpdateCard(string cardNumber, decimal limit, string customerID) => await _databaseAdapter.Execute("Update Card Set SpendingLimit = ? Where CardNumber = ? And CustomerID = ? ", limit, cardNumber, customerID);
 
 
         public Task<int> InsertTransaction(Transaction transaction) => _databaseAdapter.Insert(transaction);

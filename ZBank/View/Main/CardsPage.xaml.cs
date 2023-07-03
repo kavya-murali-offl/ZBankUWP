@@ -12,7 +12,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
 using ZBank.Config;
+using ZBank.Entities;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
@@ -31,16 +33,32 @@ namespace ZBank.View.Main
         {
             this.InitializeComponent();
             ViewModel = new CardsViewModel(this);
+            LimitSlider.IsEnabled = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageLoaded();
+            ViewNotifier.Instance.LimitUpdated += OnUpdatedLimit;
+        }
+
+        private void OnUpdatedLimit(bool isUpdated, Card updatedCard)
+        {
+            LimitSlider.IsEnabled = false;
+            if (isUpdated && ViewModel.DataModel.OnViewCard.CardNumber == updatedCard.CardNumber)
+            {
+                LimitSlider.Value = double.Parse(updatedCard.TransactionLimit.ToString());
+            }
+            else
+            {
+                LimitSlider.Value = double.Parse(ViewModel.DataModel.OnViewCard.TransactionLimit.ToString());
+            }
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageUnLoaded();
+            ViewNotifier.Instance.LimitUpdated -= OnUpdatedLimit;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -70,17 +88,36 @@ namespace ZBank.View.Main
             await dialog.ShowAsync();
         }
 
-        private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            if(ViewModel?.DataModel?.OnViewCard != null)
-            {
-                ViewModel.DataModel.OnViewCard.SpendingLimit = decimal.Parse(LimitSlider.Value.ToString());
-            }
-        }
-
+       
         private void AddCardButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ChangeLimitButton_Click(object sender, RoutedEventArgs e)
+        {
+            LimitSlider.IsEnabled = true;
+        }
+
+        private void UpdateLimitSubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(ViewModel.DataModel.OnViewCard.SpendingLimit != decimal.Parse(UpdatedLimit.ToString()))
+            {
+                ViewModel.UpdateTransactionLimit(LimitSlider.Value);
+            }
+        }
+
+        private void CancelUpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            LimitSlider.Value = double.Parse(ViewModel.DataModel.OnViewCard.SpendingLimit.ToString());
+            LimitSlider.IsEnabled = false;  
+        }
+
+        private double UpdatedLimit { get; set; }
+
+        private void LimitSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            UpdatedLimit = e.NewValue;
         }
     } 
 }

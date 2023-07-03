@@ -59,7 +59,7 @@ namespace ZBank.DatabaseHandler
 
         Task InsertDebitCard(Card card, DebitCardDTO debitCardDTO);
 
-        Task<int> UpdateCard(Card card);
+        Task<int> UpdateCard(string cardNumber, decimal limit, string customerID);
 
         Task<IEnumerable<CardBObj>> GetCardByAccountNumber(string accountNumber);
         

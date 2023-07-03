@@ -51,7 +51,7 @@
                         HorizontalAlignment="Center"
                         ItemWidth="300"
                         Orientation="Horizontal"
-                        MaximumRowsOrColumns="4" />
+                        MaximumRowsOrColumns="3" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemContainerStyle>
@@ -59,6 +59,9 @@
                     TargetType="GridViewItem">
                     <Setter
                         Property="HorizontalContentAlignment"
+                        Value="Stretch" />
+                    <Setter
+                        Property="HorizontalAlignment"
                         Value="Stretch" />
                 </Style>
             </GridView.ItemContainerStyle>
@@ -273,7 +276,7 @@
             <GridViewItem>
                 <Grid
                     MinWidth="400"
-                    Padding="30"
+                    Padding="20"
                     MinHeight="250"
                     Margin="5"
                     CornerRadius="8"
@@ -316,19 +319,14 @@
                         FontSize="18"
                         Margin="0,0,0,20"
                         Text="Card Details" />
-                    <Button
-                        x:Name="ResetPinButton"
-                        Click="ResetPinButton_Click"
-                        Grid.Column="1"
-                        Margin="0,0,0,20"
-                        HorizontalAlignment="Right"
-                        Style="{ThemeResource PrimaryButton}">
-                        <Button.Content>
-                            <TextBlock
-                                Text="Reset Pin" />
-                        </Button.Content>
-                    </Button>
 
+                    <TextBlock
+                        FontWeight="SemiBold"
+                        Grid.ColumnSpan="2"
+                        FontSize="18"
+                        Margin="0,0,0,20"
+                        Text="{x:Bind ViewModel.DataModel.OnViewCard.Type, Mode=OneWay}" />
+                    
                     <TextBlock
                         Margin="0,10,0,10"
                         Grid.Row="2"
@@ -403,6 +401,7 @@
                                 FontSize="14"
                                 Glyph="&#xED1A;" />
                         </Button>
+
                     </Grid>
                     <TextBlock
                         HorizontalAlignment="Center"
@@ -422,6 +421,21 @@
                             Padding="5"
                             Text="{x:Bind ViewModel.DataModel.OnViewCard.ExpiryMonth, Mode=OneWay}" />
                     </Grid>
+
+
+                    <Button
+                        x:Name="ResetPinButton"
+                        Click="ResetPinButton_Click"
+                        Margin="0,20,0,0"
+                        Grid.Row="7"
+                        HorizontalAlignment="Center"
+                        Grid.ColumnSpan="2"
+                        Style="{ThemeResource PrimaryButton}">
+                        <Button.Content>
+                            <TextBlock
+                                Text="Reset Pin" />
+                        </Button.Content>
+                    </Button>
                     <!--<TextBlock
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
@@ -479,28 +493,19 @@
                         Grid.Row="3"
                         VerticalAlignment="Center"
                         FontSize="18"
+                        Margin="0,0,20,20"
                         Text="Daily Transaction Limit" />
-                    <ToggleButton
-                        Grid.Column="1"
-                        Grid.Row="3"
-                        Style="{ThemeResource PrimaryToggleButton}"
-                        x:Name="ChangeLimitButton"
-                        Margin="0,20,0,10"
-                        FontWeight="SemiBold"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right"
-                        FontSize="14"
-                        Content="Change" />
+                   
                     <Slider
                         Grid.Row="5"
                         Grid.ColumnSpan="2"
                         Minimum="10000"
-                        Value="{x:Bind ViewModel.DataModel.OnViewCard.SpendingLimit, Mode=OneWay, Converter={StaticResource DecimalToDoubleConverter}}"
                         Maximum="50000"
-                        IsEnabled="{x:Bind ChangeLimitButton.IsChecked.GetValueOrDefault(), Mode=OneWay}"
                         StepFrequency="100"
                         x:Name="LimitSlider"
-                        ValueChanged="Slider_ValueChanged"
+                        Margin="10"
+                        Value="{x:Bind ViewModel.DataModel.OnViewCard.SpendingLimit, Converter={StaticResource DecimalToDoubleConverter},Mode=OneWay}"
+                        ValueChanged="LimitSlider_ValueChanged"
                         SmallChange="100" />
                     <TextBlock
                         Grid.ColumnSpan="2"
@@ -531,6 +536,52 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Text="{x:Bind LimitSlider.Value,Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
+
+                    <Button
+                        Style="{ThemeResource PrimaryButton}"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="9"
+                        MinWidth="100"
+                        Visibility="{x:Bind LimitSlider.IsEnabled, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"
+                        Click="ChangeLimitButton_Click"
+                        x:Name="ChangeLimitButton"
+                        Margin="0,30,0,10"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontSize="14"
+                        Content="Update Limit" />
+
+                    <Button
+                        Style="{ThemeResource PrimaryButton}"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="9"
+                        MinWidth="100"
+                        Visibility="{x:Bind LimitSlider.IsEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Click="UpdateLimitSubmitButton_Click"
+                        x:Name="UpdateLimitSubmitButton"
+                        Margin="0,30,0,10"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        FontSize="14"
+                        Content="Update" />
+
+                    <Button
+                        MinWidth="100"
+                        Style="{ThemeResource SecondaryButton}"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="9"
+                        Visibility="{x:Bind LimitSlider.IsEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Click="CancelUpdateButton_Click"
+                        x:Name="CancelUpdateButton"
+                        Margin="0,30,0,10"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        FontSize="14"
+                        Content="Cancel" />
+
                 </Grid>
             </GridViewItem>
         </GridView>

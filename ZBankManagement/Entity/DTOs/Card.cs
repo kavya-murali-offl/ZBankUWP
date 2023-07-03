@@ -29,6 +29,8 @@ namespace ZBank.Entities
 
         public string ExpiryYear { get; set; }
 
+        public decimal TransactionLimit { get; set; }
+
     }
 
     public enum CardType

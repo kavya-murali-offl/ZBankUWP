@@ -51,6 +51,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public class UpdateCardRequest : RequestObjectBase
         {
             public Card CardToUpdate { get; set; }
+
+            public string CustomerID { get; set; }
         }
 
         public class UpdateCardResponse

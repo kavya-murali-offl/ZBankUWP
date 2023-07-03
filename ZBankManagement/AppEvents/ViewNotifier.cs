@@ -22,6 +22,12 @@ namespace ZBank.AppEvents
             LoadApp?.Invoke();
         }
 
+        public event Action<bool, Card> LimitUpdated;
+        public void OnUpdatedLimit(bool updated, Card updatedCard)
+        {
+            LimitUpdated?.Invoke(updated, updatedCard);
+        }
+
         public event Action<bool, AccountBObj> AccountUpdated;
         public void OnAccountUpdated(bool updated, AccountBObj account=null)
         {
