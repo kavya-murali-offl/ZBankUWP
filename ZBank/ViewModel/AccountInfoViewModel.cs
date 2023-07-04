@@ -13,6 +13,7 @@ using ZBank.AppEvents.AppEventArgs;
 using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Entities.EnumerationType;
 using ZBank.Entity.BusinessObjects;
 using ZBank.Services;
 using ZBank.View;
@@ -69,6 +70,24 @@ namespace ZBank.ViewModel
             View = view;
             CloseAccountCommand = new RelayCommand(CloseAccount);
             UpdateAccountCommand = new RelayCommand(UpdateAccount);
+            LinkCardCommand = new RelayCommand(LinkCard);
+        }
+
+        private void LinkCard(object obj)
+        {
+            if(SelectedAccount.AccountType != Entities.EnumerationType.AccountType.TERM_DEPOSIT)
+            {
+                InsertCardRequest request = new InsertCardRequest()
+                {
+                    CardType = Entities.CardType.DEBIT,
+                    CustomerID = Repository.Current.CurrentUserID,
+                    AccountNumber = SelectedAccount.AccountNumber
+                };
+
+                IPresenterCallback<InsertCardResponse> presenterCallback = new InsertCardPresenterCallback(this);
+                UseCaseBase<InsertCardResponse> useCase = new InsertCardUseCase(request, presenterCallback);
+                useCase.Execute();
+            }
         }
 
         private void UpdateAccount(object obj)
@@ -109,8 +128,11 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public ICommand CloseAccountCommand { get; set; }   
-        public ICommand UpdateAccountCommand { get; set; }   
+        public ICommand CloseAccountCommand { get; set; }  
+        
+        public ICommand UpdateAccountCommand { get; set; } 
+        
+        public ICommand LinkCardCommand { get; set; }   
 
         public void OnPageLoaded()
         {
@@ -119,6 +141,7 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.TransactionListUpdated += UpdateTransactions;
             ViewNotifier.Instance.DepositClosed += DepositClosed;
             ViewNotifier.Instance.AccountUpdated += OnAccountUpdated;
+            ViewNotifier.Instance.CardInserted += OnCardInserted;
             LoadTransactions();
         }
 
@@ -138,8 +161,14 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactions;
             ViewNotifier.Instance.DepositClosed -= DepositClosed;
             ViewNotifier.Instance.AccountUpdated -= OnAccountUpdated;
+            ViewNotifier.Instance.CardInserted -= OnCardInserted;
         }
 
+        private void OnCardInserted(bool isUpdated, Card insertedCard)
+        {
+            SelectedAccount.CardNumber = insertedCard.CardNumber;   
+            LoadCardByID();
+        }
 
         public void UpdateCard(CardDataUpdatedArgs args)
         {
@@ -174,7 +203,7 @@ namespace ZBank.ViewModel
 
             GetAllCardsRequest request = new GetAllCardsRequest()
             {
-                CustomerID = null,
+                CustomerID = Repository.Current.CurrentUserID,
                 CardNumber = SelectedAccount.CardNumber
             };
 
@@ -182,6 +211,52 @@ namespace ZBank.ViewModel
             UseCaseBase<GetAllCardsResponse> useCase = new GetAllCardsUseCase(request, presenterCallback);
             useCase.Execute();
         }
+
+
+        private class InsertCardPresenterCallback : IPresenterCallback<InsertCardResponse>
+        {
+            private AccountInfoViewModel ViewModel { get; set; }
+
+            public InsertCardPresenterCallback(AccountInfoViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(InsertCardResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard);
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = "Card linked successfully",
+                            Type = NotificationType.SUCCESS
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+            }
+
+            public async Task OnFailure(ZBankException exception)
+            {
+
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    NotifyUserArgs args = new NotifyUserArgs()
+                    {
+                        Notification = new Notification()
+                        {
+                            Message = exception.Message,
+                            Type = NotificationType.ERROR
+                        }
+                    };
+                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                });
+            }
+        }
+
 
         private class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>
         {

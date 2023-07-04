@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -41,6 +42,16 @@ namespace ZBank.View.DataTemplates
         public static readonly DependencyProperty SelectedCardProperty =
             DependencyProperty.Register("SelectedCard", typeof(CardBObj), typeof(ViewOrNoCardTemplate), new PropertyMetadata(null));
 
+        public ICommand LinkCardCommand
+        {
+            get { return (ICommand)GetValue(LinkCardCommandProperty); }
+            set { SetValue(LinkCardCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LinkCardCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LinkCardCommandProperty =
+            DependencyProperty.Register("LinkCardCommand", typeof(ICommand), typeof(ViewOrNoCardTemplate), new PropertyMetadata(null));
+
         public string BankLogo { get; set; } = Constants.ZBankLogo;
 
 
@@ -60,6 +71,16 @@ namespace ZBank.View.DataTemplates
             {
                 ViewOrNoCardContent.Content = (Resources["NoCardTemplate"] as DataTemplate).LoadContent();
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void LinkCard_Click(object sender, RoutedEventArgs e)
+        {
+             LinkCardCommand.Execute(null);
         }
     }
 }

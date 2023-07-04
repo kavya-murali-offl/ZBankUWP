@@ -479,6 +479,19 @@ namespace ZBank.DatabaseHandler
 
         }
 
+        public async Task PayCreditCardBill(Transaction transaction, Account ownerAccount, TransactionMetaData metaData, CreditCard creditCard)
+        {
+            Func<Task> action = async () =>
+            {
+                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", ownerAccount.Balance, ownerAccount.AccountNumber);
+                await _databaseAdapter.Execute("Update CreditCard Set TotalOutstanding = ? where CardNumber = ?", creditCard.TotalOutstanding, creditCard.CardNumber);
+                await _databaseAdapter.Insert(transaction);
+                await _databaseAdapter.Insert(metaData);
+            };
+            await _databaseAdapter.RunInTransactionAsync(action);
+        }
+
+
         public async Task<int> DeleteBeneficiary(Beneficiary beneficiary)
         {
             return await _databaseAdapter.Delete(beneficiary);

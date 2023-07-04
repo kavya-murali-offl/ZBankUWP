@@ -42,7 +42,7 @@ namespace ZBank.ViewModel
 
         public decimal AvailableBalance
         {
-            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction?.SenderAccountNumber).Balance;
+            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction?.SenderAccountNumber)?.Balance ?? 0;
         }
 
         public AccountBObj SelectedAccount

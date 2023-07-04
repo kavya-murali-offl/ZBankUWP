@@ -22,31 +22,27 @@ namespace ZBankManagement.DataManager
 
         public async Task InsertCard(InsertCardRequest request, IUseCaseCallback<InsertCardResponse> callback)
         {
-
             try
             {
-                if(request.CardToInsert is CreditCard)
+                if(request.CardType == CardType.CREDIT)
                 {
-                    CreditCard creditCard = request.CardToInsert as CreditCard;
                     var creditCardDTO = new CreditCardDTO()
                     {
                         CardNumber = request.CardToInsert.CardNumber,
-                        TotalOutstanding = creditCard.TotalOutstanding,
-                        MinimumOutstanding = creditCard.MinimumOutstanding,
-                        CreditLimit = creditCard.CreditLimit,
-                        Interest = creditCard.Interest,
-                        Provider = creditCard.CreditCardProvider
+                        TotalOutstanding = 0,
+                        MinimumOutstanding = 0,
+                        CreditLimit = 20000,
+                        Interest = 7.5m,
+                        Provider = request.CreditCardProvider
                     };
                     await DBHandler.InsertCreditCard(request.CardToInsert, creditCardDTO);
-
                 }
-                else if(request.CardToInsert is DebitCard)
+                else if(request.CardType == CardType.DEBIT)
                 {
-                    DebitCard debitCard = request.CardToInsert as DebitCard;
                     var debitCardDTO = new DebitCardDTO()
                     {
-                        AccountNumber = debitCard.AccountNumber,
-                        CardNumber = debitCard.CardNumber,
+                        AccountNumber = request.AccountNumber,
+                        CardNumber = request.CardToInsert.CardNumber,
                     };
                     await DBHandler.InsertDebitCard(request.CardToInsert, debitCardDTO);
 

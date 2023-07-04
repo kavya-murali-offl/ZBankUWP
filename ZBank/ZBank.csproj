@@ -143,6 +143,7 @@
     <Compile Include="Utilities\Validation\IValidation.cs" />
     <Compile Include="ViewModel\AccountInfoViewModel.cs" />
     <Compile Include="ViewModel\AccountPageViewModel.cs" />
+    <Compile Include="ViewModel\AddCardViewModel.cs" />
     <Compile Include="ViewModel\AddEditBeneficiaryViewModel.cs" />
     <Compile Include="ViewModel\AddOrEditAccountViewModel.cs" />
     <Compile Include="ViewModel\BeneficiariesViewModel.cs" />
@@ -236,13 +237,16 @@
     <Compile Include="View\Main\TransactionsPage.xaml.cs">
       <DependentUpon>TransactionsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Modals\AddCardView.xaml.cs">
+      <DependentUpon>AddCardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Modals\AddOrEditAccountPage.xaml.cs">
       <DependentUpon>AddOrEditAccountPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Modals\NewPaymentView.xaml.cs">
       <DependentUpon>NewPaymentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\AddEditBeneficiaryView.xaml.cs">
+    <Compile Include="View\Modals\AddEditBeneficiaryView.xaml.cs">
       <DependentUpon>AddEditBeneficiaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\AppNotification.xaml.cs">
@@ -323,7 +327,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="Test\Codesamples.txt" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -410,27 +413,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\CommonStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\FontDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\_Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\_FontSizes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\_Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ThemeControl\ThemeDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -450,6 +433,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Modals\AddCardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Modals\AddOrEditAccountPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -462,7 +449,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\AddEditBeneficiaryView.xaml">
+    <Page Include="View\Modals\AddEditBeneficiaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

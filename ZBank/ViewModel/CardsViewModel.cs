@@ -76,14 +76,20 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.CardsDataUpdated += UpdateCardsList;
+            ViewNotifier.Instance.CardInserted += OnCardInserted;
             LoadAllCards();
         }
 
         public void OnPageUnLoaded()
         {
             ViewNotifier.Instance.CardsDataUpdated -= UpdateCardsList;
+            ViewNotifier.Instance.CardInserted -= OnCardInserted;
         }
 
+        private void OnCardInserted(bool arg1, Card arg2)
+        {
+            LoadAllCards();
+        }
 
         private ObservableCollection<CardBObj> _allCards { get; set; }
 
@@ -141,7 +147,7 @@ namespace ZBank.ViewModel
             int index = 0;
             foreach (var card in args.CardsList)
             {
-                if (index > Constants.CardBackgrounds.Count)
+                if (index >= Constants.CardBackgrounds.Count)
                 {
                     index = 0;
                 }
@@ -181,6 +187,7 @@ namespace ZBank.ViewModel
             UseCaseBase<UpdateCardResponse> useCase = new UpdateCardUseCase(request, presenterCallback);
             useCase.Execute();
         }
+
 
         private class UpdateLimitPresenterCallback : IPresenterCallback<UpdateCardResponse>
         {
@@ -317,8 +324,13 @@ namespace ZBank.ViewModel
         public CardBObj RightCard { get; set; }
 
         public CardBObj OnViewCard { get; set; }
+      
+        public bool IsOnViewCreditCard { get => OnViewCard?.Type == CardType.CREDIT; }
+       
+        public CreditCard OnViewCreditCard { get => OnViewCard is CreditCard ? OnViewCard as CreditCard : null; }
+      
+        public DebitCard OnViewDebitCard { get => OnViewCard is DebitCard ? OnViewCard as DebitCard : null; }
 
         public int OnViewCardIndex { get; set; }
-
     }
 }

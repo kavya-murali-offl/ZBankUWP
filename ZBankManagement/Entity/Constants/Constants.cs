@@ -12,6 +12,7 @@ namespace ZBank.Entity.Constants
         public static string VisaLogo = "/Assets/CardLogo/visa.png";
         public static string RupayLogo = "/Assets/CardLogo/rupay.jpg";
         public static string ZBankLogo = "/Assets/CardLogo/banklogo.png";
+        public static int MaximumCreditCards = 5;
 
         public static readonly IList<string> CardBackgrounds = new List<string>
         {

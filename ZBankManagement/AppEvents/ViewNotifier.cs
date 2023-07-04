@@ -22,6 +22,12 @@ namespace ZBank.AppEvents
             LoadApp?.Invoke();
         }
 
+        public event Action<bool, Card> CardInserted;
+        public void OnCardInserted(bool updated, Card updatedCard)
+        {
+            CardInserted?.Invoke(updated, updatedCard);
+        }
+
         public event Action<bool, Card> LimitUpdated;
         public void OnUpdatedLimit(bool updated, Card updatedCard)
         {

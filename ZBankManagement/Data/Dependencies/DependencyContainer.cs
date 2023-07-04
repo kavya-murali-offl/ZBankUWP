@@ -45,6 +45,7 @@ namespace ZBank.Dependencies
             serviceCollection.AddScoped<IResetPinDataManager, ResetPinDataManager>();
             serviceCollection.AddScoped<ISignupUserDataManager, SignupUserDataManager>();
             serviceCollection.AddScoped<ICloseDepositDataManager, CloseDepositDataManager>();
+            serviceCollection.AddScoped<IPayCreditCardDataManager, PayCreditCardDataManager>();
             return serviceCollection;
         }
 

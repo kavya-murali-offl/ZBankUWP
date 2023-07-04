@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -38,8 +39,21 @@ namespace ZBank.View.DataTemplates
             set { SetValue(SelectedAccountProperty, value); }
         }
 
+
         public static readonly DependencyProperty SelectedAccountProperty =
             DependencyProperty.Register("SelectedAccount", typeof(SavingsAccount), typeof(SavingsAccountInfoTemplate), new PropertyMetadata(null));
+
+
+        public ICommand LinkCardCommand
+        {
+            get { return (ICommand)GetValue(LinkCardCommandProperty); }
+            set { SetValue(LinkCardCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LinkCardCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LinkCardCommandProperty =
+            DependencyProperty.Register("LinkCardCommand", typeof(ICommand), typeof(SavingsAccountInfoTemplate), new PropertyMetadata(null));
+
 
         public CardBObj LinkedCard
         {

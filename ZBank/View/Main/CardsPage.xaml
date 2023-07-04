@@ -34,24 +34,17 @@
                 Height="Auto" />
         </Grid.RowDefinitions>
         <Grid>
-            <Button
-                Margin="10,10,30,10"
-                Style="{ThemeResource PrimaryButton}"
-                HorizontalAlignment="Right"
-                x:Name="AddCardButton"
-                Click="AddCardButton_Click"
-                Content="Add Credit Card" />
+           
         </Grid>
         <GridView
             Grid.Row="1"
             SelectionMode="None">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid
-                        HorizontalAlignment="Center"
-                        ItemWidth="300"
+                    <VariableSizedWrapGrid
+                        HorizontalAlignment="Stretch"
                         Orientation="Horizontal"
-                        MaximumRowsOrColumns="3" />
+                        MaximumRowsOrColumns="4" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemContainerStyle>
@@ -119,6 +112,7 @@
             </GridViewItem>
             <GridViewItem>
                 <Grid
+                    HorizontalAlignment="Stretch"
                     Margin="5"
                     Padding="20"
                     CornerRadius="8"
@@ -142,6 +136,15 @@
                         Grid.Row="1"
                         Text="3" />
                 </Grid>
+            </GridViewItem>
+            <GridViewItem>
+                <Button
+                    Margin="10,10,30,10"
+                    Style="{ThemeResource PrimaryButton}"
+                    HorizontalAlignment="Right"
+                    x:Name="AddCardButton"
+                    Click="AddCardButton_Click"
+                    Content="New Credit Card" />
             </GridViewItem>
         </GridView>
         <Grid
@@ -245,6 +248,7 @@
             </StackPanel>
         </Grid>
         <GridView 
+            HorizontalAlignment="Center"
             SelectionMode="None"
             Grid.Row="3">
             <GridView.ItemsPanel>
@@ -253,7 +257,7 @@
                         HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         MinWidth="400"
-                        MaximumRowsOrColumns="2" />
+                        MaximumRowsOrColumns="3" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemContainerStyle>
@@ -584,6 +588,193 @@
 
                 </Grid>
             </GridViewItem>
+            <GridViewItem>
+                <Grid>
+                    <Grid
+                        Visibility="{x:Bind ViewModel.DataModel.IsOnViewCreditCard, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}"
+                        VerticalAlignment="Stretch"
+                        MinWidth="400"
+                        Padding="20"
+                        Margin="5"
+                        CornerRadius="8"
+                        Background="{ThemeResource ApplicationBackground}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="*" />  
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.ColumnSpan="2"
+                            FontWeight="SemiBold"
+                            Grid.Row="1"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            Margin="0,0,20,20"
+                            Text="Debit Card Details" />
+                        <TextBlock
+                            Margin="10"
+                            FontSize="16"
+                            Grid.Row="2"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontWeight="SemiBold"
+                            Text="Linked Account" />
+
+                        <TextBlock
+                            FontSize="18"
+                            Grid.Row="2"
+                            VerticalAlignment="Center"
+                            Grid.Column="1"
+                            Text="{x:Bind ViewModel.DataModel.OnViewDebitCard.AccountNumber, Mode=OneWay}"
+                            HorizontalAlignment="Center" />
+
+                        <Button 
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            MinWidth="150"
+                            Margin="20"
+                            HorizontalAlignment="Center"
+                            Content="Go To Account"
+                            Style="{ThemeResource PrimaryButton}" />
+
+                    </Grid>
+                    <Grid
+                        Visibility="{x:Bind ViewModel.DataModel.IsOnViewCreditCard, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                        VerticalAlignment="Stretch"
+                        MinWidth="400"
+                        Padding="20"
+                        Margin="5"
+                        CornerRadius="8"
+                        Background="{ThemeResource ApplicationBackground}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.ColumnSpan="2"
+                            FontWeight="SemiBold"
+                            Grid.Row="1"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            Margin="0,0,20,20"
+                            Text="Credit Card Details" />
+                        <TextBlock
+                            Margin="10"
+                            FontSize="16"
+                            Grid.Row="2"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontWeight="SemiBold"
+                            Text="Card Provider" />
+
+                        <TextBlock
+                            FontSize="18"
+                            Grid.Row="2"
+                            VerticalAlignment="Center"
+                            Grid.Column="1"
+                            Text="{x:Bind ViewModel.DataModel.OnViewCreditCard.CreditCardProvider, Mode=OneWay}"
+                            HorizontalAlignment="Center" />
+
+                        <TextBlock
+                            Margin="10"
+                            FontSize="16"
+                            Grid.Row="3"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontWeight="SemiBold"
+                            Text="Credit Limit" />
+
+                        <TextBlock
+                            FontSize="18"
+                            Grid.Row="3"
+                            VerticalAlignment="Center"
+                            Grid.Column="1"
+                            Text="{x:Bind ViewModel.DataModel.OnViewCreditCard.CreditLimit, Converter={StaticResource CurrencyConverter}, Mode=OneWay}"
+                            HorizontalAlignment="Center" />
+
+                        <TextBlock
+                            Margin="10"
+                            FontSize="16"
+                            Grid.Row="4"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontWeight="SemiBold"
+                            Text="Total Outstanding" />
+
+                        <TextBlock
+                            FontSize="18"
+                            Grid.Row="4"
+                            VerticalAlignment="Center"
+                            Grid.Column="1"
+                            Text="{x:Bind ViewModel.DataModel.OnViewCreditCard.TotalOutstanding, Converter={StaticResource CurrencyConverter}, Mode=OneWay}"
+                            HorizontalAlignment="Center" />
+
+                        <TextBlock
+                            Margin="10"
+                            FontSize="16"
+                            Grid.Row="5"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            FontWeight="SemiBold"
+                            TextTrimming="CharacterEllipsis"
+                            Text="Minimum Outstanding" />
+
+                        <TextBlock
+                            FontSize="18"
+                            VerticalAlignment="Center"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Foreground="Red"
+                            Text="{x:Bind ViewModel.DataModel.OnViewCreditCard.MinimumOutstanding, Converter={StaticResource CurrencyConverter}, Mode=OneWay}"
+                            HorizontalAlignment="Center" />
+
+                        <Button
+                            Grid.Row="6"
+                            Grid.ColumnSpan="2"
+                            MinWidth="150"
+                            Margin="20"
+                            x:Name="PayCardButton"
+                            HorizontalAlignment="Center"
+                            Content="Settle Card"
+                            Click="PayCardButton_Click"
+                            Style="{ThemeResource PrimaryButton}" />
+                    </Grid>
+                </Grid>
+            </GridViewItem>
+
         </GridView>
     </Grid>
 </Page>

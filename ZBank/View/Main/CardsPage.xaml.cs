@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Entities;
+using ZBank.View.Modals;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
@@ -61,11 +62,6 @@ namespace ZBank.View.Main
             ViewNotifier.Instance.LimitUpdated -= OnUpdatedLimit;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ViewEyeButton_Click(object sender, RoutedEventArgs e)
         {
             HideEyeButton.Visibility = Visibility.Visible;
@@ -89,9 +85,14 @@ namespace ZBank.View.Main
         }
 
        
-        private void AddCardButton_Click(object sender, RoutedEventArgs e)
+        private async void AddCardButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentDialog dialog = new ContentDialog();
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.Title = "New Credit Card";
+            dialog.Content = new AddCardView(dialog);
+            await dialog.ShowAsync();
         }
 
         private void ChangeLimitButton_Click(object sender, RoutedEventArgs e)
@@ -118,6 +119,12 @@ namespace ZBank.View.Main
         private void LimitSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             UpdatedLimit = e.NewValue;
+        }
+
+        private void PayCardButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog contentDialog = new ContentDialog();  
+
         }
     } 
 }

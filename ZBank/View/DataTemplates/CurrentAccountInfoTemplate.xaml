@@ -376,6 +376,7 @@
                             FontSize="19" />
 
                         <local:ViewOrNoCardTemplate
+                            LinkCardCommand="{x:Bind LinkCardCommand}"
                             Grid.Row="1"
                             SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
                     </Grid>

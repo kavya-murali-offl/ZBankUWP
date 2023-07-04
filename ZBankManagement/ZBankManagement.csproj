@@ -150,6 +150,7 @@
     <Compile Include="Data\DataManager\Contracts\IInsertCustomerDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IInsertTransactionDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\ILoginCustomerDataManager.cs" />
+    <Compile Include="Data\DataManager\Contracts\IPayCreditCardDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IResetPasswordDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\IResetPinDataManager.cs" />
     <Compile Include="Data\DataManager\Contracts\ISignupUserDataManager.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Data\DataManager\InsertCardDataManager.cs" />
     <Compile Include="Data\DataManager\InsertTransactionDataManager.cs" />
     <Compile Include="Data\DataManager\LoginCustomerDataManager.cs" />
+    <Compile Include="Data\DataManager\PayCreditCardDataManager.cs" />
     <Compile Include="Data\DataManager\ResetPasswordDataManager.cs" />
     <Compile Include="Data\DataManager\ResetPinDataManager.cs" />
     <Compile Include="Data\DataManager\SignupUserDataManager.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Domain\UseCase\InsertTransaction.cs" />
     <Compile Include="Domain\UseCase\LoginCustomer.cs" />
     <Compile Include="Domain\UseCase\LogoutCustomer.cs" />
+    <Compile Include="Domain\UseCase\PayCreditCard.cs" />
     <Compile Include="Domain\UseCase\RemoveBeneficiary.cs" />
     <Compile Include="Domain\UseCase\ResetPassword.cs" />
     <Compile Include="Domain\UseCase\ResetPin.cs" />

@@ -69,22 +69,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public IEnumerable<BeneficiaryBObj> Beneficiaries { get; set; }
     }
 
-
-    public class GetAllBeneficiariesPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
-    {
-
-        public async Task OnSuccess(GetAllBeneficiariesResponse response)
-        {
-        }
-
-        public async Task OnFailure(ZBankException response)
-        {
-        }
-    }
-
-
-
-
-
- 
 }

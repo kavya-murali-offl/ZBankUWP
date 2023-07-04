@@ -90,6 +90,8 @@ namespace ZBank.DatabaseHandler
         Task InitiateTransactionInternal(Account account, Account beneficiaryAccount, Transaction transaction, TransactionMetaData transactionMetaData, TransactionMetaData otherTransactionMetaData);
 
         Task InitiateTransactionExternal(Transaction transaction, Account account, TransactionMetaData metaData);
+        
+        Task PayCreditCardBill(Transaction transaction, Account account, TransactionMetaData metaData, CreditCard creditCard);
 
         Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber);
 
