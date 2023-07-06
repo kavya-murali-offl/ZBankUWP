@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using ZBank.AppEvents;
@@ -11,6 +12,8 @@ using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 using ZBank.View;
+using ZBank.View.Main;
+using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
@@ -22,6 +25,20 @@ namespace ZBank.ViewModel
         public IView View;
 
         private CardBObj _onViewCard { get; set; }
+        public ICommand PreviousCardCommand { get; set; }
+        public ICommand NextCardCommand { get; set; }
+
+
+        public DashboardViewModel(IView view)
+        {
+            View = view;
+            PreviousCardCommand = new RelayCommand(OnPreviousCard, 
+                () => DashboardModel?.AllCards?.Count > 0 ? DashboardModel?.AllCards?.ElementAtOrDefault(_onViewCardIndex - 1) != null : false);
+            
+            NextCardCommand = new RelayCommand(OnNextCard,
+                () => DashboardModel?.AllCards?.Count > 0 ? DashboardModel?.AllCards?.ElementAtOrDefault(_onViewCardIndex + 1) != null : false);
+        }
+
 
         private int _onViewCardIndex { get; set; } = -1;
 
@@ -38,7 +55,13 @@ namespace ZBank.ViewModel
         public void OnLoaded()
         {
             ViewNotifier.Instance.DashboardDataChanged += RefreshData;
+            ViewNotifier.Instance.CancelPaymentRequested += PaymentCompleted;
             LoadContent();
+        }
+
+        private void PaymentCompleted(bool isCompleted)
+        {
+            if(isCompleted) LoadContent();
         }
 
         public void UpdateOnViewCard()
@@ -51,9 +74,14 @@ namespace ZBank.ViewModel
                 }
                 OnViewCard = DashboardModel.AllCards.ElementAt(_onViewCardIndex);
             };
+
+
+            (NextCardCommand as RelayCommand).RaiseCanExecuteChanged();
+            (PreviousCardCommand as RelayCommand).RaiseCanExecuteChanged();
+
         }
 
-        public void OnNextCard()
+        public void OnNextCard(object parameter = null)
         {
             _onViewCardIndex++;
             if (_onViewCardIndex >= DashboardModel.AllCards.Count)
@@ -63,7 +91,7 @@ namespace ZBank.ViewModel
             UpdateOnViewCard();
         }
 
-        public void OnPreviousCard()
+        public void OnPreviousCard(object parameter = null)
         {
             _onViewCardIndex--;
             if (_onViewCardIndex < 0)
@@ -124,13 +152,23 @@ namespace ZBank.ViewModel
         public void OnUnLoaded()
         {
             ViewNotifier.Instance.DashboardDataChanged -= RefreshData;
+            ViewNotifier.Instance.CancelPaymentRequested -= PaymentCompleted;
         }
 
-        public DashboardViewModel(IView view)
+        public void ManageCard()
         {
-            View = view;
-        }
+            FrameContentChangedArgs args = new FrameContentChangedArgs()
+            {
+                PageType = typeof(CardsPage),
+                Params = new CardsPageParams()
+                {
+                    OnViewCard = OnViewCard,
+                }
+            };
 
+            ViewNotifier.Instance.OnFrameContentChanged(args);
+
+        }
 
         private class GetAllAccountsInDashboardPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
         {

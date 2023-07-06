@@ -82,6 +82,16 @@ namespace ZBank.View
 
             ViewNotifier.Instance.OnFrameContentChanged(args);
         }
+
+        private void ManageCardButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ManageCard();
+        }
+
+        private void NewCardButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

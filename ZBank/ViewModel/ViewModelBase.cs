@@ -22,40 +22,75 @@ namespace ZBank.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ObservableDictionary<string, string> ValidateField(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
+        public ObservableDictionary<string, string> ValidateObject(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
         {
             foreach (var field in fieldsToValidate)
             {
                 var property = type.GetProperty(field);
                 var value = property.GetValue(objectToCompare);
+                return ValidateField(FieldErrors, property.Name, value);
+            }
+
+            return FieldErrors;
+            //    if (value is null || string.IsNullOrEmpty(value.ToString()) || string.IsNullOrWhiteSpace(value.ToString()))
+            //    {
+            //        FieldErrors[property.Name] = $"{property.Name} is required.";
+            //    }
+            //    else
+            //    {
+            //        FieldErrors[property.Name] = string.Empty;
+            //        if (property.Name == "Amount" || property.Name == "Balance")
+            //        {
+            //            if (decimal.TryParse(value.ToString(), out decimal amountInDecimal))
+            //            {
+            //                if (amountInDecimal <= 0)
+            //                {
+            //                    FieldErrors["Amount"] = "Amount should be greater than zero";
+            //                }
+            //                else
+            //                {
+            //                    FieldErrors["Amount"] = string.Empty;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                FieldErrors["Amount"] = "Please enter a valid Amount";
+            //            }
+            //        }
+            //    }
+            //}
+            //return FieldErrors;
+        }
+
+
+        public ObservableDictionary<string, string> ValidateField(ObservableDictionary<string, string> FieldErrors, string field, object value)
+        {
                 if (value is null || string.IsNullOrEmpty(value.ToString()) || string.IsNullOrWhiteSpace(value.ToString()))
                 {
-                    FieldErrors[property.Name] = $"{property.Name} is required.";
+                    FieldErrors[field] = $"{field} is required.";
                 }
                 else
                 {
-                    FieldErrors[property.Name] = string.Empty;
-                    if (property.Name == "Amount" || property.Name == "Balance")
+                    FieldErrors[field] = string.Empty;
+                    if ( field == "Amount" ||  field == "Balance")
                     {
-                        var inText = property.GetValue(objectToCompare);
-                        if (decimal.TryParse(inText.ToString(), out decimal amountInDecimal))
+                        if (decimal.TryParse(value.ToString(), out decimal amountInDecimal))
                         {
                             if (amountInDecimal <= 0)
                             {
-                                FieldErrors["Amount"] = "Amount should be greater than zero";
+                                FieldErrors[field] = "Amount should be greater than zero";
                             }
                             else
                             {
-                                FieldErrors["Amount"] = string.Empty;
+                                FieldErrors[field] = string.Empty;
                             }
                         }
                         else
                         {
-                            FieldErrors["Amount"] = "Please enter a valid Amount";
+                            FieldErrors[field] = "Please enter a valid Amount";
                         }
                     }
                 }
-            }
             return FieldErrors;
         }
 

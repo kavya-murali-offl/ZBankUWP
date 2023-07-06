@@ -44,12 +44,9 @@ namespace ZBank.View.Main
             ViewModel.OnLoaded();
         }
 
-        private void CloseDialog(bool arg2)
+        private void CloseDialog()
         {
-            if(Dialog != null)
-            {
-                Dialog.Hide();
-            }
+                Dialog?.Hide();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Data;
 
 namespace ZBank.Utilities.Converters
@@ -11,7 +12,7 @@ namespace ZBank.Utilities.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            var resourceLoader = ResourceLoader.GetForCurrentView();
             return resourceLoader.GetString(((String)value));
         }
 

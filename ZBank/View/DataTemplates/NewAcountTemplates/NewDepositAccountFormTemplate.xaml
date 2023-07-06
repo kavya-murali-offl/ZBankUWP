@@ -99,7 +99,9 @@
                 CornerRadius="8">
                 <DropDownButton.Content>
                     <TextBlock
-                        HorizontalAlignment="Center"
+                    MaxWidth="300"
+                    TextTrimming="CharacterEllipsis"
+                    HorizontalAlignment="Center"
                         x:Name="TenureText"
                         Text="Choose Tenure" />
                 </DropDownButton.Content>
@@ -109,13 +111,19 @@
                         FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                         <ListView
                             x:Name="TenureList"
+                            ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                             SelectionChanged="TenureList_SelectionChanged"
                             ItemsSource="{Binding TenureList, Mode=TwoWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate
                                     x:DataType="modelBObj:DropDownItem">
                                     <TextBlock
-                                        Text="{Binding Text}" />
+                                    TextTrimming="CharacterEllipsis"
+                                    MaxWidth="300"
+                                    Padding="10"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Text="{Binding Text}" />
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -164,6 +172,8 @@
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
+                    MaxWidth="300"
+                    TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     Text="{x:Bind FieldValues['From Account Number'], Mode=OneWay, TargetNullValue='Select From Account'}" />
             </DropDownButton.Content>
@@ -173,12 +183,18 @@
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
                         x:Name="FromAccountsList"
+                        ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="FromAccountsList_SelectionChanged"
                         ItemsSource="{Binding Accounts, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate
                                 x:DataType="modelBObj:AccountBObj">
                                 <TextBlock
+                                    TextTrimming="CharacterEllipsis"
+                                    MaxWidth="300"
+                                    Padding="10"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     Text="{x:Bind}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -209,7 +225,9 @@
                 CornerRadius="8">
                 <DropDownButton.Content>
                     <TextBlock
-                        HorizontalAlignment="Center"
+                    MaxWidth="300"
+                    TextTrimming="CharacterEllipsis"
+                    HorizontalAlignment="Center"
                     Text="{x:Bind FieldValues['Repayment Account Number'], Mode=OneWay, TargetNullValue='Select Repayment Account'}"
                     />
             </DropDownButton.Content>
@@ -218,6 +236,7 @@
                         Placement="Bottom"
                         FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                         <ListView
+                            ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                             x:Name="ToAccountsList"
                             SelectionChanged="ToAccountsList_SelectionChanged"
                             ItemsSource="{Binding Accounts, Mode=OneWay}">
@@ -225,7 +244,12 @@
                                 <DataTemplate
                                     x:DataType="modelBObj:AccountBObj">
                                     <TextBlock
-                                        Text="{x:Bind}" />
+                                    TextTrimming="CharacterEllipsis"
+                                    MaxWidth="300"
+                                    Padding="10"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Text="{x:Bind}" />
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>

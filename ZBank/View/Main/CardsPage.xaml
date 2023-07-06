@@ -15,6 +15,8 @@
             x:Key="CurrencyConverter" />
         <converter:BooleanToVisibilityConverter
             x:Key="BoolToVisibilityConverter" /> 
+        <converter:NullToVisibilityConverter
+            x:Key="NullToVisibilityConverter" /> 
         <converter:IndexToPositionConverter
             x:Key="IndexToPositionConverter" />  
         <converter:DecimalToDoubleConverter
@@ -34,17 +36,24 @@
                 Height="Auto" />
         </Grid.RowDefinitions>
         <Grid>
-           
+            <Button
+                Margin="10,0,30,0"
+                Style="{ThemeResource PrimaryButton}"
+                HorizontalAlignment="Right"
+                x:Name="AddCardButton"
+                Click="AddCardButton_Click"
+                Content="New Credit Card" />
         </Grid>
         <GridView
             Grid.Row="1"
             SelectionMode="None">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VariableSizedWrapGrid
-                        HorizontalAlignment="Stretch"
+                    <ItemsWrapGrid
+                        HorizontalAlignment="Center"
                         Orientation="Horizontal"
-                        MaximumRowsOrColumns="4" />
+                        ItemWidth="300"
+                        MaximumRowsOrColumns="3" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemContainerStyle>
@@ -81,7 +90,7 @@
                         FontSize="20"
                         HorizontalAlignment="Center"
                         Grid.Row="1"
-                        Text="1" />
+                        Text="{x:Bind ViewModel.DataModel.TotalCreditCards, Mode=OneWay}" />
                 </Grid>
             </GridViewItem>
             <GridViewItem>
@@ -107,7 +116,7 @@
                         FontSize="20"
                         HorizontalAlignment="Center"
                         Grid.Row="1"
-                        Text="1" />
+                        Text="{x:Bind ViewModel.DataModel.TotalDebitCards, Mode=OneWay}" />
                 </Grid>
             </GridViewItem>
             <GridViewItem>
@@ -134,17 +143,8 @@
                         FontSize="20"
                         HorizontalAlignment="Center"
                         Grid.Row="1"
-                        Text="3" />
+                        Text="{x:Bind ViewModel.DataModel.MaximumCards, Mode=OneWay}" />
                 </Grid>
-            </GridViewItem>
-            <GridViewItem>
-                <Button
-                    Margin="10,10,30,10"
-                    Style="{ThemeResource PrimaryButton}"
-                    HorizontalAlignment="Right"
-                    x:Name="AddCardButton"
-                    Click="AddCardButton_Click"
-                    Content="New Credit Card" />
             </GridViewItem>
         </GridView>
         <Grid
@@ -230,7 +230,8 @@
                     Foreground="{ThemeResource ApplicationForeground}"
                     FontWeight="SemiBold"
                     FontSize="18"
-                    Text="{x:Bind ViewModel.AllCards.Count, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.DataModel.TotalAllCards, Mode=OneWay}" />
+                
                 <Button
                     Style="{ThemeResource FrameNavButton}"
                     CornerRadius="40"
@@ -247,7 +248,8 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <GridView 
+        <GridView
+            Visibility="{x:Bind ViewModel.DataModel.AllCards, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"
             HorizontalAlignment="Center"
             SelectionMode="None"
             Grid.Row="3">
@@ -257,6 +259,7 @@
                         HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         MinWidth="400"
+                        ItemHeight="320"
                         MaximumRowsOrColumns="3" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
@@ -281,166 +284,156 @@
                 <Grid
                     MinWidth="400"
                     Padding="20"
-                    MinHeight="250"
                     Margin="5"
                     CornerRadius="8"
                     Background="{ThemeResource ApplicationBackground}">
                     <Grid.RowDefinitions>
                         <RowDefinition
-                            Height="Auto" />
+                            Height="Auto" /> 
                         <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
+                            Height="*" /> 
                         <RowDefinition
                             Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition
-                            Width="*"
-                            MaxWidth="250" />
-                        <ColumnDefinition
-                            Width="*"
-                            MaxWidth="250" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        FontWeight="SemiBold"
-                        Grid.ColumnSpan="2"
-                        FontSize="18"
-                        Margin="0,0,0,20"
-                        Text="Card Details" />
-
-                    <TextBlock
-                        FontWeight="SemiBold"
-                        Grid.ColumnSpan="2"
-                        FontSize="18"
-                        Margin="0,0,0,20"
-                        Text="{x:Bind ViewModel.DataModel.OnViewCard.Type, Mode=OneWay}" />
-                    
-                    <TextBlock
-                        Margin="0,10,0,10"
-                        Grid.Row="2"
-                        Grid.ColumnSpan="2"
-                        Text="Card Number" />
-
                     <Grid
-                        Grid.Row="4"
-                        Grid.ColumnSpan="2"
-                        CornerRadius="5"
-                        Background="{ThemeResource ApplicationBackgroundThemeBrush}">
+                        Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="*"
+                                MaxWidth="250" />
+                            <ColumnDefinition
+                                Width="*"
+                                MaxWidth="250" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Margin="0,10,0,10"
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Text="Card Number" />
+
+                        <Grid
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            CornerRadius="5"
+                            Background="{ThemeResource ApplicationBackgroundThemeBrush}">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Padding="5"
+                                Text="{x:Bind ViewModel.DataModel.OnViewCard.CardNumber, Mode=OneWay}" />
+                        </Grid>
                         <TextBlock
                             HorizontalAlignment="Center"
-                            FontSize="18"
-                            FontWeight="Bold"
-                            Padding="5"
-                            Text="{x:Bind ViewModel.DataModel.OnViewCard.CardNumber, Mode=OneWay}" />
-                    </Grid>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Margin="0,10,0,0"
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        Text="CVV" />
-                    <Grid
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        CornerRadius="5"
-                        Margin="0,10,0,10"
-                        Background="{ThemeResource ApplicationBackgroundThemeBrush}">
+                            Margin="0,10,0,0"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Text="CVV" />
+                        <Grid
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            CornerRadius="5"
+                            Margin="0,10,0,10"
+                            Background="{ThemeResource ApplicationBackgroundThemeBrush}">
 
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="18"
-                            Visibility="{x:Bind HideEyeButton.Visibility, Mode=OneWay}"
-                            FontWeight="Bold"
-                            Padding="5"
-                            Text="{x:Bind ViewModel.DataModel.OnViewCard.CVV, 
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="18"
+                                Visibility="{x:Bind HideEyeButton.Visibility, Mode=OneWay}"
+                                FontWeight="Bold"
+                                Padding="5"
+                                Text="{x:Bind ViewModel.DataModel.OnViewCard.CVV, 
                                 Mode=OneWay,
                                 Converter={StaticResource MaskConverter}}" />
 
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            Visibility="{x:Bind ViewEyeButton.Visibility,Mode=OneWay}"
-                            FontWeight="Bold"
-                            Padding="5"
-                            Text="{x:Bind ViewModel.DataModel.OnViewCard.CVV, 
-                                Mode=OneWay}" />
-                        <Button
-                            x:Name="ViewEyeButton"
-                            Click="ViewEyeButton_Click"
-                            Visibility="Collapsed"
-                            FontStretch="Expanded"
-                            Margin="10,0,10,0"
-                            HorizontalAlignment="Right"
-                            Style="{ThemeResource IconButton}">
-                            <FontIcon
-                                FontSize="14"
-                                Glyph="&#xE7B3;" />
-                        </Button>
-                        <Button
-                            x:Name="HideEyeButton"
-                            FontStretch="ExtraExpanded"
-                            Click="HideEyeButton_Click"
-                            Visibility="Visible"
-                            Margin="10,0,10,0"
-                            HorizontalAlignment="Right"
-                            Style="{ThemeResource IconButton}">
-                            <FontIcon
-                                FontSize="14"
-                                Glyph="&#xED1A;" />
-                        </Button>
-
-                    </Grid>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Margin="0,10,0,0"
-                        Grid.Row="5"
-                        Text="Expiry Date" />
-                    <Grid
-                        Grid.Row="6"
-                        Margin="0,10,5,10"
-                        CornerRadius="5"
-                        Background="{ThemeResource ApplicationBackgroundThemeBrush}">
-
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Padding="5"
-                            Text="{x:Bind ViewModel.DataModel.OnViewCard.ExpiryMonth, Mode=OneWay}" />
-                    </Grid>
-
-
-                    <Button
-                        x:Name="ResetPinButton"
-                        Click="ResetPinButton_Click"
-                        Margin="0,20,0,0"
-                        Grid.Row="7"
-                        HorizontalAlignment="Center"
-                        Grid.ColumnSpan="2"
-                        Style="{ThemeResource PrimaryButton}">
-                        <Button.Content>
                             <TextBlock
-                                Text="Reset Pin" />
-                        </Button.Content>
-                    </Button>
-                    <!--<TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Visibility="{x:Bind ViewEyeButton.Visibility,Mode=OneWay}"
+                                FontWeight="Bold"
+                                Padding="5"
+                                Text="{x:Bind ViewModel.DataModel.OnViewCard.CVV, Mode=OneWay}" />
+                            <Button
+                                x:Name="ViewEyeButton"
+                                Click="ViewEyeButton_Click"
+                                Visibility="Collapsed"
+                                FontStretch="Expanded"
+                                Margin="10,0,10,0"
+                                HorizontalAlignment="Right"
+                                Style="{ThemeResource IconButton}">
+                                <FontIcon
+                                    FontSize="14"
+                                    Glyph="&#xE7B3;" />
+                            </Button>
+                            <Button
+                                x:Name="HideEyeButton"
+                                FontStretch="ExtraExpanded"
+                                Click="HideEyeButton_Click"
+                                Visibility="Visible"
+                                Margin="10,0,10,0"
+                                HorizontalAlignment="Right"
+                                Style="{ThemeResource IconButton}">
+                                <FontIcon
+                                    FontSize="14"
+                                    Glyph="&#xED1A;" />
+                            </Button>
+
+                        </Grid>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Margin="0,10,0,0"
+                            Grid.Row="5"
+                            Text="Expiry Date" />
+                        <Grid
+                            Grid.Row="6"
+                            Margin="0,10,5,10"
+                            CornerRadius="5"
+                            Background="{ThemeResource ApplicationBackgroundThemeBrush}">
+
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Padding="5"
+                                Text="{x:Bind ViewModel.DataModel.OnViewCard.ExpiryMonth, Mode=OneWay}" />
+                        </Grid>
+
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Grid.ColumnSpan="2"
+                            FontSize="18"
+                            Margin="0,0,0,20"
+                            Text="Card Details" />
+
+                        <TextBlock
+                            FontWeight="Bold"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="14"
+                            Foreground="{ThemeResource AccentColorBrush}"
+                            Margin="0,0,0,20"
+                            Text="{x:Bind ViewModel.DataModel.OnViewCard.Type, Mode=OneWay}" />
+
+
+
+                        <!--<TextBlock
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Margin="0,20,0,0"
@@ -454,7 +447,20 @@
                         Margin="25,20,0,0"
                         Grid.Row="8"
                         Text="{x:Bind ViewModel.DataModel.OnViewCard.Type, Mode=OneWay}" />-->
-
+                    </Grid>
+                    <Button
+                        x:Name="ResetPinButton"
+                        Click="ResetPinButton_Click"
+                        Margin="0,20,0,0"
+                        Grid.Row="2"
+                        HorizontalAlignment="Center"
+                        Grid.ColumnSpan="2"
+                        Style="{ThemeResource PrimaryButton}">
+                        <Button.Content>
+                            <TextBlock
+                                Text="Reset Pin" />
+                        </Button.Content>
+                    </Button>
                 </Grid>
             </GridViewItem>
             <GridViewItem>
@@ -501,6 +507,7 @@
                         Text="Daily Transaction Limit" />
                    
                     <Slider
+                        Style="{ThemeResource CustomSliderStyle}"
                         Grid.Row="5"
                         Grid.ColumnSpan="2"
                         Minimum="10000"
@@ -508,7 +515,8 @@
                         StepFrequency="100"
                         x:Name="LimitSlider"
                         Margin="10"
-                        Value="{x:Bind ViewModel.DataModel.OnViewCard.SpendingLimit, Converter={StaticResource DecimalToDoubleConverter},Mode=OneWay}"
+                        Loaded="LimitSlider_Loaded"
+                        Value="{x:Bind ViewModel.DataModel.OnViewCard.TransactionLimit, Converter={StaticResource DecimalToDoubleConverter},Mode=OneWay}"
                         ValueChanged="LimitSlider_ValueChanged"
                         SmallChange="100" />
                     <TextBlock
@@ -765,7 +773,7 @@
                             Grid.Row="6"
                             Grid.ColumnSpan="2"
                             MinWidth="150"
-                            Margin="20"
+                            Margin="10"
                             x:Name="PayCardButton"
                             HorizontalAlignment="Center"
                             Content="Settle Card"
@@ -774,7 +782,6 @@
                     </Grid>
                 </Grid>
             </GridViewItem>
-
         </GridView>
     </Grid>
 </Page>

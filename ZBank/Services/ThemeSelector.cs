@@ -29,6 +29,7 @@ namespace ZBank.Config
 
         public static void Initialize()
         {
+            InitializeTheme();
             InitializeAppAccentColor();
             InitializeCustomAccentColor();
         }
@@ -161,49 +162,26 @@ namespace ZBank.Config
             }
             else
             {
-                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
-                titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
-                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
-                titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
+                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
+                titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
 
-                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
-                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"]; titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
-                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"]; ;
+                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
+                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
                
             }
 
             titleBar.ButtonHoverBackgroundColor = ((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color;
-
-            //    if (Theme == ElementTheme.Light)
-            //    {
-            //        titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
-            //        titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
-            //    }
-            //    else
-            //    {
-            //        titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
-            //        titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
-            //    }
-
-            //    titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAccentColorDark3"];
-            //    titleBar.ButtonHoverBackgroundColor = (Color)Application.Current.Resources["SystemAccentColorLight1"];
-            //}
         }
 
         private static void UpdateSystemAccentColorAndBrushes(Color color)
         {
-            //AccentColor ColorsHelper.AccentBrushes.FirstOrDefault(brush => brush.AccentColor.Color == color);
             SolidColorBrush customAccentBrush = (SolidColorBrush)Application.Current.Resources["AccentColorBrush"];
             customAccentBrush.Color = color;
-
-            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorDark1.Color;
-            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorDark2.Color;
-            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorDark3.Color;
-            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorLight1.Color;
-            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorLight2.Color;
-            //((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color = accentBrush.AccentColorLight3.Color;
             var brushes = new string[]
             {
                 "SystemControlBackgroundAccentBrush",
@@ -219,7 +197,10 @@ namespace ZBank.Config
                 "SystemControlHighlightListAccentMediumBrush",
                 "SystemControlHyperlinkTextBrush",
                 "ContentDialogBorderThemeBrush",
-                "JumpListDefaultEnabledBackground"
+                "JumpListDefaultEnabledBackground",
+                "SystemControlHighlightAccent3RevealBackgroundBrush",
+                "SystemControlHighlightAccent2RevealBackgroundBrush",
+
             };
 
             foreach (var brush in brushes)

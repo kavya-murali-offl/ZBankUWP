@@ -7,11 +7,8 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBankManagement.Data.DataManager.Contracts
 {
-    class IPayCreditCardDataManager
+    interface IPayCreditCardDataManager
     {
-        internal void PayCreditCard(PayCreditCardRequest request, IUseCaseCallback<PayCreditCardResponse> payCreditCardCallback)
-        {
-            throw new NotImplementedException();
-        }
+        Task PayCreditCardBill(PayCreditCardRequest request, IUseCaseCallback<PayCreditCardResponse> callback);
     }
 }

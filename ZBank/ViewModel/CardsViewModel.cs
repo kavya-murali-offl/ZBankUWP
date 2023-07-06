@@ -35,32 +35,21 @@ namespace ZBank.ViewModel
 
         public IView View;
 
-        public ICommand PreviousCardCommand { get; set; }
+        public CardsPageParams Params { get; set; } 
 
+        public ICommand PreviousCardCommand { get; set; }
         public ICommand NextCardCommand { get; set; }
         public ICommand ResetPinCommand { get; set; }
 
         public CardsViewModel(IView view)
         {
             View = view;
-            DataModel = new CardPageModel();
             ResetPinCommand = new RelayCommand(ResetPin);
-            PreviousCardCommand = new RelayCommand(GoToPreviousCard, () =>
-            {
-                if(AllCards?.Count > 0)
-                {
-                    return AllCards.ElementAtOrDefault(DataModel.OnViewCardIndex - 1) != null;
-                }
-                return false;
-            });
+            PreviousCardCommand = new RelayCommand(GoToPreviousCard,
+                () => DataModel?.AllCards?.Count() > 0 ? DataModel?.AllCards?.ElementAtOrDefault(DataModel.OnViewCardIndex - 1) != null : false);
+            
             NextCardCommand = new RelayCommand(GoToNextCard, () =>
-            {
-                if(AllCards?.Count > 0)
-                {
-                     return AllCards.ElementAtOrDefault(DataModel.OnViewCardIndex + 1) != null;
-                }
-                return false;
-            });
+                DataModel?.AllCards?.Count() > 0 ? DataModel?.AllCards?.ElementAtOrDefault(DataModel.OnViewCardIndex + 1) != null : false);
         }
 
         private void GoToNextCard(object obj)
@@ -91,25 +80,15 @@ namespace ZBank.ViewModel
             LoadAllCards();
         }
 
-        private ObservableCollection<CardBObj> _allCards { get; set; }
-
-        public ObservableCollection<CardBObj> AllCards
-        {
-            get { return _allCards; }
-            set { 
-                _allCards = value; 
-                OnPropertyChanged(nameof(AllCards));
-            }
-        }
-
-        private CardPageModel _dataModel { get; set; }
+        private CardPageModel _dataModel { get; set; } = new CardPageModel();
 
         public CardPageModel DataModel
         {
             get { return _dataModel; }
-            set { 
+            set {
                 _dataModel = value;
-                OnPropertyChanged(nameof(DataModel)); }
+                OnPropertyChanged(nameof(DataModel));   
+            }
         }
 
         public void LoadAllCards()
@@ -139,7 +118,6 @@ namespace ZBank.ViewModel
                 UseCaseBase<ResetPinResponse> useCase = new ResetPinUseCase(request, presenterCallback);
                 useCase.Execute();
             }
-           
         }
 
         private void UpdateCardsList(CardDataUpdatedArgs args)
@@ -155,19 +133,26 @@ namespace ZBank.ViewModel
                 index++;
                 card.SetDefaultValues();
             }
-            AllCards = new ObservableCollection<CardBObj>(args.CardsList);
-            UpdateView(0);
+            
+            DataModel = new CardPageModel();
+            DataModel.AllCards = args.CardsList.Count() > 0 ? new ObservableCollection<CardBObj>(args.CardsList) : null;
+            
+            if (Params?.OnViewCard?.CardNumber != null)
+            {
+                CardBObj cardBOBj = args.CardsList.FirstOrDefault(card => card.CardNumber == Params.OnViewCard.CardNumber);
+                int onViewCardIndex = args.CardsList.ToList().IndexOf(cardBOBj);
+                UpdateView(onViewCardIndex); 
+            }
+            else
+            {
+                UpdateView(0);
+            }
         }
 
         private void UpdateView(int onViewIndex)
         {
-            DataModel = new CardPageModel()
-            {
-                OnViewCardIndex = onViewIndex,
-                OnViewCard = AllCards.ElementAtOrDefault(onViewIndex),
-                LeftCard = AllCards.ElementAtOrDefault(onViewIndex - 1),
-                RightCard = AllCards.ElementAtOrDefault(onViewIndex + 1)
-            };
+            DataModel.OnViewCardIndex = onViewIndex;
+            OnPropertyChanged(nameof(DataModel));
             (NextCardCommand as RelayCommand).RaiseCanExecuteChanged();
             (PreviousCardCommand as RelayCommand).RaiseCanExecuteChanged();
         }
@@ -187,7 +172,6 @@ namespace ZBank.ViewModel
             UseCaseBase<UpdateCardResponse> useCase = new UpdateCardUseCase(request, presenterCallback);
             useCase.Execute();
         }
-
 
         private class UpdateLimitPresenterCallback : IPresenterCallback<UpdateCardResponse>
         {
@@ -258,7 +242,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException exception)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     NotifyUserArgs args = new NotifyUserArgs()
                     {
@@ -319,11 +303,11 @@ namespace ZBank.ViewModel
 
     public class CardPageModel
     {
-        public CardBObj LeftCard { get; set; }
+        public CardBObj LeftCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex - 1); }
 
-        public CardBObj RightCard { get; set; }
+        public CardBObj RightCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex + 1); }
 
-        public CardBObj OnViewCard { get; set; }
+        public CardBObj OnViewCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex); }
       
         public bool IsOnViewCreditCard { get => OnViewCard?.Type == CardType.CREDIT; }
        
@@ -331,6 +315,16 @@ namespace ZBank.ViewModel
       
         public DebitCard OnViewDebitCard { get => OnViewCard is DebitCard ? OnViewCard as DebitCard : null; }
 
-        public int OnViewCardIndex { get; set; }
+        public int OnViewCardIndex {  get; set; }
+
+        public int TotalCreditCards { get => AllCards?.Where(card => card.Type == CardType.CREDIT).Count() ?? 0; }
+
+        public int TotalDebitCards { get => AllCards?.Where(card => card.Type == CardType.DEBIT).Count() ?? 0; }
+
+        public int TotalAllCards { get => AllCards?.Count() ?? 0; }
+
+        public IEnumerable<CardBObj> AllCards { get; set; }
+
+        public int MaximumCards = 3;
     }
 }

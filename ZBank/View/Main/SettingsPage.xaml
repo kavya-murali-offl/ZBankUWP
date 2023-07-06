@@ -36,24 +36,15 @@
             Padding="20"
             CornerRadius="4"
             Background="{ThemeResource ApplicationBackgroundThemeBrush}">
-
+            
             <TextBlock
-                FontSize="18"
                 Margin="10"
-                FontWeight="SemiBold"
-                Text="Appearance" />
-            <Border
-                BorderThickness="1"
-                CornerRadius="2"
-                BorderBrush="{ThemeResource AccentColorBrush}" />
-            <TextBlock
-                Margin="15"
                 FontSize="16"
                 FontWeight="SemiBold"
                 Text="Theme" />
 
             <TextBlock
-                Margin="20"
+                Margin="10"
                 FontSize="14"
                 Text="Mode" />
 
@@ -95,12 +86,14 @@
                 Text="Accent Color" />
 
             <ToggleSwitch
+                Margin="10"
                 Toggled="UseWindowsAccentColor_Toggled"
                 x:Name="UseWindowsAccentColor" />
 
             <ListView
                 Visibility="{x:Bind UseWindowsAccentColor.IsOn, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}"
                 SelectionMode="None"
+                HorizontalAlignment="Center"
                 x:Name="AccentColorList"
                 ItemsSource="{x:Bind ViewModel.AccentColors, Mode=OneWay}">
                 <ListView.ItemsPanel>
@@ -122,12 +115,7 @@
                                         Width="30"
                                         Height="30"
                                         Fill="{Binding}" />
-                                    <!--<FontIcon
-                                        
-                                        FontSize="14"
-                                        Glyph="&#xF13E;" />-->
                                 </Grid>
-                               
                             </Button.Content>
                         </Button>
                     </DataTemplate>

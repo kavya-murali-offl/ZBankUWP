@@ -118,6 +118,8 @@
                     CornerRadius="8">
                     <DropDownButton.Content>
                         <TextBlock
+                            MaxWidth="300"
+                            TextTrimming="CharacterEllipsis"
                             HorizontalAlignment="Center"
                             x:Name="BranchText"
                             Text="{x:Bind ViewModel.FieldValues['Branch'], TargetNullValue='Select Branch'}" />
@@ -128,12 +130,18 @@
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
                                 x:Name="BranchList"
+                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 SelectionChanged="BranchList_SelectionChanged"
                                 ItemsSource="{x:Bind ViewModel.BranchList, Mode=OneWay}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate
                                         x:DataType="model:Branch">
                                         <TextBlock
+                                            Padding="10"
+                                            TextTrimming="CharacterEllipsis"
+                                            MaxWidth="300"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
                                             Text="{Binding BranchName}" />
                                     </DataTemplate>
                                 </ListView.ItemTemplate>

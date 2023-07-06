@@ -21,10 +21,11 @@
         <Grid
             CornerRadius="10"
             x:Name="NoCard"
-            Background="Gray"
+            Background="Transparent"
             Visibility="{x:Bind TemplateCard , Converter={StaticResource NullToVisibilityConverter} ,ConverterParameter=1}">
         </Grid>
         <Grid
+            MaxWidth="400"
             Padding="10"
             CornerRadius="10"
             x:Name="ViewCard" Visibility="{x:Bind TemplateCard , Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}">

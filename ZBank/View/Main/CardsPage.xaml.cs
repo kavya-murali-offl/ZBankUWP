@@ -18,6 +18,7 @@ using ZBank.Entities;
 using ZBank.View.Modals;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
+using ZBankManagement.AppEvents.AppEventArgs;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -43,12 +44,19 @@ namespace ZBank.View.Main
             ViewNotifier.Instance.LimitUpdated += OnUpdatedLimit;
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var parameters = e.Parameter as CardsPageParams;
+            ViewModel.Params = parameters;  
+        }
+
         private void OnUpdatedLimit(bool isUpdated, Card updatedCard)
         {
             LimitSlider.IsEnabled = false;
             if (isUpdated && ViewModel.DataModel.OnViewCard.CardNumber == updatedCard.CardNumber)
             {
-                LimitSlider.Value = double.Parse(updatedCard.TransactionLimit.ToString());
+                LimitSlider.Value = UpdatedLimit;
             }
             else
             {
@@ -102,7 +110,7 @@ namespace ZBank.View.Main
 
         private void UpdateLimitSubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            if(ViewModel.DataModel.OnViewCard.SpendingLimit != decimal.Parse(UpdatedLimit.ToString()))
+            if(ViewModel.DataModel.OnViewCard.TransactionLimit != decimal.Parse(UpdatedLimit.ToString()))
             {
                 ViewModel.UpdateTransactionLimit(LimitSlider.Value);
             }
@@ -110,7 +118,7 @@ namespace ZBank.View.Main
 
         private void CancelUpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            LimitSlider.Value = double.Parse(ViewModel.DataModel.OnViewCard.SpendingLimit.ToString());
+            LimitSlider.Value = double.Parse(ViewModel.DataModel.OnViewCard.TransactionLimit.ToString());
             LimitSlider.IsEnabled = false;  
         }
 
@@ -121,10 +129,19 @@ namespace ZBank.View.Main
             UpdatedLimit = e.NewValue;
         }
 
-        private void PayCardButton_Click(object sender, RoutedEventArgs e)
+        private async void PayCardButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog contentDialog = new ContentDialog();  
+            ContentDialog dialog = new ContentDialog();
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.Title = "Pay Credit Card Bill";
+            dialog.Content = new PayCreditCard(dialog, ViewModel.DataModel.OnViewCard as CreditCard);
+            await dialog.ShowAsync();
+        }
 
+        private void LimitSlider_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdatedLimit = double.Parse(ViewModel.DataModel.OnViewCard.TransactionLimit.ToString());
         }
     } 
 }

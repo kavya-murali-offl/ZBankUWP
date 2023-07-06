@@ -12,6 +12,9 @@ using ZBank.View;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI;
+using static ZBankManagement.Domain.UseCase.InitializeApp;
+using Windows.UI.Core;
+using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ViewModel
 {
@@ -27,7 +30,14 @@ namespace ZBank.ViewModel
 
         internal void OnNavigatedTo()
         {
+            InitializeAppData();
+            LoadWindow();
             EnterApplication();
+        }
+
+        private async void LoadWindow()
+        {
+            await WindowManagerService.Current.InitializeAsync();
         }
 
         private void EnterApplication()
@@ -45,10 +55,39 @@ namespace ZBank.ViewModel
                 };
                 ViewNotifier.Instance.OnFrameContentChanged(args);
             }
-            else
+        }
+
+        private void InitializeAppData()
+        {
+            InitializeAppRequest request = new InitializeAppRequest();
+
+            IPresenterCallback<InitializeAppResponse> presenterCallback = new InitializeAppPresenterCallback(this);
+            UseCaseBase<InitializeAppResponse> useCase = new InitializeAppUseCase(request, presenterCallback);
+            useCase.Execute();
+        }
+
+        private class InitializeAppPresenterCallback : IPresenterCallback<InitializeAppResponse>
+        {
+            public EntryPageViewModel ViewModel { get; set; }
+
+            public InitializeAppPresenterCallback(EntryPageViewModel viewModel)
+            {
+                ViewModel = viewModel;
+            }
+
+            public async Task OnSuccess(InitializeAppResponse response)
+            {
+                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ViewNotifier.Instance.OnLoadApp();
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
             {
 
             }
         }
+
     }
 }

@@ -56,7 +56,6 @@ namespace ZBank.ViewModel
         }
         public void OnLoaded()
         {
-            InitializeAppData();
             GetCustomerData();
             ViewNotifier.Instance.GetCustomerSuccess += CustomerFetched;
         }
@@ -78,18 +77,10 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        private void InitializeAppData()
-        {
-            InitializeAppRequest request = new InitializeAppRequest();
-
-            IPresenterCallback<InitializeAppResponse> presenterCallback = new InitializeAppPresenterCallback(this);
-            UseCaseBase<InitializeAppResponse> useCase = new InitializeAppUseCase(request, presenterCallback);
-            useCase.Execute();
-        }
+    
 
         public MainViewModel(IView view)
         {
-            LoadWindow();
             View = view;
             TopNavigationList = new List<Navigation>
             {
@@ -102,10 +93,7 @@ namespace ZBank.ViewModel
 
             SelectedItem = TopNavigationList.FirstOrDefault();
         }
-        private async void LoadWindow()
-        {
-            await WindowManagerService.Current.InitializeAsync();
-        }
+       
 
         public void UpdateSelectedPage(Type pageType)
         {
@@ -192,30 +180,6 @@ namespace ZBank.ViewModel
                         }
                     });
                 });
-            }
-        }
-
-
-        private class InitializeAppPresenterCallback : IPresenterCallback<InitializeAppResponse>
-        {
-            public MainViewModel ViewModel { get; set; }
-
-            public InitializeAppPresenterCallback(MainViewModel viewModel)
-            {
-                ViewModel = viewModel;
-            }
-
-            public async Task OnSuccess(InitializeAppResponse response)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    ViewNotifier.Instance.OnLoadApp();
-                });
-            }
-
-            public async Task OnFailure(ZBankException response)
-            {
-
             }
         }
 

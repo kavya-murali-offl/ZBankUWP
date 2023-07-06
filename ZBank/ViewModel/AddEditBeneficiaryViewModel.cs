@@ -91,7 +91,7 @@ namespace ZBank.ViewModel
                 list.Add("IFSCCode");
             }
 
-            FieldErrors = ValidateField(FieldErrors, typeof(BeneficiaryBObj), list, SelectedBeneficiary);
+            FieldErrors = ValidateObject(FieldErrors, typeof(BeneficiaryBObj), list, SelectedBeneficiary);
 
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;
@@ -243,7 +243,7 @@ namespace ZBank.ViewModel
                         }
                     };
                     ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                    ViewNotifier.Instance.OnCloseDialog(true);
+                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
 
@@ -278,7 +278,8 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    ViewNotifier.Instance.OnCloseDialog(true);
+                    ViewNotifier.Instance.OnCloseDialog();
+                    ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.UpdatedBeneficiary, true);
                     NotifyUserArgs args = new NotifyUserArgs()
                     {
                         Notification = new Notification()

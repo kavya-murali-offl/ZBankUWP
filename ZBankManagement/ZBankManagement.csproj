@@ -124,6 +124,7 @@
     <Compile Include="AppEvents\AppEventArgs\BenefiiciaryListUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\BranchListUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\CardDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\CardsPageParams.cs" />
     <Compile Include="AppEvents\AppEventArgs\DashboardDataUpdatedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\FrameContentChangedArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\NotificationOpeningEventArgs.cs" />

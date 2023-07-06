@@ -44,23 +44,7 @@ namespace ZBank
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.LoadApp += OnLoadApp;
-            LoadingScreen.Visibility = Visibility.Visible;
-            ContentGrid.Visibility = Visibility.Collapsed;  
             ViewModel.OnLoaded();
-        }
-
-        private void OnLoadApp()
-        {
-            LoadPage();
-        }
-
-        private void LoadPage()
-        {
-            LoadingScreen.Visibility = Visibility.Collapsed;
-            ContentGrid.Visibility = Visibility.Visible;
-            initialPaneWidth = MySplitView.OpenPaneLength;
-            LoadTheme();
             LoadToggleButton();
             ViewNotifier.Instance.RightPaneContentUpdated += OnRightPaneContentUpdated;
             ViewNotifier.Instance.ThemeChanged += SwitchTheme;
@@ -68,8 +52,6 @@ namespace ZBank
             ContentFrame.Navigate(typeof(DashboardPage));
             ContentFrame.Navigated += OnNavigated;
         }
-
-        private string ErrorText { get; set; }
 
         private FrameworkElement SecondarySplitViewContent { get; set; }
 
@@ -96,7 +78,6 @@ namespace ZBank
             ViewNotifier.Instance.ThemeChanged -= SwitchTheme;
             ViewNotifier.Instance.FrameContentChanged -= ChangeFrame;
             ContentFrame.Navigated -= OnNavigated;
-            ViewNotifier.Instance.LoadApp -= OnLoadApp;
             ViewModel.OnUnloaded();
         }
 
@@ -121,11 +102,7 @@ namespace ZBank
             ViewModel.UpdateSelectedPage(ContentFrame.CurrentSourcePageType);
         }
 
-        private void LoadTheme()
-        {
-            ThemeSelector.InitializeTheme();
-            ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = ThemeSelector.Theme;
-        }
+        
 
         private void OnShrinkClicked(object sender, RoutedEventArgs e)
         {

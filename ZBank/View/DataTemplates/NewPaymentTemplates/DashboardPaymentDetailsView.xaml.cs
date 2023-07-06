@@ -25,7 +25,6 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
     public sealed partial class DashboardPaymentDetailsView : UserControl, IView
     {
         private TransferAmountViewModel ViewModel { get; set; }
-        private bool IsConfirmed { get; set; }  
 
         public DashboardPaymentDetailsView()
         {
@@ -43,17 +42,18 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsConfirmed)
+            if (!ViewModel.IsConfirmed)
             {
                 ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
                 ViewModel.FieldErrors["Account"] = string.Empty;
                 AccountsDropdownButton.Flyout.Hide();
             }
+            
         }
 
         private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsConfirmed)
+            if (!ViewModel.IsConfirmed)
             {
                 ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as BeneficiaryBObj)?.AccountNumber;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
@@ -72,7 +72,6 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            IsConfirmed = true;
             ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
         }
 

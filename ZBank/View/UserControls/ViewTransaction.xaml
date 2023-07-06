@@ -18,6 +18,7 @@
             x:Name="BackgroundColorConverter"/>
     </UserControl.Resources>
     <Grid
+        MinWidth="380"
         Margin="10,10,10,10"
         Padding="10"
         HorizontalAlignment="Center"

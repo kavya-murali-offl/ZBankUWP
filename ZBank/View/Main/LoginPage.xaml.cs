@@ -46,5 +46,15 @@ namespace ZBank.View.Main
         {
             ViewModel.Reset();
         }
+
+        private void PasswordText_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ErrorText = string.Empty;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.ErrorText = string.Empty;
+        }
     }
 }

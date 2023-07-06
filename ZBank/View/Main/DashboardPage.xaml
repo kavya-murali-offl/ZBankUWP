@@ -12,6 +12,7 @@
     xmlns:converter="using:ZBank.Utilities.Converters"
     xmlns:templates="using:ZBank.View.DataTemplates"
     Loaded="Page_Loaded"
+    xmlns:controls="using:Windows.UI.Xaml.Controls"
     Unloaded="Page_Unloaded">
     <Page.Resources>
         <converter:CurrencyConverter
@@ -183,21 +184,20 @@
                             MyTitle="Latest Transactions"
                             x:Name="Row3Column2">
                             <usercontrol:CardControl.MyControls>
-                                <HyperlinkButton
+                                <controls:HyperlinkButton
+                                    Style="{ThemeResource CustomHyperLinkButton}"
                                     x:Name="Transactions_ViewMoreButton"
                                     Click="Transactions_ViewMoreButton_Click"
                                     HorizontalAlignment="Right">
-                                    <HyperlinkButton.Content>
+                                    <controls:HyperlinkButton.Content>
                                         <TextBlock
                                             Text="View More" />
-                                    </HyperlinkButton.Content>
-                                </HyperlinkButton>
+                                    </controls:HyperlinkButton.Content>
+                                </controls:HyperlinkButton>
                             </usercontrol:CardControl.MyControls>
                             <usercontrol:CardControl.MyContent>
                                 <ListView
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Stretch"
-                                    MaxHeight="345"
+                                    MaxHeight="400"
                                     ItemsSource="{x:Bind ViewModel.DashboardModel.LatestTransactions, Mode=OneWay}"
                                     x:Name="TransactionsListView"
                                     SelectionMode="None">
@@ -213,6 +213,7 @@
                                                     <RowDefinition
                                                         Height="Auto" />
                                                 </Grid.RowDefinitions>
+                                                
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition
                                                         Width="Auto" />
@@ -227,6 +228,11 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock
+                                                    MinWidth="70"
+                                                    Margin="0,0,10,0"
+                                                    MaxWidth="120"
+                                                    HorizontalAlignment="Left"
+                                                    TextTrimming="CharacterEllipsis"
                                                     Grid.Column="1"
                                                     Text="{Binding Name}"
                                                     Style="{ThemeResource BoldNormalText}" />
@@ -236,6 +242,11 @@
                                                     Grid.Row="1"
                                                     Foreground="Gray"
                                                     FontSize="12"
+                                                    MinWidth="70"
+                                                    Margin="0,0,10,0"
+                                                    MaxWidth="120"
+                                                    HorizontalAlignment="Left"
+                                                    TextTrimming="CharacterEllipsis"
                                                     Text="{Binding RecordedOn, 
                                                     Converter={StaticResource DateFormatConverter}}"
                                                     Style="{ThemeResource NormalSubText}" />
@@ -244,10 +255,15 @@
                                                     Grid.Column="2"
                                                     x:Name="AmountText"
                                                     FontSize="17"
+                                                    MinWidth="70"
+                                                    Margin="10,0,0,0"
+                                                    MaxWidth="150"
+                                                    TextTrimming="CharacterEllipsis"
                                                     HorizontalAlignment="Right"
                                                     TextAlignment="Right"
                                                     Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                                     Style="{ThemeResource BoldNormalText}" />
+                                                
                                                 <TextBlock
                                                     Grid.Column="2"
                                                     Grid.Row="1"
@@ -260,7 +276,8 @@
                                                     Style="{ThemeResource BoldNormalText}" />
                                                 <Grid
                                                     Grid.RowSpan="2"
-                                                    Padding="10,0,10,0">
+                                                    HorizontalAlignment="Left"
+                                                    Padding="0,0,10,0">
                                                     <Ellipse
                                                         Stroke="{Binding BorderColor}"
                                                         Width="35"
@@ -288,7 +305,7 @@
                                                 Value="Stretch" />
                                             <Setter
                                                 Property="MinWidth"
-                                                Value="300" />
+                                                Value="200" />
                                         </Style>
                                     </ListView.ItemContainerStyle>
                                 </ListView>
@@ -312,13 +329,13 @@
                     MyTitle="Cards">
                     <usercontrol:CardControl.MyControls>
                         <StackPanel
-                            
                             Orientation="Horizontal"
                             VerticalAlignment="Stretch"
                             HorizontalAlignment="Right">
                             <Button
-                                Click="BackButton_Click"
-                                Style="{ThemeResource SecondaryButton}">
+                                Margin="10,0,10,0"
+                                Command="{x:Bind ViewModel.PreviousCardCommand, Mode=OneWay}"
+                                Style="{ThemeResource SecondaryMenuButton}">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         Content="Previous"
@@ -326,13 +343,13 @@
                                 </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
-                                        Foreground="{ThemeResource ApplicationForeground}"
                                         Glyph="&#xE76B;" />
                                 </Button.Content>
                             </Button>
                             <Button
-                                Click="NextButton_Click"
-                                Style="{ThemeResource SecondaryButton}">
+                                Margin="0,0,10,0"
+                                Command="{x:Bind ViewModel.NextCardCommand, Mode=OneWay}"
+                                Style="{ThemeResource SecondaryMenuButton}">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         Content="Next"
@@ -340,7 +357,6 @@
                                 </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
-                                        Foreground="{ThemeResource ApplicationForeground}"
                                         Glyph="&#xE76C;" />
                                 </Button.Content>
                             </Button>
@@ -362,10 +378,25 @@
                                 Margin="10"
                                 HorizontalAlignment="Center"
                                 MinWidth="230"
+                                Click="ManageCardButton_Click"
+                                x:Name="ManageCardButton"
                                 Style="{ThemeResource PrimaryButton}">
                                 <Button.Content>
                                     <TextBlock
                                         Text="Manage Card" />
+                                </Button.Content>
+                            </Button>
+                            <Button
+                                Visibility="{x:Bind ViewModel.OnViewCard, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"
+                                Margin="10"
+                                HorizontalAlignment="Center"
+                                MinWidth="230"
+                                Click="NewCardButton_Click"
+                                x:Name="NewCardButton"
+                                Style="{ThemeResource SecondaryButton}">
+                                <Button.Content>
+                                    <TextBlock
+                                        Text="Add Credit Card" />
                                 </Button.Content>
                             </Button>
                         </StackPanel>

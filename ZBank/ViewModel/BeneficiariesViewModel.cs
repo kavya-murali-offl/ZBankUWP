@@ -221,7 +221,7 @@ namespace ZBank.ViewModel
                 {
                     await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        ViewNotifier.Instance.OnCloseDialog(true);
+                        ViewNotifier.Instance.OnCloseDialog();
                         ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.UpdatedBeneficiary, false);
                         NotifyUserArgs args = new NotifyUserArgs()
                         {

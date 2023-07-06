@@ -22,7 +22,7 @@
             Height="Auto"
             MyTitle="Quick Transfer">
             <usercontrols:CardControl.MyControls>
-                                <Button Padding="15,5,15,5" Style="{ThemeResource SecondaryButton}"
+                                <Button Padding="15,5,15,5" Style="{ThemeResource SecondaryMenuButton}"
                                     VerticalAlignment="Center"
                                     x:Name="ResetButton"
                                         Click="ResetButton_Click"
@@ -47,7 +47,7 @@
                 <TextBlock
                     MaxWidth="400"
                     Margin="5"
-                    Text="Account"
+                    Text="Account *"
                     Style="{ThemeResource NormalSubText}" />
                 <DropDownButton
                     x:Name="AccountsDropdownButton"
@@ -56,6 +56,8 @@
                     CornerRadius="8">
                     <DropDownButton.Content>
                         <TextBlock
+                            MaxWidth="300"
+                            TextTrimming="CharacterEllipsis"
                             HorizontalAlignment="Center"
                             x:Name="AccountsText"
                             Text="{x:Bind AccountsList.SelectedValue.ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
@@ -66,6 +68,7 @@
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
                                 x:Name="AccountsList"
+                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 ItemClick="AccountsList_ItemClick"
                                 SelectionChanged="AccountsList_SelectionChanged"
                                 ItemsSource="{x:Bind ViewModel.UserAccounts, Mode=OneWay}">
@@ -73,6 +76,11 @@
                                     <DataTemplate
                                         x:DataType="modelBObj:AccountBObj">
                                         <TextBlock
+                                            Padding="10"
+                                            TextTrimming="CharacterEllipsis"
+                                            MaxWidth="300"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
                                             Text="{x:Bind}" />
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -88,7 +96,7 @@
                 <TextBlock
                     MaxWidth="400"
                     Margin="5"
-                    Text="Beneficiary"
+                    Text="Beneficiary *"
                     Style="{ThemeResource NormalSubText}" />
 
                 <DropDownButton
@@ -100,6 +108,8 @@
                         <TextBlock
                             HorizontalAlignment="Center"
                             x:Name="BeneficiaryText"
+                            MaxWidth="300"
+                            TextTrimming="CharacterEllipsis"
                             Text="{x:Bind BeneficiaryList.SelectedValue.ToString(), TargetNullValue='Select Beneficiary', Mode=OneWay}" />
                     </DropDownButton.Content>
                     <DropDownButton.Flyout>
@@ -109,12 +119,18 @@
                             <ListView
                                 ItemClick="BeneficiaryList_ItemClick"
                                 x:Name="BeneficiaryList"
+                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 SelectionChanged="BeneficiaryList_SelectionChanged"
                                 ItemsSource="{x:Bind ViewModel.AllBeneficiaries, Mode=OneWay}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate
                                         x:DataType="model:Beneficiary">
                                         <TextBlock
+                                            Padding="10"
+                                            TextTrimming="CharacterEllipsis"
+                                            MaxWidth="300"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
                                             Text="{x:Bind}" />
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -131,7 +147,7 @@
                 
                 <TextBlock
                     Margin="5"
-                    Text="Amount"
+                    Text="Amount *"
                     MaxWidth="400"
                     Style="{ThemeResource NormalSubText}" />
 

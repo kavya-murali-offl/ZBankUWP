@@ -9,10 +9,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
+    Unloaded="UserControl_Unloaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
         <converter:CurrencyConverter x:Key="CurrencyConverter"/>
+        <converter:StringConverter
+            x:Name="StringConverter" />
     </UserControl.Resources>
     <StackPanel MinWidth="300" MaxWidth="400">
         <TextBlock
@@ -25,6 +29,9 @@
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
+                    MaxWidth="300"
+                    TextTrimming="CharacterEllipsis"
+                    x:Name="AccountsText"
                     HorizontalAlignment="Center"
                     Text="{x:Bind AccountsList.SelectedValue.ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
             </DropDownButton.Content>
@@ -34,12 +41,18 @@
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
                         x:Name="AccountsList"
+                        ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="AccountsList_SelectionChanged"
                         ItemsSource="{Binding UserAccounts, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate
                                 x:DataType="modelBObj:AccountBObj">
                                 <TextBlock
+                                    Padding="10"
+                                    TextTrimming="CharacterEllipsis"
+                                    MaxWidth="300"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     Text="{x:Bind}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -78,6 +91,8 @@
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
+                    MaxWidth="300"
+                    TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     Text="{x:Bind BeneficiaryList.SelectedValue.ToString(), TargetNullValue='Select Beneficiary', Mode=OneWay}" 
                 x:Name="BeneficiaryText" />
@@ -88,12 +103,18 @@
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
                         x:Name="BeneficiaryList"
+                        ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="BeneficiaryList_SelectionChanged"
                         ItemsSource="{Binding AllBeneficiaries, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate
                                 x:DataType="model:Beneficiary">
                                 <TextBlock
+                                    TextTrimming="CharacterEllipsis"
+                                    MaxWidth="300"
+                                    Padding="10"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     Text="{x:Bind}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -148,7 +169,7 @@
 
         <TextBox
             x:Name="AmountTextBox"
-            Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay}"
+            Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay, Converter={StaticResource StringConverter}}"
             TextChanging="AmountTextBox_TextChanging"
             PlaceholderText="Enter Amount in INR" />
 

@@ -43,6 +43,8 @@
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
+                    MaxWidth="300"
+                    TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     x:Name="ProviderText"
                     Text="{x:Bind ViewModel.SelectedCreditCardProvider, Mode=TwoWay}" />
@@ -57,6 +59,11 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock
+                                    Padding="10"
+                                    TextTrimming="CharacterEllipsis"
+                                    MaxWidth="300"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     Text="{Binding}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>

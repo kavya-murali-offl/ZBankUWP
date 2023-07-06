@@ -55,7 +55,7 @@ namespace ZBank.View.Modals
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            Dialog.Hide();
+            Dialog?.Hide();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

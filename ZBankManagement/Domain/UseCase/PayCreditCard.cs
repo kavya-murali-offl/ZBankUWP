@@ -29,7 +29,7 @@ namespace ZBankManagement.Domain.UseCase
 
         protected override void Action()
         {
-            _payCreditCardDataManager.PayCreditCard(_request, new PayCreditCardCallback(this));
+            _payCreditCardDataManager.PayCreditCardBill(_request, new PayCreditCardCallback(this));
         }
 
         private class PayCreditCardCallback : IUseCaseCallback<PayCreditCardResponse>

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -35,6 +36,7 @@ namespace ZBank.View.Main
         {
             this.InitializeComponent();
             ViewModel = new EntryPageViewModel(this);
+            ThemeSelector.Initialize();
             InitializeThemeSettings();
         }
         private void InitializeThemeSettings()
@@ -84,12 +86,19 @@ namespace ZBank.View.Main
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.CurrentUserChanged += CurrentUserChanged;
+            ViewNotifier.Instance.LoadApp += OnAppLoaded;
+            ViewModel.OnNavigatedTo();
+        }
+
+        private void OnAppLoaded()
+        {
+            LoadingScreen.Visibility = Visibility.Collapsed;
+            MainFrame.Visibility = Visibility.Visible;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.CurrentUserChanged -= CurrentUserChanged;
-
         }
 
         private void CurrentUserChanged(string id)

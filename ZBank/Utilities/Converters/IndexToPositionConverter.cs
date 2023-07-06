@@ -14,11 +14,11 @@ namespace ZBank.Utilities.Converters
         {
             if (value is int intValue)
             {
-                return (intValue + 1).ToString();
+                return intValue == 0 ? "1" : (intValue + 1).ToString();
             }
             else if (value is double doubleValue)
             {
-                return (doubleValue + 1).ToString();
+                return doubleValue == 0 ? "1" : (doubleValue + 1).ToString();
             }
 
             return value.ToString();

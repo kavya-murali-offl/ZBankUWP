@@ -60,6 +60,7 @@
                 Margin="10"
                 Grid.Row="2"
                 PlaceholderText="Enter Customer ID"
+                TextChanged="TextBox_TextChanged"
                 Text="{x:Bind ViewModel.CustomerID, Mode=TwoWay}" />
 
             <TextBlock
@@ -72,6 +73,7 @@
                 Margin="10"
                 IsPasswordRevealButtonEnabled="True"
                 x:Name="PasswordText"
+                PasswordChanged="PasswordText_PasswordChanged"
                 Grid.Row="4"
                 Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
                 PlaceholderText="Enter Password" />

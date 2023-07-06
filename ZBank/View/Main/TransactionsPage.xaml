@@ -23,10 +23,10 @@
             x:Key="BoolToVisibilityConverter" />
         <DataTemplate
             x:Key="NarrowHeaderDataTemplate">
-            <Grid
+        <Grid
                 BorderThickness="0,0,0,1"
                 BorderBrush="DarkGray"
-                Padding="0,20,0,20"
+                Padding="0,10,0,10"
                 x:Name="TemplateHeaderGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -40,7 +40,7 @@
                     Foreground="Gray"
                     FontWeight="SemiBold"
                     MinWidth="100"
-                    FontSize="16"
+                    FontSize="14"
                     TextAlignment="Center"
                     TextWrapping="WrapWholeWords"
                     Margin="5,0,5,0"
@@ -53,7 +53,7 @@
                     Foreground="Gray"
                     FontWeight="SemiBold"
                     MaxWidth="100"
-                    FontSize="16"
+                    FontSize="14"
                     TextAlignment="Center"
                     TextWrapping="WrapWholeWords"
                     Margin="0,0,5,0"
@@ -67,7 +67,7 @@
             x:Key="WideHeaderDataTemplate">
             <Grid
                 BorderThickness="0,0,0,1"
-                Padding="0,20,0,20"
+                Padding="0,15,0,15"
                 BorderBrush="DarkGray">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -87,7 +87,7 @@
                     Foreground="Gray"
                     FontWeight="SemiBold"
                     MaxWidth="100"
-                    FontSize="16"
+                    FontSize="14"
                     TextAlignment="Center"
                     TextWrapping="WrapWholeWords"
                     Margin="0,0,5,0"
@@ -98,7 +98,7 @@
                     Foreground="Gray"
                     FontWeight="SemiBold"
                     MaxWidth="100"
-                    FontSize="16"
+                    FontSize="14"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     TextAlignment="Center"
@@ -112,7 +112,7 @@
                     Foreground="Gray"
                     FontWeight="SemiBold"
                     MaxWidth="100"
-                    FontSize="16"
+                    FontSize="14"
                     Grid.Column="3"
                     TextAlignment="Center"
                     TextWrapping="WrapWholeWords"
@@ -125,7 +125,7 @@
                     Foreground="Gray"
                     FontWeight="SemiBold"
                     MaxWidth="100"
-                    FontSize="16"
+                    FontSize="14"
                     Grid.Column="4"
                     TextAlignment="Center"
                     TextWrapping="WrapWholeWords"
@@ -138,7 +138,7 @@
                     Foreground="Gray"
                     FontWeight="SemiBold"
                     MaxWidth="100"
-                    FontSize="16"
+                    FontSize="14"
                     Grid.Column="5"
                     TextAlignment="Center"
                     TextWrapping="WrapWholeWords"
@@ -150,7 +150,7 @@
         </DataTemplate>
         <DataTemplate x:Key="NarrowDataTemplate">
             <Grid
-                Padding="0,15,0,15">
+                Padding="0,10,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
                         Width="*" />
@@ -174,7 +174,7 @@
                     VerticalAlignment="Center"
                     MaxWidth="35"
                     MaxHeight="35"
-                    Initials="{Binding Name,Converter={StaticResource InitialsConverter}}" />
+                    Initials="{Binding Name,Converter={StaticResource InitialsConverter}, Mode=OneWay}" />
 
                 <TextBlock
                     Margin="5,0,5,0"
@@ -228,7 +228,7 @@
             x:Key="WideDataTemplate">
             <Grid
                 BorderBrush="DarkGray"
-                Padding="0,15,0,15"
+                Padding="10,15,0,15"
                 x:Name="TemplateGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -268,7 +268,7 @@
                     VerticalAlignment="Center"
                     MaxWidth="35"
                     MaxHeight="35"
-                    Initials="{Binding Name,Converter={StaticResource InitialsConverter}}" />
+                    Initials="{Binding Name,Converter={StaticResource InitialsConverter}, Mode=OneWay}" />
 
                 <TextBlock
                     Margin="5,0,5,0"
@@ -401,6 +401,8 @@
                     CornerRadius="8">
                     <DropDownButton.Content>
                         <TextBlock
+                            MaxWidth="300"
+                            TextTrimming="CharacterEllipsis"
                             HorizontalAlignment="Center"
                             x:Name="AccountText"
                             Text="{x:Bind ViewModel.SelectedAccount.ToString(), Mode=OneWay}" />
@@ -410,6 +412,7 @@
                             Placement="Bottom"
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
+                                ItemContainerStyle="{StaticResource DefaultListItemStyle}"
                                 x:Name="AccountsList"
                                 SelectionChanged="AccountsList_SelectionChanged"
                                 ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
@@ -417,6 +420,11 @@
                                     <DataTemplate
                                         x:DataType="modelBObj:AccountBObj">
                                         <TextBlock
+                                            Padding="10"
+                                            TextTrimming="CharacterEllipsis"
+                                            MaxWidth="300"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
                                             Text="{Binding}" />
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -449,6 +457,8 @@
                     CornerRadius="4">
                     <DropDownButton.Content>
                         <TextBlock
+                            MaxWidth="300"
+                            TextTrimming="CharacterEllipsis"
                             VerticalAlignment="Center"
                             Text="Sort" />
                     </DropDownButton.Content>
@@ -551,6 +561,8 @@
                                 CornerRadius="4">
                                 <DropDownButton.Content>
                                     <TextBlock
+                                        MaxWidth="300"
+                                        TextTrimming="CharacterEllipsis"
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.FilterValues['FromAccount'].ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
                                 </DropDownButton.Content>
@@ -560,12 +572,18 @@
                                         FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                                         <ListView
                                             x:Name="FromAccountsList"
+                                            ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                             SelectionChanged="FromAccountsList_SelectionChanged"
                                             ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
                                             <ListView.ItemTemplate>
                                                 <DataTemplate
                                                     x:DataType="modelBObj:AccountBObj">
                                                     <TextBlock
+                                                        TextTrimming="CharacterEllipsis"
+                                                        MaxWidth="300"
+                                                        Padding="10"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
                                                         Text="{Binding}" />
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>
@@ -587,6 +605,8 @@
                                 CornerRadius="4">
                                 <DropDownButton.Content>
                                     <TextBlock
+                                        MaxWidth="300"
+                                        TextTrimming="CharacterEllipsis"
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.FilterValues['ToAccount'].ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
                                 </DropDownButton.Content>
@@ -596,12 +616,18 @@
                                         FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                                         <ListView
                                             x:Name="ToAccountsList"
+                                            ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                             SelectionChanged="ToAccountsList_SelectionChanged"
                                             ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
                                             <ListView.ItemTemplate>
                                                 <DataTemplate
                                                     x:DataType="modelBObj:AccountBObj">
                                                     <TextBlock
+                                                        TextTrimming="CharacterEllipsis"
+                                                        MaxWidth="300"
+                                                        Padding="10"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
                                                         Text="{Binding}" />
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>
@@ -623,6 +649,8 @@
                                 CornerRadius="4">
                                 <DropDownButton.Content>
                                     <TextBlock
+                                        MaxWidth="300"
+                                        TextTrimming="CharacterEllipsis"
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.FilterValues['TransactionType'],Mode=OneWay}" />
                                 </DropDownButton.Content>
@@ -631,6 +659,7 @@
                                         Placement="Bottom"
                                         FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                                         <ListView
+                                            ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                             SelectedValue="{x:Bind ViewModel.FilterValues['TransactionType'], Mode=OneWay}"
                                             x:Name="TransactionType"
                                             SelectionChanged="TransactionType_SelectionChanged"
@@ -639,6 +668,11 @@
                                                 <DataTemplate
                                                     x:DataType="modelBObj:CreditCardDTO">
                                                     <TextBlock
+                                                        Padding="10"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        MaxWidth="300"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
                                                         Text="{Binding}" />
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>
@@ -659,6 +693,7 @@
                 Background="{ThemeResource ApplicationBackground}"
                 CornerRadius="8">
                 <ListView
+                    ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                     SelectionChanged="TransactionListView_SelectionChanged"
                     SelectedValue="{x:Bind ViewModel.InViewTransaction, Mode=OneWay}"
                     x:Name="TransactionListView"
@@ -686,6 +721,7 @@
                     <DropDownButton.Flyout>
                         <Flyout>
                             <ListView
+                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 SelectedValue="{x:Bind ViewModel.RowsPerPage, Mode=OneWay}"
                                 x:Name="RowsPerPageList"
                                 SelectionChanged="RowsPerPageList_SelectionChanged"

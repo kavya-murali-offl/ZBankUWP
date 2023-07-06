@@ -27,7 +27,7 @@
                         Width="50"
                         Margin="0,15,0,0"
                         Height="50"
-                        DisplayName="{Binding BeneficiaryName}" />
+                        Initials="{Binding BeneficiaryName, Converter={StaticResource InitialsConverter},Mode=OneWay}" />
                     <Grid
                         Canvas.ZIndex="20"
                         Background="{ThemeResource ApplicationBackgroundThemeBrush}"
@@ -36,7 +36,7 @@
                         HorizontalAlignment="Center"
                         Margin="10,40,10,10"
                         MinHeight="200"
-                        MinWidth="200">
+                        Width="250">
                         <Grid.RowDefinitions>
                             <RowDefinition
                                 Height="Auto" />
@@ -58,7 +58,9 @@
                             Canvas.ZIndex="20"
                             HorizontalAlignment="Center"
                             Grid.Row="1"
-                            Margin="10"
+                            Margin="10,20,10,10"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
                             FontSize="18"
                             FontWeight="SemiBold"
                             Text="{Binding BeneficiaryName}" />
@@ -213,8 +215,8 @@
                                             Value="10"
                                             Property="Margin" />
                                         <Setter
-                                            Value="Auto"
-                                            Property="Width" />
+                                            Value="Stretch"
+                                            Property="HorizontalAlignment" />
                                     </Style>
                                 </GridView.ItemContainerStyle>
                             </GridView>
@@ -263,8 +265,7 @@
                                 <GridView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VariableSizedWrapGrid
-                                            ItemWidth="250"
-                                            HorizontalAlignment="Center"
+                                            HorizontalAlignment="Stretch"
                                             VerticalAlignment="Center"
                                             Orientation="Horizontal" />
                                     </ItemsPanelTemplate>

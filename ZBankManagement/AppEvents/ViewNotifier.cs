@@ -22,6 +22,18 @@ namespace ZBank.AppEvents
             LoadApp?.Invoke();
         }
 
+        public event Action<bool> CreditCardSettled;
+        public void OnCreditCardSettled(bool IsSettled)
+        {
+            CreditCardSettled?.Invoke(IsSettled);
+        }
+
+        public event Action PaymentResetRequested;
+        public void OnPaymentResetRequested()
+        {
+            PaymentResetRequested?.Invoke();
+        }
+
         public event Action<bool, Card> CardInserted;
         public void OnCardInserted(bool updated, Card updatedCard)
         {
@@ -85,10 +97,10 @@ namespace ZBank.AppEvents
             RequestFailed?.Invoke(close);
         }
 
-        public event Action<bool> CloseDialog;
-        public void OnCloseDialog(bool close)
+        public event Action CloseDialog;
+        public void OnCloseDialog()
         {
-            CloseDialog?.Invoke(close);
+            CloseDialog?.Invoke();
         }
 
         public event Action<Beneficiary> BeneficiaryRemoved;

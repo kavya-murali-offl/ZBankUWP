@@ -45,6 +45,8 @@
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
+                    MaxWidth="300"
+                    TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     x:Name="BeneficiaryText"
                     Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryType, Mode=TwoWay}" />
@@ -54,11 +56,17 @@
                     Placement="Bottom"
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
+                        ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="ListView_SelectionChanged"
                         ItemsSource="{x:Bind ViewModel.BeneficiaryTypes, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock
+                                    Padding="10"
+                                    TextTrimming="CharacterEllipsis"
+                                    MaxWidth="300"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     Text="{Binding}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>

@@ -23,7 +23,13 @@
             Title="ZBank" />
         <Frame
             Grid.Row="1"
-            x:Name="MainFrame" />
+            x:Name="MainFrame">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition />
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
         <userControls:AppNotification
             Grid.Row="1"
             Margin="0,60,20,0"
@@ -31,6 +37,21 @@
             HorizontalAlignment="Right"
             Canvas.ZIndex="30"
             x:Name="AppNotification" />
+
+        <Grid
+            x:Name="LoadingScreen"
+            Background="#464646">
+            <Canvas>
+                <Image
+                    x:Name="extendedSplashImage"
+                    Source="Assets/LogoMain.png" />
+                <ProgressRing
+                    Name="splashProgressRing"
+                    IsActive="True"
+                    Width="20"
+                    HorizontalAlignment="Center"></ProgressRing>
+            </Canvas>
+        </Grid>
     </Grid>
   
     

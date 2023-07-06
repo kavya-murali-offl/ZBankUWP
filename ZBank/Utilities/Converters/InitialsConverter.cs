@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,8 +17,7 @@ namespace ZBank.Utilities.Converters
             {
                 string[] words = str.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                 string initials = string.Join("", Array.ConvertAll(words, w => w[0]));
-
-                return initials;
+                return initials.Length > 2 ? initials.Substring(0,2)?.ToUpper() : initials;
             }
 
             return string.Empty;

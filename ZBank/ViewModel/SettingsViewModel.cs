@@ -34,11 +34,6 @@ namespace ZBank.ViewModel
                 ColorsHelper.GetSolidColorBrush("FFBA4273"),
                 ColorsHelper.GetSolidColorBrush("FF6E6FD8"),
                 ColorsHelper.GetSolidColorBrush("FF488FA5"),
-                ColorsHelper.GetSolidColorBrush("FF519254"),
-                ColorsHelper.GetSolidColorBrush("FF488FA5"),
-                ColorsHelper.GetSolidColorBrush("FFCA5010"),
-                ColorsHelper.GetSolidColorBrush("FFA4262C"),
-                ColorsHelper.GetSolidColorBrush("FF7C93A1"),
             };
         }
 

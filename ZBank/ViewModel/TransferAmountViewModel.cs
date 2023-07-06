@@ -24,6 +24,7 @@ using ZBankManagement.Entities.BusinessObjects;
 using ZBank.View.Modals;
 using ZBank.Config;
 using ZBank.DataStore;
+using ZBank.Services;
 
 namespace ZBank.ViewModel
 {
@@ -32,7 +33,7 @@ namespace ZBank.ViewModel
         private IView View { get; set; }
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
-
+        public bool IsConfirmed { get; set; }
         public TransferAmountViewModel(IView view, ContentDialog dialog = null) {
             View = view;
             ContentDialog = dialog;
@@ -40,24 +41,26 @@ namespace ZBank.ViewModel
             Reset();
         }
 
+        private decimal _availableBalance;
         public decimal AvailableBalance
         {
-            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction?.SenderAccountNumber)?.Balance ?? 0;
+            get { return _availableBalance; }
+            set { Set(ref _availableBalance, value); }  
         }
 
         public AccountBObj SelectedAccount
         {
-            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.SenderAccountNumber);
+            get => UserAccounts?.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.SenderAccountNumber);
         }
 
         public AccountBObj SelectedOtherAccount
         {
-            get => UserAccounts.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber);
+            get => UserAccounts?.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber);
         }
 
         public BeneficiaryBObj SelectedBeneficiary
         {
-            get => AllBeneficiaries.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber);
+            get => AllBeneficiaries?.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber);
         }
 
         private ContentDialog ContentDialog { get; set; }
@@ -84,7 +87,9 @@ namespace ZBank.ViewModel
 
         public void Reset(object parameter=null) 
         {
+            ViewNotifier.Instance.OnPaymentResetRequested();
             CurrentTransaction = new Transaction();
+            AvailableBalance = 0m;
             FieldErrors["Amount"] = string.Empty;
             FieldErrors["Description"] = string.Empty;
             FieldErrors["Account"] = string.Empty;
@@ -117,7 +122,6 @@ namespace ZBank.ViewModel
             UseCaseBase<GetAllBeneficiariesResponse> useCase = new GetAllBeneficiariesUseCase(request, presenterCallback);
             useCase.Execute();
         }
-
 
         public void OnLoaded()
         {
@@ -178,6 +182,7 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BeneficiaryListUpdated -= UpdateBeneficiariesList;
             ViewNotifier.Instance.CancelPaymentRequested -= CancelPaymentRequested;
+            ViewNotifier.Instance.CloseDialog -= ClosePaymentDialog;
         }
 
         private bool ValidateFields()
@@ -188,9 +193,10 @@ namespace ZBank.ViewModel
                 "Amount", "SenderAccountNumber", "RecipientAccountNumber"
             };
 
-            FieldErrors = ValidateField(FieldErrors, typeof(Transaction), list, CurrentTransaction);
+            FieldErrors = ValidateObject(FieldErrors, typeof(Transaction), list, CurrentTransaction);
             FieldErrors["Beneficiary"] = FieldErrors["RecipientAccountNumber"].Replace("RecipientAccountNumber", "To Account");
             FieldErrors["Account"] = FieldErrors["SenderAccountNumber"].Replace("SenderAccountNumber", "From Account");
+            
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;
             return true;
@@ -205,6 +211,7 @@ namespace ZBank.ViewModel
                 case 0:
                     if (ValidateFields() && CheckBalance())
                     {
+                        IsConfirmed = true;
                         CurrentStep = Steps[previousIndex + 1];
                         if (ContentDialog == null)
                         {
@@ -218,6 +225,7 @@ namespace ZBank.ViewModel
                     else
                     {
                         CurrentStep = Steps[previousIndex]; 
+                        IsConfirmed = false;
                     }
                     break;
                 case 1:
@@ -314,19 +322,23 @@ namespace ZBank.ViewModel
 
         internal void CloseDialog(object args = null)
         {
+            ClosePaymentDialog();
+        }
+
+        private void ClosePaymentDialog()
+        {
             ContentDialog.Hide();
             Reset();
         }
 
-        private ObservableCollection<AccountBObj> _accounts { get; set; }
+        private ObservableCollection<AccountBObj> _accounts = null;
 
         public ObservableCollection<AccountBObj> UserAccounts
         {
             get { return _accounts; }
             set
             {
-                _accounts = value;
-                OnPropertyChanged(nameof(UserAccounts));
+                Set(ref _accounts, value);
             }
         }
 
@@ -444,15 +456,16 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(TransferAmountResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnCancelPaymentRequested(true);
+                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
                     {
@@ -462,6 +475,7 @@ namespace ZBank.ViewModel
                             Type = NotificationType.ERROR,
                         }
                     });
+                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
         }

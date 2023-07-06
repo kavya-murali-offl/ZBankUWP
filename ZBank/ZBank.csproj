@@ -150,19 +150,17 @@
     <Compile Include="ViewModel\EntryPageViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PayCreditCardViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
-    <Compile Include="View\DataTemplates\AddNomineeTemplate.xaml.cs">
-      <DependentUpon>AddNomineeTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml.cs">
+    <Compile Include="View\DataTemplates\AccountInfoTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DataTemplates\DepositAccountInfoTemplate.xaml.cs">
+    <Compile Include="View\DataTemplates\AccountInfoTemplates\DepositAccountInfoTemplate.xaml.cs">
       <DependentUpon>DepositAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\NewAcountTemplates\NewCurrentAccountFormTemplate.xaml.cs">
@@ -195,7 +193,7 @@
     <Compile Include="View\DataTemplates\PersonalDetailsVerificationTemplate.xaml.cs">
       <DependentUpon>PersonalDetailsVerificationTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml.cs">
+    <Compile Include="View\DataTemplates\AccountInfoTemplates\SavingsAccountInfoTemplate.xaml.cs">
       <DependentUpon>SavingsAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTemplates\ViewOrNoCardTemplate.xaml.cs">
@@ -249,14 +247,14 @@
     <Compile Include="View\Modals\AddEditBeneficiaryView.xaml.cs">
       <DependentUpon>AddEditBeneficiaryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Modals\PayCreditCard.xaml.cs">
+      <DependentUpon>PayCreditCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\AppNotification.xaml.cs">
       <DependentUpon>AppNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\CardElementView.xaml.cs">
       <DependentUpon>CardElementView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\PaginationRow.xaml.cs">
-      <DependentUpon>PaginationRow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\ResetPinContent.xaml.cs">
       <DependentUpon>ResetPinContent.xaml</DependentUpon>
@@ -268,35 +266,20 @@
     <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\AllAccountsGridFrame.xaml.cs">
-      <DependentUpon>AllAccountsGridFrame.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\UserControls\AnalyticsCardControl.xaml.cs">
       <DependentUpon>AnalyticsCardControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\CardControl.xaml.cs">
       <DependentUpon>CardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\Chart1.xaml.cs">
-      <DependentUpon>Chart1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\UserControls\CustomTitleBar.xaml.cs">
       <DependentUpon>CustomTitleBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\DashboardCardTemplateUserControl.xaml.cs">
-      <DependentUpon>DashboardCardTemplateUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\DashboardRowControl.xaml.cs">
-      <DependentUpon>DashboardRowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\DashboardTransactionGrid.xaml.cs">
       <DependentUpon>DashboardTransactionGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\OneByTwoGrid.xaml.cs">
       <DependentUpon>OneByTwoGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\PageHeader.xaml.cs">
-      <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\Toast.xaml.cs">
       <DependentUpon>Toast.xaml</DependentUpon>
@@ -333,15 +316,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\DataTemplates\AddNomineeTemplate.xaml">
+    <Page Include="View\DataTemplates\AccountInfoTemplates\CurrentAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DataTemplates\CurrentAccountInfoTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\DataTemplates\DepositAccountInfoTemplate.xaml">
+    <Page Include="View\DataTemplates\AccountInfoTemplates\DepositAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -385,7 +364,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DataTemplates\SavingsAccountInfoTemplate.xaml">
+    <Page Include="View\DataTemplates\AccountInfoTemplates\SavingsAccountInfoTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -445,15 +424,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Modals\PayCreditCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserControls\AccountInfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Modals\AddEditBeneficiaryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\AllAccountsGridFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -473,19 +452,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\Chart1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\UserControls\CustomTitleBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\DashboardCardTemplateUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\DashboardRowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -494,14 +461,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\OneByTwoGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\PageHeader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\PaginationRow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -36,7 +36,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         private void Reset()
         {
             AccountsText.Text = "Select From Account";
-            BeneficiaryText.Text = "Select To Acount";
+            BeneficiaryText.Text = "Select To Account";
         }
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -53,7 +53,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                         ViewModel.OtherAccounts.Add(account);
                     }
                 }
-                BeneficiaryText.Text = "Select To Acount";
+                BeneficiaryText.Text = "Select To Account";
                 ViewModel.CurrentTransaction.RecipientAccountNumber = null;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
                 AccountsDropdownButton.Flyout.Hide();
