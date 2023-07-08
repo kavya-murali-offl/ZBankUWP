@@ -369,6 +369,7 @@
                                     Grid.Row="0"
                                     Margin="10"
                                     MinWidth="350"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     VerticalContentAlignment="Center"
                                     TemplateCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />

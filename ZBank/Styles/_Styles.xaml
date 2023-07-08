@@ -784,7 +784,7 @@
         x:Name="FrameNavButton">
         <Setter
             Property="Foreground"
-            Value="{ThemeResource SystemBaseHighColor}" />
+            Value="{ThemeResource SystemBaseMediumColor}" />
         <Setter
             Property="Background"
             Value="{ThemeResource SystemAltHighColor}" />
@@ -833,20 +833,11 @@
                                 <VisualState
                                     x:Name="PointerOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltMediumColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemBaseMediumColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.6"
+                                            Duration="0" />
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -855,20 +846,11 @@
                                 <VisualState
                                     x:Name="Pressed">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltHighColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemBaseLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.5"
+                                            Duration="0" />
                                         <PointerDownThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -877,20 +859,11 @@
                                 <VisualState
                                     x:Name="Disabled">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ButtonDisabledBackgroundThemeBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource BackButtonDisabledForegroundThemeBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.2"
+                                            Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -1209,12 +1182,6 @@
             Property="MaxWidth"
             Value="300" />
         <Setter
-            Property="BorderThickness"
-            Value="1.25" />
-        <Setter
-            Property="BorderBrush"
-            Value="{ThemeResource AccentColorBrush}" />
-        <Setter
             Property="CornerRadius"
             Value="4" />
         <Setter
@@ -1250,20 +1217,11 @@
                                 <VisualState
                                     x:Name="PointerOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationPageBackground}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource AccentColorBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.8"
+                                            Duration="0" />
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -1272,20 +1230,12 @@
                                 <VisualState
                                     x:Name="Pressed">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource AccentColorBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.6"
+                                            Duration="0" />
                                         <PointerDownThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -1295,35 +1245,16 @@
                                     x:Name="Disabled">
 
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.5"
+                                            Duration="0" />
                                     </Storyboard>
                                 </VisualState>
-
                             </VisualStateGroup>
-
                         </VisualStateManager.VisualStateGroups>
                     </ContentPresenter>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -1342,12 +1273,6 @@
         <Setter
             Property="Margin"
             Value="5,0,0,0" />
-        <Setter
-            Property="BorderThickness"
-            Value="1.25" />
-        <Setter
-            Property="BorderBrush"
-            Value="{ThemeResource AccentColorBrush}" />
         <Setter
             Property="CornerRadius"
             Value="5" />
@@ -1387,27 +1312,12 @@
                                 <VisualState
                                     x:Name="PointerOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationForeground}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="Transparent" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.8"
+                                            Duration="0" />
+
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -1416,20 +1326,11 @@
                                 <VisualState
                                     x:Name="Pressed">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource AccentColorBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.6"
+                                            Duration="0" />
                                         <PointerDownThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -1480,15 +1381,17 @@
             Property="Padding"
             Value="7" />
         <Setter
-            Property="BorderThickness"
-            Value="0" />
-        <Setter
             Property="CornerRadius"
             Value="5" />
         <Setter
+            Property="BorderThickness"
+            Value="0" />
+        <Setter
+            Property="Background"
+            Value="Transparent" />
+        <Setter
             Property="Foreground"
             Value="{ThemeResource AccentColorBrush}" />
-        
         <Setter
             Property="Template">
             <Setter.Value>
@@ -1508,7 +1411,6 @@
                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                         AutomationProperties.AccessibilityView="Raw">
-
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup
                                 x:Name="CommonStates">
@@ -1522,27 +1424,10 @@
                                 <VisualState
                                     x:Name="PointerOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource AccentColorBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="Transparent" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            Duration="0" />
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -1551,20 +1436,11 @@
                                 <VisualState
                                     x:Name="Pressed">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource AccentColorBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.6"
+                                            Duration="0" />
                                         <PointerDownThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -1573,27 +1449,11 @@
                                 <VisualState
                                     x:Name="Disabled">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource ApplicationActiveSelectionHighlightBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.5"
+                                            Duration="0" />
                                     </Storyboard>
                                 </VisualState>
 
@@ -1606,7 +1466,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style
         TargetType="Button"
         x:Name="IconButton">
@@ -1667,43 +1526,23 @@
                                 <VisualState
                                     x:Name="PointerOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemChromeLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource AccentColorBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.8"
+                                            Duration="0" />
                                         <PointerUpThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState
                                     x:Name="Pressed">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemChromeMediumLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource AccentColorBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.6"
+                                            Duration="0" />
                                         <PointerDownThemeAnimation
                                             Storyboard.TargetName="ContentPresenter" />
                                     </Storyboard>
@@ -1711,27 +1550,15 @@
 
                                 <VisualState
                                     x:Name="Disabled">
-
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                                        <DoubleAnimation
                                             Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="ContentPresenter"
-                                            Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame
-                                                KeyTime="0"
-                                                Value="{ThemeResource SystemAltLowColor}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.3"
+                                            Duration="0" />
                                     </Storyboard>
                                 </VisualState>
-
                             </VisualStateGroup>
-
                         </VisualStateManager.VisualStateGroups>
                     </ContentPresenter>
 

@@ -67,6 +67,7 @@
                             Placement="Bottom"
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
+                                Width="380"
                                 x:Name="AccountsList"
                                 ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 ItemClick="AccountsList_ItemClick"
@@ -76,7 +77,6 @@
                                     <DataTemplate
                                         x:DataType="modelBObj:AccountBObj">
                                         <TextBlock
-                                            Padding="10"
                                             TextTrimming="CharacterEllipsis"
                                             MaxWidth="300"
                                             VerticalAlignment="Center"
@@ -117,6 +117,7 @@
                             Placement="Bottom"
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
+                                Width="380"
                                 ItemClick="BeneficiaryList_ItemClick"
                                 x:Name="BeneficiaryList"
                                 ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
