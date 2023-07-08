@@ -37,7 +37,9 @@
             Margin="0,10,0,0"
             Foreground="Gray"
             Text="New Pin" />
+        
         <PasswordBox
+            Style="{ThemeResource CustomPasswordBoxStyle}"
             x:Name="PinBox"
             Margin="10"
             Grid.Row="4"
@@ -48,7 +50,7 @@
         <TextBlock
             Margin="10,0,0,10"
             TextWrapping="WrapWholeWords"
-            Foreground="Red"
+            Foreground="IndianRed"
             Grid.Row="5"
             Text="{x:Bind ErrorText, Mode=OneWay}" />
 

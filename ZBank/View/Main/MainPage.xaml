@@ -172,6 +172,7 @@
                                 VerticalAlignment="Top"
                                 Margin="7,0,5,0"
                                 Width="50"
+                                Background="Transparent"
                                 Style="{ThemeResource ProfilePicture}"
                                 Initials="{x:Bind ViewModel.CurrentCustomer.Name, Converter={StaticResource InitialsConverter}, Mode=OneWay}"
                                 >
@@ -317,9 +318,7 @@
                                                 <ToggleButton
                                                     x:Name="SwitchThemeButton"
                                                     Click="SwitchThemeButton_Click"
-                                                    BorderThickness="0"
-                                                    Background="Transparent"
-                                                    CornerRadius="10"
+                                                    Style="{ThemeResource SecondaryToggleButton}"
                                                     Padding="8"
                                                     Margin="5,0,5,0">
                                                     <ToolTipService.ToolTip>
@@ -329,7 +328,6 @@
                                                     </ToolTipService.ToolTip>
                                                     <FontIcon
                                                         x:Name="ThemeIcon"
-                                                        Foreground="{ThemeResource AccentColorBrush}"
                                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                         FontSize="18" />
                                                 </ToggleButton>

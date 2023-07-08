@@ -137,7 +137,8 @@
             Grid.Row="5"
             HorizontalAlignment="Left"
             Grid.ColumnSpan="2"
-            Foreground="Red"
+             Margin="5"
+                            Foreground="IndianRed"
             Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
             />
         
@@ -173,6 +174,7 @@
             Text="Amount To Settle" />
 
         <TextBox
+            Style="{ThemeResource CustomTextBoxStyle}"
             Grid.Row="8"
             Margin="10"
             Grid.ColumnSpan="2"
@@ -189,7 +191,7 @@
             Margin="10"
             Grid.ColumnSpan="2"
             Text="{x:Bind ViewModel.FieldErrors['Amount'], Mode=OneWay}"
-            Foreground="Red"
+            Foreground="IndianRed"
             HorizontalAlignment="Left" />
 
         <Button

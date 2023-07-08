@@ -185,6 +185,7 @@
                             FontWeight="SemiBold"
                             Text="Within Bank" />
                         <TextBox
+                            Style="{ThemeResource CustomTextBoxStyle}"
                             x:Name="WithinBankTextBox"
                             HorizontalAlignment="Right"
                             TextChanging="WithinBankTextBox_TextChanging"
@@ -246,6 +247,7 @@
                             FontWeight="SemiBold"
                             Text="Other Bank" />
                         <TextBox
+                            Style="{ThemeResource CustomTextBoxStyle}"
                             x:Name="OtherBankTextBox"
                             TextChanging="OtherBankTextBox_TextChanging"
                             HorizontalAlignment="Right"

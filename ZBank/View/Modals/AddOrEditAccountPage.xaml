@@ -155,7 +155,7 @@
                     Width="400"
                     Margin="20,10,20,10"
                     Text="{x:Bind ViewModel.FieldErrors['Branch'], Mode=OneWay}"
-                    Foreground="Red" />
+                    Foreground="IndianRed" />
 
                 <TextBlock
                     TextTrimming="CharacterEllipsis"
@@ -192,7 +192,7 @@
                     TextWrapping="Wrap" />
                 <TextBlock
                     Grid.Row="11"
-                    Foreground="Red"
+                    Foreground="IndianRed"
                     Margin="20,10,20,10"
                     Width="400"
                     Text="{x:Bind ViewModel.FieldErrors['KYC'], Mode=OneWay}" />

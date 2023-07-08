@@ -55,7 +55,6 @@
                         Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-
             <GridView.ItemTemplate>
                 <DataTemplate
                     x:DataType="modelBObj:AccountBObj">
@@ -82,7 +81,7 @@
                                 Height="Auto" />
                         </Grid.RowDefinitions>
                         <StackPanel
-                            Background="{Binding AccountType, Converter={StaticResource BackgroundColorConverter}}"
+                           Background="{Binding AccountType, Converter={StaticResource BackgroundColorConverter}}"
                             MaxWidth="200"
                             Height="30"
                             VerticalAlignment="Top"
@@ -95,7 +94,6 @@
                                 Padding="10,5,10,5"
                                 Text="{Binding AccountType}" />
                         </StackPanel>
-
                         <TextBlock
                             Margin="0,25,0,5"
                             HorizontalAlignment="Center"
@@ -104,7 +102,6 @@
                             Foreground="{ThemeResource SystemBaseHighColor}"
                             FontSize="20"
                             Text="{Binding AccountNumber}" />
-
                         <StackPanel
                             HorizontalAlignment="Center"
                             Margin="0,5,0,0"
@@ -138,21 +135,7 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Text="{Binding Balance, Converter={StaticResource CurrencyConverter}}" />
-                            <!--<Button
-                                Style="{ThemeResource IconButton}"
-                                Margin="10,0,10,0"
-                                Padding="10"
-                                Background="Transparent"
-                                VerticalContentAlignment="Center">
-                                <Button.Content>
-                                    <FontIcon
-                                        FontSize="14"
-                                        Glyph="{x:Bind ViewOrHideIcon}" />
-                                </Button.Content>
-                            </Button>-->
                         </StackPanel>
-
-
                         <Button
                             x:Name="ViewAccountButton"
                             Margin="20"

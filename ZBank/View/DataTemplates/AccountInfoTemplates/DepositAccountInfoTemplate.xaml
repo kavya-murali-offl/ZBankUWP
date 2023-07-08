@@ -79,14 +79,14 @@ Unloaded="UserControl_Unloaded"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">
                 <TextBlock  TextTrimming="CharacterEllipsis"
-                    FontSize="18"
+                    FontSize="16"
                     HorizontalAlignment="Center"
                     FontWeight="SemiBold"
                     Foreground="Azure"
                     Text="Deposit Amount" />
                 <TextBlock  TextTrimming="CharacterEllipsis"
 
-                    FontSize="20"
+                    FontSize="18"
                     HorizontalAlignment="Center"
                     Foreground="Azure"
                     FontWeight="ExtraBold"
@@ -147,7 +147,6 @@ Unloaded="UserControl_Unloaded"
                             CornerRadius="4"
                             Padding="15,5,15,5">
                             <TextBlock  TextTrimming="CharacterEllipsis"
-
                                 Foreground="{ThemeResource SystemChromeWhiteColor}"
                                 FontSize="12"
                                 VerticalAlignment="Center"
@@ -173,7 +172,6 @@ Unloaded="UserControl_Unloaded"
                             Margin="0,10,0,0"
                             FontSize="14"
                             HorizontalAlignment="Center"
-                            FontWeight="SemiBold"
                             Text="{x:Bind SelectedAccount.AccountName}" />
                     </StackPanel>
                 </GridViewItem>
@@ -191,12 +189,10 @@ Unloaded="UserControl_Unloaded"
                             FontWeight="SemiBold"
                             Text="Account Opened On" />
                         <TextBlock  TextTrimming="CharacterEllipsis"
-
                             Margin="0,10,0,0"
                             FontSize="14"
-                            HorizontalAlignment="Right"
-                            FontWeight="SemiBold"
-                            Text="{x:Bind SelectedAccount.CreatedOn}" />
+                            HorizontalAlignment="Center"
+                            Text="{x:Bind SelectedAccount.CreatedOn, Converter={StaticResource DateFormatConverter}}" />
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
@@ -204,17 +200,14 @@ Unloaded="UserControl_Unloaded"
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock  TextTrimming="CharacterEllipsis"
-
                             VerticalAlignment="Center"
                             FontSize="14"
                             Foreground="Gray"
                             FontWeight="SemiBold"
                             Text="IFSC Code" />
                         <TextBlock  TextTrimming="CharacterEllipsis"
-
                             Margin="0,10,0,0"
                             FontSize="14"
-                            FontWeight="SemiBold"
                             Text="{x:Bind SelectedAccount.IfscCode}" />
                     </StackPanel>
                 </GridViewItem>
@@ -234,8 +227,7 @@ Unloaded="UserControl_Unloaded"
 
                             Margin="0,10,0,0"
                             FontSize="14"
-                            HorizontalAlignment="Right"
-                            FontWeight="SemiBold"
+                            HorizontalAlignment="Center"
                             Text="{x:Bind SelectedAccount.BranchName}" />
 
                     </StackPanel>
@@ -245,7 +237,6 @@ Unloaded="UserControl_Unloaded"
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock  TextTrimming="CharacterEllipsis"
-
                             VerticalAlignment="Center"
                             FontSize="14"
                             HorizontalAlignment="Center"
@@ -253,11 +244,9 @@ Unloaded="UserControl_Unloaded"
                             FontWeight="SemiBold"
                             Text="Interest Rate" />
                         <TextBlock  TextTrimming="CharacterEllipsis"
-
                             Margin="0,10,0,0"
                             FontSize="14"
                             HorizontalAlignment="Center"
-                            FontWeight="SemiBold"
                             Text="{x:Bind SelectedAccount.InterestRate}" />
                     </StackPanel>
                 </GridViewItem>
@@ -436,6 +425,7 @@ Unloaded="UserControl_Unloaded"
                             Foreground="Gray" />
 
                         <TextBox
+                            Style="{ThemeResource CustomTextBoxStyle}"
                             Grid.Row="2"
                             MaxWidth="400"
                             IsEnabled="{x:Bind IsActive, Mode=OneWay}"  
@@ -448,7 +438,8 @@ Unloaded="UserControl_Unloaded"
                         <TextBlock
                             Grid.Row="3"
                             HorizontalAlignment="Center"
-                            Foreground="Red"
+                            Margin="5"
+                            Foreground="IndianRed"
                             x:Name="UpdateErrorText" />
                         
                         <Button
@@ -477,6 +468,7 @@ Unloaded="UserControl_Unloaded"
                         Grid.Row="1"
                         Margin="5"
                         Padding="10"
+                        Visibility="{x:Bind IsActive, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"
                         VerticalAlignment="Stretch"
                         Background="{ThemeResource ApplicationBackground}"
                         CornerRadius="8">
@@ -520,10 +512,35 @@ Unloaded="UserControl_Unloaded"
                             Style="{ThemeResource PrimaryButton}"
                             Margin="10"
                             Content="Close Account" />
+                       
+                    </Grid>
+                    <Grid
+                        Grid.Row="1"
+                        Margin="5"
+                        Visibility="{x:Bind IsActive, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, ConverterParameter=true}"
+                        Padding="10"
+                        VerticalAlignment="Stretch"
+                        Background="{ThemeResource ApplicationBackground}"
+                        CornerRadius="8">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="Auto" />
+                        </Grid.RowDefinitions>
                         <TextBlock
-                            Visibility="{x:Bind IsActive, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, ConverterParameter=true}"
+                            TextTrimming="CharacterEllipsis"
+                            Margin="20"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Text="Account Settings"
+                            FontWeight="Bold"
+                            FontSize="19" />
+
+                        <TextBlock
                             HorizontalAlignment="Center"
-                            Grid.Row="3"
+                            Grid.Row="1"
                             Margin="10"
                             Text="No Actions To Show" />
                     </Grid>

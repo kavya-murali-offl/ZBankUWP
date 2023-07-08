@@ -24,7 +24,7 @@
         <usercontrols:CardControl.MyControls>
             <Button
                 Padding="15,5,15,5"
-                Style="{ThemeResource SecondaryMenuButton}"
+                Style="{ThemeResource SecondaryButton}"
                 VerticalAlignment="Center"
                 x:Name="ResetButton"
                 Click="ResetButton_Click"
@@ -50,13 +50,12 @@
                 Grid.Row="1"
                 VerticalAlignment="Top">
                 <TextBlock
-                    MaxWidth="400"
+                    HorizontalAlignment="Left"
                     Margin="5"
                     Text="From Account *"
                     Style="{ThemeResource NormalSubText}" />
                 <DropDownButton
                     x:Name="AccountsDropdownButton"
-                    MaxWidth="400"
                     HorizontalAlignment="Stretch"
                     CornerRadius="8">
                     <DropDownButton.Content>
@@ -72,6 +71,7 @@
                             Placement="Bottom"
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
+                                Width="350"
                                 x:Name="AccountsList"
                                 ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 ItemClick="AccountsList_ItemClick"
@@ -81,9 +81,10 @@
                                     <DataTemplate
                                         x:DataType="modelBObj:AccountBObj">
                                         <TextBlock
+                                            ScrollViewer.HorizontalScrollMode="Disabled"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                             Padding="10"
                                             TextTrimming="CharacterEllipsis"
-                                            MaxWidth="300"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             Text="{x:Bind}" />
@@ -95,9 +96,10 @@
                 </DropDownButton>
                 <TextBlock
                     MaxWidth="400"
+                    Margin="5"
                     TextWrapping="Wrap"
                     Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
-                    Foreground="Red" />
+                    Foreground="IndianRed" />
                 <TextBlock
                     MaxWidth="400"
                     Margin="5"
@@ -105,8 +107,8 @@
                     Style="{ThemeResource NormalSubText}" />
 
                 <DropDownButton
-                    x:Name="BeneficiaryButton"
                     MaxWidth="400"
+                    x:Name="BeneficiaryButton"
                     HorizontalAlignment="Stretch"
                     CornerRadius="8">
                     <DropDownButton.Content>
@@ -124,7 +126,7 @@
                             <ListView
                                 x:Name="BeneficiaryList"
                                 ItemClick="BeneficiaryList_ItemClick"
-                                Padding="5"
+                                Width="350"
                                 ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
@@ -151,7 +153,8 @@
                     MaxWidth="400"
                     TextWrapping="Wrap"
                     Text="{x:Bind ViewModel.FieldErrors['Beneficiary'], Mode=OneWay}"
-                    Foreground="Red" />
+                    Margin="5"
+                    Foreground="IndianRed" />
                 
                 <TextBlock
                     Margin="5"
@@ -160,6 +163,7 @@
                     Style="{ThemeResource NormalSubText}" />
 
                 <TextBox
+                    Style="{ThemeResource CustomTextBoxStyle}"
                     x:Name="AmountTextBox"
                     MaxWidth="400"
                     Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay, Converter={StaticResource StringConverter}}"
@@ -170,7 +174,8 @@
                     MaxWidth="400"
                     TextWrapping="Wrap"
                     Text="{x:Bind ViewModel.FieldErrors['Amount'], Mode=OneWay}"
-                    Foreground="Red" />
+                    Margin="5"
+                    Foreground="IndianRed" />
 
                 <Button
                     Margin="0,10,0,0"

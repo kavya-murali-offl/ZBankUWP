@@ -38,14 +38,13 @@
             Text="Type" />
         <DropDownButton
             IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
-            Width="200"
+            Width="250"
             Grid.ColumnSpan="2"
             HorizontalAlignment="Right"
             x:Name="BeneficiaryButton"
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
-                    MaxWidth="300"
                     TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     x:Name="BeneficiaryText"
@@ -56,6 +55,8 @@
                     Placement="Bottom"
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
+                        Width="250"
+                        Padding="0"
                         ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="ListView_SelectionChanged"
                         ItemsSource="{x:Bind ViewModel.BeneficiaryTypes, Mode=OneWay}">
@@ -64,7 +65,6 @@
                                 <TextBlock
                                     Padding="10"
                                     TextTrimming="CharacterEllipsis"
-                                    MaxWidth="300"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Text="{Binding}" />
@@ -88,13 +88,15 @@
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
+                Style="{ThemeResource CustomTextBoxStyle}"
                 x:Name="NameBox"
                 MaxWidth="400"
                 Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
                 PlaceholderText="Enter Beneficiary Name" />
 
             <TextBlock
-                Foreground="Red"
+                Margin="5"
+                Foreground="IndianRed"
                 Text="{x:Bind ViewModel.FieldErrors['BeneficiaryName'], Mode=OneWay}" />
 
             <TextBlock
@@ -103,12 +105,14 @@
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
+                Style="{ThemeResource CustomTextBoxStyle}"
                 IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
                 PlaceholderText="Enter Account Number"
                 Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay, TargetNullValue=''}" />
 
             <TextBlock
-                Foreground="Red"
+                Margin="5"
+                Foreground="IndianRed"
                 Text="{x:Bind ViewModel.FieldErrors['AccountNumber'], Mode=OneWay}" />
 
             <TextBlock
@@ -118,6 +122,7 @@
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
+                Style="{ThemeResource CustomTextBoxStyle}"
                 IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
                 Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                 x:Name="IFSCCodeBox"
@@ -127,7 +132,8 @@
             <TextBlock
                 Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                 Text="{x:Bind ViewModel.FieldErrors['IFSCCode'], Mode=OneWay}"
-                Foreground="Red" />
+                Margin="5"
+                Foreground="IndianRed" />
 
         </StackPanel>
        

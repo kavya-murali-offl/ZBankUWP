@@ -22,48 +22,18 @@ namespace ZBank.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ObservableDictionary<string, string> ValidateObject(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
+        public void ValidateObject(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
         {
             foreach (var field in fieldsToValidate)
             {
                 var property = type.GetProperty(field);
                 var value = property.GetValue(objectToCompare);
-                return ValidateField(FieldErrors, property.Name, value);
+                ValidateField(FieldErrors, property.Name, value);
             }
-
-            return FieldErrors;
-            //    if (value is null || string.IsNullOrEmpty(value.ToString()) || string.IsNullOrWhiteSpace(value.ToString()))
-            //    {
-            //        FieldErrors[property.Name] = $"{property.Name} is required.";
-            //    }
-            //    else
-            //    {
-            //        FieldErrors[property.Name] = string.Empty;
-            //        if (property.Name == "Amount" || property.Name == "Balance")
-            //        {
-            //            if (decimal.TryParse(value.ToString(), out decimal amountInDecimal))
-            //            {
-            //                if (amountInDecimal <= 0)
-            //                {
-            //                    FieldErrors["Amount"] = "Amount should be greater than zero";
-            //                }
-            //                else
-            //                {
-            //                    FieldErrors["Amount"] = string.Empty;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                FieldErrors["Amount"] = "Please enter a valid Amount";
-            //            }
-            //        }
-            //    }
-            //}
-            //return FieldErrors;
         }
 
 
-        public ObservableDictionary<string, string> ValidateField(ObservableDictionary<string, string> FieldErrors, string field, object value)
+        public void ValidateField(ObservableDictionary<string, string> FieldErrors, string field, object value)
         {
                 if (value is null || string.IsNullOrEmpty(value.ToString()) || string.IsNullOrWhiteSpace(value.ToString()))
                 {
@@ -91,7 +61,6 @@ namespace ZBank.ViewModel
                         }
                     }
                 }
-            return FieldErrors;
         }
 
         protected bool Set<T>(ref T field, T newValue = default(T), [CallerMemberName] string propertyName = null)

@@ -19,17 +19,17 @@ namespace ZBank.Utilities.Converters
             switch (value)
             {
                 case AccountType.SAVINGS:
-                    return new SolidColorBrush(Colors.MediumVioletRed);
+                    return new SolidColorBrush(Colors.CadetBlue);
                 case AccountType.CURRENT:
-                    return new SolidColorBrush(Colors.BlueViolet);
+                    return new SolidColorBrush(Colors.SteelBlue);
                 case AccountStatus.ACTIVE:
-                    return new SolidColorBrush(Colors.Green);
+                    return new SolidColorBrush(Colors.SeaGreen);
                 case AccountStatus.INACTIVE:
                     return new SolidColorBrush(Colors.Orange);
                 case AccountStatus.CLOSED:
                     return new SolidColorBrush(Colors.IndianRed);
                 case AccountType.TERM_DEPOSIT:
-                    return new SolidColorBrush(Colors.Brown);
+                    return new SolidColorBrush(Colors.RosyBrown);
                 case NotificationType.SUCCESS:
                     return (AcrylicBrush)Application.Current.Resources["NotificationSuccessAcrylicBrush"];
                 case NotificationType.ERROR:

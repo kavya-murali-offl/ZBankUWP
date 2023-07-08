@@ -38,7 +38,9 @@
     <ScrollViewer>
         
         <Grid
-            MinWidth="450"
+            Padding="20"
+            MinWidth="400"
+            Margin="20"
             CornerRadius="8">
             <Grid.RowDefinitions>
                 <RowDefinition
@@ -59,6 +61,7 @@
  
             <ContentControl
                 Grid.Row="2"
+                MaxWidth="400"
                 MinHeight="400"
                 Content="{x:Bind ViewModel.CurrentStep.Content, Mode=OneWay}"
                 DataContext="{x:Bind ViewModel, Mode=OneWay}"
@@ -74,7 +77,7 @@
                 Margin="0"
                 VerticalAlignment="Center"
                 x:Name="CancelPayment"
-                Style="{ThemeResource CardButton}">
+                Style="{ThemeResource SecondaryButton}">
                 <Button.Content>
                     <TextBlock
                         Text="Cancel Payment" />
@@ -94,13 +97,12 @@
                     VerticalAlignment="Center"
                     Content="{x:Bind ViewModel.CurrentStep.SecondaryCommandText, Mode=OneWay}"
                     Command="{x:Bind ViewModel.CurrentStep.SecondaryCommand, Mode=OneWay}"
-                    Style="{ThemeResource CardButton}" />
+                    Style="{ThemeResource SecondaryButton}" />
                 
                 <Button
                     x:Name="PrimaryButton"
                     HorizontalAlignment="Right"
                     Margin="10,0,10,0"
-                    CornerRadius="10"
                     MinWidth="100"
                     Command="{x:Bind ViewModel.CurrentStep.PrimaryCommand, Mode=OneWay}"
                     Content="{x:Bind ViewModel.CurrentStep.PrimaryCommandText, Mode=OneWay}"

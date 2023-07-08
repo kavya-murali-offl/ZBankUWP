@@ -57,6 +57,7 @@
                 Text="Customer ID" />
 
             <TextBox
+                Style="{ThemeResource CustomTextBoxStyle}"
                 Margin="10"
                 Grid.Row="2"
                 PlaceholderText="Enter Customer ID"
@@ -81,7 +82,7 @@
 
             <TextBlock
                 Grid.Row="5"
-                Foreground="Red"
+                Foreground="IndianRed"
                 HorizontalAlignment="Center"
                 Margin="0,10,0,10"
                 TextWrapping="WrapWholeWords"

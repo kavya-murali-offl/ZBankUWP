@@ -55,7 +55,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = beneficiaries.Where(ben => !ifscCodes.Contains(ben.IFSCCode)).Count()
                 };
 
-                List<TransactionBObj> transactions = new List<TransactionBObj>();
+                IEnumerable<TransactionBObj> transactions = new List<TransactionBObj>();
                 decimal income = 0;
                 decimal expense = 0;
                 foreach(var account in accountsList)
@@ -67,7 +67,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                         {
                             transaction.IsRecipient = true;
                         }
-                        transactions.Add(transaction);
+                        transactions = transactions.Append(transaction);
                     }
                     income += transactions.Where(tran => tran.IsRecipient).Sum(tran => tran.Amount);
                     expense += transactions.Where(tran => !tran.IsRecipient).Sum(tran => tran.Amount);
@@ -75,7 +75,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
                 var IncomeExpenseCard = new DashboardCardModel
                 {
-                    PrimaryKey = "Net Profit / Month",
+                    PrimaryKey = "Net Balance / Month",
                     PrimaryValue = (income - expense),
                     SecondaryKey1 = "Income / Month",
                     SecondaryValue1 = income,
@@ -95,7 +95,8 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 };
 
                 IEnumerable<CardBObj> AllCards = await _handler.GetAllCards(request.UserID);
-
+                transactions = transactions.Count() > 10 ? transactions.Take(10) : transactions;   
+                
                 GetDashboardDataResponse response = new GetDashboardDataResponse
                 {
                     AllCards = AllCards,

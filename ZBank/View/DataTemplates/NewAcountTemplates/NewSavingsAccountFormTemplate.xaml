@@ -33,6 +33,7 @@
             Text="Deposit Amount" />
 
         <TextBox
+            Style="{ThemeResource CustomTextBoxStyle}"
             Grid.Row="4"
             Margin="0,10,0,10"
             MinWidth="400"
@@ -46,7 +47,8 @@
         <TextBlock
             Grid.Row="5"
             Text="{x:Bind FieldErrors['Amount'], Mode=OneWay}"
-            Foreground="Red" />
+            Margin="5"
+            Foreground="IndianRed" />
 
     </Grid>
 </UserControl>

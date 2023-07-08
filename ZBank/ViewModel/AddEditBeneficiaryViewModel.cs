@@ -81,6 +81,7 @@ namespace ZBank.ViewModel
 
         private bool ValidateFields()
         {
+           
             var list = new List<string>()
             {
                 "AccountNumber", "BeneficiaryName"
@@ -91,8 +92,14 @@ namespace ZBank.ViewModel
                 list.Add("IFSCCode");
             }
 
-            FieldErrors = ValidateObject(FieldErrors, typeof(BeneficiaryBObj), list, SelectedBeneficiary);
-
+            ValidateObject(FieldErrors, typeof(BeneficiaryBObj), list, SelectedBeneficiary);
+            if (!IsAdd)
+            {
+                if (InitialBeneficiary.BeneficiaryName == SelectedBeneficiary.BeneficiaryName)
+                {
+                    FieldErrors["BeneficiaryName"] = "Enter a different beneficiary name";
+                }
+            }
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;
 
@@ -103,15 +110,15 @@ namespace ZBank.ViewModel
 
         private void ValidateAndSubmit(object obj)
         {
+            
             if (ValidateFields())
             {
-               
                 if (IsAdd)
                 {
                     Beneficiary beneficiary = new Beneficiary()
                     {
-                        AccountNumber = SelectedBeneficiary.AccountNumber,
-                        BeneficiaryName =SelectedBeneficiary.BeneficiaryName,
+                        AccountNumber = SelectedBeneficiary.AccountNumber.Trim(),
+                        BeneficiaryName =SelectedBeneficiary.BeneficiaryName.Trim(),
                         UserID = Repository.Current.CurrentUserID,
                         BeneficiaryType = IsOtherBankSelected ? BeneficiaryType.OTHER_BANK : BeneficiaryType.WITHIN_BANK
                     };

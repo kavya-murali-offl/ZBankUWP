@@ -213,7 +213,6 @@
                                                     <RowDefinition
                                                         Height="Auto" />
                                                 </Grid.RowDefinitions>
-                                                
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition
                                                         Width="Auto" />
@@ -221,12 +220,7 @@
                                                         Width="*" />
                                                     <ColumnDefinition
                                                         Width="Auto" />
-                                                    <ColumnDefinition
-                                                        Width="Auto" />
-                                                    <ColumnDefinition
-                                                        Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-
                                                 <TextBlock
                                                     MinWidth="70"
                                                     Margin="0,0,10,0"
@@ -234,9 +228,7 @@
                                                     HorizontalAlignment="Left"
                                                     TextTrimming="CharacterEllipsis"
                                                     Grid.Column="1"
-                                                    Text="{Binding Name}"
-                                                    Style="{ThemeResource BoldNormalText}" />
-
+                                                    Text="{Binding Name}" />
                                                 <TextBlock
                                                     Grid.Column="1"
                                                     Grid.Row="1"
@@ -273,7 +265,7 @@
                                                     TextAlignment="Right"
                                                     Foreground="Gray"
                                                     Text="{Binding ClosingBalance, Converter={StaticResource CurrencyConverter}}"
-                                                    Style="{ThemeResource BoldNormalText}" />
+                                                     />
                                                 <Grid
                                                     Grid.RowSpan="2"
                                                     HorizontalAlignment="Left"
@@ -333,9 +325,10 @@
                             VerticalAlignment="Stretch"
                             HorizontalAlignment="Right">
                             <Button
+                                Padding="4"
                                 Margin="10,0,10,0"
                                 Command="{x:Bind ViewModel.PreviousCardCommand, Mode=OneWay}"
-                                Style="{ThemeResource SecondaryMenuButton}">
+                                Style="{ThemeResource SecondaryButton}">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         Content="Previous"
@@ -347,9 +340,10 @@
                                 </Button.Content>
                             </Button>
                             <Button
+                                Padding="4"
                                 Margin="0,0,10,0"
                                 Command="{x:Bind ViewModel.NextCardCommand, Mode=OneWay}"
-                                Style="{ThemeResource SecondaryMenuButton}">
+                                Style="{ThemeResource SecondaryButton}">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         Content="Next"
@@ -404,73 +398,9 @@
                         
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
-            
                    <paymentTemplate:SelfTransferPaymentDetails
                        Grid.Row="1"
                       />
-                <!--<usercontrol:CardControl
-                    Grid.Row="1"
-                    MyTitle="Quick Actions">
-                    <usercontrol:CardControl.MyContent>
-                        <ScrollViewer
-                            HorizontalScrollBarVisibility="Auto">
-                            <StackPanel
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-                                <Button
-                                    Padding="5"
-                                    Width="100"
-                                    Style="{ThemeResource SecondaryButton}">
-                                    <Button.Content>
-                                        <StackPanel>
-                                            <FontIcon
-                                                Glyph="&#xE1CA;"
-                                                FontFamily="Segoe MDL2 Assets" />
-                                            <TextBlock
-                                                Padding="5,5,5,0"
-                                                Text="Self Transfer" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                                <Button
-                                    Width="100"
-                                    Style="{ThemeResource SecondaryButton}"
-                                    Padding="5">
-                                    <Button.Content>
-                                        <StackPanel>
-                                            <FontIcon
-                                                Glyph="&#xE1CD;"
-                                                FontFamily="Segoe MDL2 Assets" />
-                                            <TextBlock
-                                                Padding="5,5,5,0"
-                                                Text="Split" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                                <Button
-                                    Width="100"
-                                    Padding="7"
-                                    Style="{ThemeResource SecondaryButton}">
-                                    <Button.Content>
-                                        <StackPanel>
-                                            <FontIcon
-                                                Glyph="&#xE2B3;"
-                                                FontFamily="Segoe MDL2 Assets" />
-                                            <TextBlock
-                                                Padding="5,5,5,0"
-                                                Text="Request" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </usercontrol:CardControl.MyContent>
-                </usercontrol:CardControl>
-
-                <usercontrol:CardControl
-                    Grid.Row="2"
-                    MyTitle="Notifications">
-                </usercontrol:CardControl>-->
             </Grid>
         </Grid>
     </Grid>

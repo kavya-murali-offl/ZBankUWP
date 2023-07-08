@@ -163,9 +163,9 @@ namespace ZBank.ViewModel
                 "AccountNumber"
             };
 
-            FieldErrors = ValidateObject(FieldErrors, typeof(AccountBObj), list, SelectedAccount ?? new AccountBObj());
+            ValidateObject(FieldErrors, typeof(AccountBObj), list, SelectedAccount ?? new AccountBObj());
             FieldErrors["Account"] = FieldErrors["AccountNumber"];
-            FieldErrors = ValidateField(FieldErrors, "Amount", Amount);
+            ValidateField(FieldErrors, "Amount", Amount);
            
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;

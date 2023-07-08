@@ -73,11 +73,6 @@ namespace ZBank.View.DataTemplates
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void LinkCard_Click(object sender, RoutedEventArgs e)
         {
              LinkCardCommand.Execute(null);

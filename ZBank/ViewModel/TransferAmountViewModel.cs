@@ -95,6 +95,8 @@ namespace ZBank.ViewModel
             FieldErrors["Account"] = string.Empty;
             FieldErrors["Beneficiary"] = string.Empty;
             FieldErrors["Available Balance"] = string.Empty;
+            FieldErrors["RecipientAccountNumber"] = string.Empty;
+            FieldErrors["SenderAccountNumber"] = string.Empty;
         }
 
         private void LoadAllAccounts()
@@ -193,7 +195,7 @@ namespace ZBank.ViewModel
                 "Amount", "SenderAccountNumber", "RecipientAccountNumber"
             };
 
-            FieldErrors = ValidateObject(FieldErrors, typeof(Transaction), list, CurrentTransaction);
+            ValidateObject(FieldErrors, typeof(Transaction), list, CurrentTransaction);
             FieldErrors["Beneficiary"] = FieldErrors["RecipientAccountNumber"].Replace("RecipientAccountNumber", "To Account");
             FieldErrors["Account"] = FieldErrors["SenderAccountNumber"].Replace("SenderAccountNumber", "From Account");
             

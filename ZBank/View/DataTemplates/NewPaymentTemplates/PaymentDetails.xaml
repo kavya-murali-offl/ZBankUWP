@@ -64,7 +64,7 @@
             TextWrapping="Wrap"
             Margin="5"
             Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
-            Foreground="Red" />
+            Foreground="IndianRed" />
         <StackPanel
             Orientation="Horizontal">
             <TextBlock
@@ -127,47 +127,14 @@
             TextWrapping="Wrap"
             Margin="5"
             Text="{x:Bind ViewModel.FieldErrors['Beneficiary'], Mode=OneWay}"
-            Foreground="Red" />
-
-        <!--<ListView
-                HorizontalAlignment="Center"
-                ItemsSource="{x:Bind ViewModel.AllBeneficiaries, Mode=OneWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate
-                        x:DataType="model:Beneficiary">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="*"
-                                    MinWidth="100" />
-                                <ColumnDefinition
-                                    Width="*"
-                                    MinWidth="200" />
-                                <ColumnDefinition
-                                    Width="*"
-                                    MinWidth="100" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="{x:Bind Name}" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Grid.Column="1"
-                                Text="{x:Bind AccountNumber}" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Grid.Column="2"
-                                Text="{x:Bind IFSCCode}" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
+            Foreground="IndianRed" />
         <TextBlock
             Margin="5,20,5,5"
             Text="Amount"
             Style="{ThemeResource NormalSubText}" />
 
         <TextBox
+            Style="{ThemeResource CustomTextBoxStyle}"
             x:Name="AmountTextBox"
             Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay, Converter={StaticResource StringConverter}}"
             TextChanging="AmountTextBox_TextChanging"
@@ -179,7 +146,7 @@
             Margin="5"
             Width="300"
             Text="{x:Bind ViewModel.FieldErrors['Amount'], Mode=OneWay}"
-            Foreground="Red" />
+            Foreground="IndianRed" />
 
         <TextBlock
             Margin="5,20,5,5"
@@ -187,7 +154,7 @@
             Style="{ThemeResource NormalSubText}" />
         <TextBox
             x:Name="DescriptionTextBox"
-            
+            Style="{ThemeResource CustomTextBoxStyle}"
             Text="{x:Bind ViewModel.CurrentTransaction.Description, Mode=TwoWay}"
             TextChanging="DescriptionTextBox_TextChanging"
             PlaceholderText="Describe the transaction" />
@@ -195,8 +162,7 @@
             Grid.Row="5"
             TextWrapping="Wrap"
             Margin="5"
-            Text="{x:Bind ViewModel.FieldErrors['Description'], Mode=OneWay}"
-            Foreground="Red" />
+            Text="{x:Bind ViewModel.FieldErrors['Description'], Mode=OneWay}"/>
     </StackPanel>
 
 </UserControl>
