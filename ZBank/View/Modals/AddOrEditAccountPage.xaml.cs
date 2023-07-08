@@ -45,6 +45,7 @@ namespace ZBank.View.Modals
         public AddOrEditAccountPage()
         {
             this.InitializeComponent();
+            ViewModel = new AddOrEditAccountViewModel(this);
         }
 
 
@@ -105,14 +106,19 @@ namespace ZBank.View.Modals
             ViewNotifier.Instance.ThemeChanged += ChangeTheme;
             ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
             ViewModel.LoadContent();
+            ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
         }
 
         private void OnAccountInsertionSuccessful(bool obj)
         {
+            ConsolidateView();
+        }
+
+        private void ConsolidateView()
+        {
             ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
-            ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
             ViewModel.UnloadContent();
-            ViewModel.CloseView();
+            ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -123,25 +129,21 @@ namespace ZBank.View.Modals
 
         private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
         {
-            ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
-            ViewModel.UnloadContent();
-            ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;   
+            ConsolidateView(); 
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ViewModel = new AddOrEditAccountViewModel(this);
             AccountTypeButton.SelectedIndex = 0;
             SetFormTemplate(AccountType.CURRENT);
-            ViewModel.Initialize(e.Parameter as ViewLifetimeControl);
         }
 
         private async void ChangeTheme(ElementTheme theme)
         {
-            ThemeSelector.SetTheme(theme);
+            ThemeService.SetTheme(theme);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                ThemeSelector.SetRequestedTheme(null, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+                ThemeService.SetRequestedTheme(null, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
             });
         }
 

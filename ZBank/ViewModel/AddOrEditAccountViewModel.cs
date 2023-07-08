@@ -25,7 +25,7 @@ using ZBank.DataStore;
 
 namespace ZBank.ViewModel
 {
-    public class AddOrEditAccountViewModel : ViewModelBase, IForm
+    public class AddOrEditAccountViewModel : MultiWindowViewModelBase
     {
         public IView View { get; set; }
         public IList<AccountType> AccountTypes { get; set; } = new List<AccountType>() { AccountType.CURRENT, AccountType.SAVINGS, AccountType.TERM_DEPOSIT };
@@ -158,7 +158,9 @@ namespace ZBank.ViewModel
         public Customer CurrentCustomer
         {
             get { return _currentCustomer; }
-            set{ Set(ref _currentCustomer, value);}
+            set{ _currentCustomer = value;
+                OnPropertyChanged(nameof(CurrentCustomer));
+            }
         }
 
         private ObservableCollection<Account> _accounts { get; set; }
@@ -222,10 +224,6 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public async void CloseView()
-        {
-            await _viewLifetimeControl.CloseAsync();
-        }
 
         public void UnloadContent()
         {
@@ -290,22 +288,7 @@ namespace ZBank.ViewModel
             }
         }
 
-        private ViewLifetimeControl _viewLifetimeControl;
 
-        public void Initialize(ViewLifetimeControl viewLifetimeControl)
-        {
-            _viewLifetimeControl = viewLifetimeControl;
-            _viewLifetimeControl.Released += OnViewLifetimeControlReleased;
-        }
-
-        private async void OnViewLifetimeControlReleased(object sender, EventArgs e)
-        {
-            _viewLifetimeControl.Released -= OnViewLifetimeControlReleased;
-            await WindowManagerService.Current.MainDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                WindowManagerService.Current.SecondaryViews.Remove(_viewLifetimeControl);
-            });
-        }
 
         private class GetCustomerPresenterCallback : IPresenterCallback<GetCustomerResponse>
         {
@@ -318,10 +301,10 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetCustomerResponse response)
             {
-                await WindowManagerService.Current.MainDispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
-                });
+                //await WindowManagerService.Current.MainDispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
+                //{
+                //    ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
+                //});
             }
 
             public async Task OnFailure(ZBankException error)

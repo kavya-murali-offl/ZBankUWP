@@ -39,6 +39,7 @@ namespace ZBank.ViewModel
             ContentDialog = dialog;
             InitializeSteps();
             Reset();
+            ViewNotifier.Instance.PaymentInProgress = true;
         }
 
         private decimal _availableBalance;
@@ -218,7 +219,7 @@ namespace ZBank.ViewModel
                         if (ContentDialog == null)
                         {
                             ContentDialog dialog = new ContentDialog();
-                            dialog.RequestedTheme = ThemeSelector.Theme;
+                            dialog.RequestedTheme = ThemeService.Theme;
                             dialog.Content = new NewPaymentView(dialog, this);
                             ContentDialog = dialog;
                             await dialog.ShowAsync();

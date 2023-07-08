@@ -77,7 +77,7 @@ namespace ZBank.View.Main
             BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.RequestedTheme = ThemeService.Theme;
             dialog.Title = "Update Beneficiary";
             dialog.Content = new AddEditBeneficiaryView(dialog, selectedBeneficiary);
             Dialog = dialog;

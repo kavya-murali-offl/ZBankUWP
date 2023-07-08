@@ -25,7 +25,7 @@ namespace ZBank.ViewModel
         public EntryPageViewModel(IView view) 
         { 
             View = view; 
-            ThemeSelector.Initialize();
+            ThemeService.Initialize();
         }
 
         internal void OnNavigatedTo()
@@ -37,7 +37,7 @@ namespace ZBank.ViewModel
 
         private async void LoadWindow()
         {
-            await WindowManagerService.Current.InitializeAsync();
+            //await WindowManagerService.Current.InitializeAsync();
         }
 
         private void EnterApplication()

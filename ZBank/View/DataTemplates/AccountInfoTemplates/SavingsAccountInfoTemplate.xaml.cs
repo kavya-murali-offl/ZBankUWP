@@ -81,7 +81,7 @@ namespace ZBank.View.DataTemplates
         private async void AddBeneficiary_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog dialog = new ContentDialog();
-            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.RequestedTheme = ThemeService.Theme;
             dialog.Title = "Add Beneficiary";
             dialog.Content = new AddEditBeneficiaryView(dialog);
             await dialog.ShowAsync();

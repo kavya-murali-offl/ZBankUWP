@@ -36,12 +36,12 @@ namespace ZBank.View.Main
         {
             this.InitializeComponent();
             ViewModel = new EntryPageViewModel(this);
-            ThemeSelector.Initialize();
+            ThemeService.Initialize();
             InitializeThemeSettings();
         }
         private void InitializeThemeSettings()
         {
-            ThemeSelector.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+            ThemeService.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
             ViewNotifier.Instance.ThemeChanged += ThemeSelector_OnThemeChanged;
             ViewNotifier.Instance.AccentColorChanged += ThemeSelector_OnAccentColorChanged;
         }
@@ -49,8 +49,8 @@ namespace ZBank.View.Main
         private async void ThemeSelector_OnAccentColorChanged(Color color)
         {
             await Dispatcher.CallOnUIThreadAsync(()=> {
-                ThemeSelector.SetRequestedAccentColor();
-                ThemeSelector.ApplyThemeForTitleBarButtons(ApplicationView.GetForCurrentView().TitleBar, ThemeSelector.Theme);
+                ThemeService.SetRequestedAccentColor();
+                ThemeService.ApplyThemeForTitleBarButtons(ApplicationView.GetForCurrentView().TitleBar, ThemeService.Theme);
             });
         }
 
@@ -58,7 +58,7 @@ namespace ZBank.View.Main
         {
             await Dispatcher.CallOnUIThreadAsync(() =>
             {
-                ThemeSelector.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+                ThemeService.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
             });
         }
 

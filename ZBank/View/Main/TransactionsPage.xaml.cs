@@ -68,7 +68,7 @@ namespace ZBank.View.Main
         private async void NewPaymentButton_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog dialog = new ContentDialog();
-            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.RequestedTheme = ThemeService.Theme;
             dialog.Content = new NewPaymentView(dialog);
             PaymentDialog = dialog;
             await dialog.ShowAsync();

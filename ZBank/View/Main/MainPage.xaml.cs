@@ -25,6 +25,8 @@ using System.ComponentModel;
 using ZBank.Entity.BusinessObjects;
 using ZBank.Entities;
 using ZBank.View.UserControls;
+using ZBank.Services;
+using ZBank.View.Modals;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -136,18 +138,18 @@ namespace ZBank
 
         private async void SwitchTheme(ElementTheme theme)
         {
-            ThemeSelector.SetTheme(theme);
+            ThemeService.SetTheme(theme);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
-                ThemeIcon.Glyph = ThemeSelector.GetIcon();
+                ThemeIcon.Glyph = ThemeService.GetIcon();
                 SwitchThemeButton.IsChecked = false;
             });
         }
 
         private void SwitchThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ThemeSelector.Theme == ElementTheme.Dark)
+            if (ThemeService.Theme == ElementTheme.Dark)
             {
                 ViewNotifier.Instance.OnThemeChanged(ElementTheme.Light);
             }
@@ -159,32 +161,33 @@ namespace ZBank
 
         private void LoadToggleButton()
         {
-            ThemeIcon.Glyph = ThemeSelector.GetIcon();
+            ThemeIcon.Glyph = ThemeService.GetIcon();
         }
 
         private async void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var currentAV = ApplicationView.GetForCurrentView();
-            var newAV = CoreApplication.CreateNewView();
-            await newAV.Dispatcher.RunAsync(
-            CoreDispatcherPriority.Normal,
-            async () =>
-            {
-                var newWindow = Window.Current;
-                var newAppView = ApplicationView.GetForCurrentView();
+            await WindowService.ShowOrSwitchAsync<SettingsPage>(false);
+            //var currentAV = ApplicationView.GetForCurrentView();
+            //var newAV = CoreApplication.CreateNewView();
+            //await newAV.Dispatcher.RunAsync(
+            //CoreDispatcherPriority.Normal,
+            //async () =>
+            //{
+            //    var newWindow = Window.Current;
+            //    var newAppView = ApplicationView.GetForCurrentView();
 
-                newAppView.Title = "Settings";
-                var frame = new Frame();
-                frame.Navigate(typeof(SettingsPage));
-                newWindow.Content = frame;
+            //    newAppView.Title = "Settings";
+            //    var frame = new Frame();
+            //    frame.Navigate(typeof(SettingsPage));
+            //    newWindow.Content = frame;
 
-                newWindow.Activate();
-                await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
-                            newAppView.Id,
-                            ViewSizePreference.UseMinimum,
-                            currentAV.Id,
-                            ViewSizePreference.UseMinimum);
-            });
+            //    newWindow.Activate();
+            //    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
+            //                newAppView.Id,
+            //                ViewSizePreference.UseMinimum,
+            //                currentAV.Id,
+            //                ViewSizePreference.UseMinimum);
+            //});
         }
 
 

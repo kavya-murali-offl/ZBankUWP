@@ -86,7 +86,7 @@ namespace ZBank.View.Main
         {
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.RequestedTheme = ThemeService.Theme;
             dialog.Title = "Reset Pin";
             dialog.Content = new ResetPinContent(dialog, ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand);
             await dialog.ShowAsync();
@@ -97,7 +97,7 @@ namespace ZBank.View.Main
         {
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.RequestedTheme = ThemeService.Theme;
             dialog.Title = "New Credit Card";
             dialog.Content = new AddCardView(dialog);
             await dialog.ShowAsync();
@@ -133,7 +133,7 @@ namespace ZBank.View.Main
         {
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeSelector.Theme;
+            dialog.RequestedTheme = ThemeService.Theme;
             dialog.Title = "Pay Credit Card Bill";
             dialog.Content = new PayCreditCard(dialog, ViewModel.DataModel.OnViewCard as CreditCard);
             await dialog.ShowAsync();

@@ -33,12 +33,12 @@ namespace ZBank.View.Main
         public SettingsPage()
         {
             this.InitializeComponent();
-            this.RequestedTheme = ThemeSelector.Theme;
+            this.RequestedTheme = ThemeService.Theme;
             ViewModel = new SettingsViewModel(this);
-            UseWindowsAccentColor.IsOn = ThemeSelector.UseWindowsAccentColor;
-            if(ThemeSelector.Theme == ElementTheme.Default) SystemToggleButton.IsChecked = true;    
-            else if(ThemeSelector.Theme == ElementTheme.Light) LightToggleButton.IsChecked = true;    
-            else if(ThemeSelector.Theme == ElementTheme.Dark) DarkToggleButton.IsChecked = true;    
+            UseWindowsAccentColor.IsOn = ThemeService.UseWindowsAccentColor;
+            if(ThemeService.Theme == ElementTheme.Default) SystemToggleButton.IsChecked = true;    
+            else if(ThemeService.Theme == ElementTheme.Light) LightToggleButton.IsChecked = true;    
+            else if(ThemeService.Theme == ElementTheme.Dark) DarkToggleButton.IsChecked = true;    
         }
 
         private async void ThemeSelector_OnAccentColorChanged(Color color)
@@ -46,7 +46,7 @@ namespace ZBank.View.Main
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                ThemeSelector.SetRequestedTheme(null, Window.Current.Content, titleBar);
+                ThemeService.SetRequestedTheme(null, Window.Current.Content, titleBar);
             });
         }
 
@@ -64,15 +64,15 @@ namespace ZBank.View.Main
 
         private void AccentButton_Click(object sender, RoutedEventArgs e)
         {
-            ThemeSelector.UseWindowsAccentColor = false;
+            ThemeService.UseWindowsAccentColor = false;
             SolidColorBrush selectedBrush = ((FrameworkElement)sender).DataContext as SolidColorBrush;
             var color = selectedBrush.Color;
-            ThemeSelector.AppAccentColor = color;
+            ThemeService.AppAccentColor = color;
         }
 
         private async void OnThemeChanged(ElementTheme theme)
         {
-            ThemeSelector.SetTheme(theme);
+            ThemeService.SetTheme(theme);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
@@ -81,7 +81,7 @@ namespace ZBank.View.Main
 
         private void UseWindowsAccentColor_Toggled(object sender, RoutedEventArgs e)
         {
-            ThemeSelector.UseWindowsAccentColor = UseWindowsAccentColor.IsEnabled;
+            ThemeService.UseWindowsAccentColor = UseWindowsAccentColor.IsEnabled;
         }
 
         private void SystemToggleButton_Click(object sender, RoutedEventArgs e)

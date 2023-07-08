@@ -17,7 +17,7 @@ using ZBank.DataStore;
 
 namespace ZBank.Config
 {
-    public static class ThemeSelector
+    public static class ThemeService
     {
         public static readonly string DarkThemeIcon = "\uEC46";
         public static readonly string LightThemeIcon = "\uE793";

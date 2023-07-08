@@ -123,10 +123,9 @@
     <Compile Include="DataStore\Repository.cs" />
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="Services\DispatcherService.cs" />
-    <Compile Include="Services\ViewLifetimeControl.cs" />
-    <Compile Include="Services\WindowManagerService.cs" />
+    <Compile Include="Services\WindowService.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
-    <Compile Include="Services\ThemeSelector.cs" />
+    <Compile Include="Services\ThemeService.cs" />
     <Compile Include="Utilities\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\ColorToBrushConverter.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
@@ -150,6 +149,7 @@
     <Compile Include="ViewModel\EntryPageViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MultiWindowViewModelBase.cs" />
     <Compile Include="ViewModel\PayCreditCardViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
@@ -157,6 +157,7 @@
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
+    <Compile Include="ViewModel\VMObjects\ObservableObject.cs" />
     <Compile Include="View\DataTemplates\AccountInfoTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
     </Compile>
@@ -199,7 +200,6 @@
     <Compile Include="View\DataTemplates\ViewOrNoCardTemplate.xaml.cs">
       <DependentUpon>ViewOrNoCardTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\IForm.cs" />
     <Compile Include="View\IView.cs" />
     <Compile Include="View\Main\BeneficiariesPage.xaml.cs">
       <DependentUpon>BeneficiariesPage.xaml</DependentUpon>
@@ -262,7 +262,6 @@
     <Compile Include="View\UserControls\ViewTransaction.xaml.cs">
       <DependentUpon>ViewTransaction.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WindowManager.cs" />
     <Compile Include="View\UserControls\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
     </Compile>

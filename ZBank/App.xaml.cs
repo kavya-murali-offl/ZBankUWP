@@ -10,6 +10,7 @@ using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Core.Preview;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -48,11 +49,9 @@ namespace ZBank
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            //AppInitialization.GetInstance().InitializeDB();
-
-
             Frame rootFrame = Window.Current.Content as Frame;
-
+            SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += App_CloseRequested;
+            ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
@@ -70,7 +69,6 @@ namespace ZBank
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
-            SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += App_CloseRequested;
 
             if (e.PrelaunchActivated == false)
             {
@@ -86,7 +84,10 @@ namespace ZBank
             }
         }
 
-      
+        private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
+        {
+            App.Current.Exit();
+        }
 
         private async void App_CloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
         {
@@ -105,6 +106,10 @@ namespace ZBank
                 }
 
                 deferral.Complete();
+            }
+            else
+            {
+                App.Current.Exit();
             }
         }
 

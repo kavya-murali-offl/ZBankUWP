@@ -43,7 +43,7 @@ namespace ZBank.View.UserControls
             Window.Current.CoreWindow.Activated += CoreWindow_Activated;
 
             Window.Current.SetTitleBar(AppTitleBar);
-            UpdateTitleBarTheme(ThemeSelector.Theme);
+            UpdateTitleBarTheme(ThemeService.Theme);
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
         }
 
@@ -91,7 +91,7 @@ namespace ZBank.View.UserControls
         {
             await Dispatcher.CallOnUIThreadAsync(() =>
             {
-                ThemeSelector.SetRequestedTheme(AppTitleBar, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+                ThemeService.SetRequestedTheme(AppTitleBar, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
             });
         }
     }

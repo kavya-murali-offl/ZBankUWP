@@ -19,7 +19,7 @@ namespace ZBank.Entities.BusinessObjects
             get => 
                 string.IsNullOrEmpty(BeneficiaryName) 
                 ? 
-                (string.IsNullOrEmpty(AccountName) ? ExternalName : AccountName) 
+                (string.IsNullOrEmpty(ExternalName) ? "You" : ExternalName) 
                 : BeneficiaryName; }
 
         public string SenderName 
