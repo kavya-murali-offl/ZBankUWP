@@ -12,5 +12,6 @@ namespace ZBankManagement.Interface
 
         Task GetTransactionsByCustomerID(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
 
+        Task GetTransactionsIncrementally(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
     }
 }

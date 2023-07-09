@@ -21,6 +21,8 @@
             x:Key="InitialsConverter" />
         <converter:BooleanToVisibilityConverter
             x:Key="BoolToVisibilityConverter" />
+        <converter:IndexToPositionConverter
+            x:Name="IndexToPositionConverter" />
         <DataTemplate
             x:Key="NarrowHeaderDataTemplate">
         <Grid
@@ -447,7 +449,7 @@
                 </Button>
 
             </Grid>
-            <Grid
+            <!--<Grid
                 Visibility="Collapsed"
                 Background="{ThemeResource ApplicationBackground}"
                 MinHeight="150"
@@ -643,7 +645,7 @@
 
                     </GridViewItem>
                 </GridView>
-            </Grid>
+            </Grid>-->
             <Grid
                 MaxHeight="600"
                 Grid.Row="3"
@@ -721,7 +723,7 @@
                         Foreground="{ThemeResource AccentColorBrush}"
                         VerticalAlignment="Center"
                         FontSize="16"
-                        Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.CurrentPageIndex, Mode=OneWay, Converter={StaticResource IndexToPositionConverter}}"
                         Margin="5,0,5,0" />
                     <TextBlock
                         VerticalAlignment="Center"

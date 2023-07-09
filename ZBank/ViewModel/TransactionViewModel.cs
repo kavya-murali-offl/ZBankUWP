@@ -22,6 +22,7 @@ using ZBank.DataStore;
 using ZBank.View.UserControls;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
+using ZBank.Services;
 
 namespace ZBank.ViewModel
 {
@@ -42,58 +43,12 @@ namespace ZBank.ViewModel
             View = view;
             DefinedRows = new List<int>()
             {
-               5, 10, 25, 50
+              1, 5, 10, 25, 50
             };
             NextCommand = new RelayCommand(GoToNextPage, IsNextButtonEnabled);
             PreviousCommand = new RelayCommand(GoToPreviousPage, IsPreviousButtonEnabled);
             RowsPerPage = DefinedRows.FirstOrDefault();
-            FilterValues = new ObservableDictionary<string, object>();
-            ResetFilterValues();
-            SelectedAccount = AccountsList.FirstOrDefault();
-            FilterConditions["FromAccount"] = item => item.SenderAccountNumber == FilterValues["FromAccount"].ToString();
-            FilterConditions["ToAccount"] = item => item.RecipientAccountNumber == FilterValues["ToAccount"].ToString();
-            //FilterConditions["FromDate"] = item => item.RecordedOn > FilterValues["FromDate"];
-            //FilterConditions["ToDate"] = item => item.RecordedOn < FilterValues["ToDate"];
         }
-
-
-
-        public IEnumerable<TransactionBObj> AllTransactions { get; set; } = new List<TransactionBObj>();
-
-        public IEnumerable<TransactionBObj> FilteredTransactions { get; set; } = new List<TransactionBObj>();
-
-        public void LoadAllTransactionsData()
-        {
-            GetAllTransactionsRequest request = new GetAllTransactionsRequest()
-            {
-                CustomerID = Repository.Current.CurrentUserID
-            };
-
-            IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsPresenterCallback(this);
-            UseCaseBase<GetAllTransactionsResponse> useCase = new GetAllTransactionsUseCase(request, presenterCallback);
-            useCase.Execute();
-        }
-
-        private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
-        {
-            AllTransactions = args.TransactionList;
-            UpdateSelectedAccount(SelectedAccount);
-        }
-
-        private void UpdateOnViewList()
-        {
-            int startIndex = (CurrentPageIndex) * RowsPerPage;
-            InViewTransactions = new ObservableCollection<TransactionBObj>(FilteredTransactions.Skip(startIndex).Take(RowsPerPage));
-            UpdatePageNavigation();
-            CalculateTotalPages();
-        }
-
-        private void UpdatePageNavigation()
-        {
-            (NextCommand as RelayCommand).RaiseCanExecuteChanged();
-            (PreviousCommand as RelayCommand).RaiseCanExecuteChanged();
-        }
-
 
         public void OnPageLoaded()
         {
@@ -104,67 +59,6 @@ namespace ZBank.ViewModel
             CurrentPageIndex = 0;
             RowsPerPage = DefinedRows.First();
             LoadAllAccounts();
-            LoadAllTransactionsData();
-        }
-
-        private void PaneClosed(FrameworkElement obj)
-        {
-            if(obj == null)
-            {
-                InViewTransaction = null;
-            }
-        }
-
-        internal void UpdateSelectedAccount(AccountBObj accountBObj)
-        {
-            SelectedAccount = accountBObj;
-            FilteredTransactions = AllTransactions.Where(trans => trans.SenderAccountNumber == SelectedAccount?.AccountNumber || trans.RecipientAccountNumber == SelectedAccount?.AccountNumber);
-            UpdateOnViewList();
-        }
-
-        private void ResetFilterValues()
-        {
-            FilterValues["FromAccount"] = null;
-            FilterValues["ToAccount"] = null;
-            FilterValues["FromDate"] = null;
-            FilterValues["ToDate"] = null;
-            FilterValues["TransactionType"] = null;
-        }
-
-
-        public void ApplyFilter()
-        {
-
-        }
-
-
-        private void UpdateAccountsList(AccountsListUpdatedArgs args)
-        {
-            AccountsList = new ObservableCollection<AccountBObj>(args.AccountsList);
-            if (AccountsList.Count > 0)
-            {
-                UpdateSelectedAccount(AccountsList.ElementAt(0));
-            }
-        }
-
-        private ObservableCollection<AccountBObj> _accountsList = new ObservableCollection<AccountBObj>();
-
-        public ObservableCollection<AccountBObj> AccountsList
-        {
-            get { return _accountsList; }
-            set { Set(ref  _accountsList, value); } 
-        }
-
-        private AccountBObj _selectedAccount { get; set; }
-
-        public AccountBObj SelectedAccount
-        {
-            get { return _selectedAccount; }
-            set
-            {
-                _selectedAccount = value;
-                OnPropertyChanged(nameof(SelectedAccount));
-            }
         }
 
         private void LoadAllAccounts()
@@ -181,15 +75,68 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
+        private void UpdateAccountsList(AccountsListUpdatedArgs args)
+        {
+            AccountsList = new ObservableCollection<AccountBObj>(args.AccountsList);
+            if (AccountsList.Count > 0)
+            {
+                UpdateSelectedAccount(AccountsList.ElementAt(0));
+            }
+        }
+
+        internal void UpdateSelectedAccount(AccountBObj accountBObj)
+        {
+            SelectedAccount = accountBObj;
+            CurrentPageIndex = 0;
+            RowsPerPage = DefinedRows.FirstOrDefault();
+            LoadAllTransactionsData();
+        }
+
+        public void LoadAllTransactionsData()
+        {
+            if(SelectedAccount != null)
+            {
+                GetAllTransactionsRequest request = new GetAllTransactionsRequest()
+                {
+                    CustomerID = Repository.Current.CurrentUserID,
+                    CurrentPageIndex = CurrentPageIndex,
+                    RowsPerPage = RowsPerPage,
+                    AccountNumber = SelectedAccount.AccountNumber
+                };
+
+                IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsPresenterCallback(this);
+                UseCaseBase<GetAllTransactionsResponse> useCase = new GetAllTransactionsUseCase(request, presenterCallback);
+                useCase.Execute();
+            }
+           
+        }
+
+        private void UpdateTransactionsData(TransactionPageDataUpdatedArgs args)
+        {
+            InViewTransactions = new ObservableCollection<TransactionBObj>(args.TransactionList);
+            TotalPages = args.TotalPages;
+            (NextCommand as RelayCommand).RaiseCanExecuteChanged();
+            (PreviousCommand as RelayCommand).RaiseCanExecuteChanged();
+        }
 
         private void NewTransactionAdded(bool isPaymentCompleted)
         {
             if (isPaymentCompleted)
             {
+                CurrentPageIndex = 0;
+                RowsPerPage = DefinedRows.FirstOrDefault();
                 LoadAllTransactionsData();
             }
         }
 
+        private void PaneClosed(FrameworkElement obj)
+        {
+            if (obj == null)
+            {
+                InViewTransaction = null;
+            }
+        }
+      
         public void OnPageUnLoaded()
         {
             ViewNotifier.Instance.TransactionListUpdated -= UpdateTransactionsData;
@@ -198,61 +145,7 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.RightPaneContentUpdated -= PaneClosed;
         }
 
-        private ObservableDictionary<string, object> _filterValues { get; set; }
-
-        public ObservableDictionary<string, object> FilterValues
-        {
-            get
-            {
-                return _filterValues;
-            }
-            set
-            {
-                _filterValues = value;
-                OnPropertyChanged(nameof(FilterValues));
-            }
-        }
-
-        private int _currentPageIndex { get; set; }
-
-        private int CurrentPageIndex
-        {
-            get
-            {
-                return _currentPageIndex;
-            }
-            set
-            {
-                _currentPageIndex = value;
-                CurrentPage = value + 1;
-                OnPropertyChanged(nameof(CurrentPageIndex));
-            }
-        }
-
-        private int _currentPage { get; set; }
-
-        public int CurrentPage
-        {
-            get { return _currentPage; }
-            set
-            {
-                _currentPage = value;
-                OnPropertyChanged(nameof(CurrentPage));
-            }
-        }
-
-        private void CalculateTotalPages()
-        {
-            TotalPages = (FilteredTransactions.Count() / RowsPerPage);
-            if (FilteredTransactions.Count() % RowsPerPage != 0)
-            {
-                TotalPages += 1;
-            }
-        }
-
-        private IDictionary<string, Func<TransactionBObj, bool>> FilterConditions = new Dictionary<string, Func<TransactionBObj, bool>>();
-            
-
+       
 
         private bool IsPreviousButtonEnabled()
         {
@@ -261,22 +154,21 @@ namespace ZBank.ViewModel
 
         private bool IsNextButtonEnabled()
         {
-            return CurrentPageIndex  < (FilteredTransactions.Count() / RowsPerPage);
+            return CurrentPageIndex + 1 < TotalPages;
         }
 
         private void GoToPreviousPage(object parameter)
         {
             CurrentPageIndex--;
-            UpdateOnViewList();
-            UpdatePageNavigation();
+            LoadAllTransactionsData();
         }
 
         private void GoToNextPage(object parameter)
         {
             CurrentPageIndex++;
-            UpdateOnViewList();
-            UpdatePageNavigation();
+            LoadAllTransactionsData();
         }
+
 
         internal void UpdateView(TransactionBObj transaction)
         {
@@ -286,55 +178,67 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.OnRightPaneContentUpdated(viewTransaction);
         }
 
+        internal void UpdateRows(int rows)
+        {
+            CurrentPageIndex = 0;
+            RowsPerPage = rows;
+            LoadAllTransactionsData();
+        }
+
+        private int _currentPageIndex = 0;
+
+        public int CurrentPageIndex
+        {
+            get => _currentPageIndex;
+            set => Set(ref _currentPageIndex, value);
+        }
+
         private int _totalPages;
         public int TotalPages
         {
-            get { return _totalPages; }
-            set
-            {
-                _totalPages = value;
-                OnPropertyChanged("TotalPages");
-            }
+            get => _totalPages;
+            set => Set(ref _totalPages, value);
         }
 
-    
-        private int _rowsPerPage { get; set; }
+
+        private int _rowsPerPage = 0;
 
         public int RowsPerPage
         {
-            get { return _rowsPerPage; }
-            set
-            {
-                _rowsPerPage = value;
-                OnPropertyChanged(nameof(RowsPerPage));
-                CalculateTotalPages();
-                CurrentPageIndex = 0;
-                UpdateOnViewList();
-            }
+            get => _rowsPerPage;
+            set => Set(ref _rowsPerPage, value);
         }
 
-        private ObservableCollection<TransactionBObj> _inViewTransactions { get; set; }
+        private ObservableCollection<TransactionBObj> _inViewTransactions = new ObservableCollection<TransactionBObj>();
 
         public ObservableCollection<TransactionBObj> InViewTransactions
         {
-            get { return _inViewTransactions; }
-            set
-            {
-                _inViewTransactions = value;
-                OnPropertyChanged(nameof(InViewTransactions));
-            }
+            get => _inViewTransactions;
+            set => Set(ref _inViewTransactions, value);
         }
 
-        private TransactionBObj _inViewTransaction { get; set; }
+        private TransactionBObj _inViewTransaction = null;
 
         public TransactionBObj InViewTransaction
         {
-            get { return _inViewTransaction; }
-            set
-            {
-                _inViewTransaction = value;
-                OnPropertyChanged(nameof(InViewTransaction));
-            }
+            get => _inViewTransaction;
+            set => Set(ref _inViewTransaction, value);
+        }
+
+        private ObservableCollection<AccountBObj> _accountsList = new ObservableCollection<AccountBObj>();
+
+        public ObservableCollection<AccountBObj> AccountsList
+        {
+            get { return _accountsList; }
+            set { Set(ref _accountsList, value); }
+        }
+
+        private AccountBObj _selectedAccount = null;
+
+        public AccountBObj SelectedAccount
+        {
+            get => _selectedAccount;
+            set => Set(ref _selectedAccount, value);
         }
 
 
@@ -375,10 +279,7 @@ namespace ZBank.ViewModel
                     };
                     ViewNotifier.Instance.OnNotificationStackUpdated(args);
                 });
-
             }
-
-
         }
 
         private class GetAllTransactionsPresenterCallback : IPresenterCallback<GetAllTransactionsResponse>
@@ -392,11 +293,12 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllTransactionsResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     TransactionPageDataUpdatedArgs args = new TransactionPageDataUpdatedArgs()
                     {
                         TransactionList = response.Transactions,
+                        TotalPages = response.TotalPages
                     };
 
                     ViewNotifier.Instance.OnTransactionsListUpdated(args);
@@ -405,6 +307,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
+
             }
         }
 
@@ -419,7 +322,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllBeneficiariesResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
                     {
@@ -435,3 +338,11 @@ namespace ZBank.ViewModel
         }
     }
 }
+
+//ResetFilterValues();
+//FilterConditions["FromAccount"] = item => item.SenderAccountNumber == FilterValues["FromAccount"].ToString();
+//FilterConditions["ToAccount"] = item => item.RecipientAccountNumber == FilterValues["ToAccount"].ToString();
+////FilterConditions["FromDate"] = item => item.RecordedOn > FilterValues["FromDate"];
+////FilterConditions["ToDate"] = item => item.RecordedOn < FilterValues["ToDate"];
+        //private IDictionary<string, Func<TransactionBObj, bool>> FilterConditions = new Dictionary<string, Func<TransactionBObj, bool>>();
+///

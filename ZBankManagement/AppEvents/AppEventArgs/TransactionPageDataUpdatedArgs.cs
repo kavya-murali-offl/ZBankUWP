@@ -13,7 +13,8 @@ namespace ZBank.AppEvents.AppEventArgs
     {
         public IEnumerable<TransactionBObj> TransactionList { get; set; }
 
-        public IEnumerable<Beneficiary> BeneficiariesList { get; set; }
+        public int TotalPages { get; set; }
+
 
     }
 }

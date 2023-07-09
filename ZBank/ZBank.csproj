@@ -155,9 +155,11 @@
     <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
+    <Compile Include="ViewModel\VMObjects\IncrementalLoadingCollection.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableObject.cs" />
+    <Compile Include="ViewModel\VMObjects\TransactionSource.cs" />
     <Compile Include="View\DataTemplates\AccountInfoTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
     </Compile>

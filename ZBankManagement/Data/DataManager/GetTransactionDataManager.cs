@@ -28,7 +28,6 @@ namespace ZBankManagement.DataManager
             try
             {
                 var accounts = await DBHandler.GetAllAccounts(request.CustomerID);
-
                 List<TransactionBObj> transactions = new List<TransactionBObj>();    
                 foreach (var account in accounts)
                 {
@@ -48,8 +47,6 @@ namespace ZBankManagement.DataManager
                 GetAllTransactionsResponse response = new GetAllTransactionsResponse
                 {
                     Transactions = transactions,
-                    Beneficiaries = beneficiaries,
-                    Accounts = accounts
                 };
 
                 callback.OnSuccess(response);
@@ -64,6 +61,61 @@ namespace ZBankManagement.DataManager
                 callback.OnFailure(error);
             }
         }
+
+        public async Task GetTransactionsIncrementally(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback)
+        {
+            try
+            {
+                IEnumerable<TransactionBObj> accountTransactions = new List<TransactionBObj>();
+                if (string.IsNullOrEmpty(request.AccountNumber))
+                {
+                    var accounts = await DBHandler.GetAllAccounts(request.CustomerID);
+                    foreach (var account in accounts)
+                    {
+                        var transactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber, request.CustomerID);
+                        accountTransactions = from transaction in transactions  select transaction;
+                    }
+                }
+                else
+                {
+                    accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber, request.CustomerID);
+                }
+
+                int totalPages = (accountTransactions.Count() / request.RowsPerPage);
+                if (accountTransactions.Count() % request.RowsPerPage != 0)
+                {
+                    totalPages += 1;
+                }
+                if (totalPages == 0) totalPages += 1;
+                accountTransactions = accountTransactions.Skip(request.CurrentPageIndex * request.RowsPerPage).Take(request.RowsPerPage);
+
+                foreach (var transaction in accountTransactions)
+                {
+                    if (transaction.RecipientAccountNumber == request.AccountNumber)
+                    {
+                        transaction.IsRecipient = true;
+                    }
+                }
+               
+                GetAllTransactionsResponse response = new GetAllTransactionsResponse
+                {
+                    Transactions = accountTransactions,
+                    TotalPages = totalPages
+                };
+
+                callback.OnSuccess(response);
+            }
+            catch (Exception ex)
+            {
+                ZBankException error = new ZBankException()
+                {
+                    Type = ErrorType.UNKNOWN,
+                    Message = ex.Message,
+                };
+                callback.OnFailure(error);
+            }
+        }
+
 
         public async Task GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback)
         {
@@ -84,7 +136,7 @@ namespace ZBankManagement.DataManager
 
                 callback.OnSuccess(response);
             }
-           catch(Exception ex)
+            catch(Exception ex)
             {
                 ZBankException error = new ZBankException()
                 {
@@ -94,7 +146,5 @@ namespace ZBankManagement.DataManager
                 callback.OnFailure(error);
             }
         }
-
-
     }
 }

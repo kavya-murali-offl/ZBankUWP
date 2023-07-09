@@ -26,14 +26,14 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            if(_request.AccountNumber != null)
-            {
-                _getTransactionDataManager.GetTransactionsByAccountNumber(_request, new GetAllTransactionsCallback(this));
-            }
-            else
-            {
-                _getTransactionDataManager.GetTransactionsByCustomerID(_request, new GetAllTransactionsCallback(this));
-            }
+            //if(_request.AccountNumber != null)
+            //{
+            //    _getTransactionDataManager.GetTransactionsByAccountNumber(_request, new GetAllTransactionsCallback(this));
+            //}
+            //else
+            //{
+                _getTransactionDataManager.GetTransactionsIncrementally(_request, new GetAllTransactionsCallback(this));
+            //}
         }
 
         private class GetAllTransactionsCallback : IUseCaseCallback<GetAllTransactionsResponse>
@@ -62,15 +62,18 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public string CustomerID { get; set; }
 
         public string AccountNumber { get; set; }
+
+        public int CurrentPageIndex { get; set; }
+
+        public int RowsPerPage {  get; set; }
+
     }
 
     public class GetAllTransactionsResponse
     {
         public IEnumerable<TransactionBObj> Transactions { get; set; }
 
-        public IEnumerable<Beneficiary> Beneficiaries { get; set; }
-
-        public IEnumerable<Account> Accounts { get; set; }
+        public int TotalPages { get; set; }  
     }
 
 
