@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Gaming.Input;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.View.UserControls;
 

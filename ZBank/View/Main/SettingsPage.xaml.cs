@@ -33,7 +33,7 @@ namespace ZBank.View.Main
         public SettingsPage()
         {
             this.InitializeComponent();
-            this.RequestedTheme = ThemeService.Theme;
+            Window.Current.SetTitleBar(AppTitleBar);
             ViewModel = new SettingsViewModel(this);
             UseWindowsAccentColor.IsOn = ThemeService.UseWindowsAccentColor;
             if(ThemeService.Theme == ElementTheme.Default) SystemToggleButton.IsChecked = true;    

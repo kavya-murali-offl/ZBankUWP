@@ -230,7 +230,6 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
             ViewNotifier.Instance.GetCustomerSuccess -= OnCustomerFetched;
-
         }
 
         private void UpdateAccountsList(AccountsListUpdatedArgs args)

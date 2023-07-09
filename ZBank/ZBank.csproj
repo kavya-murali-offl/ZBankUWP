@@ -238,8 +238,8 @@
     <Compile Include="View\Modals\AddCardView.xaml.cs">
       <DependentUpon>AddCardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Modals\AddOrEditAccountPage.xaml.cs">
-      <DependentUpon>AddOrEditAccountPage.xaml</DependentUpon>
+    <Compile Include="View\Modals\AddAccountPage.xaml.cs">
+      <DependentUpon>AddAccountPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Modals\NewPaymentView.xaml.cs">
       <DependentUpon>NewPaymentView.xaml</DependentUpon>
@@ -255,6 +255,9 @@
     </Compile>
     <Compile Include="View\UserControls\CardElementView.xaml.cs">
       <DependentUpon>CardElementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\CustomContentDialog.xaml.cs">
+      <DependentUpon>CustomContentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\ResetPinContent.xaml.cs">
       <DependentUpon>ResetPinContent.xaml</DependentUpon>
@@ -279,9 +282,6 @@
     </Compile>
     <Compile Include="View\UserControls\OneByTwoGrid.xaml.cs">
       <DependentUpon>OneByTwoGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\Toast.xaml.cs">
-      <DependentUpon>Toast.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -415,7 +415,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Modals\AddOrEditAccountPage.xaml">
+    <Page Include="View\Modals\AddAccountPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -451,6 +451,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UserControls\CustomContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserControls\CustomTitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -464,10 +468,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\ResetPinContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\Toast.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

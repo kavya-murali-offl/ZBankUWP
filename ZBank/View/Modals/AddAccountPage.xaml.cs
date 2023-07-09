@@ -45,6 +45,7 @@ namespace ZBank.View.Modals
         public AddOrEditAccountPage()
         {
             this.InitializeComponent();
+            Window.Current.SetTitleBar(AppTitleBar);
             ViewModel = new AddOrEditAccountViewModel(this);
         }
 
@@ -103,7 +104,6 @@ namespace ZBank.View.Modals
             AccountForm.DataContext = ViewModel;
             NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
             AccountForm.Content = newCurrentAccountFormTemplate;
-            ViewNotifier.Instance.ThemeChanged += ChangeTheme;
             ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
             ViewModel.LoadContent();
             ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
@@ -116,14 +116,12 @@ namespace ZBank.View.Modals
 
         private void ConsolidateView()
         {
-            ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
             ViewModel.UnloadContent();
             ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.ThemeChanged -= ChangeTheme;
             ViewModel.UnloadContent();
         }
 
@@ -138,14 +136,6 @@ namespace ZBank.View.Modals
             SetFormTemplate(AccountType.CURRENT);
         }
 
-        private async void ChangeTheme(ElementTheme theme)
-        {
-            ThemeService.SetTheme(theme);
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                ThemeService.SetRequestedTheme(null, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
-            });
-        }
 
         private void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

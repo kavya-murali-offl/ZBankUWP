@@ -84,23 +84,25 @@ namespace ZBank.View.Main
 
         private async void ResetPinButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog dialog = new ContentDialog();
-            dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeService.Theme;
-            dialog.Title = "Reset Pin";
-            dialog.Content = new ResetPinContent(dialog, ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand);
-            await dialog.ShowAsync();
+            CustomContentDialog contentDialog = new CustomContentDialog();
+            contentDialog.Dialog.Title = "Reset Pin";
+            contentDialog.DialogContent = new ResetPinContent(contentDialog.Dialog, ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand);
+            await contentDialog.OpenDialog();
+            //ContentDialog dialog = new ContentDialog();
+            //dialog.XamlRoot = this.XamlRoot;
+            //dialog.RequestedTheme = ThemeService.Theme;
+            //dialog.Title = "Reset Pin";
+            //dialog.Content = 
+            //await dialog.ShowAsync();
         }
 
        
         private async void AddCardButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog dialog = new ContentDialog();
-            dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeService.Theme;
-            dialog.Title = "New Credit Card";
-            dialog.Content = new AddCardView(dialog);
-            await dialog.ShowAsync();
+            CustomContentDialog contentDialog = new CustomContentDialog();
+            contentDialog.DialogContent = new AddCardView(contentDialog.Dialog);
+            contentDialog.Dialog.Title = "New Credit Card";
+            await contentDialog.OpenDialog();
         }
 
         private void ChangeLimitButton_Click(object sender, RoutedEventArgs e)
@@ -131,12 +133,10 @@ namespace ZBank.View.Main
 
         private async void PayCardButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog dialog = new ContentDialog();
-            dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeService.Theme;
-            dialog.Title = "Pay Credit Card Bill";
-            dialog.Content = new PayCreditCard(dialog, ViewModel.DataModel.OnViewCard as CreditCard);
-            await dialog.ShowAsync();
+            CustomContentDialog contentDialog = new CustomContentDialog();
+            contentDialog.Dialog.Title = "New Credit Card";
+            contentDialog.DialogContent = new PayCreditCard(contentDialog.Dialog, ViewModel.DataModel.OnViewCard as CreditCard);
+            await contentDialog.OpenDialog();
         }
 
         private void LimitSlider_Loaded(object sender, RoutedEventArgs e)

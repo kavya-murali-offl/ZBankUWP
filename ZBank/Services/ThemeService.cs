@@ -23,7 +23,7 @@ namespace ZBank.Config
         public static readonly string LightThemeIcon = "\uE793";
         private const string themeKey = "Theme";
         public static ElementTheme Theme { get; set; } = ElementTheme.Light;
-        
+
         private static readonly ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         private static readonly UISettings UISettings = new UISettings();
 
@@ -71,9 +71,9 @@ namespace ZBank.Config
                 frameworkElement.RequestedTheme = Theme;
             }
 
-          
 
-        ((SolidColorBrush)Application.Current.Resources["SystemControlPageBackgroundMediumAltMediumBrush"]).Color =
+
+            ((SolidColorBrush)Application.Current.Resources["SystemControlPageBackgroundMediumAltMediumBrush"]).Color =
             Theme == ElementTheme.Dark ? Color.FromArgb(153, 0, 0, 0) : Color.FromArgb(153, 255, 255, 255);
 
 
@@ -148,31 +148,33 @@ namespace ZBank.Config
         {
             if (theme == ElementTheme.Dark)
             {
-                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
-                titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
-                // Set active window color
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
-                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
-                titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
 
-                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
-                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];                
-                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
-                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            }
-            else
-            {
                 titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
                 titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
                 titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
                 titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
                 titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
+                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
                 titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"]; ;
                 titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
-                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
+
+            }
+            else
+            {
+
+                titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
+                titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-               
+                titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+
+                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
+                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
+
             }
 
             titleBar.ButtonHoverBackgroundColor = ((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color;

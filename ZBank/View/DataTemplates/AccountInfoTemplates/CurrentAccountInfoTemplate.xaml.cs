@@ -79,11 +79,15 @@ namespace ZBank.View.DataTemplates
 
         private async void AddBeneficiaryButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog dialog = new ContentDialog();
-            dialog.RequestedTheme = ThemeService.Theme;
-            dialog.Title = "Add Beneficiary";
-            dialog.Content = new AddEditBeneficiaryView(dialog);
-            await dialog.ShowAsync();
+            CustomContentDialog contentDialog = new CustomContentDialog();
+            contentDialog.Dialog.Title = "Reset Pin";
+            contentDialog.DialogContent = new AddEditBeneficiaryView(contentDialog.Dialog);
+            await contentDialog.OpenDialog();
+            //ContentDialog dialog = new ContentDialog();
+            //dialog.RequestedTheme = ThemeService.Theme;
+            //dialog.Title = "Add Beneficiary";
+            //dialog.Content 
+            //await dialog.ShowAsync();
         }
     }
 }

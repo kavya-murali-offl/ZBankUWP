@@ -23,7 +23,7 @@
                 Stretch="UniformToFill"
                 />
             <TextBlock
-                FontWeight="Bold"
+                FontWeight="SemiBold"
                 x:Name="AppTitleTextBlock"
                 Text="{x:Bind Title, Mode=OneWay}"
                 Foreground="{ThemeResource ApplicationForeground}"

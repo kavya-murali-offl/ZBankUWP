@@ -25,6 +25,7 @@ using ZBank.View.Modals;
 using ZBank.Config;
 using ZBank.DataStore;
 using ZBank.Services;
+using ZBank.View.UserControls;
 
 namespace ZBank.ViewModel
 {
@@ -218,11 +219,10 @@ namespace ZBank.ViewModel
                         CurrentStep = Steps[previousIndex + 1];
                         if (ContentDialog == null)
                         {
-                            ContentDialog dialog = new ContentDialog();
-                            dialog.RequestedTheme = ThemeService.Theme;
-                            dialog.Content = new NewPaymentView(dialog, this);
-                            ContentDialog = dialog;
-                            await dialog.ShowAsync();
+                            CustomContentDialog contentDialog = new CustomContentDialog();
+                            contentDialog.DialogContent = new NewPaymentView(contentDialog.Dialog, this);
+                            ContentDialog = contentDialog.Dialog;
+                            await contentDialog.OpenDialog();
                         }
                     }
                     else

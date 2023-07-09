@@ -75,13 +75,16 @@ namespace ZBank.View.Main
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
             BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
-            ContentDialog dialog = new ContentDialog();
-            dialog.XamlRoot = this.XamlRoot;
-            dialog.RequestedTheme = ThemeService.Theme;
-            dialog.Title = "Update Beneficiary";
-            dialog.Content = new AddEditBeneficiaryView(dialog, selectedBeneficiary);
-            Dialog = dialog;
-            await dialog.ShowAsync();
+            CustomContentDialog contentDialog = new CustomContentDialog();
+            contentDialog.DialogContent = new AddEditBeneficiaryView(contentDialog.Dialog, selectedBeneficiary);
+            contentDialog.Dialog.Title = "Update Beneficiary";
+            contentDialog.XamlRoot = this.XamlRoot;
+            await contentDialog.OpenDialog();
+            //ContentDialog dialog = new ContentDialog();
+            //dialog.Title = "Update Beneficiary";
+            //dialog.Content = new AddEditBeneficiaryView(dialog, selectedBeneficiary);
+            //Dialog = dialog;
+            //await dialog.ShowAsync();
         }
 
         private void NotAFavouriteButton_Click(object sender, RoutedEventArgs e)

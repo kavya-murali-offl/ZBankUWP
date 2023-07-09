@@ -18,6 +18,7 @@ using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.View.Modals;
+using ZBank.View.UserControls;
 using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -67,11 +68,11 @@ namespace ZBank.View.Main
 
         private async void NewPaymentButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog dialog = new ContentDialog();
-            dialog.RequestedTheme = ThemeService.Theme;
-            dialog.Content = new NewPaymentView(dialog);
-            PaymentDialog = dialog;
-            await dialog.ShowAsync();
+            CustomContentDialog contentDialog = new CustomContentDialog();
+            contentDialog.Dialog.Title = "Add Beneficiary";
+            contentDialog.DialogContent = new NewPaymentView(contentDialog.Dialog);
+            PaymentDialog = contentDialog.Dialog;
+            await contentDialog.OpenDialog();
         }
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
