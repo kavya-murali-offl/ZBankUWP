@@ -260,6 +260,7 @@
     <Compile Include="Entity\EnumerationTypes\ModeOfPayment.cs" />
     <Compile Include="Entity\EnumerationTypes\NavigationCases.cs" />
     <Compile Include="Helpers\LogoHelper.cs" />
+    <Compile Include="Helpers\ResourceExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AuthServices.cs" />
     <Compile Include="Utilities\Formatter.cs" />

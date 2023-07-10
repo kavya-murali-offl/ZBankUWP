@@ -514,6 +514,9 @@
       <Name>ZBankManagement</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Resources\Strings\es-ES\Resources.es-ES.resw" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

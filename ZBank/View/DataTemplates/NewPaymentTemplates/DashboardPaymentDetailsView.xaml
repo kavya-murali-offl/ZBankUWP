@@ -20,7 +20,7 @@
     </UserControl.Resources>
         <usercontrols:CardControl
             Height="Auto"
-            MyTitle="Quick Transfer">
+            MyTitle="QuickTransfer">
             <usercontrols:CardControl.MyControls>
                                 <Button Padding="15,5,15,5" Style="{ThemeResource SecondaryButton}"
                                     VerticalAlignment="Center"
@@ -34,8 +34,9 @@
                                                 FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                                 Glyph="&#xE149;" />
                                             <TextBlock
+                                                x:Uid="Reset"
                                                 Margin="5,0,0,0"
-                                                Text="Reset" />
+                                               />
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
@@ -47,7 +48,7 @@
                 <TextBlock
                     MaxWidth="400"
                     Margin="5"
-                    Text="Account *"
+                    x:Uid="Account"
                     Style="{ThemeResource NormalSubText}" />
                 <DropDownButton
                     x:Name="AccountsDropdownButton"
@@ -96,7 +97,7 @@
                 <TextBlock
                     MaxWidth="400"
                     Margin="5"
-                    Text="Beneficiary *"
+                    x:Uid="Beneficiary"
                     Style="{ThemeResource NormalSubText}" />
 
                 <DropDownButton
@@ -148,7 +149,7 @@
                 
                 <TextBlock
                     Margin="5"
-                    Text="Amount *"
+                    x:Uid="Amount"
                     MaxWidth="400"
                     Style="{ThemeResource NormalSubText}" />
 
@@ -192,7 +193,7 @@
                     HorizontalAlignment="Stretch">
                     <Button.Content>
                         <TextBlock
-                            Text="Send" />
+                            x:Uid="Send" />
                     </Button.Content>
                 </Button>
             </StackPanel>

@@ -93,9 +93,9 @@ namespace ZBank.View
 
         private async void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FadeStoryBoard.Begin();
+            FadeStoryboard.Begin();
             await Task.Delay(500);
-            FadeStoryBoard.Stop();
+            FadeStoryboard.Stop();
         }
     }
 }
