@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Entities;
+using ZBank.Services;
 using ZBank.View.Modals;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
@@ -39,8 +40,6 @@ namespace ZBank.View.Main
             LimitSlider.IsEnabled = false;
         }
 
-        private ContentDialog Dialog { get; set; }
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageLoaded();
@@ -51,7 +50,7 @@ namespace ZBank.View.Main
 
         private void OnCardInserted(bool arg1, Card arg2)
         {
-            Dialog?.Hide();
+            //ViewNotifier.Instance.OnCloseDialog();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -86,7 +85,7 @@ namespace ZBank.View.Main
         {
             if(isSettled)
             {
-                Dialog?.Hide();
+                ViewNotifier.Instance.OnCloseDialog();
             }
         }
 
@@ -104,21 +103,13 @@ namespace ZBank.View.Main
 
         private async void ResetPinButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.Dialog.Title = "Reset Pin";
-            contentDialog.DialogContent = new ResetPinContent(contentDialog.Dialog, ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand);
-            Dialog = contentDialog.Dialog;
-            await contentDialog.OpenDialog();
+            await DialogService.ShowContentAsync(this, new ResetPinContent(ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand), "Reset Pin", this.XamlRoot);
         }
 
        
         private async void AddCardButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.DialogContent = new AddCardView(contentDialog.Dialog);
-            contentDialog.Dialog.Title = "New Credit Card";
-            Dialog = contentDialog.Dialog;
-            await contentDialog.OpenDialog();
+            await DialogService.ShowContentAsync(this, new AddCardView(), "Add Credit Card", this.XamlRoot);
         }
 
         private void ChangeLimitButton_Click(object sender, RoutedEventArgs e)
@@ -149,11 +140,7 @@ namespace ZBank.View.Main
 
         private async void PayCardButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.Dialog.Title = "New Credit Card";
-            contentDialog.DialogContent = new PayCreditCard(contentDialog.Dialog, ViewModel.DataModel.OnViewCard as CreditCard);
-            Dialog = contentDialog.Dialog;
-            await contentDialog.OpenDialog();
+            await DialogService.ShowContentAsync(this, new PayCreditCard(ViewModel.DataModel.OnViewCard as CreditCard), "Pay Credit Card", this.XamlRoot);
         }
 
         private void LimitSlider_Loaded(object sender, RoutedEventArgs e)

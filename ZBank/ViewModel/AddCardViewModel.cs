@@ -45,7 +45,6 @@ namespace ZBank.ViewModel
 
         public void InsertCard(CardType cardType)
         {
-
             InsertCardRequest request = new InsertCardRequest()
             {
                 CardType = CardType.CREDIT,
@@ -82,7 +81,6 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException exception)
             {
-
                 await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()

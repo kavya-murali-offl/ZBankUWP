@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
 using ZBank.Entity.BusinessObjects;
 using ZBankManagement.AppEvents.AppEventArgs;
 
@@ -29,17 +30,14 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
         }
 
-       public ResetPinContent(ContentDialog dialog, CardBObj card, ICommand submitCommand)
+       public ResetPinContent(CardBObj card, ICommand submitCommand)
        {
             this.InitializeComponent();
             SelectedCard = card;
             SubmitCommand = submitCommand;
-            ContentDialog = dialog;
        }
 
         private string NewPin { get; set; }
-
-        private ContentDialog ContentDialog { get; set; }
 
         public CardBObj SelectedCard
         {
@@ -75,7 +73,6 @@ namespace ZBank.View.UserControls
                     CardNumber = SelectedCard.CardNumber,
                     PinNumber = NewPin
                 });
-                ContentDialog.Hide();
             }
         }
 
@@ -115,7 +112,7 @@ namespace ZBank.View.UserControls
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog.Hide();   
+            ViewNotifier.Instance.OnCloseDialog(); 
         }
 
         private void PinBox_PasswordChanging(PasswordBox sender, PasswordBoxPasswordChangingEventArgs args)

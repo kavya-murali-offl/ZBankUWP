@@ -36,22 +36,11 @@ namespace ZBank.View.UserControls
             BeneficiaryButton.Content = ViewModel.BeneficiaryTypes.ElementAt(0).ToString();
         }
 
-        private ContentDialog Dialog { get; set; }
-
-        public AddEditBeneficiaryView(ContentDialog contentDialog, BeneficiaryBObj beneficiaryBObj)
+        public AddEditBeneficiaryView(BeneficiaryBObj beneficiaryBObj)
         {
             this.InitializeComponent();
-            Dialog = contentDialog;
             CancelButton.Visibility = Visibility.Visible;
-            ViewModel = new AddEditBeneficiaryViewModel(this, contentDialog, beneficiaryBObj);
-        }
-
-        public AddEditBeneficiaryView(ContentDialog contentDialog)
-        {
-            this.InitializeComponent();
-            Dialog = contentDialog;
-            CancelButton.Visibility = Visibility.Visible;
-            ViewModel = new AddEditBeneficiaryViewModel(this, contentDialog);
+            ViewModel = new AddEditBeneficiaryViewModel(this, beneficiaryBObj);
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,14 +56,10 @@ namespace ZBank.View.UserControls
             }
         }
 
-
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnLoaded();
         }
-
-
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -84,7 +69,7 @@ namespace ZBank.View.UserControls
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Dialog?.Hide();
+            ViewNotifier.Instance.OnCloseDialog();
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)

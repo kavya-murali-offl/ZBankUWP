@@ -90,7 +90,7 @@ namespace ZBank.View.DataTemplates
         {
             CustomContentDialog contentDialog = new CustomContentDialog();
             contentDialog.Dialog.Title = "Add Beneficiary";
-            contentDialog.DialogContent = new AddEditBeneficiaryView(contentDialog.Dialog);
+            contentDialog.DialogContent = new AddEditBeneficiaryView();
             await contentDialog.OpenDialog();
         }
 

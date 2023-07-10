@@ -17,6 +17,7 @@ using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
+using ZBank.Services;
 using ZBank.View.UserControls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -26,7 +27,7 @@ namespace ZBank.View.DataTemplates
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CurrentAccountInfoTemplate : UserControl
+    public sealed partial class CurrentAccountInfoTemplate : UserControl, IView
     {
 
         public CurrentAccountInfoTemplate()
@@ -79,15 +80,7 @@ namespace ZBank.View.DataTemplates
 
         private async void AddBeneficiaryButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.Dialog.Title = "Reset Pin";
-            contentDialog.DialogContent = new AddEditBeneficiaryView(contentDialog.Dialog);
-            await contentDialog.OpenDialog();
-            //ContentDialog dialog = new ContentDialog();
-            //dialog.RequestedTheme = ThemeService.Theme;
-            //dialog.Title = "Add Beneficiary";
-            //dialog.Content 
-            //await dialog.ShowAsync();
+            await DialogService.ShowContentAsync(this, new AddEditBeneficiaryView(), "Add Beneficiary", XamlRoot);
         }
     }
 }

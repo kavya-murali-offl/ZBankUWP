@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Entities;
+using ZBank.Services;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 using ZBankManagement.Entities.BusinessObjects;
@@ -29,7 +30,6 @@ namespace ZBank.View.Main
     /// </summary>
     public sealed partial class BeneficiariesPage : Page, IView
     {
-        private ContentDialog Dialog { get; set; }
         private BeneficiariesViewModel ViewModel { get; set; }  
 
         public BeneficiariesPage()
@@ -40,18 +40,11 @@ namespace ZBank.View.Main
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.CloseDialog += CloseDialog;
             ViewModel.OnLoaded();
-        }
-
-        private void CloseDialog()
-        {
-                Dialog?.Hide();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.CloseDialog -= CloseDialog;
             ViewModel.OnUnloaded();
         }
 
@@ -75,16 +68,7 @@ namespace ZBank.View.Main
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
             BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.DialogContent = new AddEditBeneficiaryView(contentDialog.Dialog, selectedBeneficiary);
-            contentDialog.Dialog.Title = "Update Beneficiary";
-            contentDialog.XamlRoot = this.XamlRoot;
-            await contentDialog.OpenDialog();
-            //ContentDialog dialog = new ContentDialog();
-            //dialog.Title = "Update Beneficiary";
-            //dialog.Content = new AddEditBeneficiaryView(dialog, selectedBeneficiary);
-            //Dialog = dialog;
-            //await dialog.ShowAsync();
+            await DialogService.ShowContentAsync(this, new AddEditBeneficiaryView(selectedBeneficiary), "Edit Beneficiary", this.XamlRoot);
         }
 
         private void NotAFavouriteButton_Click(object sender, RoutedEventArgs e)

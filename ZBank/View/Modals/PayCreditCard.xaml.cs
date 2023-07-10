@@ -31,17 +31,11 @@ namespace ZBank.View.Modals
 
         private PayCreditCardViewModel ViewModel { get; set; }      
 
-        private ContentDialog ContentDialog { get; set; }
 
-        private void OnCardSettled(bool IsSettled)
-        {
-            ContentDialog?.Hide();
-        }
 
-        public PayCreditCard(ContentDialog dialog, CreditCard card)
+        public PayCreditCard(CreditCard card)
         {
             this.InitializeComponent();
-            ContentDialog = dialog;
             ViewModel = new PayCreditCardViewModel(this, card);
         }
 
@@ -82,18 +76,16 @@ namespace ZBank.View.Modals
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog?.Hide();
+            ViewNotifier.Instance.OnCloseDialog();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.CreditCardSettled += OnCardSettled;
-            ViewModel.OnLoaded();
+          ViewModel.OnLoaded();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.CreditCardSettled -= OnCardSettled;
             ViewModel.OnUnloaded();
         }
 

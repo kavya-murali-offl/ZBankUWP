@@ -17,6 +17,7 @@ using ZBank.ViewModel;
 using ZBank.View.Main;
 using ZBank.View.Modals;
 using System.Threading.Tasks;
+using ZBank.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,8 +31,6 @@ namespace ZBank.View
         public int OnViewCardIndex { get; set; } = 0;   
 
         public DashboardViewModel ViewModel { get; set; }
-
-        private ContentDialog Dialog { get; set; }
 
         public string EnteredAmount { get; set; }  
         
@@ -79,16 +78,12 @@ namespace ZBank.View
 
         private void OnCardInserted(bool arg1, Card arg2)
         {
-            Dialog?.Hide();
+           ViewNotifier.Instance.OnCloseDialog();
         }
 
         private async void NewCardButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.DialogContent = new AddCardView(contentDialog.Dialog);
-            contentDialog.Dialog.Title = "New Credit Card";
-            Dialog = contentDialog.Dialog;
-            await contentDialog.OpenDialog();
+            await DialogService.ShowContentAsync(this, new AddCardView(), "New Credit Card", XamlRoot);
         }
 
         private async void Button_Tapped(object sender, TappedRoutedEventArgs e)

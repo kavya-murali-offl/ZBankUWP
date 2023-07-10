@@ -15,6 +15,9 @@ namespace ZBank.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
+
+        protected string Title { get; set; }    
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName = null)

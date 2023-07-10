@@ -27,12 +27,10 @@ namespace ZBank.View.Modals
     {
 
         private AddCardViewModel ViewModel { get; set; }    
-        private ContentDialog Dialog { get; set; }
-        public AddCardView(ContentDialog dialog)
+        public AddCardView()
         {
             this.InitializeComponent();
             ViewModel = new AddCardViewModel(this);
-            Dialog = dialog;
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -55,7 +53,7 @@ namespace ZBank.View.Modals
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            Dialog?.Hide();
+            ViewNotifier.Instance.OnCloseDialog();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -66,7 +64,7 @@ namespace ZBank.View.Modals
 
         private void OnCardInserted(bool isInserted, Card insertedCard)
         {
-            Dialog?.Hide();
+            ViewNotifier.Instance.OnCloseDialog();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

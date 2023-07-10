@@ -122,6 +122,7 @@
     <Compile Include="DataStore\ColorsHelper.cs" />
     <Compile Include="DataStore\Repository.cs" />
     <Compile Include="Services\AppSettings.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\DispatcherService.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="Utilities\Converters\BackgroundColorConverter.cs" />
