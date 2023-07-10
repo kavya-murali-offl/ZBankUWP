@@ -19,15 +19,20 @@
             <DataTemplate
                 x:Name="GridViewTemplate"
                 x:DataType="businessobjects:BeneficiaryBObj">
-                <Grid>
+                <Grid >
+
+                <Grid
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    Canvas.ZIndex="40"
+                    Margin="0,15,0,0">
+                    <Ellipse
+                        Fill="Beige" />
                     <PersonPicture
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Canvas.ZIndex="40"
                         Width="50"
-                        Margin="0,15,0,0"
                         Height="50"
                         Initials="{Binding BeneficiaryName, Converter={StaticResource InitialsConverter},Mode=OneWay}" />
+                    </Grid>
                     <Grid
                         Canvas.ZIndex="20"
                         Background="{ThemeResource ApplicationBackgroundThemeBrush}"
@@ -266,10 +271,10 @@
                                 SelectionMode="None">
                                 <GridView.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <VariableSizedWrapGrid
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            Orientation="Horizontal" />
+                                        <ItemsStackPanel
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
                                     </ItemsPanelTemplate>
                                 </GridView.ItemsPanel>
                                 <GridView.ItemContainerStyle>
@@ -279,8 +284,8 @@
                                             Value="10"
                                             Property="Margin" />
                                         <Setter
-                                            Value="Auto"
-                                            Property="Width" />
+                                            Value="Stretch"
+                                            Property="HorizontalAlignment" />
                                     </Style>
                                 </GridView.ItemContainerStyle>
                             </GridView>
@@ -292,7 +297,7 @@
                 <Grid VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
                         <RowDefinition
-                            Height="*" />
+                            Height="Auto" />
                         <RowDefinition
                             Height="*" />
                     </Grid.RowDefinitions>

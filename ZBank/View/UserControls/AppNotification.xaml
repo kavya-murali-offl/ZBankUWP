@@ -53,8 +53,6 @@
             Text="{Binding Message, Mode=OneWay}"
             TextTrimming="CharacterEllipsis" />
 
-      
-
         <Button
             Grid.Column="2"
             x:Name="CloseButton"
@@ -62,7 +60,7 @@
             Padding="5"
             Margin="10,5,10,0"
             HorizontalAlignment="Right"
-            Style="{ThemeResource CardButton}"
+            Style="{ThemeResource IconButton}"
             Background="Transparent">
             <Button.Content>
                 <FontIcon

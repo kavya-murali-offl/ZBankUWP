@@ -169,15 +169,13 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException error)
             {
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(
+                        new Notification()
                         {
                             Message = error.Message,
                             Type = NotificationType.ERROR
-                        }
                     });
                 });
             }
@@ -196,34 +194,26 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                        NotifyUserArgs args = new NotifyUserArgs()
+                        ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
-                            Notification = new Notification()
-                            {
-                                Message = "Signout Successful",
-                                Duration = 3000,
-                                Type = NotificationType.SUCCESS
-                            }
-                        };
-                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                            Message = "Signout Successful",
+                            Duration = 3000,
+                            Type = NotificationType.SUCCESS
+                        });
                         ViewNotifier.Instance.OnCurrentUserChanged(null);
                 });
             }
 
             public async Task OnFailure(ZBankException response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = "Signout failed",
-                            Duration = 3000,
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = "Signout failed",
+                        Duration = 3000,
+                        Type = NotificationType.SUCCESS
+                    });
                 });
             }
         }

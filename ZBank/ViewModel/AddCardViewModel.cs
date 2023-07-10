@@ -8,6 +8,7 @@ using ZBank.AppEvents;
 using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Services;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
@@ -68,34 +69,26 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertCardResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = "Card inserted successfully",
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = "Card inserted successfully",
+                        Type = NotificationType.SUCCESS
+                    });
                 });
             }
 
             public async Task OnFailure(ZBankException exception)
             {
 
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = exception.Message,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = exception.Message,
+                        Type = NotificationType.ERROR
+                    });
                 });
             }
         }

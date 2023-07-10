@@ -187,15 +187,11 @@ namespace ZBank.ViewModel
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnUpdatedLimit(true, response.UpdatedCard);
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = "Transaction Limit Update Successful",
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = "Transaction Limit Update Successful",
+                        Type = NotificationType.SUCCESS
+                    });
                 });
             }
 
@@ -204,15 +200,11 @@ namespace ZBank.ViewModel
                 await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnUpdatedLimit(false, null);
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = response.Message,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = response.Message,
+                        Type = NotificationType.ERROR
+                    });
                 });
 
             }
@@ -244,15 +236,11 @@ namespace ZBank.ViewModel
             {
                 await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = exception.Message,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = exception.Message,
+                        Type = NotificationType.ERROR
+                    });
                 });
             }
         }
@@ -268,33 +256,25 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(ResetPinResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = "Reset Pin Successful",
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = "Reset Pin Successful",
+                        Type = NotificationType.SUCCESS
+                    });
                 });
             }
 
             public async Task OnFailure(ZBankException response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(()=>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
                             Message = response.Message,
                             Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        });
                 });
 
             }

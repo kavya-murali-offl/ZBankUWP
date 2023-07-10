@@ -130,6 +130,7 @@
     <Compile Include="Utilities\Converters\ColorToBrushConverter.cs" />
     <Compile Include="Utilities\Converters\CurrencyConverter.cs" />
     <Compile Include="Utilities\Converters\DecimalToDoubleConverter.cs" />
+    <Compile Include="Utilities\Converters\EnumToStringConverter.cs" />
     <Compile Include="Utilities\Converters\StringConverter.cs" />
     <Compile Include="Utilities\Converters\IndexToPositionConverter.cs" />
     <Compile Include="Utilities\Converters\InitialsConverter.cs" />
@@ -155,11 +156,9 @@
     <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
-    <Compile Include="ViewModel\VMObjects\IncrementalLoadingCollection.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableObject.cs" />
-    <Compile Include="ViewModel\VMObjects\TransactionSource.cs" />
     <Compile Include="View\DataTemplates\AccountInfoTemplates\CurrentAccountInfoTemplate.xaml.cs">
       <DependentUpon>CurrentAccountInfoTemplate.xaml</DependentUpon>
     </Compile>

@@ -11,6 +11,7 @@ using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
+using ZBank.Services;
 using ZBank.View;
 using ZBank.View.Main;
 using ZBank.ViewModel.VMObjects;
@@ -24,7 +25,6 @@ namespace ZBank.ViewModel
     {
         public IView View;
 
-        private CardBObj _onViewCard { get; set; }
         public ICommand PreviousCardCommand { get; set; }
         public ICommand NextCardCommand { get; set; }
 
@@ -40,17 +40,7 @@ namespace ZBank.ViewModel
         }
 
 
-        private int _onViewCardIndex { get; set; } = -1;
 
-        public CardBObj OnViewCard
-        {
-            get { return _onViewCard; }
-            set
-            {
-                _onViewCard = value;
-                OnPropertyChanged(nameof(OnViewCard));
-            }
-        }
 
         public void OnLoaded()
         {
@@ -75,10 +65,8 @@ namespace ZBank.ViewModel
                 OnViewCard = DashboardModel.AllCards.ElementAt(_onViewCardIndex);
             };
 
-
             (NextCardCommand as RelayCommand).RaiseCanExecuteChanged();
             (PreviousCardCommand as RelayCommand).RaiseCanExecuteChanged();
-
         }
 
         public void OnNextCard(object parameter = null)
@@ -101,17 +89,24 @@ namespace ZBank.ViewModel
             UpdateOnViewCard();
         }
 
-        private DashboardDataModel model;
+        private DashboardDataModel _dashboardModel;
 
         public DashboardDataModel DashboardModel
         {
-            get { return model; }
-            set
-            {
-                model = value;
-                OnPropertyChanged(nameof(DashboardModel));
-            }
+            get { return _dashboardModel; }
+            set => Set(ref _dashboardModel, value);
         }
+
+        private CardBObj _onViewCard = null;
+
+        public CardBObj OnViewCard
+        {
+            get => _onViewCard;
+            set => Set(ref _onViewCard, value);
+        }
+        
+        private int _onViewCardIndex { get; set; } = -1;
+
 
         public void RefreshData(DashboardDataUpdatedArgs args)
         {
@@ -193,16 +188,13 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                 
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
                             Message = response.Message,
                             Type = NotificationType.ERROR,
-                        }
                     });
                 });
             }
@@ -243,36 +235,16 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                      Notification = new Notification()
-                      {
-                          Message = response.Message,
-                          Type = NotificationType.ERROR
-                      }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = response.Message,
+                        Type = NotificationType.ERROR
+                    });
                 });
 
             }
-
-            private class GetAllBeneficiariesInDashboardPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
-            {
-
-                private readonly DashboardViewModel _dashboardViewModel;
-
-                public async Task OnSuccess(GetAllBeneficiariesResponse response)
-                {
-                }
-
-                public async Task OnFailure(ZBankException response)
-                {
-                }
-            }
-
         }
-
     }
 }

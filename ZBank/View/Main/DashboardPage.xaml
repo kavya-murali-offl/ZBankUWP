@@ -246,7 +246,7 @@
                                                 <TextBlock
                                                     Grid.Column="2"
                                                     x:Name="AmountText"
-                                                    FontSize="17"
+                                                    FontSize="16"
                                                     MinWidth="70"
                                                     Margin="10,0,0,0"
                                                     MaxWidth="150"
@@ -254,7 +254,7 @@
                                                     HorizontalAlignment="Right"
                                                     TextAlignment="Right"
                                                     Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
-                                                    Style="{ThemeResource BoldNormalText}" />
+                                                   />
                                                 
                                                 <TextBlock
                                                     Grid.Column="2"
@@ -357,7 +357,13 @@
                         </StackPanel>
                     </usercontrol:CardControl.MyControls>
                     <usercontrol:CardControl.MyContent>
-                        <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="Auto" />   <RowDefinition
+                                    Height="Auto" />   <RowDefinition
+                                    Height="Auto" />
+                            </Grid.RowDefinitions>
                             <ScrollViewer HorizontalScrollBarVisibility="Auto">
                                 <usercontrol:CardElementView
                                     Grid.Row="0"
@@ -369,6 +375,7 @@
                                     TemplateCard="{x:Bind ViewModel.OnViewCard, Mode=OneWay}" />
                             </ScrollViewer>
                             <Button
+                                Grid.Row="1"
                                 Visibility="{x:Bind ViewModel.OnViewCard, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"
                                 Margin="10"
                                 HorizontalAlignment="Center"
@@ -382,8 +389,8 @@
                                 </Button.Content>
                             </Button>
                             <Button
+                                Grid.Row="2"
                                 Visibility="{x:Bind ViewModel.OnViewCard, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"
-                                Margin="10"
                                 HorizontalAlignment="Center"
                                 MinWidth="230"
                                 Click="NewCardButton_Click"
@@ -394,7 +401,7 @@
                                         Text="Add Credit Card" />
                                 </Button.Content>
                             </Button>
-                        </StackPanel>
+                        </Grid>
                         
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
@@ -404,6 +411,4 @@
             </Grid>
         </Grid>
     </Grid>
-
-
 </Page>

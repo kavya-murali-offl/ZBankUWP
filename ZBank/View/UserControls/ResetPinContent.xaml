@@ -26,11 +26,11 @@
             Foreground="Gray"
             Text="Card Number" />
         <TextBlock
-            Margin="10"
+            Margin="0,10,0,10"
                 Grid.Row="1"
-                FontWeight="SemiBold"
                 FontSize="18"
                 Text="{x:Bind SelectedCard.CardNumber, Mode=OneWay}" />
+        
         <TextBlock
             Grid.Row="3"
             FontSize="14"
@@ -41,14 +41,15 @@
         <PasswordBox
             Style="{ThemeResource CustomPasswordBoxStyle}"
             x:Name="PinBox"
-            Margin="10"
+            Margin="0,10,0,10"
             Grid.Row="4"
             PlaceholderText="Enter New Pin"
+            KeyDown="PinBox_KeyDown"
             PasswordChanging="PinBox_PasswordChanging"
             />
 
         <TextBlock
-            Margin="10,0,0,10"
+            Margin="0,0,0,10"
             TextWrapping="WrapWholeWords"
             Foreground="IndianRed"
             Grid.Row="5"

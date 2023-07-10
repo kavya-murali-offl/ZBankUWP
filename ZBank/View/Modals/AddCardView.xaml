@@ -24,7 +24,6 @@
                 Height="Auto" />   
             <RowDefinition
                 Height="Auto" />
-            
         </Grid.RowDefinitions>
        
         <TextBlock
@@ -38,9 +37,10 @@
             Width="200"
             Margin="10"
             Grid.Row="1"
+            KeyDown="ProviderButton_KeyDown"
             HorizontalAlignment="Center"
             x:Name="ProviderButton"
-            CornerRadius="8">
+            CornerRadius="5">
             <DropDownButton.Content>
                 <TextBlock
                     MaxWidth="300"
@@ -75,7 +75,7 @@
         <Button
             Margin="20"
             Grid.Row="2"
-            CornerRadius="8"
+            CornerRadius="4"
             VerticalAlignment="Bottom"
             MinWidth="150"
             Click="Button_Click"
@@ -90,7 +90,7 @@
         <Button
             Margin="20"
             Grid.Row="2"
-            CornerRadius="8"
+            CornerRadius="4"
             VerticalAlignment="Bottom"
             MinWidth="150"
             x:Name="Cancel"

@@ -27,7 +27,7 @@ namespace ZBank.View.UserControls
     public sealed partial class AddEditBeneficiaryView : UserControl, IView
     {
         private AddEditBeneficiaryViewModel ViewModel { get; set; }
-        
+
         public AddEditBeneficiaryView()
         {
             this.InitializeComponent();
@@ -67,14 +67,14 @@ namespace ZBank.View.UserControls
             }
         }
 
-    
+
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnLoaded();
         }
 
-   
+
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -85,6 +85,34 @@ namespace ZBank.View.UserControls
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Dialog?.Hide();
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Reset(ViewModel.SelectedBeneficiary.BeneficiaryType);
+        }
+
+        private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                e.Handled = true;
+                SubmitForm();
+            }
+        }
+
+        private void SubmitForm()
+        {
+            ViewModel.SubmitCommand.Execute(null);
+        }
+
+        private void IFSCCodeBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                e.Handled = true;
+                SubmitForm();
+            }
         }
     }
 }

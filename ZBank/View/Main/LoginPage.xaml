@@ -72,10 +72,11 @@
             <PasswordBox
                 HorizontalAlignment="Stretch"
                 Margin="10"
-                IsPasswordRevealButtonEnabled="True"
                 x:Name="PasswordText"
                 PasswordChanged="PasswordText_PasswordChanged"
                 Grid.Row="4"
+                Style="{ThemeResource CustomPasswordBoxStyle}"
+                KeyDown="PasswordText_KeyDown"
                 Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
                 PlaceholderText="Enter Password" />
 

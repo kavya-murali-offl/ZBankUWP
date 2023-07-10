@@ -32,7 +32,7 @@ namespace ZBank.View.UserControls
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName = null)
+        public void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -59,16 +59,16 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
         }
 
-        private void UpdateStack(NotifyUserArgs obj)
+        private void UpdateStack(Notification notification)
         {
             if (NotificationStack.Count == 0)
             {
-                NotificationStack.Add(obj.Notification);
+                NotificationStack.Add(notification);
                 Show(NotificationStack[0]);
             }
             else
             {
-                NotificationStack.Add(obj.Notification);
+                NotificationStack.Add(notification);
             }
         }
        

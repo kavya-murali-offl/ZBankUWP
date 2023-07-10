@@ -166,6 +166,7 @@
                     Style="{ThemeResource CustomTextBoxStyle}"
                     x:Name="AmountTextBox"
                     MaxWidth="400"
+                    KeyDown="AmountTextBox_KeyDown"
                     Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay, Converter={StaticResource StringConverter}}"
                     TextChanging="AmountTextBox_TextChanging"
                     PlaceholderText="Enter Amount in INR" />

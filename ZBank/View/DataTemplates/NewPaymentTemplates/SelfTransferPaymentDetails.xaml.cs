@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -137,6 +138,16 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                 ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as AccountBObj)?.AccountNumber;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
                 BeneficiaryButton.Flyout.Hide();
+            }
+        }
+
+        private void AmountTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true;
+                IsConfirmed = true;
+                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
             }
         }
     }

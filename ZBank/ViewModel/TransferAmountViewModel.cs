@@ -405,18 +405,14 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = response.Message,
-                            Duration = 3000,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = response.Message,
+                        Duration = 3000,
+                        Type = NotificationType.ERROR
+                    });
                 });
 
             }
@@ -470,13 +466,10 @@ namespace ZBank.ViewModel
             {
                 await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
                             Message = response.Message,
                             Type = NotificationType.ERROR,
-                        }
                     });
                     ViewNotifier.Instance.OnCloseDialog();
                 });

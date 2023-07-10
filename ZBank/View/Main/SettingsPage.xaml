@@ -95,7 +95,7 @@
                 SelectionMode="None"
                 HorizontalAlignment="Center"
                 x:Name="AccentColorList"
-                ItemsSource="{x:Bind ViewModel.AccentColors, Mode=OneWay}">
+                ItemsSource="{x:Bind ViewModel.AccentColors}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid

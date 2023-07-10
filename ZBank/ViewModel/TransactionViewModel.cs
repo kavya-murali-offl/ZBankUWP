@@ -266,19 +266,9 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = response.Message,
-                            Duration = 3000,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                });
+                await DispatcherService.CallOnMainViewUiThreadAsync(() => { 
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification() 
+                    { Message = response.Message, Duration = 3000, Type = NotificationType.ERROR }); });
             }
         }
 
@@ -307,36 +297,14 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-
-            }
-        }
-
-        private class GetAllBeneficiariesInTransactionsPresenterCallback : IPresenterCallback<GetAllBeneficiariesResponse>
-        {
-            public TransactionViewModel ViewModel { get; set; }
-
-            public GetAllBeneficiariesInTransactionsPresenterCallback(TransactionViewModel viewModel)
-            {
-                ViewModel = viewModel;
-            }
-
-            public async Task OnSuccess(GetAllBeneficiariesResponse response)
-            {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
-                {
-                    BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
-                    {
-                        BeneficiaryList = response.Beneficiaries
-                    };
-                    ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
+                await DispatcherService.CallOnMainViewUiThreadAsync(() => {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    { Message = response.Message, Duration = 3000, Type = NotificationType.ERROR });
                 });
-            }
 
-            public async Task OnFailure(ZBankException response)
-            {
             }
         }
-    }
+ }
 }
 
 //ResetFilterValues();

@@ -9,11 +9,9 @@
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded"
     >
-        <Grid x:Name="AppTitleBar">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid
+            HorizontalAlignment="Stretch"
+            x:Name="AppTitleBar">
             <Image
                 Margin="10,0,0,0"
                 HorizontalAlignment="Left"

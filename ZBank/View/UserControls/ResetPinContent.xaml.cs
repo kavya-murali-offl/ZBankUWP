@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -36,6 +37,8 @@ namespace ZBank.View.UserControls
             ContentDialog = dialog;
        }
 
+        private string NewPin { get; set; }
+
         private ContentDialog ContentDialog { get; set; }
 
         public CardBObj SelectedCard
@@ -61,6 +64,11 @@ namespace ZBank.View.UserControls
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SubmitForm();
+        }
+
+        private void SubmitForm()
         {
             if (ValidateFields())
             {
@@ -107,10 +115,6 @@ namespace ZBank.View.UserControls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private string NewPin { get; set; }
-
-     
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog.Hide();   
@@ -120,6 +124,15 @@ namespace ZBank.View.UserControls
         {
             NewPin = sender.Password;
             ErrorText = string.Empty;
+        }
+
+        private void PinBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true;
+                SubmitForm();
+            }
         }
     }
 }

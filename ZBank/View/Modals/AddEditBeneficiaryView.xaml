@@ -15,32 +15,48 @@
     <UserControl.Resources>
         <converter:BooleanToVisibilityConverter
             x:Key="BoolToVisibilityConverter" />
+        <converter:EnumToStringConverter
+            x:Name="EnumToStringConverter" />
     </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                Width="*" />
-            <ColumnDefinition
-                Width="*" />
-        </Grid.ColumnDefinitions>
+    <Grid MinWidth="400">
+      
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
-                Height="*" />
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />  
+            <RowDefinition
+                Height="Auto" /><RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
             <RowDefinition
                 Height="Auto" />  
             <RowDefinition
                 Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />  
+            <RowDefinition
+                Height="Auto" /> 
+            <RowDefinition
+                Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock
+            Margin="10"
             VerticalAlignment="Center"
             Text="Type" />
         <DropDownButton
             IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
-            Width="250"
+            MaxWidth="350"
             Grid.ColumnSpan="2"
-            HorizontalAlignment="Right"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
             x:Name="BeneficiaryButton"
             CornerRadius="8">
             <DropDownButton.Content>
@@ -48,15 +64,14 @@
                     TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     x:Name="BeneficiaryText"
-                    Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryType, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryType, Mode=OneWay, Converter={StaticResource EnumToStringConverter}}" />
             </DropDownButton.Content>
             <DropDownButton.Flyout>
                 <Flyout
                     Placement="Bottom"
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
-                        Width="250"
-                        Padding="0"
+                        Width="340"
                         ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="ListView_SelectionChanged"
                         ItemsSource="{x:Bind ViewModel.BeneficiaryTypes, Mode=OneWay}">
@@ -67,86 +82,89 @@
                                     TextTrimming="CharacterEllipsis"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
-                                    Text="{Binding}" />
+                                    Text="{Binding Converter={StaticResource EnumToStringConverter}, Mode=OneWay}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </Flyout>
             </DropDownButton.Flyout>
         </DropDownButton>
-        <StackPanel
-            MaxWidth="400"
-            MinWidth="350"
-            MinHeight="220"
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            VerticalAlignment="Center">
             
             <TextBlock
-                Margin="5,5,5,5"
+                Margin="10"
                 Text="Name"
+                Grid.Row="2"
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
-                Style="{ThemeResource CustomTextBoxStyle}"
+            Grid.Row="3"
+            Style="{ThemeResource CustomTextBoxStyle}"
                 x:Name="NameBox"
                 MaxWidth="400"
                 Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
                 PlaceholderText="Enter Beneficiary Name" />
 
             <TextBlock
-                Margin="5"
-                Foreground="IndianRed"
+                Grid.Row="4"
+            Margin="10,0,10,0"
+            Foreground="IndianRed"
                 Text="{x:Bind ViewModel.FieldErrors['BeneficiaryName'], Mode=OneWay}" />
 
             <TextBlock
-                Margin="5,10,5,5"
-                Text="Account Number"
+            Grid.Row="5"
+            Margin="10"
+            Text="Account Number"
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
-                Style="{ThemeResource CustomTextBoxStyle}"
+            Grid.Row="6"
+                KeyDown="TextBox_KeyDown"
+            Style="{ThemeResource CustomTextBoxStyle}"
                 IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
                 PlaceholderText="Enter Account Number"
                 Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay, TargetNullValue=''}" />
 
             <TextBlock
-                Margin="5"
-                Foreground="IndianRed"
+            Grid.Row="7"
+            Margin="10,0,10,0"
+            Foreground="IndianRed"
                 Text="{x:Bind ViewModel.FieldErrors['AccountNumber'], Mode=OneWay}" />
 
             <TextBlock
-                Margin="5,10,5,5"
+            Grid.Row="8"
+            Margin="10"
                 Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                 Text="IFSC Code"
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
-                Style="{ThemeResource CustomTextBoxStyle}"
+            Grid.Row="9"
+            Style="{ThemeResource CustomTextBoxStyle}"
                 IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
                 Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                 x:Name="IFSCCodeBox"
+                KeyDown="IFSCCodeBox_KeyDown"
                 PlaceholderText="Enter IFSC Code"
                 Text="{x:Bind ViewModel.SelectedBeneficiary.IFSCCode, Mode=TwoWay}" />
 
             <TextBlock
-                Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                Text="{x:Bind ViewModel.FieldErrors['IFSCCode'], Mode=OneWay}"
-                Margin="5"
-                Foreground="IndianRed" />
+            Margin="10,0,10,0"
+            Grid.Row="10"
+            Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+            Text="{x:Bind ViewModel.FieldErrors['IFSCCode'], Mode=OneWay}"
+            Foreground="IndianRed" />
 
-        </StackPanel>
        
         <Button
             Grid.ColumnSpan="2"
-            Grid.Row="2"
-            CornerRadius="8"
+            Grid.Row="11"
+            CornerRadius="5"
             VerticalAlignment="Bottom"
             MinWidth="150"
-            Margin="5,0,5,0"
+            Margin="20"
             Command="{x:Bind ViewModel.SubmitCommand}"
             Style="{ThemeResource PrimaryButton}"
-            HorizontalAlignment="Center">
+            HorizontalAlignment="Right">
             <Button.Content>
                 <TextBlock
                     Text="{x:Bind ViewModel.SubmitText}" />
@@ -156,18 +174,35 @@
         <Button
             Visibility="Collapsed"
             Grid.ColumnSpan="2"
-            Grid.Row="3"
+            Grid.Row="12"
             CornerRadius="8"
             VerticalAlignment="Bottom"
             MinWidth="150"
             x:Name="CancelButton"
             Click="CancelButton_Click"
-            Margin="5,20,5,0"
+            Margin="5,0,5,0"
             Style="{ThemeResource SecondaryButton}"
             HorizontalAlignment="Center">
             <Button.Content>
                 <TextBlock
                     Text="Cancel" />
+            </Button.Content>
+        </Button>
+
+        <Button
+            Grid.ColumnSpan="2"
+            Grid.Row="11"
+            CornerRadius="5"
+            VerticalAlignment="Bottom"
+            MinWidth="150"
+            Margin="20"
+            x:Name="ResetButton"
+            Click="ResetButton_Click"
+            Style="{ThemeResource SecondaryButton}"
+            HorizontalAlignment="Left">
+            <Button.Content>
+                <TextBlock
+                    Text="Reset" />
             </Button.Content>
         </Button>
     </Grid>

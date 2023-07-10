@@ -212,12 +212,6 @@ namespace ZBank
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         private void TopListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             //var selectedItem = (sender as ListViewItem).DataContext as Navigation;

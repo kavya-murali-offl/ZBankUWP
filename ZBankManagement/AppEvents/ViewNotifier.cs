@@ -134,10 +134,10 @@ namespace ZBank.AppEvents
             AccountInserted?.Invoke(isSuccess);
         }
 
-        public event Action<NotifyUserArgs> NotificationStackUpdated;
-        public void OnNotificationStackUpdated(NotifyUserArgs args)
+        public event Action<Notification> NotificationStackUpdated;
+        public void OnNotificationStackUpdated(Notification notification)
         {
-            NotificationStackUpdated?.Invoke(args);
+            NotificationStackUpdated?.Invoke(notification);
         }
 
         public event Action<BranchListUpdatedArgs> BranchListUpdated;

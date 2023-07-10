@@ -254,16 +254,12 @@ namespace ZBank.ViewModel
             {
                 await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = response.Message,
-                            Duration = 3000,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = response.Message,
+                        Duration = 3000,
+                        Type = NotificationType.ERROR
+                    });
                 });
 
             }

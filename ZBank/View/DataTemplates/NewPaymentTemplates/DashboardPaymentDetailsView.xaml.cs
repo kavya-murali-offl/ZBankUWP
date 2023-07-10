@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -70,7 +71,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             ViewModel.FieldErrors["Amount"] = string.Empty;
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
         }
@@ -107,6 +108,24 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         private void BeneficiaryList_ItemClick(object sender, ItemClickEventArgs e)
         {
  
+        }
+
+        private void DescriptionTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true;
+                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
+            }
+        }
+
+        private void AmountTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true;
+                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
+            }
         }
     }
 }

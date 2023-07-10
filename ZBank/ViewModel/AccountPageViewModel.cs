@@ -16,6 +16,7 @@ using Windows.ApplicationModel.Core;
 using ZBankManagement.AppEvents.AppEventArgs;
 using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.DataStore;
+using ZBank.Services;
 
 namespace ZBank.ViewModel
 {
@@ -46,24 +47,19 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountInserted -= OnAccountInserted;
         }
 
-
-        private ObservableCollection<Account> _accounts { get; set; }
+        private ObservableCollection<Account> _accounts = null;
 
         public ObservableCollection<Account> Accounts
         {
-            get { return _accounts; }
-            set
-            {
-                _accounts = new ObservableCollection<Account>(value);
-                OnPropertyChanged(nameof(Accounts));
-            }
+            get => _accounts;
+            set => Set(ref _accounts, value);
         }
 
         private void LoadAllAccounts()
         {
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
-                 IsTransactionAccounts = false,
+                IsTransactionAccounts = false,
                 AccountType = null,
                 UserID = Repository.Current.CurrentUserID
             };
@@ -76,72 +72,6 @@ namespace ZBank.ViewModel
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
             Accounts = new ObservableCollection<Account>(args.AccountsList);
-        }
-
-        private class UpdateAccountPresenterCallback : IPresenterCallback<UpdateAccountResponse>
-        {
-            private AccountPageViewModel ViewModel { get; set; }
-
-            public UpdateAccountPresenterCallback(AccountPageViewModel accountPageViewModel)
-            {
-                ViewModel = accountPageViewModel;
-            }
-
-            public async Task OnSuccess(UpdateAccountResponse response)
-            {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = "Account updated successfully",
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                });
-            }
-
-            public async Task OnFailure(ZBankException exception)
-            {
-
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    NotifyUserArgs args = new NotifyUserArgs()
-                    {
-                        Notification = new Notification()
-                        {
-                            Message = exception.Message,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                });
-            }
-        }
-
-        private class InsertTransactionPresenterCallback : IPresenterCallback<InsertTransactionResponse>
-        {
-            private AccountPageViewModel AccountPageViewModel { get; set; }
-
-            public InsertTransactionPresenterCallback(AccountPageViewModel accountPageViewModel)
-            {
-                AccountPageViewModel = accountPageViewModel;
-            }
-
-            public async Task OnSuccess(InsertTransactionResponse response)
-            {
-                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-
-                });
-            }
-
-            public async Task OnFailure(ZBankException response)
-            {
-
-            }
         }
 
         private class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
@@ -168,26 +98,16 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message=response.Message,
-                            Duration=3000,
-                             Type= NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = response.Message,
+                        Type = NotificationType.ERROR
+                    });
                 });
 
             }
         }
     }
-
-
-
-
-
 }

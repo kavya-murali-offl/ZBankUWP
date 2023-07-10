@@ -10,6 +10,7 @@ using ZBank.AppEvents.AppEventArgs;
 using ZBank.DataStore;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Services;
 using ZBank.View;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
@@ -177,34 +178,26 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(RemoveBeneficiaryResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnBeneficiaryRemoved(response.RemovedBeneficiary);
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = $"Beneficiary {response.RemovedBeneficiary.BeneficiaryName} Removed Successfully",
-                            Type = NotificationType.SUCCESS
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = $"Beneficiary {response.RemovedBeneficiary.BeneficiaryName} Removed Successfully",
+                        Type = NotificationType.SUCCESS
+                    });
                 });
             }
 
             public async Task OnFailure(ZBankException exception)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    NotifyUserArgs args = new NotifyUserArgs()
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Notification = new Notification()
-                        {
-                            Message = exception.Message,
-                            Type = NotificationType.ERROR
-                        }
-                    };
-                    ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                        Message = exception.Message,
+                        Type = NotificationType.ERROR
+                    });
                 });
             }
         }
@@ -223,15 +216,11 @@ namespace ZBank.ViewModel
                     {
                         ViewNotifier.Instance.OnCloseDialog();
                         ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.UpdatedBeneficiary, false);
-                        NotifyUserArgs args = new NotifyUserArgs()
+                        ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
-                            Notification = new Notification()
-                            {
-                                Message = "Beneficiary Updated Successfully",
-                                Type = NotificationType.SUCCESS
-                            }
-                        };
-                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                            Message = "Beneficiary Updated Successfully",
+                            Type = NotificationType.SUCCESS
+                        });
                     });
                 }
 
@@ -240,15 +229,11 @@ namespace ZBank.ViewModel
                     await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         ViewNotifier.Instance.OnRequestFailed(true);
-                        NotifyUserArgs args = new NotifyUserArgs()
+                        ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
-                            Notification = new Notification()
-                            {
-                                Message = exception.Message,
-                                Type = NotificationType.ERROR
-                            }
-                        };
-                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                            Message = exception.Message,
+                            Type = NotificationType.ERROR
+                        });
                     });
                 }
             }
@@ -264,7 +249,7 @@ namespace ZBank.ViewModel
 
                 public async Task OnSuccess(GetAllBeneficiariesResponse response)
                 {
-                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    await ViewModel.View.Dispatcher.CallOnUIThreadAsync(()=>
                     {
                         BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
                         {
@@ -276,17 +261,13 @@ namespace ZBank.ViewModel
 
                 public async Task OnFailure(ZBankException exception)
                 {
-                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                     {
-                        NotifyUserArgs args = new NotifyUserArgs()
+                        ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
-                            Notification = new Notification()
-                            {
-                                Message = exception,
-                                Type = NotificationType.ERROR
-                            }
-                        };
-                        ViewNotifier.Instance.OnNotificationStackUpdated(args);
+                            Message = exception,
+                            Type = NotificationType.ERROR
+                        });
                     });
             }
         }

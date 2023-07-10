@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -73,6 +74,15 @@ namespace ZBank.View.Modals
         {
             ViewNotifier.Instance.CardInserted -= OnCardInserted;
 
+        }
+
+        private void ProviderButton_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true;
+                ViewModel.InsertCard(CardType.CREDIT);
+            }
         }
     }
 }

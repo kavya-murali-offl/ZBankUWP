@@ -139,7 +139,6 @@
                 <ControlTemplate
                     TargetType="TextBox">
                     <Grid>
-
                         <Grid.Resources>
                             <Style
                                 x:Name="DeleteButtonStyle"
@@ -160,7 +159,6 @@
                                                         x:Name="CommonStates">
                                                         <VisualState
                                                             x:Name="Normal" />
-
                                                         <VisualState
                                                             x:Name="PointerOver">
                                                             <Storyboard>
@@ -169,7 +167,7 @@
                                                                     Storyboard.TargetProperty="Background">
                                                                     <DiscreteObjectKeyFrame
                                                                         KeyTime="0"
-                                                                        Value="{ThemeResource }" />
+                                                                        Value="Transparent" />
                                                                 </ObjectAnimationUsingKeyFrames>
                                                                 <ObjectAnimationUsingKeyFrames
                                                                     Storyboard.TargetName="ButtonLayoutGrid"
@@ -252,7 +250,6 @@
 
                                 <VisualState
                                     x:Name="Disabled">
-
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="HeaderContentPresenter"
@@ -294,7 +291,6 @@
 
                                 <VisualState
                                     x:Name="PointerOver">
-
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="BorderElement"
@@ -328,7 +324,6 @@
                                 </VisualState>
                                 <VisualState
                                     x:Name="Focused">
-
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="PlaceholderTextContentPresenter"
@@ -342,7 +337,7 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBackgroundFocused}" />
+                                                Value="{ThemeResource TextControlBackgroundPointerOver}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="BorderElement"
@@ -380,7 +375,6 @@
                                 x:Name="ButtonStates">
                                 <VisualState
                                     x:Name="ButtonVisible">
-
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="DeleteButton"
@@ -396,11 +390,8 @@
                                 </VisualState>
                                 <VisualState
                                     x:Name="ButtonCollapsed" />
-
                             </VisualStateGroup>
-
                         </VisualStateManager.VisualStateGroups>
-
                         <Grid.RowDefinitions>
                             <RowDefinition
                                 Height="Auto" />
@@ -409,7 +400,6 @@
                             <RowDefinition
                                 Height="Auto" />
                         </Grid.RowDefinitions>
-
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
                                 Width="*" />
@@ -509,6 +499,9 @@
             Property="Foreground"
             Value="{ThemeResource TextControlForeground}" />
         <Setter
+            Property="CornerRadius"
+            Value="3" />
+        <Setter
             Property="Background"
             Value="{ThemeResource TextControlBackground}" />
         <Setter
@@ -519,7 +512,7 @@
             Value="{ThemeResource TextControlBorderBrush}" />
         <Setter
             Property="BorderThickness"
-            Value="{ThemeResource TextControlBorderThemeThickness}" />
+            Value="1,1,1,2" />
         <Setter
             Property="FontFamily"
             Value="{ThemeResource ContentControlThemeFontFamily}" />
@@ -777,7 +770,7 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBackgroundPointerOver}" />
+                                                Value="{ThemeResource }" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="PlaceholderTextContentPresenter"
@@ -818,7 +811,14 @@
                                             Storyboard.TargetProperty="BorderBrush">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBorderBrushFocused}" />
+                                                Value="{ThemeResource AccentColorBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="BorderElement"
+                                            Storyboard.TargetProperty="BorderThickness">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="0,0,0,2" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="ContentElement"
@@ -1454,9 +1454,6 @@
         <Setter
             Property="Padding"
             Value="4" />
-        <Setter
-            Property="MinWidth"
-            Value="300" />
         <Setter
             Property="MaxWidth"
             Value="400" />
