@@ -14,5 +14,7 @@ namespace ZBankManagement.Interface
         Task GetAllCards(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
 
         Task GetCardByCardNumber(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
+        
+        Task GetCardByAccountNumber(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback);
     }
 }

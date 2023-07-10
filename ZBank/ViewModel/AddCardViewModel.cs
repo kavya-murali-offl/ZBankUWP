@@ -43,7 +43,7 @@ namespace ZBank.ViewModel
             set { Set(ref _selectedCreditCardProvider, value); }
         }
 
-        public void InsertCard(CardType cardType)
+        public void InsertCard()
         {
             InsertCardRequest request = new InsertCardRequest()
             {

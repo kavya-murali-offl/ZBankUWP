@@ -28,7 +28,11 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            if(_request.CardNumber != null)
+            if (_request.AccountNumber != null)
+            {
+                _getCardDataManager.GetCardByAccountNumber(_request, new GetAllCardsCallback(this));
+            }
+            if (_request.CardNumber != null)
             {
                 _getCardDataManager.GetCardByCardNumber(_request, new GetAllCardsCallback(this));
             }
@@ -64,6 +68,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public string CustomerID { get; set; }
 
         public string CardNumber { get; set; }
+        public string AccountNumber { get; set; }
     }
 
     public class GetCardByCardNumber : RequestObjectBase

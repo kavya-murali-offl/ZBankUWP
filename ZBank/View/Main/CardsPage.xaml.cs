@@ -42,15 +42,8 @@ namespace ZBank.View.Main
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.OnPageLoaded();
-            ViewNotifier.Instance.CardInserted += OnCardInserted;
             ViewNotifier.Instance.LimitUpdated += OnUpdatedLimit;
-            ViewNotifier.Instance.CreditCardSettled += OnCreditCardSettled;
-        }
-
-        private void OnCardInserted(bool arg1, Card arg2)
-        {
-            //ViewNotifier.Instance.OnCloseDialog();
+            ViewModel.OnPageLoaded();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -77,16 +70,6 @@ namespace ZBank.View.Main
         {
             ViewModel.OnPageUnLoaded();
             ViewNotifier.Instance.LimitUpdated -= OnUpdatedLimit;
-            ViewNotifier.Instance.CardInserted -= OnCardInserted;
-            ViewNotifier.Instance.CreditCardSettled -= OnCreditCardSettled;
-        }
-
-        private void OnCreditCardSettled(bool isSettled)
-        {
-            if(isSettled)
-            {
-                ViewNotifier.Instance.OnCloseDialog();
-            }
         }
 
         private void ViewEyeButton_Click(object sender, RoutedEventArgs e)
@@ -103,7 +86,8 @@ namespace ZBank.View.Main
 
         private async void ResetPinButton_Click(object sender, RoutedEventArgs e)
         {
-            await DialogService.ShowContentAsync(this, new ResetPinContent(ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand), "Reset Pin", this.XamlRoot);
+            string cardNumber = ViewModel.DataModel.OnViewCard.CardNumber;
+            await DialogService.ShowContentAsync(this, new ResetPinContent(cardNumber), "Reset Pin", this.XamlRoot);
         }
 
        

@@ -17,97 +17,27 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Entity.BusinessObjects;
+using ZBank.ViewModel;
 using ZBankManagement.AppEvents.AppEventArgs;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace ZBank.View.UserControls
 {
-    public sealed partial class ResetPinContent : UserControl, INotifyPropertyChanged
+    public sealed partial class ResetPinContent : UserControl, IView
     {
-        public ResetPinContent()
-        {
-            this.InitializeComponent();
-        }
+        private ResetPinViewModel ViewModel { get; set; }
 
-       public ResetPinContent(CardBObj card, ICommand submitCommand)
+       public ResetPinContent(string cardNumber)
        {
             this.InitializeComponent();
-            SelectedCard = card;
-            SubmitCommand = submitCommand;
+            ViewModel = new ResetPinViewModel(this);
+            ViewModel.CardNumber = cardNumber;
        }
-
-        private string NewPin { get; set; }
-
-        public CardBObj SelectedCard
-        {
-            get { return (CardBObj)GetValue(SelectedCardProperty); }
-            set { SetValue(SelectedCardProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedCardProperty =
-            DependencyProperty.Register("SelectedCard", typeof(CardBObj), typeof(ResetPinContent), new PropertyMetadata(null));
-
-        public ICommand SubmitCommand
-        {
-            get { return (ICommand)GetValue(SubmitCommandProperty); }
-            set { SetValue(SubmitCommandProperty, value); }
-        }
-
-        public static readonly DependencyProperty SubmitCommandProperty =
-            DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(ResetPinContent), new PropertyMetadata(null));
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SubmitForm();
-        }
-
-        private void SubmitForm()
-        {
-            if (ValidateFields())
-            {
-                SubmitCommand.Execute(new ResetPinArgs()
-                {
-                    CardNumber = SelectedCard.CardNumber,
-                    PinNumber = NewPin
-                });
-            }
-        }
-
-        private string _errorText { get; set; }  
-        public string ErrorText
-        {
-            get =>  _errorText;
-            set
-            {
-                _errorText = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        private bool ValidateFields()
-        {
-            if(string.IsNullOrEmpty(NewPin) || string.IsNullOrWhiteSpace(NewPin))
-            {
-                ErrorText = "Pin Number is Required";
-            }
-            else if(NewPin.Length != 4 || !int.TryParse(NewPin, out int pinNumber))
-            {
-                ErrorText = "Pin Number should be a number of 4 digits";
-            }
-           
-            if (ErrorText == null || ErrorText.Length == 0) { 
-                return true;
-            }
-            return false;
-        }
-
-        private void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            ViewModel.SubmitForm();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -117,8 +47,8 @@ namespace ZBank.View.UserControls
 
         private void PinBox_PasswordChanging(PasswordBox sender, PasswordBoxPasswordChangingEventArgs args)
         {
-            NewPin = sender.Password;
-            ErrorText = string.Empty;
+            ViewModel.NewPin = sender.Password;
+            ViewModel.ErrorText = string.Empty;
         }
 
         private void PinBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -126,7 +56,7 @@ namespace ZBank.View.UserControls
             if(e.Key == VirtualKey.Enter)
             {
                 e.Handled = true;
-                SubmitForm();
+                ViewModel.SubmitForm();
             }
         }
     }

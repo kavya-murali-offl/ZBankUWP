@@ -153,6 +153,8 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MultiWindowViewModelBase.cs" />
     <Compile Include="ViewModel\PayCreditCardViewModel.cs" />
+    <Compile Include="ViewModel\ResetPinViewModel.cs" />
+    <Compile Include="ViewModel\CardsViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\TermDepositViewModel.cs" />
@@ -220,7 +222,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Converters\DateFormatter.cs" />
-    <Compile Include="ViewModel\CardsViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\TransactionViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />

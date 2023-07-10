@@ -48,7 +48,7 @@ namespace ZBank.View.Modals
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.InsertCard(CardType.CREDIT);
+            ViewModel.InsertCard();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -56,29 +56,12 @@ namespace ZBank.View.Modals
             ViewNotifier.Instance.OnCloseDialog();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewNotifier.Instance.CardInserted += OnCardInserted;
-
-        }
-
-        private void OnCardInserted(bool isInserted, Card insertedCard)
-        {
-            ViewNotifier.Instance.OnCloseDialog();
-        }
-
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            ViewNotifier.Instance.CardInserted -= OnCardInserted;
-
-        }
-
         private void ProviderButton_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter)
             {
                 e.Handled = true;
-                ViewModel.InsertCard(CardType.CREDIT);
+                ViewModel.InsertCard();
             }
         }
     }

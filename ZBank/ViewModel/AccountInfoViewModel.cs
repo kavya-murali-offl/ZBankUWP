@@ -60,7 +60,6 @@ namespace ZBank.ViewModel
             set
             {
                 _transactions = value;
-                LoadCardByID();
                 OnPropertyChanged(nameof(Transactions));
             }
         }
@@ -75,7 +74,7 @@ namespace ZBank.ViewModel
 
         private void LinkCard(object obj)
         {
-            if(SelectedAccount.AccountType != Entities.EnumerationType.AccountType.TERM_DEPOSIT)
+            if(SelectedAccount.AccountType != AccountType.TERM_DEPOSIT)
             {
                 InsertCardRequest request = new InsertCardRequest()
                 {
@@ -203,11 +202,10 @@ namespace ZBank.ViewModel
 
         private void LoadCardByID()
         {
-
             GetAllCardsRequest request = new GetAllCardsRequest()
             {
                 CustomerID = Repository.Current.CurrentUserID,
-                CardNumber = SelectedAccount.CardNumber
+                AccountNumber = SelectedAccount.AccountNumber
             };
 
             IPresenterCallback<GetAllCardsResponse> presenterCallback = new GetCardByNumberInAccountPresenterCallback(this);

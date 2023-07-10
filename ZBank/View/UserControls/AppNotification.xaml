@@ -23,6 +23,7 @@
         Background="{x:Bind OnViewNotification.Type, Converter={StaticResource BackgroundColorConverter}, Mode=OneWay}"
         CornerRadius="8"
         Padding="5"
+        Canvas.ZIndex="100"
         HorizontalAlignment="Right"
         x:Name="NotificationPanel">
         <Grid.ColumnDefinitions>

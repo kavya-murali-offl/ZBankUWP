@@ -377,7 +377,6 @@
                             FontSize="18"
                             Text="Linked Card" />
 
-
                         <local:ViewOrNoCardTemplate
                             LinkCardCommand="{x:Bind LinkCardCommand}"
                             Grid.Row="1"

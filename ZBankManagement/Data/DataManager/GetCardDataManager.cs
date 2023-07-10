@@ -9,6 +9,7 @@ using ZBank.Entities.BusinessObjects;
 using System;
 using ZBank.Entity.BusinessObjects;
 using System.Threading.Tasks;
+using ZBank.Entity.EnumerationTypes;
 
 namespace ZBankManagement.DataManager
 {
@@ -35,7 +36,7 @@ namespace ZBankManagement.DataManager
                 ZBankException exception = new ZBankException()
                 {
                     Message = ex.Message,
-                    Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN
+                    Type = ErrorType.UNKNOWN
                 };
 
                 callback.OnFailure(exception);  
@@ -57,7 +58,30 @@ namespace ZBankManagement.DataManager
                 ZBankException exception = new ZBankException()
                 {
                     Message = ex.Message,
-                    Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN
+                    Type = ErrorType.UNKNOWN
+                };
+
+                callback.OnFailure(exception);
+            }
+        }
+
+        public async Task GetCardByAccountNumber(GetAllCardsRequest request, IUseCaseCallback<GetAllCardsResponse> callback)
+        {
+            try
+            {
+                IEnumerable<CardBObj> cards = await _dBHandler.GetCardByAccountNumber(request.AccountNumber);
+                GetAllCardsResponse response = new GetAllCardsResponse()
+                {
+                    Cards = cards,
+                };
+                callback.OnSuccess(response);
+            }
+            catch (Exception ex)
+            {
+                ZBankException exception = new ZBankException()
+                {
+                    Message = ex.Message,
+                    Type = ErrorType.UNKNOWN
                 };
 
                 callback.OnFailure(exception);

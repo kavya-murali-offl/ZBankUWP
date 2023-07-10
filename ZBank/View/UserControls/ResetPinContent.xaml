@@ -9,35 +9,45 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid MinWidth="400" Padding="20">
+    <Grid
+        MinWidth="400"
+        Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition
-                Height="Auto" /><RowDefinition
-                Height="Auto" /><RowDefinition
-                Height="Auto" /><RowDefinition
-                Height="Auto" /><RowDefinition
-                Height="Auto" /><RowDefinition
-                Height="Auto" /><RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
+        
         <TextBlock
             FontSize="14"
             Margin="0,10,0,0"
             Foreground="Gray"
             Text="Card Number" />
+        
         <TextBlock
             Margin="0,10,0,10"
-                Grid.Row="1"
-                FontSize="18"
-                Text="{x:Bind SelectedCard.CardNumber, Mode=OneWay}" />
-        
+            Grid.Row="1"
+            FontSize="18"
+            Text="{x:Bind ViewModel.CardNumber, Mode=OneWay}" />
+
         <TextBlock
             Grid.Row="3"
             FontSize="14"
             Margin="0,10,0,0"
             Foreground="Gray"
             Text="New Pin" />
-        
+
         <PasswordBox
             Style="{ThemeResource CustomPasswordBoxStyle}"
             x:Name="PinBox"
@@ -45,28 +55,35 @@
             Grid.Row="4"
             PlaceholderText="Enter New Pin"
             KeyDown="PinBox_KeyDown"
-            PasswordChanging="PinBox_PasswordChanging"
-            />
+            Password="{x:Bind ViewModel.NewPin, Mode=OneWay}"
+            PasswordChanging="PinBox_PasswordChanging" />
 
         <TextBlock
             Margin="0,0,0,10"
             TextWrapping="WrapWholeWords"
             Foreground="IndianRed"
             Grid.Row="5"
-            Text="{x:Bind ErrorText, Mode=OneWay}" />
+            Text="{x:Bind ViewModel.ErrorText, Mode=OneWay}" />
 
         <Button
             Click="CancelButton_Click"
             Margin="0,20,0,0"
-            x:Name="CancelButton" Grid.Row="6" MinWidth="100" Content="Cancel" Style="{ThemeResource SecondaryButton}">
-           
-        </Button>      
+            x:Name="CancelButton"
+            Grid.Row="6"
+            MinWidth="100"
+            Content="Cancel"
+            Style="{ThemeResource SecondaryButton}" />
+        
         <Button
             Margin="0,20,0,0"
             HorizontalAlignment="Right"
             x:Name="SubmitButton"
-            Grid.Row="6" MinWidth="100" Content="Reset" Click="Button_Click" Style="{ThemeResource PrimaryButton}">
-           
-        </Button>        
+            Grid.Row="6"
+            MinWidth="100"
+            Content="Reset"
+            Click="Button_Click"
+            Style="{ThemeResource PrimaryButton}">
+
+        </Button>
     </Grid>
 </UserControl>

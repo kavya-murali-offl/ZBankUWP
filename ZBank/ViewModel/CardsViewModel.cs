@@ -44,7 +44,6 @@ namespace ZBank.ViewModel
         public CardsViewModel(IView view)
         {
             View = view;
-            ResetPinCommand = new RelayCommand(ResetPin);
             PreviousCardCommand = new RelayCommand(GoToPreviousCard,
                 () => DataModel?.AllCards?.Count() > 0 ? DataModel?.AllCards?.ElementAtOrDefault(DataModel.OnViewCardIndex - 1) != null : false);
             
@@ -103,23 +102,7 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public void ResetPin(object parameter)
-        {
-            ResetPinArgs args = (ResetPinArgs)parameter;
-            if (args != null)
-            {
-                ResetPinRequest request = new ResetPinRequest()
-                {
-                    CardNumber = args.CardNumber,
-                    NewPin = args.PinNumber
-                };
-
-                IPresenterCallback<ResetPinResponse> presenterCallback = new ResetPinPresenterCallback(this);
-                UseCaseBase<ResetPinResponse> useCase = new ResetPinUseCase(request, presenterCallback);
-                useCase.Execute();
-            }
-        }
-
+        
         private void UpdateCardsList(CardDataUpdatedArgs args)
         {
             int index = 0;
@@ -245,41 +228,7 @@ namespace ZBank.ViewModel
             }
         }
 
-        private class ResetPinPresenterCallback : IPresenterCallback<ResetPinResponse>
-        {
-            private CardsViewModel ViewModel { get; set; }
-
-            public ResetPinPresenterCallback(CardsViewModel cardsViewModel)
-            {
-                ViewModel = cardsViewModel;
-            }
-
-            public async Task OnSuccess(ResetPinResponse response)
-            {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
-                {
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                    {
-                        Message = "Reset Pin Successful",
-                        Type = NotificationType.SUCCESS
-                    });
-                });
-            }
-
-            public async Task OnFailure(ZBankException response)
-            {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(()=>
-                {
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                        {
-                            Message = response.Message,
-                            Type = NotificationType.ERROR
-                        });
-                });
-
-            }
-        }
-    }
+ }
 
     public class CardPageModel
     {

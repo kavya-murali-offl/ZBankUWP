@@ -48,6 +48,7 @@
             <StackPanel
                 Padding="10"
                 Grid.Row="1"
+                MaxWidth="400"
                 VerticalAlignment="Top">
                 <TextBlock
                     HorizontalAlignment="Left"
@@ -95,19 +96,16 @@
                     </DropDownButton.Flyout>
                 </DropDownButton>
                 <TextBlock
-                    MaxWidth="400"
                     Margin="5"
                     TextWrapping="Wrap"
                     Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
                     Foreground="IndianRed" />
                 <TextBlock
-                    MaxWidth="400"
                     Margin="5"
                     Text="To Account *"
                     Style="{ThemeResource NormalSubText}" />
 
                 <DropDownButton
-                    MaxWidth="400"
                     x:Name="BeneficiaryButton"
                     HorizontalAlignment="Stretch"
                     CornerRadius="8">
@@ -150,7 +148,6 @@
                 </DropDownButton>
                 
                 <TextBlock
-                    MaxWidth="400"
                     TextWrapping="Wrap"
                     Text="{x:Bind ViewModel.FieldErrors['Beneficiary'], Mode=OneWay}"
                     Margin="5"
@@ -159,20 +156,17 @@
                 <TextBlock
                     Margin="5"
                     Text="Amount *"
-                    MaxWidth="400"
                     Style="{ThemeResource NormalSubText}" />
 
                 <TextBox
                     Style="{ThemeResource CustomTextBoxStyle}"
                     x:Name="AmountTextBox"
-                    MaxWidth="400"
                     KeyDown="AmountTextBox_KeyDown"
                     Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay, Converter={StaticResource StringConverter}}"
                     TextChanging="AmountTextBox_TextChanging"
                     PlaceholderText="Enter Amount in INR" />
 
                 <TextBlock
-                    MaxWidth="400"
                     TextWrapping="Wrap"
                     Text="{x:Bind ViewModel.FieldErrors['Amount'], Mode=OneWay}"
                     Margin="5"
