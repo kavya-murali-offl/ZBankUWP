@@ -25,7 +25,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                await DBHandler.InsertCustomer(request.Customer, request.CustomerCredentials);
+                await DBHandler.InsertCustomer(request.Customer, request.CustomerCredentials).ConfigureAwait(false);
 
                 SignupUserResponse response = new SignupUserResponse
                 {

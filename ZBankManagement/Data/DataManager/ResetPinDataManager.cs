@@ -8,6 +8,8 @@ using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
 using ZBank.DatabaseHandler;
 using ZBankManagement.Data.DataManager.Contracts;
+using ZBank.Entity.EnumerationTypes;
+using System.ServiceModel.Channels;
 
 namespace ZBankManagement.Data.DataManager
 {
@@ -23,7 +25,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                int rowsModified = await DBHandler.ResetPin(request.CardNumber, request.NewPin);
+                int rowsModified = await DBHandler.ResetPin(request.CardNumber, request.NewPin).ConfigureAwait(false);
 
                 if (rowsModified > 0)
                 {
@@ -40,8 +42,11 @@ namespace ZBankManagement.Data.DataManager
             }
             catch (Exception ex)
             {
-                ZBankException error = new ZBankException();
-                error.Type = ZBank.Entity.EnumerationTypes.ErrorType.UNKNOWN;
+                ZBankException error = new ZBankException()
+                {
+                    Type = ErrorType.UNKNOWN,
+                    Message = ex.Message
+                };
                 callback.OnFailure(error);
             }
             

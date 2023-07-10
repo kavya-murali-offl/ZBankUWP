@@ -26,7 +26,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<CardBObj> cards = await _dBHandler.GetAllCards(request.CustomerID);
+                IEnumerable<CardBObj> cards = await _dBHandler.GetAllCards(request.CustomerID).ConfigureAwait(false);
 
                 GetAllCardsResponse response = new GetAllCardsResponse();
                 response.Cards = cards;

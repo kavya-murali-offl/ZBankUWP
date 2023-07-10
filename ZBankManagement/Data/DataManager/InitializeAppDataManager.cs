@@ -26,7 +26,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                await DBHandler.CreateTables();
+                await DBHandler.CreateTables().ConfigureAwait(false);
                 callback.OnSuccess(new InitializeAppResponse());
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                await DBHandler.PopulateData();
+                await DBHandler.PopulateData().ConfigureAwait(false);
                 callback.OnSuccess(new InitializeAppResponse());
             }
             catch (Exception ex)

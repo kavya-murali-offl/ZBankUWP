@@ -28,50 +28,50 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                bool validated = true;
-                //if (request.PaymentAccount.AccountType == AccountType.CURRENT || request.PaymentAccount.AccountType == AccountType.SAVINGS)
-                //{
-                //    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.PaymentAccount.AccountNumber);
-                //    if(ownerAccount.Balance > request.PaymentAmount)
-                //    {
-                //        IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.PaymentAccount.AccountNumber, request.CustomerID);
-                //        var amountTransacted = transactionsMadeToday.Sum(x => x.Amount);
-                //        decimal limit = 0;
-                //        if (request.PaymentAccount is CurrentAccount)
-                //        {
-                //            limit = (request.PaymentAccount as CurrentAccount).TransactionLimit;
+                bool validated = false;
+                if (request.PaymentAccount.AccountType == AccountType.CURRENT || request.PaymentAccount.AccountType == AccountType.SAVINGS)
+                {
+                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.PaymentAccount.AccountNumber);
+                    if (ownerAccount.Balance > request.PaymentAmount)
+                    {
+                        IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.PaymentAccount.AccountNumber, request.CustomerID);
+                        var amountTransacted = transactionsMadeToday.Sum(x => x.Amount);
+                        decimal limit = 0;
+                        if (request.PaymentAccount is CurrentAccount)
+                        {
+                            limit = (request.PaymentAccount as CurrentAccount).TransactionLimit;
 
-                //        }
-                //        else if (request.PaymentAccount is SavingsAccount)
-                //        {
-                //            limit = (request.PaymentAccount as SavingsAccount).TransactionLimit;
-                //        }
+                        }
+                        else if (request.PaymentAccount is SavingsAccount)
+                        {
+                            limit = (request.PaymentAccount as SavingsAccount).TransactionLimit;
+                        }
 
-                //        if (amountTransacted + request.PaymentAmount > limit)
-                //        {
-                //            ZBankException error = new ZBankException()
-                //            {
-                //                Type = ErrorType.UNKNOWN,
-                //                Message = "Daily Transaction Limit Exceeded. Try again later",
-                //            };
-                //            callback.OnFailure(error);
-                //        }
-                //        else
-                //        {
-                //            validated = true;
-                //        }
-                //    }
-                //    else
-                //    {
-                //        ZBankException error = new ZBankException()
-                //        {
-                //            Type = ErrorType.UNKNOWN,
-                //            Message = "Insufficient Balance"
-                //        };
-                //        callback.OnFailure(error);
-                //    }
-                //}
-                
+                        if (amountTransacted + request.PaymentAmount > limit)
+                        {
+                            ZBankException error = new ZBankException()
+                            {
+                                Type = ErrorType.UNKNOWN,
+                                Message = "Daily Transaction Limit Exceeded. Try again later",
+                            };
+                            callback.OnFailure(error);
+                        }
+                        else
+                        {
+                            validated = true;
+                        }
+                    }
+                    else
+                    {
+                        ZBankException error = new ZBankException()
+                        {
+                            Type = ErrorType.UNKNOWN,
+                            Message = "Insufficient Balance"
+                        };
+                        callback.OnFailure(error);
+                    }
+                }
+
                 if (validated)
                 {
                     Transaction transaction = new Transaction()

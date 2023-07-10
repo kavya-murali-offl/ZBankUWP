@@ -29,8 +29,8 @@ namespace ZBankManagement.DataManager
                 bool validated = false;
                 if (request.OwnerAccount.AccountType == AccountType.CURRENT || request.OwnerAccount.AccountType == AccountType.SAVINGS)
                 {
-                    IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.OwnerAccount.AccountNumber, request.CustomerID);
-                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.OwnerAccount.AccountNumber);
+                    IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.OwnerAccount.AccountNumber, request.CustomerID).ConfigureAwait(false);
+                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.OwnerAccount.AccountNumber).ConfigureAwait(false);
                     var amountTransacted = transactionsMadeToday.Sum(x => x.Amount);
                     decimal limit = 0;
                     if (request.OwnerAccount is CurrentAccount)
@@ -68,7 +68,7 @@ namespace ZBankManagement.DataManager
                         AccountNumber = request.OwnerAccount.AccountNumber,
                         ClosingBalance = request.OwnerAccount.Balance -= request.Transaction.Amount,
                     };
-                    await _dBHandler.InitiateTransactionExternal(request.Transaction, request.OwnerAccount, metaData);
+                    await _dBHandler.InitiateTransactionExternal(request.Transaction, request.OwnerAccount, metaData).ConfigureAwait(false);
                     TransferAmountResponse response = new TransferAmountResponse()
                     {
                     };

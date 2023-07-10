@@ -26,7 +26,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                Account repaymentAccount = await DBHandler.GetAccountByAccountNumber(request.CustomerID, request.DepositAccount.RepaymentAccountNumber);
+                Account repaymentAccount = await DBHandler.GetAccountByAccountNumber(request.CustomerID, request.DepositAccount.RepaymentAccountNumber).ConfigureAwait(false);
                 if(repaymentAccount != null)
                 {
                     decimal totalAmount = request.DepositAccount.CalculateClosingAmount(DateTime.Now);
@@ -46,7 +46,7 @@ namespace ZBankManagement.Data.DataManager
                     request.DepositAccount.Balance = totalAmount;
 
                     repaymentAccount.Balance -= totalAmount;
-                    await DBHandler.CloseDeposit(request.DepositAccount, repaymentAccount, transaction);
+                    await DBHandler.CloseDeposit(request.DepositAccount, repaymentAccount, transaction).ConfigureAwait(false);
                     CloseDepositResponse response = new CloseDepositResponse()
                     {
                         DepositAccount = request.DepositAccount,

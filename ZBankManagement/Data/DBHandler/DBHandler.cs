@@ -55,16 +55,16 @@ namespace ZBank.DatabaseHandler
                 $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                $"where UserID = ?", customerID);
+                $"where UserID = ?", customerID).ConfigureAwait(false);
             var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
                 $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
                 $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
-                $"where UserID = ?", customerID);
+                $"where UserID = ?", customerID).ConfigureAwait(false);
             var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
                 $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
                 $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
-                $"where UserID = ?", customerID);
+                $"where UserID = ?", customerID).ConfigureAwait(false);
 
             accountsList.AddRange(currentAccount);
             accountsList.AddRange(savingsAccount);
@@ -75,34 +75,34 @@ namespace ZBank.DatabaseHandler
 
         public async Task UpdateAccount(TermDepositAccount account)
         {
-            await _databaseAdapter.Execute("Update TermDepositAccount Set RepaymentAccountNumber = ? where AccountNumber = ?", account.RepaymentAccountNumber, account.AccountNumber);
+            await _databaseAdapter.Execute("Update TermDepositAccount Set RepaymentAccountNumber = ? where AccountNumber = ?", account.RepaymentAccountNumber, account.AccountNumber).ConfigureAwait(false);
         }
 
 
         public async Task CloseDeposit(TermDepositAccount depositAccount, Account repaymentAccount, Transaction transaction)
         {
-            TermDepositAccountDTO depositAccountDTO = await _databaseAdapter.GetAll<TermDepositAccountDTO>().Where(acc => acc.AccountNumber == depositAccount.AccountNumber).FirstOrDefaultAsync();
+            TermDepositAccountDTO depositAccountDTO = await _databaseAdapter.GetAll<TermDepositAccountDTO>().Where(acc => acc.AccountNumber == depositAccount.AccountNumber).FirstOrDefaultAsync().ConfigureAwait(false);
             depositAccount.MaturityAmount = depositAccountDTO.MaturityAmount;
             depositAccount.MaturityDate = depositAccountDTO.MaturityDate;
 
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Insert(transaction);
-                await _databaseAdapter.Update(depositAccount, typeof(Account));
-                await _databaseAdapter.Update(depositAccountDTO);
-                await _databaseAdapter.Update(repaymentAccount, typeof(Account));
+                await _databaseAdapter.Insert(transaction).ConfigureAwait(false);
+                await _databaseAdapter.Update(depositAccount, typeof(Account)).ConfigureAwait(false);
+                await _databaseAdapter.Update(depositAccountDTO).ConfigureAwait(false);
+                await _databaseAdapter.Update(repaymentAccount, typeof(Account)).ConfigureAwait(false);
             };
             await _databaseAdapter.RunInTransactionAsync(action);
         }
 
-        public Task<IEnumerable<Account>> GetIFSCCodeByAccountNumber(string accountNumber)
+        public async Task<IEnumerable<Account>> GetIFSCCodeByAccountNumber(string accountNumber)
         {
-            return _databaseAdapter.Query<Account>("Select IFSCCode From Account where AccountNumber = ?", accountNumber);
+            return await _databaseAdapter.Query<Account>("Select IFSCCode From Account where AccountNumber = ?", accountNumber).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<ExternalAccount>> ValidateExternalAccount(string accountNumber, string IFSCCode)
         {
-            return await _databaseAdapter.Query<ExternalAccount>("Select * from ExternalAccounts where ExternalAccountNumber = ? and ExternalIFSCCode = ?", accountNumber, IFSCCode);
+            return await _databaseAdapter.Query<ExternalAccount>("Select * from ExternalAccounts where ExternalAccountNumber = ? and ExternalIFSCCode = ?", accountNumber, IFSCCode).ConfigureAwait(false);
         }
 
 
@@ -111,20 +111,20 @@ namespace ZBank.DatabaseHandler
             object dtoObject = AccountFactory.GetDTOObject(account);
             Func<Task> func = async () =>
             {
-                await _databaseAdapter.Insert(account, typeof(Account));
-                await _databaseAdapter.Insert(dtoObject);
+                await _databaseAdapter.Insert(account, typeof(Account)).ConfigureAwait(false);
+                await _databaseAdapter.Insert(dtoObject).ConfigureAwait(false);
                 foreach (var kycDoc in documents)
                 {
 
-                    await _databaseAdapter.Insert(kycDoc);
+                    await _databaseAdapter.Insert(kycDoc).ConfigureAwait(false);
                 }
             };
-            await _databaseAdapter.RunInTransactionAsync(func);
+            await _databaseAdapter.RunInTransactionAsync(func).ConfigureAwait(false);
         }
 
         public async Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber)
         {
-            return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync();
+            return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
         #endregion
@@ -136,7 +136,7 @@ namespace ZBank.DatabaseHandler
             return await _databaseAdapter.Query<BeneficiaryBObj>($"Select Beneficiary.*, ExternalAccounts.ExternalIFSCCode, Account.IFSCCode from Beneficiary " +
                 $"Left JOIN ExternalAccounts on ExternalAccounts.ExternalAccountNumber = Beneficiary.AccountNumber " +
                 $"Left JOIN Account on Account.AccountNumber = Beneficiary.AccountNumber " +
-                $"where Beneficiary.UserID = ?", customerID);
+                $"where Beneficiary.UserID = ?", customerID).ConfigureAwait(false);
         }
 
         public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Insert(beneficiary);
@@ -145,23 +145,21 @@ namespace ZBank.DatabaseHandler
 
         public async Task<int> DeleteBeneficiary(Beneficiary beneficiary)
         {
-            return await _databaseAdapter.Delete(beneficiary);
+            return await _databaseAdapter.Delete(beneficiary).ConfigureAwait(false);
         }
 
         #endregion
 
 
         #region Customer
-
-
         public async Task InsertCustomer(Customer customer, CustomerCredentials credentials)
         {
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Insert(customer);
-                await _databaseAdapter.Insert(credentials);
+                await _databaseAdapter.Insert(customer).ConfigureAwait(false);
+                await _databaseAdapter.Insert(credentials).ConfigureAwait(false);
             };
-            await _databaseAdapter.RunInTransactionAsync(action);
+            await _databaseAdapter.RunInTransactionAsync(action).ConfigureAwait(false);
         }
 
         public Task<int> UpdateCustomer(Customer customer) => _databaseAdapter.Update(customer);
@@ -171,13 +169,12 @@ namespace ZBank.DatabaseHandler
         #endregion
 
         #region Customer Credentials
-        // Customer Credentials
 
         public Task<int> ResetPassword(CustomerCredentials credentials) => _databaseAdapter.Update(credentials);
 
         public async Task<CustomerCredentials> GetCredentials(string customerID)
         {
-            return await _databaseAdapter.GetAll<CustomerCredentials>().Where(cred => cred.ID == customerID).FirstOrDefaultAsync();
+            return await _databaseAdapter.GetAll<CustomerCredentials>().Where(cred => cred.ID == customerID).FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
         public Task<int> InsertCredentials(CustomerCredentials customerCredentials) => _databaseAdapter.Insert(customerCredentials);
@@ -193,10 +190,10 @@ namespace ZBank.DatabaseHandler
         {
             var allTransactions = new List<TransactionBObj>();
             var incomeTransactions = await _databaseAdapter.Query<TransactionBObj>(
-                incomingTransactionQuery + "AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
+                incomingTransactionQuery + "AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber).ConfigureAwait(false);
 
             var expenseTransactions = await _databaseAdapter.Query<TransactionBObj>(
-               expenseTransactionsQuery + " AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber);
+               expenseTransactionsQuery + " AND RecordedOn < date('now','-30 days')", accountNumber, accountNumber).ConfigureAwait(false);
 
             allTransactions.AddRange(incomeTransactions);
             allTransactions.AddRange(expenseTransactions);
@@ -206,7 +203,7 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<TransactionBObj>> FetchAllTodayTransactions(string accountNumber, string customerID)
         {
             var expenseTransactions = await _databaseAdapter.Query<TransactionBObj>(
-               expenseTransactionsQuery + " AND RecordedOn >= date('now', 'start of day')", accountNumber, accountNumber);
+               expenseTransactionsQuery + " AND RecordedOn >= date('now', 'start of day')", accountNumber, accountNumber).ConfigureAwait(false);
 
             return expenseTransactions.OrderByDescending(tran => tran.RecordedOn);
         }
@@ -232,10 +229,10 @@ namespace ZBank.DatabaseHandler
             var allTransactions = new List<TransactionBObj>();
 
             var incomeTransactions = await _databaseAdapter.Query<TransactionBObj>(
-                incomingTransactionQuery, accountNumber, accountNumber);
+                incomingTransactionQuery, accountNumber, accountNumber).ConfigureAwait(false);
 
             var expenseTransactions = await _databaseAdapter.Query<TransactionBObj>(
-            expenseTransactionsQuery, accountNumber, accountNumber);
+            expenseTransactionsQuery, accountNumber, accountNumber).ConfigureAwait(false);
 
             allTransactions.AddRange(incomeTransactions);
             allTransactions.AddRange(expenseTransactions);
@@ -248,45 +245,51 @@ namespace ZBank.DatabaseHandler
         {
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Insert(transaction);
-                await _databaseAdapter.Insert(transactionMetaData);
-                await _databaseAdapter.Insert(otherTransactionMetaData);
-                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", ownerAccount.Balance, ownerAccount.AccountNumber);
-                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", beneficiaryAccount.Balance, beneficiaryAccount.AccountNumber);
+                await _databaseAdapter.Insert(transaction).ConfigureAwait(false);
+                await _databaseAdapter.Insert(transactionMetaData).ConfigureAwait(false);
+                await _databaseAdapter.Insert(otherTransactionMetaData).ConfigureAwait(false);
+                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", ownerAccount.Balance, ownerAccount.AccountNumber).ConfigureAwait(false);
+                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", beneficiaryAccount.Balance, beneficiaryAccount.AccountNumber).ConfigureAwait(false);
             };
-            await _databaseAdapter.RunInTransactionAsync(action);
+            await _databaseAdapter.RunInTransactionAsync(action).ConfigureAwait(false);
         }
 
         public async Task InitiateTransactionExternal(Transaction transaction, Account ownerAccount, TransactionMetaData metaData)
         {
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", ownerAccount.Balance, ownerAccount.AccountNumber);
-                await _databaseAdapter.Insert(transaction);
-                await _databaseAdapter.Insert(metaData);
+                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", 
+                    ownerAccount.Balance, ownerAccount.AccountNumber).ConfigureAwait(false);
+                await _databaseAdapter.Insert(transaction).ConfigureAwait(false);
+                await _databaseAdapter.Insert(metaData).ConfigureAwait(false);
             };
-            await _databaseAdapter.RunInTransactionAsync(action);
+            await _databaseAdapter.RunInTransactionAsync(action).ConfigureAwait(false);
         }
 
         #endregion
 
         #region Card
 
-        public Task<int> InsertCard(Card card) => _databaseAdapter.Insert(card);
+        public async Task<int> InsertCard(Card card) => await _databaseAdapter.Insert(card).ConfigureAwait(false);
 
-        public async Task<int> UpdateCard(string cardNumber, decimal limit, string customerID) => await _databaseAdapter.Execute("Update Card Set TransactionLimit = ? Where CardNumber = ? And CustomerID = ? ", limit, cardNumber, customerID);
+        public async Task<int> UpdateCard(string cardNumber, decimal limit, string customerID) =>
+            await _databaseAdapter.Execute("Update Card Set TransactionLimit = ? Where CardNumber = ? And CustomerID = ? "
+                , limit, cardNumber, customerID).ConfigureAwait(false);
 
 
-        public Task<IEnumerable<CardBObj>> GetCardByAccountNumber(string accountNumber)
+        public async Task<IEnumerable<CardBObj>> GetCardByAccountNumber(string accountNumber)
         {
-            return _databaseAdapter.Query<CardBObj>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where AccountNumber = ?", accountNumber);
+            return await _databaseAdapter.Query<CardBObj>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where AccountNumber = ?", accountNumber).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<CardBObj>> GetCardByCardNumber(string cardNumber)
         {
             List<CardBObj> cardsList = new List<CardBObj>();
-            var debitCard = await _databaseAdapter.Query<DebitCard>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where Card.CardNumber = ?", cardNumber);
-            var creditCard = await _databaseAdapter.Query<CreditCard>("Select * from Card Inner Join CreditCard on CreditCard.CardNumber = Card.CardNumber where Card.CardNumber = ?", cardNumber);
+            var debitCard = await _databaseAdapter.Query<DebitCard>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where Card.CardNumber = ?",
+                cardNumber).ConfigureAwait(false);
+            var creditCard = 
+                await _databaseAdapter.Query<CreditCard>("Select * from Card Inner Join CreditCard on CreditCard.CardNumber = Card.CardNumber where Card.CardNumber = ?",
+                cardNumber).ConfigureAwait(false);
             cardsList.AddRange(debitCard);
             cardsList.AddRange(creditCard);
             return cardsList;
@@ -297,54 +300,52 @@ namespace ZBank.DatabaseHandler
             List<CardBObj> cardsList = new List<CardBObj>();
             var creditCards = await _databaseAdapter.Query<CreditCard>($"Select * from Card" +
                 $" Inner Join CreditCard on CreditCard.CardNumber = Card.CardNumber " +
-                $"where CustomerID = ?", customerID);
+                $"where CustomerID = ?", customerID).ConfigureAwait(false);
             var debitCards = await _databaseAdapter.Query<DebitCard>($"Select * from Card " +
                 $"Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber " +
-                $"where CustomerID = ?", customerID);
+                $"where CustomerID = ?", customerID).ConfigureAwait(false);
             cardsList.AddRange(creditCards);
             cardsList.AddRange(debitCards);
             return cardsList;
         }
 
 
-
-
         public async Task InsertCreditCard(Card card, CreditCardDTO creditCardDTO)
         {
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Insert(card);
-                await _databaseAdapter.Insert(creditCardDTO);
+                await _databaseAdapter.Insert(card).ConfigureAwait(false);
+                await _databaseAdapter.Insert(creditCardDTO).ConfigureAwait(false);
             };
-            await _databaseAdapter.RunInTransactionAsync(action);
+            await _databaseAdapter.RunInTransactionAsync(action).ConfigureAwait(false);
         }
 
         public async Task InsertDebitCard(Card card, DebitCardDTO debitCardDTO)
         {
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Insert(card);
-                await _databaseAdapter.Insert(debitCardDTO);
+                await _databaseAdapter.Insert(card).ConfigureAwait(false);
+                await _databaseAdapter.Insert(debitCardDTO).ConfigureAwait(false);
             };
-            await _databaseAdapter.RunInTransactionAsync(action);
+            await _databaseAdapter.RunInTransactionAsync(action).ConfigureAwait(false);
         }
 
         public async Task PayCreditCardBill(Transaction transaction, Account ownerAccount, TransactionMetaData metaData, CreditCard creditCard)
         {
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", ownerAccount.Balance, ownerAccount.AccountNumber);
-                await _databaseAdapter.Execute("Update CreditCard Set TotalOutstanding = ? where CardNumber = ?", creditCard.TotalOutstanding, creditCard.CardNumber);
-                await _databaseAdapter.Insert(transaction);
-                await _databaseAdapter.Insert(metaData);
+                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", ownerAccount.Balance, ownerAccount.AccountNumber).ConfigureAwait(false);
+                await _databaseAdapter.Execute("Update CreditCard Set TotalOutstanding = ? where CardNumber = ?", creditCard.TotalOutstanding, creditCard.CardNumber).ConfigureAwait(false);
+                await _databaseAdapter.Insert(transaction).ConfigureAwait(false);
+                await _databaseAdapter.Insert(metaData).ConfigureAwait(false);
             };
-            await _databaseAdapter.RunInTransactionAsync(action);
+            await _databaseAdapter.RunInTransactionAsync(action).ConfigureAwait(false);
         }
 
 
         public async Task<int> ResetPin(string cardNumber, string pin)
         {
-            return await _databaseAdapter.Execute("Update Card Set Pin = ? where CardNumber = ?", pin, cardNumber);
+            return await _databaseAdapter.Execute("Update Card Set Pin = ? where CardNumber = ?", pin, cardNumber).ConfigureAwait(false);
         }
 
         #endregion

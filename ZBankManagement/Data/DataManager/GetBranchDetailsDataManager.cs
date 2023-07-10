@@ -26,7 +26,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                IEnumerable<Branch> branchList = await DBHandler.GetBranchDetails();
+                IEnumerable<Branch> branchList = await DBHandler.GetBranchDetails().ConfigureAwait(false);
                 GetAllBranchesResponse response = new GetAllBranchesResponse()
                 {
                     BranchList = branchList

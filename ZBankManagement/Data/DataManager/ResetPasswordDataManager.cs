@@ -24,7 +24,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
         public async Task ResetPassword(UpdateCustomerCredentialsRequest request, IUseCaseCallback<ResetPasswordResponse> callback)
         {
-            int rowsModified = await DBHandler.UpdateCredentials(request.CustomerCredentials);
+            int rowsModified = await DBHandler.UpdateCredentials(request.CustomerCredentials).ConfigureAwait(false);
             if (rowsModified > 0)
             {
                 ResetPasswordResponse response = new ResetPasswordResponse();
