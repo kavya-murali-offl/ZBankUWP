@@ -43,7 +43,6 @@ namespace ZBank.ViewModel
             set { Set(ref _selectedCreditCardProvider, value); }
         }
 
-
         public void InsertCard(CardType cardType)
         {
 
@@ -71,18 +70,20 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
+                    ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard);
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = "Card inserted successfully",
                         Type = NotificationType.SUCCESS
                     });
+                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
 
             public async Task OnFailure(ZBankException exception)
             {
 
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {

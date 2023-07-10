@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,7 +27,6 @@ namespace ZBank.View.Modals
         public PayCreditCard()
         {
             this.InitializeComponent();
-            AccountsText.Text = "Select Account";
         }
 
         private PayCreditCardViewModel ViewModel { get; set; }      
@@ -41,7 +41,8 @@ namespace ZBank.View.Modals
         public PayCreditCard(ContentDialog dialog, CreditCard card)
         {
             this.InitializeComponent();
-            ViewModel = new PayCreditCardViewModel(this, dialog, card);
+            ContentDialog = dialog;
+            ViewModel = new PayCreditCardViewModel(this, card);
         }
 
         private void AmountToSettleBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
@@ -81,7 +82,7 @@ namespace ZBank.View.Modals
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.CloseDialog();
+            ContentDialog?.Hide();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -94,6 +95,15 @@ namespace ZBank.View.Modals
         {
             ViewNotifier.Instance.CreditCardSettled -= OnCardSettled;
             ViewModel.OnUnloaded();
+        }
+
+        private void AmountToSettleBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true;
+                ViewModel.PayCard();
+            }
         }
     }
 }

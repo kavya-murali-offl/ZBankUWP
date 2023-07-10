@@ -32,7 +32,6 @@ namespace ZBank.ViewModel
                         out PropertyChangedEventHandler eventHandler))
                     {
                         eventHandler += value;
-
                         _handlersWithContext[synchronizationContext] = eventHandler;
                     }
                     else

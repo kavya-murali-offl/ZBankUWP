@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -38,10 +39,19 @@ namespace ZBank.View.Main
             LimitSlider.IsEnabled = false;
         }
 
+        private ContentDialog Dialog { get; set; }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageLoaded();
+            ViewNotifier.Instance.CardInserted += OnCardInserted;
             ViewNotifier.Instance.LimitUpdated += OnUpdatedLimit;
+            ViewNotifier.Instance.CreditCardSettled += OnCreditCardSettled;
+        }
+
+        private void OnCardInserted(bool arg1, Card arg2)
+        {
+            Dialog?.Hide();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -68,6 +78,16 @@ namespace ZBank.View.Main
         {
             ViewModel.OnPageUnLoaded();
             ViewNotifier.Instance.LimitUpdated -= OnUpdatedLimit;
+            ViewNotifier.Instance.CardInserted -= OnCardInserted;
+            ViewNotifier.Instance.CreditCardSettled -= OnCreditCardSettled;
+        }
+
+        private void OnCreditCardSettled(bool isSettled)
+        {
+            if(isSettled)
+            {
+                Dialog?.Hide();
+            }
         }
 
         private void ViewEyeButton_Click(object sender, RoutedEventArgs e)
@@ -87,13 +107,8 @@ namespace ZBank.View.Main
             CustomContentDialog contentDialog = new CustomContentDialog();
             contentDialog.Dialog.Title = "Reset Pin";
             contentDialog.DialogContent = new ResetPinContent(contentDialog.Dialog, ViewModel.DataModel.OnViewCard, ViewModel.ResetPinCommand);
+            Dialog = contentDialog.Dialog;
             await contentDialog.OpenDialog();
-            //ContentDialog dialog = new ContentDialog();
-            //dialog.XamlRoot = this.XamlRoot;
-            //dialog.RequestedTheme = ThemeService.Theme;
-            //dialog.Title = "Reset Pin";
-            //dialog.Content = 
-            //await dialog.ShowAsync();
         }
 
        
@@ -102,6 +117,7 @@ namespace ZBank.View.Main
             CustomContentDialog contentDialog = new CustomContentDialog();
             contentDialog.DialogContent = new AddCardView(contentDialog.Dialog);
             contentDialog.Dialog.Title = "New Credit Card";
+            Dialog = contentDialog.Dialog;
             await contentDialog.OpenDialog();
         }
 
@@ -136,12 +152,27 @@ namespace ZBank.View.Main
             CustomContentDialog contentDialog = new CustomContentDialog();
             contentDialog.Dialog.Title = "New Credit Card";
             contentDialog.DialogContent = new PayCreditCard(contentDialog.Dialog, ViewModel.DataModel.OnViewCard as CreditCard);
+            Dialog = contentDialog.Dialog;
             await contentDialog.OpenDialog();
         }
 
         private void LimitSlider_Loaded(object sender, RoutedEventArgs e)
         {
             UpdatedLimit = double.Parse(ViewModel.DataModel.OnViewCard.TransactionLimit.ToString());
+        }
+
+        private async void NextButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FadeStoryboard.Begin();
+            await Task.Delay(5000);
+            FadeStoryboard.Stop();
+        }
+
+        private async void PreviousButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FadeStoryboard.Begin();
+            await Task.Delay(5000);
+            FadeStoryboard.Stop();
         }
     } 
 }

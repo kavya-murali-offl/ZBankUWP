@@ -40,13 +40,20 @@ namespace ZBank.ViewModel
         }
 
 
-
-
         public void OnLoaded()
         {
             ViewNotifier.Instance.DashboardDataChanged += RefreshData;
             ViewNotifier.Instance.CancelPaymentRequested += PaymentCompleted;
+            ViewNotifier.Instance.CardInserted += OnCardInserted;
             LoadContent();
+        }
+
+        private void OnCardInserted(bool IsInserted, Card insertedCard)
+        {
+            if(IsInserted)
+            {
+                LoadContent();
+            }
         }
 
         private void PaymentCompleted(bool isCompleted)
@@ -148,6 +155,7 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.DashboardDataChanged -= RefreshData;
             ViewNotifier.Instance.CancelPaymentRequested -= PaymentCompleted;
+            ViewNotifier.Instance.CardInserted -= OnCardInserted;
         }
 
         public void ManageCard()

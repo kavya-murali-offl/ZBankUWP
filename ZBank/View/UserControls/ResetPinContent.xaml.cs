@@ -47,7 +47,6 @@ namespace ZBank.View.UserControls
             set { SetValue(SelectedCardProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SelectedCard.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedCardProperty =
             DependencyProperty.Register("SelectedCard", typeof(CardBObj), typeof(ResetPinContent), new PropertyMetadata(null));
 
@@ -57,7 +56,6 @@ namespace ZBank.View.UserControls
             set { SetValue(SubmitCommandProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SubmitCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SubmitCommandProperty =
             DependencyProperty.Register("SubmitCommand", typeof(ICommand), typeof(ResetPinContent), new PropertyMetadata(null));
 

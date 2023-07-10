@@ -12,7 +12,7 @@ namespace ZBank.Entities
 
         public decimal TotalOutstanding { get; set; }
 
-        public decimal MinimumOutstanding { get => (TotalOutstanding + (TotalOutstanding * 0.7m)); }
+        public decimal MinimumOutstanding { get => (TotalOutstanding * 0.7m); }
 
         public decimal Interest { get; set; }
 

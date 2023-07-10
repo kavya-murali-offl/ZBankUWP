@@ -22,7 +22,28 @@
         <converter:DecimalToDoubleConverter
             x:Key="DecimalToDoubleConverter" />   
         <converter:MaskConverter
-            x:Key="MaskConverter" />  
+            x:Key="MaskConverter" />
+        <Storyboard
+            x:Name="FadeStoryboard">
+            <DoubleAnimation
+                Storyboard.TargetName="CardElementStoryBoard1"
+                Storyboard.TargetProperty="Opacity"
+                From="0"
+                To="1.0"
+                Duration="0:0:0.4" />
+            <DoubleAnimation
+                Storyboard.TargetName="CardElementStoryBoard2"
+                Storyboard.TargetProperty="Opacity"
+                From="0.5"
+                To="1.0"
+                Duration="0:0:0.4" />
+            <DoubleAnimation
+                Storyboard.TargetName="CardElementStoryBoard3"
+                Storyboard.TargetProperty="Opacity"
+                From="0"
+                To="1.0"
+                Duration="0:0:0.4" />
+        </Storyboard>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -156,6 +177,7 @@
                 <RowDefinition
                     Height="Auto" />
             </Grid.RowDefinitions>
+           
             <Grid
                 HorizontalAlignment="Left"
                 Canvas.ZIndex="20"
@@ -165,17 +187,21 @@
                 Height="220"
                 Margin="0,0,0,10">
                 <usercontrols:CardElementView
+                    x:Name="CardElementStoryBoard1"
                     TemplateCard="{x:Bind ViewModel.DataModel.LeftCard, Mode=OneWay}" />
             </Grid>
             <Grid
+                Background="{ThemeResource ApplicationBackground}"
                 Canvas.ZIndex="40"
                 Grid.Column="1"
                 x:Name="OnViewCard"
                 Width="400"
                 Height="240"
+                CornerRadius="8"
                 Margin="0,0,0,10"
                 HorizontalAlignment="Center">
                 <usercontrols:CardElementView
+                    x:Name="CardElementStoryBoard2"
                     TemplateCard="{x:Bind ViewModel.DataModel.OnViewCard, Mode=OneWay}"
                     DataContext="{x:Bind ViewModel.DataModel.OnViewCard, Mode=OneWay}" />
             </Grid>
@@ -188,6 +214,7 @@
                 Height="220"
                 Margin="0,0,0,10">
                 <usercontrols:CardElementView
+                    x:Name="CardElementStoryBoard3"
                     TemplateCard="{x:Bind ViewModel.DataModel.RightCard, Mode=OneWay}" />
             </Grid>
            
@@ -204,6 +231,7 @@
                     CornerRadius="40"
                     Padding="5"
                     Margin="20,0,20,0"
+                    Tapped="PreviousButton_Tapped"
                     x:Name="PreviousButton">
                     <Button.Content>
                         <FontIcon
@@ -229,6 +257,7 @@
                 <Button
                     Style="{ThemeResource FrameNavButton}"
                     CornerRadius="40"
+                    Tapped="NextButton_Tapped"
                     Command="{x:Bind ViewModel.NextCardCommand}"
                     Padding="5"
                     Margin="20,0,20,0"
@@ -330,7 +359,7 @@
                         <Grid
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
-                            CornerRadius="2"
+                            CornerRadius="5"
                             Padding="5"
                             Background="{ThemeResource ApplicationBackgroundThemeBrush}">
                             <TextBlock
@@ -348,7 +377,7 @@
                         <Grid
                             Grid.Row="4"
                             Grid.Column="1"
-                            CornerRadius="2"
+                            CornerRadius="5"
                             Margin="0,10,0,10"
                             Padding="5"
                             Background="{ThemeResource ApplicationBackgroundThemeBrush}">
@@ -402,7 +431,7 @@
                         <Grid
                             Grid.Row="4"
                             Margin="0,10,5,10"
-                            CornerRadius="2"
+                            CornerRadius="5"
                             Padding="5"
                             Background="{ThemeResource ApplicationBackgroundThemeBrush}">
 

@@ -418,6 +418,11 @@
                                 x:Name="AccountsList"
                                 SelectionChanged="AccountsList_SelectionChanged"
                                 ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
+                                <ListView.ItemContainerTransitions>
+                                        <TransitionCollection>
+                                            <EntranceThemeTransition />
+                                        </TransitionCollection>
+                                </ListView.ItemContainerTransitions>
                                 <ListView.ItemTemplate>
                                     <DataTemplate
                                         x:DataType="modelBObj:AccountBObj">

@@ -69,6 +69,7 @@ namespace ZBank
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
+            Window.Current.Activated += OnWindowActivated;
 
             if (e.PrelaunchActivated == false)
             {
@@ -84,8 +85,17 @@ namespace ZBank
             }
         }
 
+        private void OnWindowActivated(object sender, WindowActivatedEventArgs e)
+        {
+            if (ApplicationView.GetForCurrentView().IsFullScreenMode)
+            {
+                ApplicationView.GetForCurrentView().ExitFullScreenMode();
+            }
+        }
+
         private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
         {
+            Window.Current.Activated -= OnWindowActivated;
             App.Current.Exit();
         }
 

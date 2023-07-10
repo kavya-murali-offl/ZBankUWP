@@ -29,6 +29,15 @@
             <TextBlock
                 Text="{x:Bind AccountNumber}" />
         </DataTemplate>
+        <Storyboard
+            x:Name="FadeStoryboard">
+            <DoubleAnimation
+                Storyboard.TargetName="CardElementView"
+                Storyboard.TargetProperty="Opacity"
+                From="0.5"
+                To="1.0"
+                Duration="0:0:0.4" />
+        </Storyboard>
     </Page.Resources>
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -326,6 +335,7 @@
                             HorizontalAlignment="Right">
                             <Button
                                 Padding="4"
+                                Tapped="Button_Tapped"
                                 Margin="10,0,10,0"
                                 Command="{x:Bind ViewModel.PreviousCardCommand, Mode=OneWay}"
                                 Style="{ThemeResource SecondaryButton}">
@@ -340,6 +350,7 @@
                                 </Button.Content>
                             </Button>
                             <Button
+                                Tapped="Button_Tapped"
                                 Padding="4"
                                 Margin="0,0,10,0"
                                 Command="{x:Bind ViewModel.NextCardCommand, Mode=OneWay}"
@@ -366,6 +377,7 @@
                             </Grid.RowDefinitions>
                             <ScrollViewer HorizontalScrollBarVisibility="Auto">
                                 <usercontrol:CardElementView
+                                    x:Name="CardElementView"
                                     Grid.Row="0"
                                     Margin="10"
                                     MinWidth="350"

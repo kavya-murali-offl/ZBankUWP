@@ -31,8 +31,8 @@ namespace ZBank.View.UserControls
             Dialog = new ContentDialog();
             Dialog.RequestedTheme = ThemeService.Theme;
             Dialog.XamlRoot = this.XamlRoot;
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
+            Dialog.Loaded += OnLoaded;
+            Dialog.Unloaded += OnUnloaded;
         }
 
         public UserControl DialogContent
@@ -48,10 +48,17 @@ namespace ZBank.View.UserControls
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.ThemeChanged += OnThemeChanged;
+            ViewNotifier.Instance.CloseDialog += CloseDialog;
         }
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.ThemeChanged -= OnThemeChanged;
+            ViewNotifier.Instance.CloseDialog -= CloseDialog;
+        }
+
+        private void CloseDialog()
+        {
+            Dialog?.Hide();
         }
 
         private async void OnThemeChanged(ElementTheme theme)
@@ -71,7 +78,10 @@ namespace ZBank.View.UserControls
             }
         }
 
+
         public ContentDialog Dialog { get; private set; }
+
+
 
     }
 }

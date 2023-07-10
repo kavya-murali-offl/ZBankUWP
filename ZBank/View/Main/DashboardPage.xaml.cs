@@ -15,6 +15,8 @@ using ZBank.Entities.BusinessObjects;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
 using ZBank.View.Main;
+using ZBank.View.Modals;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,6 +31,8 @@ namespace ZBank.View
 
         public DashboardViewModel ViewModel { get; set; }
 
+        private ContentDialog Dialog { get; set; }
+
         public string EnteredAmount { get; set; }  
         
         public string EnteredDescription { get; set; }   
@@ -42,32 +46,17 @@ namespace ZBank.View
         public DashboardPage()
         {
             this.InitializeComponent();
-            ViewModel = new DashboardViewModel(this);
-            //OnViewCardContent.DataContext = this;
-            //OnViewCardContent.Content = (Resources["OnViewCardTemplate"] as DataTemplate).LoadContent();
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.OnPreviousCard();
-            //ViewModel.UpdateOnViewCard(DirectionButton.NEXT);
-        }
-
-      
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.OnNextCard();
-            //ViewModel.UpdateOnViewCard(DirectionButton.NEXT);
-        }
+            ViewModel = new DashboardViewModel(this); }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.CardInserted += OnCardInserted;
             ViewModel.OnLoaded();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.CardInserted -= OnCardInserted;
             ViewModel.OnUnLoaded();
         }
 
@@ -88,9 +77,25 @@ namespace ZBank.View
             ViewModel.ManageCard();
         }
 
-        private void NewCardButton_Click(object sender, RoutedEventArgs e)
+        private void OnCardInserted(bool arg1, Card arg2)
         {
+            Dialog?.Hide();
+        }
 
+        private async void NewCardButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomContentDialog contentDialog = new CustomContentDialog();
+            contentDialog.DialogContent = new AddCardView(contentDialog.Dialog);
+            contentDialog.Dialog.Title = "New Credit Card";
+            Dialog = contentDialog.Dialog;
+            await contentDialog.OpenDialog();
+        }
+
+        private async void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FadeStoryBoard.Begin();
+            await Task.Delay(500);
+            FadeStoryBoard.Stop();
         }
     }
 }

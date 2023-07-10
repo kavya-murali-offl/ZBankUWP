@@ -33,7 +33,6 @@ namespace ZBank.View.Modals
             this.InitializeComponent();
             ViewModel = new AddCardViewModel(this);
             Dialog = dialog;
-
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -43,7 +42,7 @@ namespace ZBank.View.Modals
                 if (item.SelectedIndex >= 0)
                 {
                     ViewModel.SelectedCreditCardProvider = ViewModel.CreditCardProviders.ElementAt(item.SelectedIndex);
-                    ProviderButton.Content = item.SelectedValue.ToString();
+                    ProviderButton.Content = item.SelectedValue;
                 }
                 ProviderButton.Flyout.Hide();
             }

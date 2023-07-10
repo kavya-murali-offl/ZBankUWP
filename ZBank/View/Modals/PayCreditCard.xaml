@@ -17,7 +17,6 @@
             x:Name="CurrencyConverter" />
     </UserControl.Resources>
     <Grid 
-        
         Padding="20" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition
@@ -91,11 +90,10 @@
 
         <DropDownButton
             x:Name="AccountsDropdownButton"
-            MaxWidth="400"
+            HorizontalAlignment="Stretch"
             Grid.Row="4"
             Grid.ColumnSpan="2"
             Margin="10"
-            HorizontalAlignment="Stretch"
             CornerRadius="8">
             <DropDownButton.Content>
                 <TextBlock
@@ -120,10 +118,10 @@
                                 <TextBlock
                                     Padding="10"
                                     TextTrimming="CharacterEllipsis"
-                                    MaxWidth="300"
+                                    MinWidth="300"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
-                                    Text="{x:Bind}" />
+                                    Text="{Binding}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -131,16 +129,6 @@
             </DropDownButton.Flyout>
         </DropDownButton>
 
-        <TextBlock
-            FontSize="14"
-            VerticalAlignment="Center"
-            Grid.Row="5"
-            HorizontalAlignment="Left"
-            Grid.ColumnSpan="2"
-             Margin="5"
-                            Foreground="IndianRed"
-            Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
-            />
         
         <TextBlock
             Grid.Row="6"
@@ -162,8 +150,6 @@
             Foreground="Green"
             Text="{x:Bind ViewModel.AvailableBalance, Mode=OneWay, Converter={StaticResource CurrencyConverter}, TargetNullValue='0'}" />
 
-        
-
         <TextBlock
             Grid.Row="7"
             Margin="10"
@@ -176,6 +162,7 @@
         <TextBox
             Style="{ThemeResource CustomTextBoxStyle}"
             Grid.Row="8"
+            KeyDown="AmountToSettleBox_KeyDown"
             Margin="10"
             Grid.ColumnSpan="2"
             PlaceholderText="Enter Amount in INR"
@@ -188,7 +175,9 @@
             FontSize="14"
             VerticalAlignment="Center"
             Grid.Row="9"
-            Margin="10"
+            Margin="10,0,10,0"
+            MaxWidth="300"
+            TextWrapping="Wrap"
             Grid.ColumnSpan="2"
             Text="{x:Bind ViewModel.FieldErrors['Amount'], Mode=OneWay}"
             Foreground="IndianRed"
@@ -224,7 +213,7 @@
             MinWidth="80"
             HorizontalAlignment="Left"
             Click="CancelButton_Click"
-            Style="{ThemeResource  CardButton}"
+            Style="{ThemeResource SecondaryButton}"
             Grid.Row="10"
             Content="Cancel" />
     </Grid>

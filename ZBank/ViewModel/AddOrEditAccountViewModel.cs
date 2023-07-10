@@ -280,7 +280,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertAccountResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnAccountInserted(true);
                 });
@@ -311,7 +311,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllBranchesResponse response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     BranchListUpdatedArgs args = new BranchListUpdatedArgs()
                     {
@@ -348,7 +348,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllAccountsResponse response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                     {

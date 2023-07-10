@@ -47,7 +47,7 @@
                     TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     x:Name="ProviderText"
-                    Text="{x:Bind ViewModel.SelectedCreditCardProvider, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.SelectedCreditCardProvider, Mode=OneWay}" />
             </DropDownButton.Content>
             <DropDownButton.Flyout>
                 <Flyout

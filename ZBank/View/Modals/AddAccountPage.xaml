@@ -252,6 +252,7 @@
                         Text="Choose Account Type" />
 
                     <controls:RadioButtons
+                        Style="{ThemeResource CustomRadioButton}"
                         HorizontalAlignment="Center"
                         x:Name="AccountTypeButton"
                         MaxColumns="3"

@@ -101,6 +101,7 @@ namespace ZBank.ViewModel
                     FieldErrors["BeneficiaryName"] = "Enter a different beneficiary name";
                 }
             }
+
             if (FieldErrors.Values.Any((val) => val.Length > 0))
                 return false;
 

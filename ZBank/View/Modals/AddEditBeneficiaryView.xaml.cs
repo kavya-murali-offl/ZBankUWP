@@ -61,7 +61,7 @@ namespace ZBank.View.UserControls
                 if (item.SelectedIndex >= 0)
                 {
                     ViewModel.SetBeneficiaryType(item.SelectedIndex);
-                    BeneficiaryButton.Content = item.SelectedValue.ToString();
+                    BeneficiaryButton.Content = item.SelectedValue;
                 }
                 BeneficiaryButton.Flyout.Hide();
             }

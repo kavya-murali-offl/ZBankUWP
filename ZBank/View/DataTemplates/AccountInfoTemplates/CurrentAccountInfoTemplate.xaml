@@ -161,7 +161,7 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
-                            HorizontalAlignment="Right"
+                            HorizontalAlignment="Center"
                             Foreground="Gray"
                             FontWeight="SemiBold"
                             Text="Account Opened On" />
@@ -169,9 +169,9 @@
                             Margin="0,10,0,0"
                             
                             FontSize="16"
-                            HorizontalAlignment="Right"
+                            HorizontalAlignment="Center"
                             FontWeight="SemiBold"
-                            Text="{x:Bind SelectedAccount.CreatedOn}" />
+                            Text="{x:Bind SelectedAccount.CreatedOn, Converter={StaticResource DateFormatConverter}}" />
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem MinWidth="300">
@@ -197,14 +197,14 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
-                            HorizontalAlignment="Right"
+                            HorizontalAlignment="Center"
                             Foreground="Gray"
                             FontWeight="SemiBold"
                             Text="Branch" />
                         <TextBlock
                             Margin="0,10,0,0"
                             FontSize="16"
-                            HorizontalAlignment="Right"
+                            HorizontalAlignment="Center"
                             FontWeight="SemiBold"
                             Text="{x:Bind SelectedAccount.BranchName}" />
 
@@ -323,15 +323,13 @@
                                         <TextBlock
                                             x:Name="AmountText"
                                             FontSize="17"
-                                            HorizontalAlignment="Right"
-                                            TextAlignment="Right"
+                                            HorizontalAlignment="Center"
                                             Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
                                             Style="{ThemeResource BoldNormalText}" />
                                         <TextBlock
                                             x:Name="Balance"
                                             FontSize="14"
-                                            HorizontalAlignment="Right"
-                                            TextAlignment="Right"
+                                            HorizontalAlignment="Center"
                                             Foreground="Gray"
                                             Text="{Binding ClosingBalance, Converter={StaticResource CurrencyConverter}}"
                                             Style="{ThemeResource BoldNormalText}" />

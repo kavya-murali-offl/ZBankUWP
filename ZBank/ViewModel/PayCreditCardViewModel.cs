@@ -31,24 +31,16 @@ namespace ZBank.ViewModel
 
         public CreditCard Card;
 
-        public PayCreditCardViewModel(IView payCreditCard, ContentDialog dialog, CreditCard card)
+        public PayCreditCardViewModel(IView payCreditCard, CreditCard card)
         {
             View = payCreditCard;
-            Dialog = dialog;
             Card = card;
             Reset();
-        }
-
-
-        private void HideDialog()
-        {
-            Dialog?.Hide();
         }
 
         public void OnLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated += OnAccountsListUpdated;
-            ViewNotifier.Instance.CreditCardSettled += OnCreditCardSettled;
             LoadAllAccounts();
             Reset();
         }
@@ -90,6 +82,8 @@ namespace ZBank.ViewModel
         private void OnAccountsListUpdated(AccountsListUpdatedArgs args)
         {
             Accounts = new ObservableCollection<AccountBObj>(args.AccountsList);
+            SelectedAccount = Accounts.FirstOrDefault();
+            AvailableBalance = SelectedAccount.Balance;
         }
 
         private void LoadAllAccounts()
@@ -109,17 +103,6 @@ namespace ZBank.ViewModel
         public void OnUnloaded()
         {
             ViewNotifier.Instance.AccountsListUpdated -= OnAccountsListUpdated;
-            ViewNotifier.Instance.CreditCardSettled -= OnCreditCardSettled;
-        }
-
-        private void OnCreditCardSettled(bool IsSettled)
-        {
-            CloseDialog();
-        }
-
-        public void CloseDialog()
-        {
-            Dialog?.Hide();
         }
 
         internal void Reset()
