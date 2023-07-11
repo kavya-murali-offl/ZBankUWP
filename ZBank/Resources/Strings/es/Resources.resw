@@ -159,6 +159,9 @@
   <data name="OtherBank" xml:space="preserve">
     <value>Otros bancos</value>
   </data>
+  <data name="Reset.Text" xml:space="preserve">
+    <value>Reajustar</value>
+  </data>
   <data name="TotalBalance" xml:space="preserve">
     <value>Saldo total Monto</value>
   </data>

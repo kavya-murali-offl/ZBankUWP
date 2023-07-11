@@ -119,7 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataStore\ColorsHelper.cs" />
+    <Compile Include="Utilities\Helpers\ColorsHelper.cs" />
     <Compile Include="DataStore\Repository.cs" />
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="Services\DialogService.cs" />
@@ -279,9 +279,6 @@
     </Compile>
     <Compile Include="View\UserControls\CustomTitleBar.xaml.cs">
       <DependentUpon>CustomTitleBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\DashboardTransactionGrid.xaml.cs">
-      <DependentUpon>DashboardTransactionGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\OneByTwoGrid.xaml.cs">
       <DependentUpon>OneByTwoGrid.xaml</DependentUpon>
@@ -459,10 +456,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\CustomTitleBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\DashboardTransactionGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
