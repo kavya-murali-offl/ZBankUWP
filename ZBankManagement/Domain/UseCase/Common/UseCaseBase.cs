@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using ZBank.Entity.EnumerationTypes;
 
 namespace ZBankManagement.Domain.UseCase
 {
@@ -35,11 +36,16 @@ namespace ZBankManagement.Domain.UseCase
                 }
                 catch (TaskCanceledException taskCancelledException)
                 {
-
+                    ZBankException errObj = new ZBankException();
+                    errObj.Message = taskCancelledException.Message;
+                    errObj.Type = ErrorType.ABORTED;
+                    PresenterCallback?.OnFailure(errObj);
                 }
                 catch (Exception ex)
                 {
                     ZBankException errObj = new ZBankException();
+                    errObj.Message = ex.Message;
+                    errObj.Type = ErrorType.UNKNOWN;
                     PresenterCallback?.OnFailure(errObj);
                 }
             }, _cancellationToken);

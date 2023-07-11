@@ -139,6 +139,7 @@
     <Compile Include="Utilities\Converters\MaskConverter.cs" />
     <Compile Include="Utilities\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Utilities\Converters\WidthConverter.cs" />
+    <Compile Include="Utilities\Helpers\FilesHelper.cs" />
     <Compile Include="Utilities\Helpers\LogoHelper.cs" />
     <Compile Include="Utilities\Validation\FormValidation.cs" />
     <Compile Include="Utilities\Validation\IValidation.cs" />
@@ -259,10 +260,7 @@
     <Compile Include="View\UserControls\CardElementView.xaml.cs">
       <DependentUpon>CardElementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\CustomContentDialog.xaml.cs">
-      <DependentUpon>CustomContentDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\ResetPinContent.xaml.cs">
+    <Compile Include="View\Modals\ResetPinContent.xaml.cs">
       <DependentUpon>ResetPinContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\ViewTransaction.xaml.cs">
@@ -451,10 +449,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\CustomContentDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\UserControls\CustomTitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -463,7 +457,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\ResetPinContent.xaml">
+    <Page Include="View\Modals\ResetPinContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -511,7 +505,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <PRIResource Include="Resources\Strings\es\Resources.resw" />
+    <PRIResource Include="Resources\Strings\es-ES\Resources.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -22,6 +22,9 @@ using Windows.Storage;
 using ZBank.Services;
 using ZBank.Entity.EnumerationTypes;
 using ZBank.DataStore;
+using Windows.UI.ViewManagement;
+using ZBank.Utilities.Helpers;
+using ZBank.View.DataTemplates.NewAcountTemplates;
 
 namespace ZBank.ViewModel
 {
@@ -148,66 +151,39 @@ namespace ZBank.ViewModel
                 account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
                 account.CreatedOn = DateTime.Now;
                 account.Currency = Currency.INR;
-                account.AccountName=CurrentCustomer.Name;
+                account.AccountName="";
             }
             return account;
         }
 
-        private Customer _currentCustomer = null;
+       
 
-        public Customer CurrentCustomer
-        {
-            get { return _currentCustomer; }
-            set{ _currentCustomer = value;
-                OnPropertyChanged(nameof(CurrentCustomer));
-            }
-        }
-
-        private ObservableCollection<Account> _accounts { get; set; }
-
-        public ObservableCollection<Account> Accounts
-        {
-            get { return _accounts; }
-            set
-            {
-                _accounts = value;
-                OnPropertyChanged(nameof(Accounts));
-            }
-        }
-
-        private ObservableCollection<Branch> _branchList { get; set; }
-
-        public ObservableCollection<Branch> BranchList
-        {
-            get { return _branchList; }
-            set
-            {
-                _branchList = value;
-                OnPropertyChanged(nameof(BranchList));
-            }
-        }
-
-
-        public IEnumerable<DropDownItem> TenureList { get; set; } = new List<DropDownItem>()
-        {
-            new DropDownItem("6 months", 3),
-            new DropDownItem("1 year", 12),
-            new DropDownItem("2 years", 24),
-        };
-
-        public bool IsEdit { get; set; }
-
-        public void LoadContent()
+        internal void LoadContent()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
+            ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
+            ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
             LoadAllAccounts();
             LoadAllBranches();
         }
 
+        private void OnAccountInsertionSuccessful(bool isInserted)
+        {
+        }
 
+        private void ConsolidateView()
+        {
+            UnloadContent();
+            ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
+        }
 
-        public void UnloadContent()
+        private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
+        {
+            ConsolidateView();
+        }
+
+        internal void UnloadContent()
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
@@ -223,7 +199,7 @@ namespace ZBank.ViewModel
             BranchList = new ObservableCollection<Branch>(args.BranchList);
         }
 
-        public void LoadAllAccounts()
+        private void LoadAllAccounts()
         {
             GetAllAccountsRequest request = new GetAllAccountsRequest()
             {
@@ -237,7 +213,7 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public void LoadAllBranches()
+        private void LoadAllBranches()
         {
             GetAllBranchesRequest request = new GetAllBranchesRequest();
 
@@ -268,6 +244,125 @@ namespace ZBank.ViewModel
             }
         }
 
+        internal async Task UploadFiles()
+        {
+            var files = await FilesHelper.GetFiles();
+            if(files.Count > 0)
+            {
+                FieldValues["KYC"] = files;
+                FieldErrors["KYC"] = string.Empty;
+                UploadInfo = $"Uploaded {files.Count} file(s)";
+            }
+            else
+            {
+                FieldErrors["KYC"] = "No files uploaded";
+            }
+        }
+
+        internal void SwitchTemplate(AccountType accountType)
+        {
+            switch (accountType)
+            {
+                case AccountType.CURRENT:
+                    NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate()
+                    {
+                        SubmitCommand = SubmitCommand,
+                        FieldErrors = FieldErrors,
+                        FieldValues = FieldValues,
+                    };
+                    newCurrentAccountFormTemplate.Reset();
+                    SelectedTemplate = newCurrentAccountFormTemplate;
+                    break;
+                case AccountType.SAVINGS:
+                    NewSavingsAccountFormTemplate newSavingsAccountFormTemplate = new NewSavingsAccountFormTemplate()
+                    {
+                        SubmitCommand = SubmitCommand,
+                        FieldErrors = FieldErrors,
+                        FieldValues = FieldValues,
+                    };
+                    newSavingsAccountFormTemplate.Reset();
+                    SelectedTemplate = newSavingsAccountFormTemplate;
+                    break;
+                case AccountType.TERM_DEPOSIT:
+                    NewDepositAccountFormTemplate newDepositAccountFormTemplate = new NewDepositAccountFormTemplate()
+                    {
+                        SubmitCommand = SubmitCommand,
+                        FieldErrors = FieldErrors,
+                        FieldValues = FieldValues,
+                    };
+                    newDepositAccountFormTemplate.Reset();
+                    SelectedTemplate = newDepositAccountFormTemplate;   
+                    break;
+            }
+        }
+
+        private Customer _currentCustomer = null;
+
+        public Customer CurrentCustomer
+        {
+            get { return _currentCustomer; }
+            set
+            {
+                _currentCustomer = value;
+                OnPropertyChanged(nameof(CurrentCustomer));
+            }
+        }
+
+        private string _uploadInfo = string.Empty;
+
+        public string UploadInfo
+        {
+            get { return _uploadInfo; }
+            set
+            {
+                _uploadInfo = value;
+                OnPropertyChanged(nameof(UploadInfo));
+            }
+        }
+
+        private ObservableCollection<Account> _accounts { get; set; }
+
+        public ObservableCollection<Account> Accounts
+        {
+            get { return _accounts; }
+            set
+            {
+                _accounts = value;
+                OnPropertyChanged(nameof(Accounts));
+            }
+        }
+
+        private FrameworkElement _selectedTemplate { get; set; }
+
+        public FrameworkElement SelectedTemplate
+        {
+            get { return _selectedTemplate; }
+            set
+            {
+                _selectedTemplate = value;
+                OnPropertyChanged(nameof(SelectedTemplate));
+            }
+        }
+
+        private ObservableCollection<Branch> _branchList { get; set; }
+
+        public ObservableCollection<Branch> BranchList
+        {
+            get { return _branchList; }
+            set
+            {
+                _branchList = value;
+                OnPropertyChanged(nameof(BranchList));
+            }
+        }
+
+
+        public IEnumerable<DropDownItem> TenureList { get; set; } = new List<DropDownItem>()
+        {
+            new DropDownItem("6 months", 3),
+            new DropDownItem("1 year", 12),
+            new DropDownItem("2 years", 24),
+        };
 
         private class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
         {
@@ -299,6 +394,8 @@ namespace ZBank.ViewModel
                 });
             }
         }
+
+
 
         private class GetAllBranchesPresenterCallback : IPresenterCallback<GetAllBranchesResponse>
         {

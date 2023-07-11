@@ -11,6 +11,7 @@ namespace ZBank.Entity.EnumerationTypes
         NOT_AUTHORIZED,
         UNKNOWN,
         DATABASE_ERROR,
-        DATA_NOT_FOUND
+        DATA_NOT_FOUND,
+        ABORTED
     }
 }

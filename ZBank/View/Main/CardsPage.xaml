@@ -58,12 +58,16 @@
         </Grid.RowDefinitions>
         <Grid>
             <Button
-                Margin="10,0,30,0"
+                Margin="10,0,30,10"
                 Style="{ThemeResource PrimaryButton}"
                 HorizontalAlignment="Right"
                 x:Name="AddCardButton"
-                Click="AddCardButton_Click"
-                Content="New Credit Card" />
+                Click="AddCardButton_Click">
+                <Button.Content>
+                    <TextBlock
+                        x:Uid="AddCreditCard" />
+                </Button.Content>
+            </Button>
         </Grid>
         <GridView
             Grid.Row="1"
@@ -104,7 +108,7 @@
                         FontWeight="SemiBold"
                         FontSize="16"
                         HorizontalAlignment="Center"
-                        Text="Total Credit Cards" />
+                        x:Uid="TotalCreditCards" />
                     <TextBlock
                         Padding="10"
                         FontSize="20"
@@ -129,7 +133,7 @@
                         FontWeight="SemiBold"
                         FontSize="16"
                         HorizontalAlignment="Center"
-                        Text="Total Debit Cards" />
+                        x:Uid="TotalDebitCards" />
                     <TextBlock
                         Padding="10"
                         FontSize="20"
@@ -155,7 +159,7 @@
                         FontWeight="SemiBold"
                         FontSize="16"
                         HorizontalAlignment="Center"
-                        Text="Maximum Credit Cards" />
+                        x:Uid="MaximumCreditCards" />
                     <TextBlock
                         Padding="10"
                         FontSize="20"
@@ -343,7 +347,7 @@
                         FontWeight="SemiBold"
                         Grid.ColumnSpan="2"
                         FontSize="18"
-                        Text="Card Details" />
+                        x:Uid="CardDetails" />
                     <TextBlock
                         Grid.Column="1"
                         HorizontalAlignment="Right"
@@ -355,7 +359,7 @@
                             Grid.Row="1"
                             HorizontalAlignment="Center"
                             Grid.ColumnSpan="2"
-                            Text="Card Number" />
+                            x:Uid="CardNumber" />
                         <Grid
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
@@ -373,7 +377,7 @@
                             Margin="0,10,0,0"
                             Grid.Row="3"
                             Grid.Column="1"
-                            Text="CVV" />
+                            x:Uid="CVV" />
                         <Grid
                             Grid.Row="4"
                             Grid.Column="1"
@@ -427,7 +431,7 @@
                             HorizontalAlignment="Center"
                             Margin="0,10,0,0"
                             Grid.Row="3"
-                            Text="Expiry Date" />
+                            x:Uid="ExpiryDate" />
                         <Grid
                             Grid.Row="4"
                             Margin="0,10,5,10"
@@ -451,8 +455,12 @@
                         MinWidth="150"
                         HorizontalAlignment="Center"
                         Grid.ColumnSpan="2"
-                        Content="Reset Pin"
-                        Style="{ThemeResource PrimaryButton}" />
+                        Style="{ThemeResource PrimaryButton}">
+                        <Button.Content>
+                            <TextBlock
+                                x:Uid="ResetPin" />
+                        </Button.Content>
+                    </Button>
                 </Grid>
             </GridViewItem>
             <GridViewItem>
@@ -496,8 +504,7 @@
                         VerticalAlignment="Center"
                         FontSize="18"
                         Margin="0,0,20,20"
-                        Text="Daily Transaction Limit" />
-                   
+                        x:Uid="DailyTransactionLimit" />
                     <Slider
                         Style="{ThemeResource CustomSliderStyle}"
                         Grid.Row="5"
@@ -529,7 +536,7 @@
                         Grid.ColumnSpan="2"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Text="Total Spending limit" />
+                        x:Uid="SpendingLimitPerDay" />
 
                     <TextBlock
                         FontSize="18"
@@ -549,9 +556,12 @@
                         Margin="0,30,0,10"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        FontSize="14"
-                        Content="Update Limit" />
-
+                        FontSize="14">
+                        <Button.Content>
+                            <TextBlock 
+                            x:Uid="UpdateLimit" />
+                        </Button.Content>
+                    </Button>
                     <Button
                         Style="{ThemeResource PrimaryButton}"
                         Grid.ColumnSpan="2"
@@ -563,8 +573,12 @@
                         Margin="0,30,0,10"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        FontSize="14"
-                        Content="Update" />
+                        FontSize="14">
+                        <Button.Content>
+                            <TextBlock
+                                x:Uid="Update" />
+                        </Button.Content>
+                    </Button>
 
                     <Button
                         MinWidth="100"
@@ -577,9 +591,12 @@
                         Margin="0,30,0,10"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
-                        FontSize="14"
-                        Content="Cancel" />
-
+                        FontSize="14" >
+                        <Button.Content>
+                            <TextBlock
+                            x:Uid="Cancel" />
+                        </Button.Content>
+                    </Button>
                 </Grid>
             </GridViewItem>
             <GridViewItem>
@@ -615,14 +632,14 @@
                             VerticalAlignment="Center"
                             FontSize="18"
                             Margin="0,0,20,20"
-                            Text="Debit Card Summary" />
+                            x:Uid="DebitCardSummary" />
                         <TextBlock
                             Margin="10"
                             FontSize="16"
                             Grid.Row="2"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
-                            Text="Linked Account" />
+                            x:Uid="LinkedAccount" />
 
                         <TextBlock
                             FontSize="18"
@@ -638,9 +655,12 @@
                             MinWidth="150"
                             Margin="20"
                             HorizontalAlignment="Center"
-                            Content="Go To Account"
-                            Style="{ThemeResource PrimaryButton}" />
-
+                            Style="{ThemeResource PrimaryButton}">
+                            <Button.Content>
+                                <TextBlock
+                                    x:Uid="GoToAccount" />
+                            </Button.Content>
+                        </Button>
                     </Grid>
                     <Grid
                         Visibility="{x:Bind ViewModel.DataModel.IsOnViewCreditCard, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
@@ -683,14 +703,14 @@
                             VerticalAlignment="Center"
                             FontSize="18"
                             Margin="0,0,20,20"
-                            Text="Credit Card Summary" />
+                            x:Uid="CreditCardSummary" />
                         <TextBlock
                             Margin="10"
                             FontSize="16"
                             Grid.Row="2"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
-                            Text="Card Provider" />
+                            x:Uid="CardProvider" />
 
                         <TextBlock
                             FontSize="18"
@@ -706,7 +726,7 @@
                             Grid.Row="3"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
-                            Text="Credit Limit" />
+                            x:Uid="CreditLimit" />
 
                         <TextBlock
                             FontSize="18"
@@ -722,7 +742,7 @@
                             Grid.Row="4"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
-                            Text="Total Outstanding" />
+                            x:Uid="TotalOutstanding" />
 
                         <TextBlock
                             FontSize="18"
@@ -739,7 +759,7 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             TextTrimming="CharacterEllipsis"
-                            Text="Minimum Outstanding" />
+                            x:Uid="MinimumOutstanding" />
 
                         <TextBlock
                             FontSize="18"
@@ -758,9 +778,13 @@
                             Margin="10"
                             x:Name="PayCardButton"
                             HorizontalAlignment="Center"
-                            Content="Settle Card"
                             Click="PayCardButton_Click"
-                            Style="{ThemeResource PrimaryButton}" />
+                            Style="{ThemeResource PrimaryButton}">
+                            <Button.Content>
+                                <TextBlock
+                                    x:Uid="SettleCard" />
+                            </Button.Content>
+                        </Button>
                     </Grid>
                 </Grid>
             </GridViewItem>

@@ -4,10 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converter="using:ZBank.Utilities.Converters"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <converter:LocalizationConverter
+            x:Name="LocalizationConverter" />
+    </Page.Resources>
     <Grid
-        
         Margin="5"
         Background="{ThemeResource ApplicationBackground}"
         HorizontalAlignment="Stretch"
@@ -29,7 +32,7 @@
                 HorizontalAlignment="Left"
                 FontSize="17"
                 FontWeight="SemiBold"
-                Text="{x:Bind MyTitle}" />
+                Text="{x:Bind MyTitle, Converter={StaticResource LocalizationConverter}, Mode=OneWay}" />
             <Button
                 Grid.Row="1"
                 HorizontalAlignment="Stretch"

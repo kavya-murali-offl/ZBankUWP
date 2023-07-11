@@ -62,18 +62,4 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public Beneficiary RemovedBeneficiary { get; set; }
     }
-
-    public class RemoveBeneficiaryPresenterCallback : IPresenterCallback<RemoveBeneficiaryResponse>
-    {
-
-
-        public async Task OnSuccess(RemoveBeneficiaryResponse response)
-        {
-        }
-
-        public async Task OnFailure(ZBankException error)
-        {
-
-        }
-    }
 }

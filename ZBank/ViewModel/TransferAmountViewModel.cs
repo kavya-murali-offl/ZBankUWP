@@ -35,9 +35,8 @@ namespace ZBank.ViewModel
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
         public bool IsConfirmed { get; set; }
-        public TransferAmountViewModel(IView view, ContentDialog dialog = null) {
+        public TransferAmountViewModel(IView view) {
             View = view;
-            ContentDialog = dialog;
             InitializeSteps();
             Reset();
             ViewNotifier.Instance.PaymentInProgress = true;
@@ -219,10 +218,7 @@ namespace ZBank.ViewModel
                         CurrentStep = Steps[previousIndex + 1];
                         if (ContentDialog == null)
                         {
-                            CustomContentDialog contentDialog = new CustomContentDialog();
-                            contentDialog.DialogContent = new NewPaymentView(contentDialog.Dialog, this);
-                            ContentDialog = contentDialog.Dialog;
-                            await contentDialog.OpenDialog();
+                            await DialogService.ShowContentAsync(View, new NewPaymentView(this), "New Payment", Window.Current.Content.XamlRoot);
                         }
                     }
                     else
@@ -392,7 +388,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllAccountsResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                     {
@@ -429,18 +425,25 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllBeneficiariesResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    BeneficiaryListUpdatedArgs args = new BeneficiaryListUpdatedArgs()
-                    {
-                        BeneficiaryList = response.Beneficiaries
-                    };
-                    ViewNotifier.Instance.OnBeneficiaryListUpdated(args);
-                });
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() => { 
+                    BeneficiaryListUpdatedArgs args = 
+                    new BeneficiaryListUpdatedArgs() { 
+                        BeneficiaryList = response.Beneficiaries 
+                    }; 
+                    ViewNotifier.Instance.OnBeneficiaryListUpdated(args); });
             }
 
             public async Task OnFailure(ZBankException response)
             {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = response.Message,
+                        Type = NotificationType.ERROR,
+                    });
+                    ViewNotifier.Instance.OnCloseDialog();
+                });
             }
         }
 

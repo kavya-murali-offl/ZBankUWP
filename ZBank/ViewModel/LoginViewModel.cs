@@ -133,17 +133,17 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(LoginCustomerResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() => 
+                { 
                     ViewNotifier.Instance.OnCurrentUserChanged(response.LoggedInCustomer.ID);
                 });
             }
 
             public async Task OnFailure(ZBankException exception)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    ViewNotifier.Instance.OnLoginError(exception.Message);  
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() => 
+                { 
+                    ViewNotifier.Instance.OnLoginError(exception.Message); 
                 });
             }
         }

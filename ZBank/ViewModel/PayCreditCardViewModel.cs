@@ -27,13 +27,11 @@ namespace ZBank.ViewModel
     {
         private IView View { get; set; }
 
-        private ContentDialog Dialog { get; set; }
-
         public CreditCard Card;
 
-        public PayCreditCardViewModel(IView payCreditCard, CreditCard card)
+        public PayCreditCardViewModel(IView view, CreditCard card)
         {
-            View = payCreditCard;
+            View = view;
             Card = card;
             Reset();
         }
@@ -190,23 +188,10 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnCreditCardSettled(false);
                 });
-                //await DispatcherService.CallOnMainViewUiThreadAsync(() =>
-                //{
-                //    NotifyUserArgs args = new NotifyUserArgs()
-                //    {
-                //        Notification = new Notification()
-                //        {
-                //            Message = response.Message,
-                //            Type = NotificationType.ERROR
-                //        }
-                //    };
-                //    ViewNotifier.Instance.OnNotificationStackUpdated(args);
-                //});
-
             }
         }
 
@@ -240,7 +225,6 @@ namespace ZBank.ViewModel
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = response.Message,
-                        Duration = 3000,
                         Type = NotificationType.ERROR
                     });
                 });

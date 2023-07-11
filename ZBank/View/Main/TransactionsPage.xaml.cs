@@ -17,6 +17,7 @@ using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Services;
 using ZBank.View.Modals;
 using ZBank.View.UserControls;
 using ZBank.ViewModel;
@@ -48,7 +49,6 @@ namespace ZBank.View.Main
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.OnPageLoaded();
-
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -68,11 +68,7 @@ namespace ZBank.View.Main
 
         private async void NewPaymentButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.Dialog.Title = "Add Beneficiary";
-            contentDialog.DialogContent = new NewPaymentView(contentDialog.Dialog);
-            PaymentDialog = contentDialog.Dialog;
-            await contentDialog.OpenDialog();
+            await ViewModel.OpenNewPaymentDialog();
         }
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -120,3 +116,5 @@ namespace ZBank.View.Main
     }
 
 }
+
+

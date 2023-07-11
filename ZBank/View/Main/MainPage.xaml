@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZBank"
     xmlns:userControls="using:ZBank.View.UserControls"
+    xmlns:entities="using:ZBank.Entities.BusinessObjects"
     xmlns:converter="using:ZBank.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -18,7 +19,7 @@
             x:Key="DateFormatter" />
         <DataTemplate
             x:Key="WideTopDataTemplate"
-            x:DataType="local:Navigation">
+            x:DataType="entities:Navigation">
             <StackPanel
                 Style="{ThemeResource WithTextContainer}">
                 <FontIcon
@@ -31,7 +32,7 @@
         </DataTemplate>
         <DataTemplate
             x:Key="NarrowTopDataTemplate"
-            x:DataType="local:Navigation">
+            x:DataType="entities:Navigation">
             <FontIcon
                 Glyph="{x:Bind IconSource}"
                 Style="{StaticResource MenuIconStyle}">

@@ -50,7 +50,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
                 if (i == 3 || i == 7 || i == 11)
                 {
-                    builder.Append("-");
+                    builder.Append(" ");
                 }
             }
 

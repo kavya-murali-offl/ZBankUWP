@@ -48,7 +48,7 @@
                 <TextBlock
                     MaxWidth="400"
                     Margin="5"
-                    x:Uid="Account"
+                    x:Uid="AccountRequired"
                     Style="{ThemeResource NormalSubText}" />
                 <DropDownButton
                     x:Name="AccountsDropdownButton"
@@ -97,7 +97,7 @@
                 <TextBlock
                     MaxWidth="400"
                     Margin="5"
-                    x:Uid="Beneficiary"
+                    x:Uid="BeneficiaryRequired"
                     Style="{ThemeResource NormalSubText}" />
 
                 <DropDownButton
@@ -149,7 +149,7 @@
                 
                 <TextBlock
                     Margin="5"
-                    x:Uid="Amount"
+                    x:Uid="AmountRequired"
                     MaxWidth="400"
                     Style="{ThemeResource NormalSubText}" />
 
@@ -160,7 +160,7 @@
                     KeyDown="AmountTextBox_KeyDown"
                     Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay, Converter={StaticResource StringConverter}}"
                     TextChanging="AmountTextBox_TextChanging"
-                    PlaceholderText="Enter Amount in INR" />
+                    x:Uid="EnterAmount" />
 
                 <TextBlock
                     MaxWidth="400"
@@ -179,7 +179,7 @@
                     MaxWidth="400"
                     KeyDown="DescriptionTextBox_KeyDown"
                     Text="{x:Bind ViewModel.CurrentTransaction.Description, Mode=TwoWay}"
-                    PlaceholderText="Describe the transaction" />
+                    x:Uid="EnterDescription" />
                 <TextBlock
                     MaxWidth="400"
                     TextWrapping="Wrap"
@@ -193,7 +193,7 @@
                     HorizontalAlignment="Stretch">
                     <Button.Content>
                         <TextBlock
-                            x:Uid="Send" />
+                            x:Uid="Transfer" />
                     </Button.Content>
                 </Button>
             </StackPanel>

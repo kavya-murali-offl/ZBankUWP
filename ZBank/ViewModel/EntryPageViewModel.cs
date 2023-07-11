@@ -77,7 +77,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InitializeAppResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnLoadApp();
                 });
@@ -85,7 +85,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-
+                // Message dialog
             }
         }
 

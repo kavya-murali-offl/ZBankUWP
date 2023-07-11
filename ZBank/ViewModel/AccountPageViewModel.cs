@@ -17,6 +17,7 @@ using ZBankManagement.AppEvents.AppEventArgs;
 using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.DataStore;
 using ZBank.Services;
+using ZBank.View.UserControls;
 
 namespace ZBank.ViewModel
 {
@@ -74,25 +75,39 @@ namespace ZBank.ViewModel
             Accounts = new ObservableCollection<Account>(args.AccountsList);
         }
 
+        internal void NavigateToInfoPage(AccountBObj account)
+        {
+            AccountInfoPageParams parameters = new AccountInfoPageParams()
+            {
+                SelectedAccount = account,
+            };
+            FrameContentChangedArgs args = new FrameContentChangedArgs()
+            {
+                PageType = typeof(AccountInfoPage),
+                Params = parameters
+            };
+
+            ViewNotifier.Instance.OnFrameContentChanged(args);
+        }
+
         private class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
         {
-            private AccountPageViewModel AccountPageViewModel { get; set; }
+            private AccountPageViewModel ViewModel { get; set; }
 
             public GetAllAccountsPresenterCallback(AccountPageViewModel accountPageViewModel)
             {
-                AccountPageViewModel = accountPageViewModel;
+                ViewModel = accountPageViewModel;
             }
 
             public async Task OnSuccess(GetAllAccountsResponse response)
             {
-                await AccountPageViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                     {
                         AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
                     };
                     ViewNotifier.Instance.OnAccountsListUpdated(args);
-                   
                 });
             }
 

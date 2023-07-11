@@ -28,7 +28,7 @@ namespace ZBank.View.Modals
 
         private readonly TransferAmountViewModel ViewModel;
 
-        public NewPaymentView(ContentDialog dialog, TransferAmountViewModel viewModel = null)
+        public NewPaymentView(TransferAmountViewModel viewModel = null)
         {
             this.InitializeComponent();
             if(viewModel != null )
@@ -37,7 +37,7 @@ namespace ZBank.View.Modals
             }
             else
             {
-                ViewModel = new TransferAmountViewModel(this, dialog);
+                ViewModel = new TransferAmountViewModel(this);
             }
         }
 

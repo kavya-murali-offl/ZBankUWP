@@ -60,15 +60,10 @@ namespace ZBank.View.Main
             ViewModel.UpdateList(BeneficiaryType.WITHIN_BANK, input);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
             BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
-            await DialogService.ShowContentAsync(this, new AddEditBeneficiaryView(selectedBeneficiary), "Edit Beneficiary", this.XamlRoot);
+            await ViewModel.OpenDialog(selectedBeneficiary);
         }
 
         private void NotAFavouriteButton_Click(object sender, RoutedEventArgs e)

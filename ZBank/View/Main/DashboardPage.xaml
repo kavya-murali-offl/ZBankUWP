@@ -190,7 +190,7 @@
                             MinHeight="453"
                             Grid.Column="1"
                             Padding="10"
-                            MyTitle="Latest Transactions"
+                            MyTitle="LatestTransactions"
                             x:Name="Row3Column2">
                             <usercontrol:CardControl.MyControls>
                                 <controls:HyperlinkButton
@@ -200,7 +200,7 @@
                                     HorizontalAlignment="Right">
                                     <controls:HyperlinkButton.Content>
                                         <TextBlock
-                                            Text="View More" />
+                                            x:Uid="ViewMore" />
                                     </controls:HyperlinkButton.Content>
                                 </controls:HyperlinkButton>
                             </usercontrol:CardControl.MyControls>
@@ -341,8 +341,12 @@
                                 Style="{ThemeResource SecondaryButton}">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
-                                        Content="Previous"
-                                        Placement="Bottom" />
+                                        Placement="Bottom">
+                                        <ToolTip.Content>
+                                            <TextBlock
+                                                x:Uid="Previous" />
+                                        </ToolTip.Content>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
@@ -357,8 +361,12 @@
                                 Style="{ThemeResource SecondaryButton}">
                                 <ToolTipService.ToolTip>
                                     <ToolTip
-                                        Content="Next"
-                                        Placement="Bottom" />
+                                        Placement="Bottom">
+                                        <ToolTip.Content>
+                                            <TextBlock
+                                                x:Uid="Next" />
+                                        </ToolTip.Content>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                                 <Button.Content>
                                     <FontIcon
@@ -397,7 +405,7 @@
                                 Style="{ThemeResource PrimaryButton}">
                                 <Button.Content>
                                     <TextBlock
-                                        Text="Manage Card" />
+                                        x:Uid="ManageCard" />
                                 </Button.Content>
                             </Button>
                             <Button
@@ -410,7 +418,7 @@
                                 Style="{ThemeResource SecondaryButton}">
                                 <Button.Content>
                                     <TextBlock
-                                        Text="Add Credit Card" />
+                                        x:Uid="AddCreditCard" />
                                 </Button.Content>
                             </Button>
                         </Grid>

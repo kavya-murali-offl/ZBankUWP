@@ -29,6 +29,7 @@ using ZBank.View.DataTemplates.NewAcountTemplates;
 using ZBank.ViewModel;
 using ZBank.ViewModel.VMObjects;
 using ZBank.Services;
+using ZBank.Utilities.Helpers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -64,72 +65,22 @@ namespace ZBank.View.Modals
 
         private void SetFormTemplate(AccountType accountType)
         {
-            switch (accountType)
-            {
-                case AccountType.CURRENT:
-                    NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate()
-                    {
-                        SubmitCommand = ViewModel.SubmitCommand,
-                        FieldErrors = ViewModel.FieldErrors,
-                        FieldValues = ViewModel.FieldValues,
-                    };
-                    newCurrentAccountFormTemplate.Reset();
-                    AccountForm.Content = newCurrentAccountFormTemplate;
-                    break;
-                case AccountType.SAVINGS:
-                    NewSavingsAccountFormTemplate newSavingsAccountFormTemplate = new NewSavingsAccountFormTemplate()
-                    {
-                        SubmitCommand = ViewModel.SubmitCommand,
-                        FieldErrors = ViewModel.FieldErrors,
-                        FieldValues = ViewModel.FieldValues,
-                    };
-                    newSavingsAccountFormTemplate.Reset();
-                    AccountForm.Content = newSavingsAccountFormTemplate;
-                    break;
-                case AccountType.TERM_DEPOSIT:
-                    NewDepositAccountFormTemplate newDepositAccountFormTemplate = new NewDepositAccountFormTemplate()
-                    {
-                        SubmitCommand = ViewModel.SubmitCommand,
-                        FieldErrors = ViewModel.FieldErrors,
-                        FieldValues = ViewModel.FieldValues,
-                    };
-                    newDepositAccountFormTemplate.Reset();
-                    AccountForm.Content = newDepositAccountFormTemplate;
-                    break;
-            }
+            ViewModel.SwitchTemplate(accountType);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             AccountForm.DataContext = ViewModel;
-            NewCurrentAccountFormTemplate newCurrentAccountFormTemplate = new NewCurrentAccountFormTemplate();
-            AccountForm.Content = newCurrentAccountFormTemplate;
-            ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
-            ViewModel.LoadContent();
-            ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
+            SetFormTemplate(AccountType.CURRENT);
         }
 
-        private void OnAccountInsertionSuccessful(bool obj)
-        {
-            ConsolidateView();
-        }
-
-        private void ConsolidateView()
-        {
-            ViewModel.UnloadContent();
-            ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
-        }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewModel.UnloadContent();
         }
 
-        private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
-        {
-            ConsolidateView(); 
-        }
-
+     
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             AccountTypeButton.SelectedIndex = 0;
@@ -158,31 +109,7 @@ namespace ZBank.View.Modals
 
         private async void UploadButton_Click(object sender, RoutedEventArgs e)
         {
-            PickFilesOutputTextBlock.Text = "";
-
-            var openPicker = new FileOpenPicker
-            {
-                ViewMode = PickerViewMode.List,
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
-            };
-            openPicker.FileTypeFilter.Add("*");
-
-            IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
-            if (files.Count > 0)
-            {
-                StringBuilder output = new StringBuilder("Uploaded Files");
-                foreach (StorageFile file in files)
-                {
-                    output.Append(file.Name + "\n");
-                }
-                PickFilesOutputTextBlock.Text = output.ToString();
-                ViewModel.FieldValues["KYC"] = files;
-                ViewModel.FieldErrors["KYC"] = string.Empty;
-            }
-            else
-            {
-                PickFilesOutputTextBlock.Text = "";
-            }
+            await ViewModel.UploadFiles();
         }
     }
 }

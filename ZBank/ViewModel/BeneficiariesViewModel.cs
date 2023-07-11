@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.DataStore;
@@ -12,6 +13,7 @@ using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Services;
 using ZBank.View;
+using ZBank.View.UserControls;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
@@ -119,52 +121,46 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        private ObservableCollection<BeneficiaryBObj> _beneficiariesList { get; set; }
+        internal async Task OpenDialog(BeneficiaryBObj selectedBeneficiary)
+        {
+            await DialogService.ShowContentAsync(
+                View, 
+                new AddEditBeneficiaryView(selectedBeneficiary),
+                "Edit Beneficiary", 
+                Window.Current.Content.XamlRoot
+           );
+        }
+
+        private ObservableCollection<BeneficiaryBObj> _beneficiariesList = new ObservableCollection<BeneficiaryBObj>();
 
         public ObservableCollection<BeneficiaryBObj> BeneficiariesList
         {
-            get { return _beneficiariesList; }
-            set
-            {
-                _beneficiariesList = value;
-                OnPropertyChanged(nameof(BeneficiariesList));
-            }
+            get => _beneficiariesList;
+            set => Set(ref _beneficiariesList, value);
         }
 
-        private ObservableCollection<BeneficiaryBObj> _withinBankBeneficiaries { get; set; }
+        private ObservableCollection<BeneficiaryBObj> _withinBankBeneficiaries = new ObservableCollection<BeneficiaryBObj>();
 
         public ObservableCollection<BeneficiaryBObj> WithinBankBeneficiaries
         {
-            get { return _withinBankBeneficiaries; }
-            set
-            {
-                _withinBankBeneficiaries = value;
-                OnPropertyChanged(nameof(WithinBankBeneficiaries));
-            }
+            get => _withinBankBeneficiaries; 
+            set =>  Set(ref _withinBankBeneficiaries, value);
         }
 
-        private ObservableCollection<BeneficiaryBObj> _favouriteBeneficiaries { get; set; }
+        private ObservableCollection<BeneficiaryBObj> _favouriteBeneficiaries = new ObservableCollection<BeneficiaryBObj>();
 
         public ObservableCollection<BeneficiaryBObj> FavouriteBeneficiaries
         {
-            get { return _favouriteBeneficiaries; }
-            set
-            {
-                _favouriteBeneficiaries = value;
-                OnPropertyChanged(nameof(FavouriteBeneficiaries));
-            }
+                get => _favouriteBeneficiaries;
+                set => Set(ref _favouriteBeneficiaries, value);
         }
 
-        private ObservableCollection<BeneficiaryBObj> _otherBankBeneficiaries { get; set; }
+        private ObservableCollection<BeneficiaryBObj> _otherBankBeneficiaries = new ObservableCollection<BeneficiaryBObj>();
 
         public ObservableCollection<BeneficiaryBObj> OtherBankBeneficiaries
         {
-            get { return _otherBankBeneficiaries; }
-            set
-            {
-                _otherBankBeneficiaries = value;
-                OnPropertyChanged(nameof(OtherBankBeneficiaries));
-            }
+            get => _otherBankBeneficiaries; 
+            set => Set(ref _otherBankBeneficiaries, value);
         }
 
         private class RemoveBeneficiaryPresenterCallback : IPresenterCallback<RemoveBeneficiaryResponse>
@@ -212,7 +208,7 @@ namespace ZBank.ViewModel
 
                 public async Task OnSuccess(UpdateBeneficiaryResponse response)
                 {
-                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                     {
                         ViewNotifier.Instance.OnCloseDialog();
                         ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.UpdatedBeneficiary, false);
@@ -226,7 +222,7 @@ namespace ZBank.ViewModel
 
                 public async Task OnFailure(ZBankException exception)
                 {
-                    await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                     {
                         ViewNotifier.Instance.OnRequestFailed(true);
                         ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()

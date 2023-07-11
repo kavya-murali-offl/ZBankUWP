@@ -80,7 +80,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             ViewModel.FieldErrors["Amount"] = string.Empty;
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             IsConfirmed = true;
             ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);

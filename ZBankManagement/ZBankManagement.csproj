@@ -131,6 +131,7 @@
     <Compile Include="AppEvents\AppEventArgs\NotifyUserArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\ResetPinArgs.cs" />
     <Compile Include="AppEvents\AppEventArgs\TransactionPageDataUpdatedArgs.cs" />
+    <Compile Include="AppEvents\AppEventArgs\ShellContentChangedArgs.cs" />
     <Compile Include="AppEvents\ViewNotifier.cs" />
     <Compile Include="Data\Config.cs" />
     <Compile Include="Data\DataManager\AccountFactory.cs" />
@@ -223,11 +224,13 @@
     <Compile Include="Entity\BusinessObjects\AccountBObj.cs" />
     <Compile Include="Entity\BusinessObjects\BeneficiaryBObj.cs" />
     <Compile Include="Entity\BusinessObjects\CardBObj.cs" />
+    <Compile Include="Entity\BusinessObjects\CardPageModel.cs" />
     <Compile Include="Entity\BusinessObjects\CreditCard.cs" />
     <Compile Include="Entity\BusinessObjects\CurrentAccount.cs" />
     <Compile Include="Entity\BusinessObjects\DashboardDataModel.cs" />
     <Compile Include="Entity\BusinessObjects\DebitCard.cs" />
     <Compile Include="Entity\BusinessObjects\DropDownItem.cs" />
+    <Compile Include="Entity\BusinessObjects\Navigation.cs" />
     <Compile Include="Entity\BusinessObjects\Notification.cs" />
     <Compile Include="Entity\BusinessObjects\RecurringDepositAccount.cs" />
     <Compile Include="Entity\BusinessObjects\SavingsAccount.cs" />

@@ -14,41 +14,48 @@ namespace ZBank.Utilities.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if(value == null) return "";
-
             string input = value as string;
+
             if (!string.IsNullOrEmpty(input))
             {
-                return new string('*', input.Length);
+                if(int.TryParse(parameter?.ToString(), out int unMaskLength))
+                {
+                    return MaskText(input, input.Length - unMaskLength);
+                }
+                return MaskText(input, input.Length);
             }
             return string.Empty;
-            //string unMaskedString = value.ToString();
-            //if(parameter is int)
-            //{
-            //    var maskLength = (int)parameter; 
-            //    return MaskText(unMaskedString, maskLength);
-            //}
-            //else
-            //{
-            //    return new string('*', unMaskedString.Length);
-            //}
         }
 
         private string MaskText(string unMaskedString, int maskLength)
         {
-            if (unMaskedString.Length <= maskLength)
+            StringBuilder maskedText = new StringBuilder();
+            if (unMaskedString.Length == maskLength)
             {
-                return MaskText(unMaskedString);
+                var individualStrings = unMaskedString.Split(' ');
+                foreach (var individualString in individualStrings)
+                {
+                    maskedText.Append(MaskText(individualString.Length));
+                    maskedText.Append(" ");
+                }
+                return maskedText.ToString();
             }
-            else
+            else if(maskLength < unMaskedString.Length)
             {
-                string maskedText = new string('*', maskLength);
-                return maskedText + unMaskedString.Substring(maskLength);
+                var individualStrings = unMaskedString.Substring(0, maskLength - 1).Split(' ');
+                foreach (var individualString in individualStrings)
+                {
+                    maskedText.Append(MaskText(individualString.Length));
+                    maskedText.Append(" ");
+                }
+                return maskedText.Append(unMaskedString.Substring(maskLength)).ToString();
             }
+            return unMaskedString;
         }
 
-        private string MaskText(string unMaskedString)
+        private string MaskText(int unMaskedStringLength)
         {
-            return new string('*', unMaskedString.Length);
+            return new string('*', unMaskedStringLength);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

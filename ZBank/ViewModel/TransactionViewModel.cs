@@ -23,6 +23,7 @@ using ZBank.View.UserControls;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 using ZBank.Services;
+using ZBank.View.Modals;
 
 namespace ZBank.ViewModel
 {
@@ -185,6 +186,11 @@ namespace ZBank.ViewModel
             LoadAllTransactionsData();
         }
 
+        internal async Task OpenNewPaymentDialog()
+        {
+            await DialogService.ShowContentAsync(View, new NewPaymentView(), "New Payment", Window.Current.Content.XamlRoot);
+        }
+
         private int _currentPageIndex = 0;
 
         public int CurrentPageIndex
@@ -253,14 +259,14 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllAccountsResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
-                    {
-                        AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                { 
+                    AccountsListUpdatedArgs args =
+                    new AccountsListUpdatedArgs()
+                    { 
+                        AccountsList = response.Accounts
                     };
                     ViewNotifier.Instance.OnAccountsListUpdated(args);
-
                 });
             }
 

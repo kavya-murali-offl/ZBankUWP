@@ -43,10 +43,6 @@ namespace ZBank.View.Main
             ViewModel.OnUnloaded();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Reset();
-        }
 
         private void PasswordText_PasswordChanged(object sender, RoutedEventArgs e)
         {

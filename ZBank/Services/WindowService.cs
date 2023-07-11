@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.View.UserControls;
+using ZBank.ViewModel;
 
 namespace ZBank.Services
 {
@@ -24,7 +25,7 @@ namespace ZBank.Services
         public static async Task ShowAsync<T>(bool isFullScreenRequested = false)
         {
             int viewId  = -1;
-            await CoreApplication.CreateNewView().Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+            await CoreApplication.CreateNewView().Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
             {
                 var frame = new Frame();
                 frame.Loaded += FrameLoaded;
@@ -78,5 +79,10 @@ namespace ZBank.Services
             ApplicationView.GetForCurrentView().Consolidated -= Helper_Consolidated;
         }
 
-}
+        internal static void CloseWindow(Window currentWindow)
+        {
+            currentWindow.Close();
+        }
+
+    }
 }

@@ -27,6 +27,8 @@ using ZBank.Entities;
 using ZBank.View.UserControls;
 using ZBank.Services;
 using ZBank.View.Modals;
+using ZBankManagement.Entity.BusinessObjects;
+using ZBank.Entities.BusinessObjects;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -41,7 +43,6 @@ namespace ZBank
         {
             this.InitializeComponent();
             ViewModel = new MainViewModel(this);
-            
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,8 +52,8 @@ namespace ZBank
             ViewNotifier.Instance.RightPaneContentUpdated += OnRightPaneContentUpdated;
             ViewNotifier.Instance.ThemeChanged += SwitchTheme;
             ViewNotifier.Instance.FrameContentChanged += ChangeFrame;
-            ContentFrame.Navigate(typeof(DashboardPage));
             ContentFrame.Navigated += OnNavigated;
+            ContentFrame.Navigate(typeof(DashboardPage));
         }
 
         private FrameworkElement SecondarySplitViewContent { get; set; }
@@ -104,22 +105,6 @@ namespace ZBank
             ViewModel.UpdateSelectedPage(ContentFrame.CurrentSourcePageType);
         }
 
-        
-
-        private void OnShrinkClicked(object sender, RoutedEventArgs e)
-        {
-            MySplitView.IsPaneOpen = false;
-            TopListView.ItemTemplate = (DataTemplate)this.Resources["NarrowTopDataTemplate"];
-            TopListView.ItemContainerStyle = (Style)Application.Current.Resources["NarrowMenuListItemStyle"];
-        }
-
-        private void OnExpandClicked(object sender, RoutedEventArgs e)
-        {
-            MySplitView.IsPaneOpen = true;
-            TopListView.ItemTemplate = (DataTemplate)this.Resources["WideTopDataTemplate"];
-            TopListView.ItemContainerStyle = (Style)Application.Current.Resources["WideMenuListItemStyle"];
-        }
-
         private void Navigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Navigation selectedItem = TopListView.SelectedItem as Navigation;
@@ -139,7 +124,7 @@ namespace ZBank
         private async void SwitchTheme(ElementTheme theme)
         {
             ThemeService.SetTheme(theme);
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.CallOnUIThreadAsync(() =>
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
                 ThemeIcon.Glyph = ThemeService.GetIcon();
@@ -166,35 +151,9 @@ namespace ZBank
 
         private async void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            await WindowService.ShowOrSwitchAsync<SettingsPage>(false);
-            //var currentAV = ApplicationView.GetForCurrentView();
-            //var newAV = CoreApplication.CreateNewView();
-            //await newAV.Dispatcher.RunAsync(
-            //CoreDispatcherPriority.Normal,
-            //async () =>
-            //{
-            //    var newWindow = Window.Current;
-            //    var newAppView = ApplicationView.GetForCurrentView();
-
-            //    newAppView.Title = "Settings";
-            //    var frame = new Frame();
-            //    frame.Navigate(typeof(SettingsPage));
-            //    newWindow.Content = frame;
-
-            //    newWindow.Activate();
-            //    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
-            //                newAppView.Id,
-            //                ViewSizePreference.UseMinimum,
-            //                currentAV.Id,
-            //                ViewSizePreference.UseMinimum);
-            //});
+            await ViewModel.OpenSettingsWindow();
         }
 
-
-        private void NotificationsButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
@@ -215,13 +174,12 @@ namespace ZBank
         private void TopListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             //var selectedItem = (sender as ListViewItem).DataContext as Navigation;
-            //if(selectedItem != null)
+            //if (selectedItem != null)
             //{
             //    ViewModel.NavigationChanged(selectedItem);
             //}
         }
 
-        public double initialPaneWidth { get; set; }
 
         public bool isDragging { get; set; }
 
@@ -237,7 +195,6 @@ namespace ZBank
             {
                 ClosePane();
             }
-
         }
 
 
@@ -297,27 +254,6 @@ namespace ZBank
         {
             ViewModel.Signout();
         }
-
-        
-    }
-
-    public class Navigation
-    {
-        public Navigation(string text, string iconSource, params Type[] pageTypes)
-        {
-            Text = text;
-            Tag = text;
-            IconSource = iconSource;
-            PageTypes = pageTypes;
-        }
-
-        public string Text { get; set; }
-
-        public string Tag { get; set; }
-
-        public string IconSource { get; set; }
-
-        public Type[] PageTypes { get; set; }
     }
 }
 

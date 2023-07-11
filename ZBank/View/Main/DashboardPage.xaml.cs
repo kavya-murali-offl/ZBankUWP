@@ -28,19 +28,8 @@ namespace ZBank.View
     /// </summary>
     public sealed partial class DashboardPage : Page, IView
     {
-        public int OnViewCardIndex { get; set; } = 0;   
 
         public DashboardViewModel ViewModel { get; set; }
-
-        public string EnteredAmount { get; set; }  
-        
-        public string EnteredDescription { get; set; }   
-
-        public Account SelectedAccount { get; set; }   
-
-        public Beneficiary SelectedBeneficiary { get; set; }
-        
-        public ModeOfPayment SelectedPaymentMode { get; set; }   
 
         public DashboardPage()
         {
@@ -49,26 +38,17 @@ namespace ZBank.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.CardInserted += OnCardInserted;
             ViewModel.OnLoaded();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewNotifier.Instance.CardInserted -= OnCardInserted;
             ViewModel.OnUnLoaded();
         }
 
-
         private void Transactions_ViewMoreButton_Click(object sender, RoutedEventArgs e)
         {
-            FrameContentChangedArgs args = new FrameContentChangedArgs()
-            {
-                PageType = typeof(TransactionsPage),
-                Params = null
-            };
-
-            ViewNotifier.Instance.OnFrameContentChanged(args);
+            ViewModel.OnViewMoreTransactions();
         }
 
         private void ManageCardButton_Click(object sender, RoutedEventArgs e)
@@ -76,14 +56,9 @@ namespace ZBank.View
             ViewModel.ManageCard();
         }
 
-        private void OnCardInserted(bool arg1, Card arg2)
-        {
-           ViewNotifier.Instance.OnCloseDialog();
-        }
-
         private async void NewCardButton_Click(object sender, RoutedEventArgs e)
         {
-            await DialogService.ShowContentAsync(this, new AddCardView(), "New Credit Card", XamlRoot);
+            await ViewModel.OpenAddCreditCardDialog();
         }
 
         private async void Button_Tapped(object sender, TappedRoutedEventArgs e)

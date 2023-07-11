@@ -10,6 +10,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Devices.PointOfService;
 using Windows.UI.Core;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
@@ -20,11 +21,13 @@ using ZBank.Entity.BusinessObjects;
 using ZBank.Entity.Constants;
 using ZBank.Services;
 using ZBank.View;
+using ZBank.View.Modals;
 using ZBank.View.UserControls;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entity.BusinessObjects;
 using static ZBank.ZBankManagement.DomainLayer.UseCase.UpdateCard;
 using static ZBankManagement.Domain.UseCase.ResetPin;
 
@@ -156,6 +159,21 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
+        internal async Task OpenResetPinDialog(string cardNumber)
+        {
+            await DialogService.ShowContentAsync(View, new ResetPinContent(cardNumber), "Reset Pin", Window.Current.Content.XamlRoot);
+        }
+
+        internal async Task OpenAddCardDialog()
+        {
+            await DialogService.ShowContentAsync(View, new AddCardView(), "Add Credit Card", Window.Current.Content.XamlRoot);
+        }
+
+        internal async Task OpenPayCardDialog()
+        {
+            await DialogService.ShowContentAsync(View, new PayCreditCard(DataModel.OnViewCard as CreditCard), "Pay Credit Card", Window.Current.Content.XamlRoot);
+        }
+
         private class UpdateLimitPresenterCallback : IPresenterCallback<UpdateCardResponse>
         {
             private CardsViewModel ViewModel { get; set; }
@@ -205,7 +223,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllCardsResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     CardDataUpdatedArgs args = new CardDataUpdatedArgs()
                     {
@@ -229,31 +247,4 @@ namespace ZBank.ViewModel
         }
 
  }
-
-    public class CardPageModel
-    {
-        public CardBObj LeftCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex - 1); }
-
-        public CardBObj RightCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex + 1); }
-
-        public CardBObj OnViewCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex); }
-      
-        public bool IsOnViewCreditCard { get => OnViewCard?.Type == CardType.CREDIT; }
-       
-        public CreditCard OnViewCreditCard { get => OnViewCard is CreditCard ? OnViewCard as CreditCard : null; }
-      
-        public DebitCard OnViewDebitCard { get => OnViewCard is DebitCard ? OnViewCard as DebitCard : null; }
-
-        public int OnViewCardIndex {  get; set; }
-
-        public int TotalCreditCards { get => AllCards?.Where(card => card.Type == CardType.CREDIT).Count() ?? 0; }
-
-        public int TotalDebitCards { get => AllCards?.Where(card => card.Type == CardType.DEBIT).Count() ?? 0; }
-
-        public int TotalAllCards { get => AllCards?.Count() ?? 0; }
-
-        public IEnumerable<CardBObj> AllCards { get; set; }
-
-        public int MaximumCards = 3;
-    }
 }

@@ -16,12 +16,13 @@
             x:Name="CurrencyConverter" />
         <converters:BackgroundColorConverter
             x:Key="BackgroundColorConverter" />
+        <converters:EnumToStringConverter
+            x:Name="EnumToStringConverter" />
     </Page.Resources>
         <Grid
             Margin="5"
             Padding="10"
             CornerRadius="8">
-            <!--Include filter, sort, search, listview and gridview-->
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
@@ -39,8 +40,12 @@
                 x:Name="CreateAccount"
                 Click="CreateAccount_Click"
                 Style="{ThemeResource PrimaryButton}"
-                HorizontalAlignment="Right"
-                Content="Create Account" />
+                HorizontalAlignment="Right">
+                <Button.Content>
+                    <TextBlock
+                        x:Uid="CreateAccount" />
+                </Button.Content>
+            </Button>
         </Grid>
         <GridView
             Margin="0,20,0,0"
@@ -92,7 +97,7 @@
                                 FontSize="13"
                                 HorizontalAlignment="Right"
                                 Padding="10,5,10,5"
-                                Text="{Binding AccountType}" />
+                                Text="{Binding AccountType, Converter={StaticResource EnumToStringConverter}, Mode=OneWay}" />
                         </StackPanel>
                         <TextBlock
                             Margin="0,25,0,5"
@@ -109,7 +114,7 @@
                             Orientation="Horizontal">
                             <TextBlock
                                 VerticalAlignment="Center"
-                                Text="Status:"
+                                x:Uid="Status"
                                 Style="{ThemeResource NormalSubText}" />
                             <StackPanel
                                 Margin="10,0,10,0"
@@ -120,7 +125,7 @@
                                     Foreground="{ThemeResource SystemChromeWhiteColor}"
                                     FontSize="12"
                                     VerticalAlignment="Center"
-                                    Text="{Binding AccountStatus}" />
+                                    Text="{Binding AccountStatus, Converter={StaticResource EnumToStringConverter}}" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel
@@ -146,7 +151,7 @@
                             <Button.Content>
                                 <TextBlock
                                     Margin="10,0,10,0"
-                                    Text="View Details" />
+                                    x:Uid="ViewDetails" />
                             </Button.Content>
                         </Button>
                     </Grid>

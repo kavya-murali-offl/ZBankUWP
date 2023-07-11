@@ -117,50 +117,170 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Account.Text" xml:space="preserve">
-    <value>Cuenta</value>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Número de cuenta</value>
+  </data>
+  <data name="AccountRequired.Text" xml:space="preserve">
+    <value>Cuenta *</value>
   </data>
   <data name="Accounts" xml:space="preserve">
     <value>Cuentas</value>
   </data>
+  <data name="ACTIVE" xml:space="preserve">
+    <value>Activa</value>
+  </data>
   <data name="ActiveDeposits" xml:space="preserve">
     <value>Depósitos Activos</value>
+  </data>
+  <data name="AddCreditCard.Text" xml:space="preserve">
+    <value>Añadir tarjeta de crédito</value>
   </data>
   <data name="Amount.Text" xml:space="preserve">
     <value>Cantidad</value>
   </data>
+  <data name="AmountRequired.Text" xml:space="preserve">
+    <value>Cantidad *</value>
+  </data>
+  <data name="AvailableCreditLimit" xml:space="preserve">
+    <value>Límite de crédito disponible</value>
+  </data>
   <data name="Beneficiaries" xml:space="preserve">
     <value>Beneficiarias</value>
   </data>
-  <data name="Beneficiary.Text" xml:space="preserve">
-    <value>Beneficiaria</value>
+  <data name="BeneficiaryRequired.Text" xml:space="preserve">
+    <value>Beneficiaria *</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="CardDetails.Text" xml:space="preserve">
+    <value>Detalles de tarjeta</value>
+  </data>
+  <data name="CardNumber.Text" xml:space="preserve">
+    <value>Número de tarjeta</value>
+  </data>
+  <data name="CardProvider.Text" xml:space="preserve">
+    <value>Proveedor de tarjeta</value>
   </data>
   <data name="Cards" xml:space="preserve">
     <value>Tarjetas</value>
   </data>
+  <data name="CLOSED" xml:space="preserve">
+    <value>Cerrada</value>
+  </data>
   <data name="ClosedDeposits" xml:space="preserve">
     <value>Depósitos cerrados</value>
+  </data>
+  <data name="CreateAccount.Text" xml:space="preserve">
+    <value>Crear una cuenta</value>
+  </data>
+  <data name="CreditCardSummary.Text" xml:space="preserve">
+    <value>Resumen de tarjeta de crédito</value>
+  </data>
+  <data name="CreditLimit.Text" xml:space="preserve">
+    <value>Límite de crédito</value>
+  </data>
+  <data name="CURRENT" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="CVV.Text" xml:space="preserve">
+    <value>CVV</value>
+  </data>
+  <data name="DailyTransactionLimit.Text" xml:space="preserve">
+    <value>Límite diario de transacciones</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>Tableros</value>
   </data>
+  <data name="DebitCardSummary.Text" xml:space="preserve">
+    <value>Resumen de tarjeta de débito</value>
+  </data>
   <data name="Description.Text" xml:space="preserve">
     <value>Descripción</value>
+  </data>
+  <data name="EnterAmount.PlaceholderText" xml:space="preserve">
+    <value>Ingrese la cantidad en INR</value>
+  </data>
+  <data name="EnterDescription.PlaceholderText" xml:space="preserve">
+    <value>Introduce la descripción</value>
   </data>
   <data name="ExpensePerMonth" xml:space="preserve">
     <value>Gasto / Mes</value>
   </data>
+  <data name="ExpiryDate.Text" xml:space="preserve">
+    <value>Fecha de caducidad</value>
+  </data>
+  <data name="FromAccountRequired.Text" xml:space="preserve">
+    <value>De la cuenta *</value>
+  </data>
+  <data name="GoToAccount.Text" xml:space="preserve">
+    <value>Lr a La Cuenta</value>
+  </data>
   <data name="IncomePerMonth" xml:space="preserve">
     <value>Ingresos / Mes</value>
+  </data>
+  <data name="LatestTransactions" xml:space="preserve">
+    <value>Últimas transacciones</value>
+  </data>
+  <data name="LinkedAccount.Text" xml:space="preserve">
+    <value>Cuenta Vinculada</value>
+  </data>
+  <data name="ManageCard.Text" xml:space="preserve">
+    <value>Administrar Tarjeta</value>
+  </data>
+  <data name="MaximumCreditCards.Text" xml:space="preserve">
+    <value>Tarjetas de crédito máximas</value>
+  </data>
+  <data name="MinimumOutstanding.Text" xml:space="preserve">
+    <value>Mínima pendiente</value>
   </data>
   <data name="NetBalancePerMonth" xml:space="preserve">
     <value>Saldo Neto / Mes</value>
   </data>
+  <data name="Next.Text" xml:space="preserve">
+    <value>Próxima</value>
+  </data>
   <data name="OtherBank" xml:space="preserve">
     <value>Otros bancos</value>
   </data>
+  <data name="Previous.Text" xml:space="preserve">
+    <value>Previa</value>
+  </data>
+  <data name="QuickTransfer" xml:space="preserve">
+    <value>Transferencia Rápida</value>
+  </data>
   <data name="Reset.Text" xml:space="preserve">
     <value>Reajustar</value>
+  </data>
+  <data name="ResetPin.Text" xml:space="preserve">
+    <value>Restablecer PIN</value>
+  </data>
+  <data name="SAVINGS" xml:space="preserve">
+    <value>Ahorros</value>
+  </data>
+  <data name="SelectAccount" xml:space="preserve">
+    <value>Seleccionar cuenta</value>
+  </data>
+  <data name="SelectBeneficiary" xml:space="preserve">
+    <value>Seleccionar Beneficiario</value>
+  </data>
+  <data name="SelfTransfer" xml:space="preserve">
+    <value>Auto transferencia</value>
+  </data>
+  <data name="SettleCard.Text" xml:space="preserve">
+    <value>Liquidar Tarjeta</value>
+  </data>
+  <data name="SpendingLimitPerDay.Text" xml:space="preserve">
+    <value>Límite de gasto / día</value>
+  </data>
+  <data name="Status.Text" xml:space="preserve">
+    <value>Estado :</value>
+  </data>
+  <data name="TERM_DEPOSIT" xml:space="preserve">
+    <value>Depósito a plazo</value>
+  </data>
+  <data name="ToAccountRequired.Text" xml:space="preserve">
+    <value>A la cuenta *</value>
   </data>
   <data name="TotalBalance" xml:space="preserve">
     <value>Saldo total Monto</value>
@@ -168,14 +288,38 @@
   <data name="TotalBeneficiaries" xml:space="preserve">
     <value>Total de beneficiarias</value>
   </data>
+  <data name="TotalCreditCards.Text" xml:space="preserve">
+    <value>Tarjetas de crédito totales</value>
+  </data>
+  <data name="TotalDebitCards.Text" xml:space="preserve">
+    <value>Tarjetas de Débito Totales</value>
+  </data>
   <data name="TotalDeposits" xml:space="preserve">
     <value>Depósitos totales</value>
+  </data>
+  <data name="TotalOutstanding.Text" xml:space="preserve">
+    <value>Total pendiente</value>
   </data>
   <data name="TotalSavings" xml:space="preserve">
     <value>Ahorros totales</value>
   </data>
   <data name="Transactions" xml:space="preserve">
     <value>Las Actas</value>
+  </data>
+  <data name="Transfer.Text" xml:space="preserve">
+    <value>Transferir</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="UpdateLimit.Text" xml:space="preserve">
+    <value>Límite de actualización</value>
+  </data>
+  <data name="ViewDetails.Text" xml:space="preserve">
+    <value>Ver detalles</value>
+  </data>
+  <data name="ViewMore.Text" xml:space="preserve">
+    <value>Ver más</value>
   </data>
   <data name="WithinBank" xml:space="preserve">
     <value>Dentro del Banco</value>

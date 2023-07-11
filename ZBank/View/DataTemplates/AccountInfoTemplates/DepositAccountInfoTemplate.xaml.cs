@@ -19,13 +19,15 @@ using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entities.EnumerationType;
 using ZBank.Entity.BusinessObjects;
+using ZBank.Services;
+using ZBank.View.Modals;
 using ZBank.View.UserControls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace ZBank.View.DataTemplates
 {
-    public sealed partial class DepositAccountInfoTemplate : UserControl
+    public sealed partial class DepositAccountInfoTemplate : UserControl, IView
     {
         public DepositAccountInfoTemplate()
         {
@@ -88,10 +90,7 @@ namespace ZBank.View.DataTemplates
 
         private async void AddBeneficiary_Click(object sender, RoutedEventArgs e)
         {
-            CustomContentDialog contentDialog = new CustomContentDialog();
-            contentDialog.Dialog.Title = "Add Beneficiary";
-            contentDialog.DialogContent = new AddEditBeneficiaryView();
-            await contentDialog.OpenDialog();
+            await DialogService.ShowContentAsync(this, new AddEditBeneficiaryView(), "Add Beneficiary", this.XamlRoot);
         }
 
         private void CloseAccountButton_Click(object sender, RoutedEventArgs e)

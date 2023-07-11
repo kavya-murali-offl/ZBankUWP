@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entity.Constants;
 using ZBank.Utilities.Helpers;
+using ZBankManagement.Helpers;
 
 namespace ZBank.Entity.BusinessObjects
 {
@@ -27,16 +28,16 @@ namespace ZBank.Entity.BusinessObjects
             if (this is CreditCard)
             {
                 CreditCard creditCard = this as CreditCard;
-                CustomText1Key = "Available Credit Limit";
+                CustomText1Key = "AvailableCreditLimit".GetLocalized();
                 CustomText1Value = (decimal)(creditCard.CreditLimit - creditCard.TotalOutstanding);
                 ProviderLogo = LogoHelper.GetCardProviderPath(creditCard.CreditCardProvider);
             }
             else if (this is DebitCard)
             {
                 DebitCard debitCard = this as DebitCard;
-                CustomText1Key = "Account Number";
+                CustomText1Key = "AccountNumber".GetLocalized();
                 CustomText1Value = debitCard.AccountNumber;
-                ProviderLogo = "";
+                ProviderLogo = null;
             }
 
             if (bgIndex >= Constants.Constants.CardBackgrounds.Count || bgIndex < 0)

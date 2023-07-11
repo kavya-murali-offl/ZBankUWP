@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using ZBank.AppEvents;
@@ -14,6 +16,19 @@ namespace ZBank.Services
 {
     internal class DialogService
     {
+        public static async Task ShowActionDialogAsync(string content, Action callback, string title = null, string okButtonText = "Ok", string cancelButtonText = "Cancel")
+        {
+            var dialog = title == null ?
+                new MessageDialog(content) { CancelCommandIndex = 1 } :
+                new MessageDialog(content, title) { CancelCommandIndex = 1 };
+
+            dialog.Commands.Add(new UICommand(okButtonText, command => callback()));
+            dialog.Commands.Add(new UICommand(cancelButtonText));
+            
+            await DispatcherService.CallOnMainViewUiThreadAsync(async () =>
+            await dialog.ShowAsync()
+            );
+        }
 
         public static Task ShowContentAsync(IView view, FrameworkElement content, string title, XamlRoot xamlRoot = null)
         {

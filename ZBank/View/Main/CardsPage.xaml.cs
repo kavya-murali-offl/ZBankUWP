@@ -50,7 +50,7 @@ namespace ZBank.View.Main
         {
             base.OnNavigatedTo(e);
             var parameters = e.Parameter as CardsPageParams;
-            ViewModel.Params = parameters;  
+            ViewModel.Params = parameters; 
         }
 
         private void OnUpdatedLimit(bool isUpdated, Card updatedCard)
@@ -68,8 +68,8 @@ namespace ZBank.View.Main
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.OnPageUnLoaded();
             ViewNotifier.Instance.LimitUpdated -= OnUpdatedLimit;
+            ViewModel.OnPageUnLoaded();
         }
 
         private void ViewEyeButton_Click(object sender, RoutedEventArgs e)
@@ -87,13 +87,13 @@ namespace ZBank.View.Main
         private async void ResetPinButton_Click(object sender, RoutedEventArgs e)
         {
             string cardNumber = ViewModel.DataModel.OnViewCard.CardNumber;
-            await DialogService.ShowContentAsync(this, new ResetPinContent(cardNumber), "Reset Pin", this.XamlRoot);
+            await ViewModel.OpenResetPinDialog(cardNumber);
         }
 
        
         private async void AddCardButton_Click(object sender, RoutedEventArgs e)
         {
-            await DialogService.ShowContentAsync(this, new AddCardView(), "Add Credit Card", this.XamlRoot);
+            await ViewModel.OpenAddCardDialog();
         }
 
         private void ChangeLimitButton_Click(object sender, RoutedEventArgs e)
@@ -124,7 +124,7 @@ namespace ZBank.View.Main
 
         private async void PayCardButton_Click(object sender, RoutedEventArgs e)
         {
-            await DialogService.ShowContentAsync(this, new PayCreditCard(ViewModel.DataModel.OnViewCard as CreditCard), "Pay Credit Card", this.XamlRoot);
+            await ViewModel.OpenPayCardDialog();
         }
 
         private void LimitSlider_Loaded(object sender, RoutedEventArgs e)

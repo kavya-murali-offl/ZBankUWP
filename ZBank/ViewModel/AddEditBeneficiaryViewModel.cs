@@ -288,6 +288,7 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
+                    ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnRequestFailed(true);
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {

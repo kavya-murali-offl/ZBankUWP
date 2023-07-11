@@ -57,16 +57,5 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
             public Customer InsertedAccount { get; set; }
         }
 
-        public class UpdateCustomerPresenterCallback : IPresenterCallback<UpdateCustomerResponse>
-        {
-
-            public async Task OnSuccess(UpdateCustomerResponse response)
-            {
-            }
-
-            public async Task OnFailure(ZBankException response)
-            {
-
-            }
-        }
+       
 }

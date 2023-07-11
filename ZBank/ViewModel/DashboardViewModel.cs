@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using ZBank.AppEvents;
 using ZBank.AppEvents.AppEventArgs;
 using ZBank.DataStore;
@@ -14,6 +15,7 @@ using ZBank.Entity.BusinessObjects;
 using ZBank.Services;
 using ZBank.View;
 using ZBank.View.Main;
+using ZBank.View.Modals;
 using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
@@ -170,58 +172,33 @@ namespace ZBank.ViewModel
             };
 
             ViewNotifier.Instance.OnFrameContentChanged(args);
-
         }
 
-        private class GetAllAccountsInDashboardPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+        internal void OnViewMoreTransactions()
         {
-            private DashboardViewModel DashboardViewModel { get; set; }
-
-            public GetAllAccountsInDashboardPresenterCallback(DashboardViewModel dashboardViewModel)
-            {
-                DashboardViewModel = dashboardViewModel;
-            }
-
-            public async Task OnSuccess(GetAllAccountsResponse response)
-            {
-                await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
-                    {
-                        AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
-                    };
-                    ViewNotifier.Instance.OnAccountsListUpdated(args);
-                });
-            }
-
-            public async Task OnFailure(ZBankException response)
-            {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
-                {
-                
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                        {
-                            Message = response.Message,
-                            Type = NotificationType.ERROR,
-                    });
-                });
-            }
+            FrameContentChangedArgs args = new FrameContentChangedArgs();
+            args.PageType = typeof(TransactionsPage);
+            ViewNotifier.Instance.OnFrameContentChanged(args);
         }
 
+        internal async Task OpenAddCreditCardDialog()
+        {
+            await DialogService.ShowContentAsync(View, new AddCardView(), "New Credit Card", Window.Current.Content.XamlRoot);
+        }
 
         private class GetDashboardDataPresenterCallback : IPresenterCallback<GetDashboardDataResponse>
         {
-            private DashboardViewModel DashboardViewModel { get; set; }
+            private DashboardViewModel ViewModel { get; set; }
 
             public GetDashboardDataPresenterCallback(DashboardViewModel dashboardViewModel)
             {
-                DashboardViewModel = dashboardViewModel;
+                ViewModel = dashboardViewModel;
             }
 
             public async Task OnSuccess(GetDashboardDataResponse response)
             {
 
-                await DashboardViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     DashboardDataUpdatedArgs args = new DashboardDataUpdatedArgs()
                     {
@@ -237,8 +214,6 @@ namespace ZBank.ViewModel
 
                     ViewNotifier.Instance.OnDashboardDataChanged(args);
                 });
-
-
             }
 
             public async Task OnFailure(ZBankException response)

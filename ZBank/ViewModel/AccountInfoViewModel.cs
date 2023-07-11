@@ -225,14 +225,13 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertCardResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard);
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                    {
-                        Message = "Card linked successfully",
-                        Type = NotificationType.SUCCESS
-                    });
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() => {
+                    ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard); 
+                    ViewNotifier.Instance.OnNotificationStackUpdated(
+                        new Notification() { 
+                            Message = "Card linked successfully", 
+                            Type = NotificationType.SUCCESS
+                        }); 
                 });
             }
 

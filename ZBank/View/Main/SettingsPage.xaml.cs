@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Config;
+using ZBank.Services;
 using ZBank.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -44,7 +45,7 @@ namespace ZBank.View.Main
         private async void ThemeSelector_OnAccentColorChanged(Color color)
         {
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.CallOnUIThreadAsync(() =>
             {
                 ThemeService.SetRequestedTheme(null, Window.Current.Content, titleBar);
             });
@@ -73,7 +74,7 @@ namespace ZBank.View.Main
         private async void OnThemeChanged(ElementTheme theme)
         {
             ThemeService.SetTheme(theme);
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.CallOnUIThreadAsync(() =>
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;
             });

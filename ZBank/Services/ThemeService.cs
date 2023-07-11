@@ -211,9 +211,7 @@ namespace ZBank.Config
                 {
                     ((SolidColorBrush)Application.Current.Resources[brush]).Color = color;
                 }
-                catch (Exception ex)
-                {
-                }
+                catch { }
             }
 
             try

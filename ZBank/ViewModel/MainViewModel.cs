@@ -18,30 +18,27 @@ using ZBank.View.UserControls;
 using ZBank.Services;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
-using static ZBankManagement.Domain.UseCase.InitializeApp;
 using System.IO;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBank.DataStore;
 using Microsoft.Toolkit.Uwp;
+using ZBankManagement.Entity.BusinessObjects;
 
 namespace ZBank.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public IList<Navigation> TopNavigationList { get; private set; }
         public IView View;
+        public IList<Navigation> TopNavigationList { get; private set; }
+
         private Navigation _selectedItem;
 
         public Navigation SelectedItem
         {
             get { return _selectedItem; }
-            set
-            {
-                _selectedItem = value;
-                OnPropertyChanged(nameof(SelectedItem));
-            }
+            set =>  Set(ref _selectedItem, value);  
         }
 
         private Customer _currentCustomer;
@@ -151,6 +148,11 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.GetCustomerSuccess -= CustomerFetched;
         }
 
+        internal async Task OpenSettingsWindow()
+        {
+            await WindowService.ShowOrSwitchAsync<SettingsPage>(false);
+        }
+
         private class GetCustomerPresenterCallback : IPresenterCallback<GetCustomerResponse>
         {
             private MainViewModel ViewModel { get; set; }
@@ -162,7 +164,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetCustomerResponse response)
             {
-                await ViewModel.View.Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
                 });
@@ -193,7 +195,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(LogoutCustomerResponse response)
             {
-                await ViewModel.View.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                         ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {

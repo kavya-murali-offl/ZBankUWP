@@ -16,6 +16,8 @@
             x:Key="BoolToVisibilityConverter" />
         <converter:CurrencyConverter
             x:Key="CurrencyConverter" />
+        <converter:MaskConverter
+            x:Key="MaskConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid
@@ -64,7 +66,7 @@
                 Foreground="Azure"
                 FontSize="23"
                 Margin="0,30,0,30"
-                Text="{x:Bind TemplateCard.CardNumber, Mode=OneWay}" />
+                Text="{x:Bind TemplateCard.CardNumber, Mode=OneWay, Converter={StaticResource MaskConverter}, ConverterParameter=4}" />
             <TextBlock
                 VerticalAlignment="Bottom"
                 Grid.Row="2"
@@ -88,14 +90,6 @@
                 FontSize="20"
                 Padding="0,0,0,0"
                 Text="{x:Bind TemplateCard.CustomText1Value, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" />
-            <!--<Image
-                x:Name="ProviderLogo"
-                Visibility="Collapsed"
-                    Grid.Row="3"
-                    MaxHeight="30"
-                    HorizontalAlignment="Right"
-                    Source="{x:Bind TemplateCard.ProviderLogo, Mode=OneWay}" />-->
         </Grid>
-
     </Grid>
 </UserControl>

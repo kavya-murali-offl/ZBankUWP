@@ -170,6 +170,12 @@ namespace ZBank.AppEvents
             FrameContentChanged?.Invoke(args);
         }
 
+        public event Action<ShellContentChangedArgs> ShellContentChanged;
+        public void OnShellContentChanged(ShellContentChangedArgs args)
+        {
+            ShellContentChanged?.Invoke(args);
+        }
+
 
         public event Action<DashboardDataUpdatedArgs> DashboardDataChanged;
         public void OnDashboardDataChanged(DashboardDataUpdatedArgs args)

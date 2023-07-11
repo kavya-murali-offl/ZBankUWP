@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Data;
+using ZBankManagement.Helpers;
 
 namespace ZBank.Utilities.Converters
 {
@@ -12,8 +13,7 @@ namespace ZBank.Utilities.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var resourceLoader = ResourceLoader.GetForCurrentView();
-            return resourceLoader.GetString(((String)value));
+            return value?.ToString()?.GetLocalized();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

@@ -20,7 +20,7 @@
     </UserControl.Resources>
     <usercontrols:CardControl
         Height="Auto"
-        MyTitle="Self Transfer">
+        MyTitle="SelfTransfer">
         <usercontrols:CardControl.MyControls>
             <Button
                 Padding="15,5,15,5"
@@ -39,7 +39,7 @@
                             Glyph="&#xE149;" />
                         <TextBlock
                             Margin="5,0,0,0"
-                            Text="Reset" />
+                            x:Uid="Reset" />
                     </StackPanel>
                 </Button.Content>
             </Button>
@@ -53,7 +53,7 @@
                 <TextBlock
                     HorizontalAlignment="Left"
                     Margin="5"
-                    Text="From Account *"
+                    x:Uid="FromAccountRequired"
                     Style="{ThemeResource NormalSubText}" />
                 <DropDownButton
                     x:Name="AccountsDropdownButton"
@@ -102,7 +102,7 @@
                     Foreground="IndianRed" />
                 <TextBlock
                     Margin="5"
-                    Text="To Account *"
+                    x:Uid="ToAccountRequired"
                     Style="{ThemeResource NormalSubText}" />
 
                 <DropDownButton
@@ -155,7 +155,7 @@
                 
                 <TextBlock
                     Margin="5"
-                    Text="Amount *"
+                    x:Uid="AmountRequired"
                     Style="{ThemeResource NormalSubText}" />
 
                 <TextBox
@@ -164,7 +164,7 @@
                     KeyDown="AmountTextBox_KeyDown"
                     Text="{x:Bind ViewModel.CurrentTransaction.Amount, Mode=TwoWay, Converter={StaticResource StringConverter}}"
                     TextChanging="AmountTextBox_TextChanging"
-                    PlaceholderText="Enter Amount in INR" />
+                    x:Uid="EnterAmount" />
 
                 <TextBlock
                     TextWrapping="Wrap"
@@ -180,7 +180,7 @@
                     HorizontalAlignment="Stretch">
                     <Button.Content>
                         <TextBlock
-                            Text="Send" />
+                            x:Uid="Transfer" />
                     </Button.Content>
                 </Button>
             </StackPanel>
