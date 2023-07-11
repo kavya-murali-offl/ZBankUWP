@@ -21,7 +21,7 @@ namespace ZBankManagement.DataManager
         public async Task GetCustomer(GetCustomerRequest request, IUseCaseCallback<GetCustomerResponse> callback)
         {
             try{
-                IEnumerable<Customer> customers = await DBHandler.GetCustomer(request.CustomerID);
+                IEnumerable<Customer> customers = await DBHandler.GetCustomer(request.CustomerID).ConfigureAwait(false);
                 Customer customer = customers.FirstOrDefault();
                 if (customer != null)
                 {
@@ -60,7 +60,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                CustomerCredentials credentials = await DBHandler.GetCredentials(request.CustomerID);
+                CustomerCredentials credentials = await DBHandler.GetCredentials(request.CustomerID).ConfigureAwait(false);
                 GetCredentialsResponse response = new GetCredentialsResponse()
                 {
                     CustomerCredentials = credentials,

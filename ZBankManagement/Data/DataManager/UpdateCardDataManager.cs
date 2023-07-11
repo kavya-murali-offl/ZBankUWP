@@ -24,7 +24,8 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                int rowsModified = await DBHandler.UpdateCard(request.CardToUpdate.CardNumber, request.CardToUpdate.TransactionLimit, request.CustomerID);
+                int rowsModified = 
+                    await DBHandler.UpdateCard(request.CardToUpdate.CardNumber, request.CardToUpdate.TransactionLimit, request.CustomerID).ConfigureAwait(false);
                 if (rowsModified > 0)
                 {
                     UpdateCardResponse response = new UpdateCardResponse();

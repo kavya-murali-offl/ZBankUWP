@@ -25,7 +25,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                int rowsModified = await DBHandler.DeleteBeneficiary(request.BeneficiaryToRemove);
+                int rowsModified = await DBHandler.DeleteBeneficiary(request.BeneficiaryToRemove).ConfigureAwait(false);
                 if(rowsModified > 0)
                 {
                     RemoveBeneficiaryResponse response = new RemoveBeneficiaryResponse()

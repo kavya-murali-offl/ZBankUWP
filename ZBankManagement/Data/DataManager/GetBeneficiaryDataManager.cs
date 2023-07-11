@@ -27,7 +27,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                IEnumerable<BeneficiaryBObj> beneficiaries = await DBHandler.GetBeneficiaries(request.UserID);
+                IEnumerable<BeneficiaryBObj> beneficiaries = await DBHandler.GetBeneficiaries(request.UserID).ConfigureAwait(false);
                 GetAllBeneficiariesResponse response = new GetAllBeneficiariesResponse()
                 {
                     Beneficiaries = beneficiaries

@@ -31,7 +31,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
         {
             try
             {
-                IEnumerable<AccountBObj> accountsList = await _handler.GetAllAccounts(request.UserID);
+                IEnumerable<AccountBObj> accountsList = await _handler.GetAllAccounts(request.UserID).ConfigureAwait(false);
                 var BalanceCard = new DashboardCardModel
                 {
                     PrimaryKey = "Total Balance",
@@ -42,8 +42,8 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT).Sum(acc => acc.Balance)
                 };
 
-                IEnumerable<BeneficiaryBObj> beneficiaries = await _handler.GetBeneficiaries(request.UserID);
-                List<Branch> branches = await _handler.GetBranchDetails();
+                IEnumerable<BeneficiaryBObj> beneficiaries = await _handler.GetBeneficiaries(request.UserID).ConfigureAwait(false);
+                List<Branch> branches = await _handler.GetBranchDetails().ConfigureAwait(false);
                 IEnumerable<string> ifscCodes = branches.Where(brn => brn.BankID == "1").Select(brn => brn.IfscCode);
                 
                 var BeneficiariesCard = new DashboardCardModel
@@ -61,7 +61,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 decimal expense = 0;
                 foreach(var account in accountsList)
                 {
-                    var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber, request.UserID);
+                    var list = await _handler.GetLatestMonthTransactionByAccountNumber(account.AccountNumber, request.UserID).ConfigureAwait(false);
                     foreach(var transaction in list)
                     {
                         if(transaction.RecipientAccountNumber == account.AccountNumber)
@@ -95,7 +95,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     SecondaryValue2 = deposits.Where(dep => dep.AccountStatus == AccountStatus.CLOSED).Count()
                 };
 
-                IEnumerable<CardBObj> AllCards = await _handler.GetAllCards(request.UserID);
+                IEnumerable<CardBObj> AllCards = await _handler.GetAllCards(request.UserID).ConfigureAwait(false);
                 transactions = transactions.Count() > 10 ? transactions.Take(10) : transactions;   
                 
                 GetDashboardDataResponse response = new GetDashboardDataResponse

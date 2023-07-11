@@ -25,7 +25,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                int rowsModified = await DBHandler.UpdateCustomer(request.CustomerToUpdate);
+                int rowsModified = await DBHandler.UpdateCustomer(request.CustomerToUpdate).ConfigureAwait(false);
                 if (rowsModified > 0)
                 {
                     UpdateCustomerResponse response = new UpdateCustomerResponse
@@ -55,7 +55,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<Customer> customers = await DBHandler.GetCustomer(request.CustomerID);
+                IEnumerable<Customer> customers = await DBHandler.GetCustomer(request.CustomerID).ConfigureAwait(false);
                 if (customers.Count() > 0)
                 {
                     var customer = customers.First();

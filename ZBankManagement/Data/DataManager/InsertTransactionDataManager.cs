@@ -19,7 +19,7 @@ namespace ZBankManagement.DataManager
 
         public async Task InsertTransaction(InsertTransactionRequest request, IUseCaseCallback<InsertTransactionResponse> callback)
         {
-            int rowsModified = await DBHandler.InsertTransaction(request.TransactionToInsert);
+            int rowsModified = await DBHandler.InsertTransaction(request.TransactionToInsert).ConfigureAwait(false);
 
             if (rowsModified > 0)
             {

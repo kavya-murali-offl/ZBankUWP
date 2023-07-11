@@ -35,7 +35,7 @@ namespace ZBankManagement.DataManager
                         Interest = 7.5m,
                         Provider = request.CreditCardProvider
                     };
-                    await DBHandler.InsertCreditCard(request.CardToInsert, creditCardDTO);
+                    await DBHandler.InsertCreditCard(request.CardToInsert, creditCardDTO).ConfigureAwait(false);
                 }
                 else if(request.CardType == CardType.DEBIT)
                 {
@@ -44,7 +44,7 @@ namespace ZBankManagement.DataManager
                         AccountNumber = request.AccountNumber,
                         CardNumber = request.CardToInsert.CardNumber,
                     };
-                    await DBHandler.InsertDebitCard(request.CardToInsert, debitCardDTO);
+                    await DBHandler.InsertDebitCard(request.CardToInsert, debitCardDTO).ConfigureAwait(false);
 
                 }
                 InsertCardResponse response = new InsertCardResponse

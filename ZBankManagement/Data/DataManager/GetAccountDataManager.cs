@@ -28,7 +28,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<AccountBObj> accountsList = await DBHandler.GetAllAccounts(request.UserID);
+                IEnumerable<AccountBObj> accountsList = await DBHandler.GetAllAccounts(request.UserID).ConfigureAwait(false);
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {
                     Accounts = accountsList
@@ -51,7 +51,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<AccountBObj> accountsList = await DBHandler.GetAllAccounts(request.UserID);
+                IEnumerable<AccountBObj> accountsList = await DBHandler.GetAllAccounts(request.UserID).ConfigureAwait(false);
                 var transactionAccounts = accountsList.Where(acc => acc.AccountType != AccountType.TERM_DEPOSIT);
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {

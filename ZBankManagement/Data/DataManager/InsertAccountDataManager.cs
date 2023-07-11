@@ -50,7 +50,7 @@ namespace ZBankManagement.DataManager
                 }
 
 
-                await DBHandler.InsertAccount(request.AccountToInsert, documents);
+                await DBHandler.InsertAccount(request.AccountToInsert, documents).ConfigureAwait(false);
                InsertAccountResponse response = new InsertAccountResponse
                {
                         IsSuccess = true,

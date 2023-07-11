@@ -29,7 +29,7 @@ namespace ZBankManagement.Data.DataManager
                 bool isIFSCCodeValidated = false;
                 if (request.BeneficiaryToInsert.BeneficiaryType == BeneficiaryType.WITHIN_BANK)
                 {
-                    IEnumerable<Account> accounts = await DBHandler.GetIFSCCodeByAccountNumber(request.BeneficiaryToInsert.AccountNumber);
+                    IEnumerable<Account> accounts = await DBHandler.GetIFSCCodeByAccountNumber(request.BeneficiaryToInsert.AccountNumber).ConfigureAwait(false);
                     if (accounts.Count() > 0)
                     {
                         isIFSCCodeValidated = true;
@@ -37,7 +37,8 @@ namespace ZBankManagement.Data.DataManager
                 }
                 else if (request.BeneficiaryToInsert.BeneficiaryType == BeneficiaryType.OTHER_BANK)
                 {
-                    IEnumerable<ExternalAccount> accounts = await DBHandler.ValidateExternalAccount(request.BeneficiaryToInsert.AccountNumber, request.IFSCCode);
+                    IEnumerable<ExternalAccount> accounts = 
+                        await DBHandler.ValidateExternalAccount(request.BeneficiaryToInsert.AccountNumber, request.IFSCCode).ConfigureAwait(false);
                     if (accounts?.Count() > 0)
                     {
                         isIFSCCodeValidated = true;
@@ -46,7 +47,7 @@ namespace ZBankManagement.Data.DataManager
 
                 if (isIFSCCodeValidated)
                 {
-                    IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.BeneficiaryToInsert.UserID);
+                    IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.BeneficiaryToInsert.UserID).ConfigureAwait(false);
                     var alreadyAddedBeneficiary = beneficiaries.Where(ben => ben.AccountNumber == request.BeneficiaryToInsert.AccountNumber);
                     if(alreadyAddedBeneficiary?.Count() > 0)
                     {
@@ -57,7 +58,7 @@ namespace ZBankManagement.Data.DataManager
                     }
                     else
                     {
-                        int rowsModified = await DBHandler.AddBeneficiary(request.BeneficiaryToInsert);
+                        int rowsModified = await DBHandler.AddBeneficiary(request.BeneficiaryToInsert).ConfigureAwait(false);
                         if (rowsModified > 0)
                         {
                             InsertBeneficiaryResponse response = new InsertBeneficiaryResponse

@@ -90,7 +90,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account account = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber);
+                Account account = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber).ConfigureAwait(false);
                 GetBeneficiaryAccountResponse response = new GetBeneficiaryAccountResponse()
                 {
                     Account = account
@@ -112,7 +112,9 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account otherAccount = request.OtherAccount != null ? request.OtherAccount : await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber);
+                Account otherAccount =
+                    request.OtherAccount != null ? request.OtherAccount : 
+                    await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber).ConfigureAwait(false);
                 
                 if (otherAccount != null)
                 {
@@ -132,7 +134,7 @@ namespace ZBankManagement.DataManager
                         ClosingBalance = otherAccount.Balance += request.Transaction.Amount,
                     };
 
-                    await _dBHandler.InitiateTransactionInternal(request.OwnerAccount, otherAccount, request.Transaction, metaData, otherMetaData);
+                    await _dBHandler.InitiateTransactionInternal(request.OwnerAccount, otherAccount, request.Transaction, metaData, otherMetaData).ConfigureAwait(false);
                     TransferAmountResponse response = new TransferAmountResponse()
                     {
                         Transaction = request.Transaction,

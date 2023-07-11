@@ -24,7 +24,8 @@ namespace ZBankManagement.DataManager
             {
                 if(request.UpdatedAccount is TermDepositAccount)
                 {
-                    Account account = await DBHandler.GetAccountByAccountNumber(request.CustomerID, (request.UpdatedAccount as TermDepositAccount).RepaymentAccountNumber);
+                    Account account = 
+                        await DBHandler.GetAccountByAccountNumber(request.CustomerID, (request.UpdatedAccount as TermDepositAccount).RepaymentAccountNumber).ConfigureAwait(false);
                     if(account != null)
                     {
                         await DBHandler.UpdateAccount(request.UpdatedAccount as TermDepositAccount);

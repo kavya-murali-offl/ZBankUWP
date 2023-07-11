@@ -31,7 +31,7 @@ namespace ZBankManagement.DataManager
                 List<TransactionBObj> transactions = new List<TransactionBObj>();    
                 foreach (var account in accounts)
                 {
-                    var accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber, request.CustomerID);
+                    var accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber, request.CustomerID).ConfigureAwait(false);
                     foreach (var transaction in accountTransactions)
                     {
                         if (transaction.RecipientAccountNumber == account.AccountNumber)
@@ -69,16 +69,16 @@ namespace ZBankManagement.DataManager
                 IEnumerable<TransactionBObj> accountTransactions = new List<TransactionBObj>();
                 if (string.IsNullOrEmpty(request.AccountNumber))
                 {
-                    var accounts = await DBHandler.GetAllAccounts(request.CustomerID);
+                    var accounts = await DBHandler.GetAllAccounts(request.CustomerID).ConfigureAwait(false);
                     foreach (var account in accounts)
                     {
-                        var transactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber, request.CustomerID);
+                        var transactions = await DBHandler.GetAllTransactionByAccountNumber(account.AccountNumber, request.CustomerID).ConfigureAwait(false);
                         accountTransactions = from transaction in transactions  select transaction;
                     }
                 }
                 else
                 {
-                    accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber, request.CustomerID);
+                    accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber, request.CustomerID).ConfigureAwait(false);
                 }
 
                 int totalPages = (accountTransactions.Count() / request.RowsPerPage);

@@ -24,7 +24,7 @@ namespace ZBankManagement.Data.DataManager
         {
             try
             {
-                int rowsModified = await DBHandler.UpdateBeneficiary(request.BeneficiaryToUpdate);
+                int rowsModified = await DBHandler.UpdateBeneficiary(request.BeneficiaryToUpdate).ConfigureAwait(false);
                 if (rowsModified > 0)
                 {
                     UpdateBeneficiaryResponse response = new UpdateBeneficiaryResponse

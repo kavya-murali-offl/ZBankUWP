@@ -47,7 +47,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<CardBObj> cards = await _dBHandler.GetCardByCardNumber(request.CardNumber);
+                IEnumerable<CardBObj> cards = await _dBHandler.GetCardByCardNumber(request.CardNumber).ConfigureAwait(false);
 
                 GetAllCardsResponse response = new GetAllCardsResponse();
                 response.Cards = cards;
@@ -69,7 +69,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<CardBObj> cards = await _dBHandler.GetCardByAccountNumber(request.AccountNumber);
+                IEnumerable<CardBObj> cards = await _dBHandler.GetCardByAccountNumber(request.AccountNumber).ConfigureAwait(false);
                 GetAllCardsResponse response = new GetAllCardsResponse()
                 {
                     Cards = cards,
