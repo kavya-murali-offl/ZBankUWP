@@ -120,95 +120,44 @@
   <data name="Account.Text" xml:space="preserve">
     <value>Cuenta</value>
   </data>
-  <data name="AccountNumber.Text" xml:space="preserve">
-    <value>Número de cuenta</value>
-  </data>
-  <data name="Accounts.Text" xml:space="preserve">
+  <data name="Accounts" xml:space="preserve">
     <value>Cuentas</value>
   </data>
   <data name="ActiveDeposits" xml:space="preserve">
     <value>Depósitos Activos</value>
   </data>
-  <data name="AddCreditCard" xml:space="preserve">
-    <value>Añadir tarjeta de crédito</value>
-  </data>
   <data name="Amount.Text" xml:space="preserve">
     <value>Cantidad</value>
   </data>
-  <data name="AvailableCreditLimit" xml:space="preserve">
-    <value>Límite de crédito disponible</value>
+  <data name="Beneficiaries" xml:space="preserve">
+    <value>Beneficiarias</value>
   </data>
   <data name="Beneficiary.Text" xml:space="preserve">
-    <value>Beneficiary</value>
+    <value>Beneficiaria</value>
   </data>
-  <data name="Cards.Text" xml:space="preserve">
+  <data name="Cards" xml:space="preserve">
     <value>Tarjetas</value>
   </data>
   <data name="ClosedDeposits" xml:space="preserve">
     <value>Depósitos cerrados</value>
   </data>
-  <data name="CreditCapitalized.Text" xml:space="preserve">
-    <value>Crédito</value>
-  </data>
-  <data name="DarkMode.Text" xml:space="preserve">
-    <value>Oscuro</value>
-  </data>
-  <data name="Dashboard.Text" xml:space="preserve">
+  <data name="Dashboard" xml:space="preserve">
     <value>Tableros</value>
   </data>
-  <data name="DebitCapitalized.Text" xml:space="preserve">
-    <value>Débito</value>
-  </data>
   <data name="Description.Text" xml:space="preserve">
-    <value>Description</value>
+    <value>Descripción</value>
   </data>
   <data name="ExpensePerMonth" xml:space="preserve">
     <value>Gasto / Mes</value>
   </data>
-  <data name="FromAccount.Text" xml:space="preserve">
-    <value>De la cuenta</value>
-  </data>
   <data name="IncomePerMonth" xml:space="preserve">
     <value>Ingresos / Mes</value>
   </data>
-  <data name="LatestTransactions.Text" xml:space="preserve">
-    <value>Últimas transacciones</value>
-  </data>
-  <data name="ManageCard.Text" xml:space="preserve">
-    <value>Administrar Tarjeta</value>
-  </data>
-  <data name="NetBalance.Text" xml:space="preserve">
+  <data name="NetBalancePerMonth" xml:space="preserve">
     <value>Saldo Neto / Mes</value>
   </data>
-  <data name="PaymentMethod.Text" xml:space="preserve">
-    <value>Métodos de pago</value>
-  </data>
-  <data name="QuickActions.Text" xml:space="preserve">
-    <value>Acciones rápidas</value>
-  </data>
-  <data name="QuickTransfer.Text" xml:space="preserve">
-    <value>Transferencia Rápida</value>
-  </data>
-  <data name="Reset.Text" xml:space="preserve">
-    <value>Reiniciar</value>
-  </data>
-  <data name="SelectAccount.Text" xml:space="preserve">
-    <value>Seleccionar cuenta</value>
-  </data>
-  <data name="SelectBeneficiary" xml:space="preserve">
-    <value>Seleccionar Beneficiario</value>
-  </data>
-  <data name="SelfTransfer.Text" xml:space="preserve">
-    <value>Auto transferencia</value>
-  </data>
-  <data name="Send.Text" xml:space="preserve">
-    <value>Enviar</value>
-  </data>
-  <data name="Settings.Text" xml:space="preserve">
-    <value>Ajustes</value>
-  </data>
-  <data name="ToAccount.Text" xml:space="preserve">
-    <value>A la cuenta</value>
+  <data name="OtherBank" xml:space="preserve">
+    <value>Otros bancos</value>
   </data>
   <data name="TotalBalance" xml:space="preserve">
     <value>Saldo total Monto</value>
@@ -222,16 +171,10 @@
   <data name="TotalSavings" xml:space="preserve">
     <value>Ahorros totales</value>
   </data>
-  <data name="Transactions.Text" xml:space="preserve">
+  <data name="Transactions" xml:space="preserve">
     <value>Las Actas</value>
   </data>
-  <data name="Transfer.Text" xml:space="preserve">
-    <value>Transferir</value>
-  </data>
-  <data name="Update.Text" xml:space="preserve">
-    <value>Actualizar</value>
-  </data>
-  <data name="ViewMore.Text" xml:space="preserve">
-    <value>Ver más</value>
+  <data name="WithinBank" xml:space="preserve">
+    <value>Dentro del Banco</value>
   </data>
 </root>

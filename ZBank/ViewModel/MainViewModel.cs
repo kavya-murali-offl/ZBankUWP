@@ -24,6 +24,7 @@ using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBank.DataStore;
+using Microsoft.Toolkit.Uwp;
 
 namespace ZBank.ViewModel
 {
@@ -84,11 +85,11 @@ namespace ZBank.ViewModel
             View = view;
             TopNavigationList = new List<Navigation>
             {
-                new Navigation("Dashboard", "\uE80F", typeof(DashboardPage)),
-                new Navigation("Accounts", "\uE910", typeof(AccountsPage), typeof(AccountInfoPage)),
-                new Navigation("Cards", "\uE8C7", typeof(CardsPage)),
-                new Navigation("Transactions", "\uE8AB", typeof(TransactionsPage)),
-                new Navigation("Beneficiaries", "\uE716", typeof(BeneficiariesPage)),
+                new Navigation("Dashboard".GetLocalized(), "\uE80F", typeof(DashboardPage)),
+                new Navigation("Accounts".GetLocalized(), "\uE910", typeof(AccountsPage), typeof(AccountInfoPage)),
+                new Navigation("Cards".GetLocalized(), "\uE8C7", typeof(CardsPage)),
+                new Navigation("Transactions".GetLocalized(), "\uE8AB", typeof(TransactionsPage)),
+                new Navigation("Beneficiaries".GetLocalized(), "\uE716", typeof(BeneficiariesPage)),
             };
 
             SelectedItem = TopNavigationList.FirstOrDefault();

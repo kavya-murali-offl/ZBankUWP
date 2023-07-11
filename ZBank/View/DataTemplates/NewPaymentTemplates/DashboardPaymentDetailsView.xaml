@@ -170,7 +170,7 @@
                     Foreground="IndianRed" />
                 <TextBlock
                     Margin="5"
-                    Text="Description"
+                    x:Uid="Description"
                     MaxWidth="400"
                     Style="{ThemeResource NormalSubText}" />
                 <TextBox

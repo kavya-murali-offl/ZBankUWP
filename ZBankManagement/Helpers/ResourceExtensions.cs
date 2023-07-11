@@ -12,7 +12,7 @@ namespace ZBankManagement.Helpers
 
         public static string GetLocalized(this string resourceKey)
         {
-            return _resLoader.GetString(resourceKey+".Text");
+            return _resLoader.GetString(resourceKey);
         }
 
         private static ResourceLoader _resLoader = new ResourceLoader();

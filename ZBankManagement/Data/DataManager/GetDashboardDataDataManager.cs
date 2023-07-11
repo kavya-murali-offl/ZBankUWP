@@ -34,11 +34,11 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 IEnumerable<AccountBObj> accountsList = await _handler.GetAllAccounts(request.UserID).ConfigureAwait(false);
                 var BalanceCard = new DashboardCardModel
                 {
-                    PrimaryKey = "Total Balance",
+                    PrimaryKey = "TotalBalance".GetLocalized(),
                     PrimaryValue = accountsList.Sum(acc => acc.Balance),
-                    SecondaryKey1 = "Total Savings",
+                    SecondaryKey1 = "TotalSavings".GetLocalized(),
                     SecondaryValue1 = accountsList.Where(acc => acc.AccountType != AccountType.TERM_DEPOSIT).Sum(acc => acc.Balance),
-                    SecondaryKey2 = "Total Deposits",
+                    SecondaryKey2 = "TotalDeposits".GetLocalized(),
                     SecondaryValue2 = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT).Sum(acc => acc.Balance)
                 };
 
@@ -48,11 +48,11 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 
                 var BeneficiariesCard = new DashboardCardModel
                 {
-                    PrimaryKey = "Total Beneficiaries",
+                    PrimaryKey = "TotalBeneficiaries".GetLocalized(),
                     PrimaryValue = beneficiaries.Count(),
-                    SecondaryKey1 = "Within Bank",
+                    SecondaryKey1 = "WithinBank".GetLocalized(),
                     SecondaryValue1 = beneficiaries.Where(ben => ifscCodes.Contains(ben.IFSCCode)).Count(),
-                    SecondaryKey2 = "Other Banks",
+                    SecondaryKey2 = "OtherBanks".GetLocalized(),
                     SecondaryValue2 = beneficiaries.Where(ben => !ifscCodes.Contains(ben.IFSCCode)).Count()
                 };
 
@@ -76,22 +76,22 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
 
                 var IncomeExpenseCard = new DashboardCardModel
                 {
-                    PrimaryKey = "Net Balance / Month",
+                    PrimaryKey = "NetBalancePerMonth".GetLocalized(),
                     PrimaryValue = (income - expense),
-                    SecondaryKey1 = "Income / Month",
+                    SecondaryKey1 = "IncomePerMonth".GetLocalized(),
                     SecondaryValue1 = income,
-                    SecondaryKey2 = "Expense / Month",
+                    SecondaryKey2 = "ExpensePerMonth".GetLocalized(),
                     SecondaryValue2 = expense
                 };
 
                 var deposits = accountsList.Where(acc => acc.AccountType == AccountType.TERM_DEPOSIT);
                 var DepositCard = new DashboardCardModel
                 {
-                    PrimaryKey = "Total Deposits",
+                    PrimaryKey = "TotalDeposits".GetLocalized(),
                     PrimaryValue = deposits.Count(),
-                    SecondaryKey1 = "Active Deposits",
+                    SecondaryKey1 = "ActiveDeposits".GetLocalized(),
                     SecondaryValue1 = deposits.Where(dep => dep.AccountStatus == AccountStatus.ACTIVE).Count(),
-                    SecondaryKey2 = "Closed Deposits",
+                    SecondaryKey2 = "ClosedDeposits".GetLocalized(),
                     SecondaryValue2 = deposits.Where(dep => dep.AccountStatus == AccountStatus.CLOSED).Count()
                 };
 
