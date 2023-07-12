@@ -4,21 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
-using ZBank.View;
 using Windows.ApplicationModel.VoiceCommands;
 using ZBankManagement.Entity.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
 using System.Drawing;
 using ZBank.DataStore;
+using ZBank.View;
 
 namespace ZBank.ViewModel
 {
-    internal class SettingsViewModel
+    internal class SettingsViewModel : ViewModelBase
     {
-        System.Drawing.ColorConverter colorConverter = new System.Drawing.ColorConverter();
         
-        private IView View { get; set; }
-
         public SettingsViewModel(IView view)
         {
             View = view;

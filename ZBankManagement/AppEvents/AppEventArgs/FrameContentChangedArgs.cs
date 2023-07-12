@@ -12,5 +12,6 @@ namespace ZBank.AppEvents.AppEventArgs
 
         public object Params { get; set; }
 
+        public string Title { get; set; }
     }
 }

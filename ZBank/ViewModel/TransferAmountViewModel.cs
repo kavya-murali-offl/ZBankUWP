@@ -31,10 +31,11 @@ namespace ZBank.ViewModel
 {
     public class TransferAmountViewModel : ViewModelBase
     {
-        private IView View { get; set; }
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
+
         public bool IsConfirmed { get; set; }
+
         public TransferAmountViewModel(IView view) {
             View = view;
             InitializeSteps();

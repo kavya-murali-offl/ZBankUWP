@@ -18,10 +18,8 @@ using ZBankManagement.Domain.UseCase;
 
 namespace ZBank.ViewModel
 {
-    public class EntryPageViewModel
+    public class EntryPageViewModel :ViewModelBase
     {
-        private IView View { get; set; }
-
         public EntryPageViewModel(IView view) 
         { 
             View = view; 
@@ -31,14 +29,10 @@ namespace ZBank.ViewModel
         internal void OnNavigatedTo()
         {
             InitializeAppData();
-            LoadWindow();
             EnterApplication();
         }
 
-        private async void LoadWindow()
-        {
-            //await WindowManagerService.Current.InitializeAsync();
-        }
+        
 
         private void EnterApplication()
         {
@@ -50,8 +44,9 @@ namespace ZBank.ViewModel
                     PageType = typeof(MainPage),
                     Params = new MainPageArgs()
                     {
-                        CustomerID = customerID
-                    }
+                        CustomerID = customerID,
+                    },
+                    Title = "Dashboard"
                 };
                 ViewNotifier.Instance.OnFrameContentChanged(args);
             }

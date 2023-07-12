@@ -26,7 +26,6 @@ namespace ZBank.ViewModel
 {
     public class AccountInfoViewModel : ViewModelBase
     {
-        public IView View;
 
         private AccountBObj _selectedAccount { get; set; }
 

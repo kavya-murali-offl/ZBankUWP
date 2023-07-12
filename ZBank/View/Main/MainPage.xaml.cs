@@ -60,19 +60,11 @@ namespace ZBank
 
         private void SecondarySplitView_PaneClosed(SplitView sender, object args)
         {
-            //if (SecondarySplitViewContent != null)
-            //{
-            //    SecondarySplitView.IsPaneOpen = true;
-            //}
-
+            ViewNotifier.Instance.OnRightPaneContentUpdated(null);
         }
 
         private void SecondarySplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
         {
-            //if (SecondarySplitViewContent != null)
-            //{
-            //    SecondarySplitView.IsPaneOpen = true;
-            //}
         }
 
         public void Page_UnLoaded(object sender, RoutedEventArgs e)

@@ -10,8 +10,17 @@ namespace ZBank.Services
 {
     public static class DispatcherService
     {
-        public static async Task CallOnUIThreadAsync(this CoreDispatcher dispatcher, DispatchedHandler handler) =>
-       await dispatcher.RunAsync(CoreDispatcherPriority.Normal, handler);
+        public static async Task CallOnUIThreadAsync(this CoreDispatcher dispatcher, DispatchedHandler handler)
+        {
+            if (dispatcher.HasThreadAccess)
+            {
+                handler.Invoke();
+            }
+            else
+            {
+                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, handler);
+            }
+        }
 
         public static async Task CallOnMainViewUiThreadAsync(DispatchedHandler handler) =>
             await CallOnUIThreadAsync(CoreApplication.MainView.CoreWindow.Dispatcher, handler);

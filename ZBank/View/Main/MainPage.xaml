@@ -307,7 +307,7 @@
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Text="{x:Bind ViewModel.SelectedItem.Text, Mode=OneWay}"
+                                                Text="{x:Bind ViewModel.Title, Mode=OneWay}"
                                                 FontSize="20"
                                                 HorizontalTextAlignment="Center"
                                                 TextAlignment="Center"

@@ -24,8 +24,6 @@ namespace ZBank.ViewModel
 {
     public class BeneficiariesViewModel : ViewModelBase
     {
-        private IView View { get; set; }
-
         public BeneficiariesViewModel(IView view)
         {
             View = view;

@@ -20,13 +20,12 @@ using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Helpers;
 
 namespace ZBank.ViewModel
 {
     public class DashboardViewModel : ViewModelBase
     {
-        public IView View;
-
         public ICommand PreviousCardCommand { get; set; }
         public ICommand NextCardCommand { get; set; }
 
@@ -34,6 +33,7 @@ namespace ZBank.ViewModel
         public DashboardViewModel(IView view)
         {
             View = view;
+            Title = "Dashboard";
             PreviousCardCommand = new RelayCommand(OnPreviousCard, 
                 () => DashboardModel?.AllCards?.Count > 0 ? DashboardModel?.AllCards?.ElementAtOrDefault(_onViewCardIndex - 1) != null : false);
             
@@ -168,7 +168,8 @@ namespace ZBank.ViewModel
                 Params = new CardsPageParams()
                 {
                     OnViewCard = OnViewCard,
-                }
+                },
+                Title = "Cards".GetLocalized()
             };
 
             ViewNotifier.Instance.OnFrameContentChanged(args);
@@ -178,6 +179,7 @@ namespace ZBank.ViewModel
         {
             FrameContentChangedArgs args = new FrameContentChangedArgs();
             args.PageType = typeof(TransactionsPage);
+            args.Title = "Transactions";
             ViewNotifier.Instance.OnFrameContentChanged(args);
         }
 

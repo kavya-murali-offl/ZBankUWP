@@ -6,23 +6,53 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using ZBank.Services;
+using ZBank.View;
 using ZBank.ViewModel.VMObjects;
 
 namespace ZBank.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
+        public IView View { get; set; }
 
-        protected string Title { get; set; }    
+        private string _title = string.Empty;
+
+        public string Title {
+            get => _title;
+            set => Set(ref _title, value);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName = null)
+        protected async void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null)
+            {
+                if (View?.Dispatcher == null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }
+                else
+                {
+                    if (View.Dispatcher.HasThreadAccess)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                    }
+                    else
+                    {
+                        await View.Dispatcher.CallOnUIThreadAsync(
+                             () =>
+                            {
+                                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                            });
+                    }
+                }
+            }
         }
 
         public void ValidateObject(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)

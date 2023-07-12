@@ -18,7 +18,6 @@ namespace ZBank.ViewModel
 {
     internal class AddCardViewModel : ViewModelBase
     {
-        private IView View { get; set; }
 
         public AddCardViewModel(IView view) 
         { 

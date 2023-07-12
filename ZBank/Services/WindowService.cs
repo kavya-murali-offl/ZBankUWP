@@ -79,9 +79,23 @@ namespace ZBank.Services
             ApplicationView.GetForCurrentView().Consolidated -= Helper_Consolidated;
         }
 
-        internal static void CloseWindow(Window currentWindow)
+        public static void CloseWindow(CoreApplicationView view)
         {
-            currentWindow.Close();
+
+                _ = CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+                {
+                    if (CoreApplication.Views.Count == 1)
+                        Application.Current.Exit();
+                    else if (CoreApplication.Views.Count == 2 && !CoreApplication.MainView.CoreWindow.Visible)
+                        Application.Current.Exit();
+                    else
+                    {
+                        _ = view.Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+                        {
+                            Window.Current.Close();
+                        });
+                    }
+                });
         }
 
     }

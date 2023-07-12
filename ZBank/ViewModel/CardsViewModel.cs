@@ -36,8 +36,6 @@ namespace ZBank.ViewModel
     public class CardsViewModel : ViewModelBase
     {
 
-        public IView View;
-
         public CardsPageParams Params { get; set; } 
 
         public ICommand PreviousCardCommand { get; set; }

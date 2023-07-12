@@ -25,7 +25,6 @@ namespace ZBank.ViewModel
 {
     internal class PayCreditCardViewModel : ViewModelBase
     {
-        private IView View { get; set; }
 
         public CreditCard Card;
 

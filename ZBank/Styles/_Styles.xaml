@@ -1921,10 +1921,8 @@
                     <ListViewItemPresenter
                         ContentTransitions="{TemplateBinding ContentTransitions}"
                         CornerRadius="5"
-                        SelectedPointerOverBackground="{ThemeResource ApplicationBackgroundThemeBrush}"
-                        PointerOverBackground="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
-                        SelectionCheckMarkVisualEnabled="False"
-                        SelectedBackground="{ThemeResource ApplicationBackgroundThemeBrush}" />
+                        SelectedBorderThickness="2,0,0,0"
+                        SelectionCheckMarkVisualEnabled="True" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

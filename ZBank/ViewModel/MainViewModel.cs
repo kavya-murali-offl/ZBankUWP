@@ -30,7 +30,6 @@ namespace ZBank.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public IView View;
         public IList<Navigation> TopNavigationList { get; private set; }
 
         private Navigation _selectedItem;
@@ -91,7 +90,7 @@ namespace ZBank.ViewModel
 
             SelectedItem = TopNavigationList.FirstOrDefault();
         }
-       
+
 
         public void UpdateSelectedPage(Type pageType)
         {
@@ -107,7 +106,7 @@ namespace ZBank.ViewModel
             FrameContentChangedArgs args = new FrameContentChangedArgs()
             {
                 PageType = pageType,
-                Params = pageParams
+                Params = pageParams,
             };
             ViewNotifier.Instance.OnFrameContentChanged(args);
         }
@@ -195,7 +194,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(LogoutCustomerResponse response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                         ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                         {
@@ -209,7 +208,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {

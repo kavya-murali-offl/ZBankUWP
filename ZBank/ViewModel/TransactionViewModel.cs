@@ -29,7 +29,6 @@ namespace ZBank.ViewModel
 {
     public class TransactionViewModel : ViewModelBase
     {
-        public IView View;
 
         public ICommand PreviousCommand { get; private set; }
 
@@ -145,8 +144,6 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.RightPaneContentUpdated -= PaneClosed;
         }
-
-       
 
         private bool IsPreviousButtonEnabled()
         {

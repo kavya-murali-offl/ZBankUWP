@@ -70,6 +70,7 @@ namespace ZBank.View.Modals
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            ViewModel.LoadContent();    
             AccountForm.DataContext = ViewModel;
             SetFormTemplate(AccountType.CURRENT);
         }

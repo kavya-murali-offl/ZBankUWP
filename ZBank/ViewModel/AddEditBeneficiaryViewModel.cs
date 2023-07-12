@@ -27,8 +27,6 @@ namespace ZBank.ViewModel
 {
     public class AddEditBeneficiaryViewModel : ViewModelBase
     {
-        private IView View { get; set; }
-
         public bool IsAdd { get; set; }
 
         public ICommand SubmitCommand { get; set; }

@@ -18,16 +18,17 @@ using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.DataStore;
 using ZBank.Services;
 using ZBank.View.UserControls;
+using Microsoft.Toolkit.Uwp;
 
 namespace ZBank.ViewModel
 {
     public class AccountPageViewModel : ViewModelBase
     {
-        public IView View;
 
         public AccountPageViewModel(IView view)
         {
             View = view;
+            Title = "Accounts".GetLocalized();
         }
 
         public void OnPageLoaded()
@@ -84,7 +85,7 @@ namespace ZBank.ViewModel
             FrameContentChangedArgs args = new FrameContentChangedArgs()
             {
                 PageType = typeof(AccountInfoPage),
-                Params = parameters
+                Params = parameters,
             };
 
             ViewNotifier.Instance.OnFrameContentChanged(args);

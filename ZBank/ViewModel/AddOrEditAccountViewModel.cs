@@ -28,16 +28,19 @@ using ZBank.View.DataTemplates.NewAcountTemplates;
 
 namespace ZBank.ViewModel
 {
-    public class AddOrEditAccountViewModel : MultiWindowViewModelBase
+    public class AddOrEditAccountViewModel : ViewModelBase
     {
-        public IView View { get; set; }
+
         public IList<AccountType> AccountTypes { get; set; } = new List<AccountType>() { AccountType.CURRENT, AccountType.SAVINGS, AccountType.TERM_DEPOSIT };
+        
         public ICommand SubmitCommand { get; set; }
+        
         public AccountType SelectedAccountType { get; set; }
 
         public AddOrEditAccountViewModel(IView view)
         {
             View = view;
+            DispatcherManager.Current.Dispatcher = view.Dispatcher;
             BranchList = new ObservableCollection<Branch>();
             Reset();
         }
@@ -170,6 +173,7 @@ namespace ZBank.ViewModel
 
         private void OnAccountInsertionSuccessful(bool isInserted)
         {
+            WindowService.CloseWindow(CoreApplication.GetCurrentView());
         }
 
         private void ConsolidateView()
@@ -408,7 +412,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllBranchesResponse response)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     BranchListUpdatedArgs args = new BranchListUpdatedArgs()
                     {
@@ -424,10 +428,10 @@ namespace ZBank.ViewModel
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(
                       new Notification()
-                        {
+                      {
                             Message = response.Message,
                             Type = NotificationType.ERROR
-                    });
+                      });
                 });
 
             }

@@ -16,8 +16,6 @@ namespace ZBank.ViewModel
 {
     public class ResetPinViewModel : ViewModelBase
     {
-        private IView View { get; set; }    
-
         public ResetPinViewModel(IView view)
         {
             View = view;

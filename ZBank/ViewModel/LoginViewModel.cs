@@ -21,7 +21,6 @@ namespace ZBank.ViewModel
 {
     public class LoginViewModel : ViewModelBase
     {
-        private IView View { get; set; }
         public ICommand LoginCommand { get; set; }
 
         public LoginViewModel(IView view) {
