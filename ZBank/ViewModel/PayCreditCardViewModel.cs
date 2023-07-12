@@ -123,7 +123,7 @@ namespace ZBank.ViewModel
         {
             if (AvailableBalance < Amount)
             {
-                FieldErrors["Amount"] = $"Insufficient Balance. Amount should be less than Rs. {AvailableBalance.ToString("C")}";
+                FieldErrors["Amount"] = $"Insufficient Balance. Amount should be less than Rs. {AvailableBalance:C}";
                 return false;
             }
             return true;
@@ -181,14 +181,16 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
+                    ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnCreditCardSettled(true);
                 });
             }
 
             public async Task OnFailure(ZBankException response)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
+                    ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnCreditCardSettled(false);
                 });
             }

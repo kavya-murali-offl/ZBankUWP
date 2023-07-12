@@ -49,16 +49,17 @@
         </Grid.RowDefinitions>
         <TextBlock
             Margin="10"
-            VerticalAlignment="Center"
-            Text="Type" />
+            Text="Type"
+            MaxWidth="400"
+            Style="{ThemeResource NormalSubText}" />
         <DropDownButton
             IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
-            MaxWidth="350"
+            MaxWidth="390"
             Grid.ColumnSpan="2"
             Grid.Row="1"
             HorizontalAlignment="Stretch"
             x:Name="BeneficiaryButton"
-            CornerRadius="8">
+            CornerRadius="5">
             <DropDownButton.Content>
                 <TextBlock
                     TextTrimming="CharacterEllipsis"
@@ -93,7 +94,8 @@
             <TextBlock
                 Margin="10"
                 Text="Name"
-                Grid.Row="2"
+            MaxWidth="400"
+            Grid.Row="2"
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
@@ -106,6 +108,7 @@
 
             <TextBlock
                 Grid.Row="4"
+            MaxWidth="400"
             Margin="10,0,10,0"
             Foreground="IndianRed"
                 Text="{x:Bind ViewModel.FieldErrors['BeneficiaryName'], Mode=OneWay}" />
@@ -113,12 +116,14 @@
             <TextBlock
             Grid.Row="5"
             Margin="10"
+            MaxWidth="400"
             Text="Account Number"
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
             Grid.Row="6"
-                KeyDown="TextBox_KeyDown"
+            MaxWidth="400"
+            KeyDown="TextBox_KeyDown"
             Style="{ThemeResource CustomTextBoxStyle}"
                 IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
                 PlaceholderText="Enter Account Number"
@@ -126,6 +131,7 @@
 
             <TextBlock
             Grid.Row="7"
+            MaxWidth="400"
             Margin="10,0,10,0"
             Foreground="IndianRed"
                 Text="{x:Bind ViewModel.FieldErrors['AccountNumber'], Mode=OneWay}" />
@@ -133,12 +139,14 @@
             <TextBlock
             Grid.Row="8"
             Margin="10"
-                Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+            MaxWidth="400"
+            Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                 Text="IFSC Code"
                 Style="{ThemeResource NormalSubText}" />
 
             <TextBox
             Grid.Row="9"
+            MaxWidth="400"
             Style="{ThemeResource CustomTextBoxStyle}"
                 IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
                 Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -150,6 +158,7 @@
             <TextBlock
             Margin="10,0,10,0"
             Grid.Row="10"
+            MaxWidth="400"
             Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
             Text="{x:Bind ViewModel.FieldErrors['IFSCCode'], Mode=OneWay}"
             Foreground="IndianRed" />
@@ -159,8 +168,8 @@
             Grid.ColumnSpan="2"
             Grid.Row="11"
             CornerRadius="5"
-            VerticalAlignment="Bottom"
-            MinWidth="150"
+            VerticalAlignment="Center"
+            MinWidth="100"
             Margin="20"
             Command="{x:Bind ViewModel.SubmitCommand}"
             Style="{ThemeResource PrimaryButton}"
@@ -173,36 +182,33 @@
         
         <Button
             Visibility="Collapsed"
-            Grid.ColumnSpan="2"
-            Grid.Row="12"
-            CornerRadius="8"
-            VerticalAlignment="Bottom"
-            MinWidth="150"
+            Grid.Row="11"
+            CornerRadius="5"
+            MinWidth="100"
             x:Name="CancelButton"
             Click="CancelButton_Click"
             Margin="5,0,5,0"
             Style="{ThemeResource SecondaryButton}"
-            HorizontalAlignment="Center">
+            HorizontalAlignment="Left">
             <Button.Content>
                 <TextBlock
-                    Text="Cancel" />
+                    x:Uid="Cancel" />
             </Button.Content>
         </Button>
 
         <Button
-            Grid.ColumnSpan="2"
             Grid.Row="11"
             CornerRadius="5"
-            VerticalAlignment="Bottom"
-            MinWidth="150"
-            Margin="20"
+            VerticalAlignment="Center"
+            MinWidth="100"
+            Margin="20,20,130,20"
             x:Name="ResetButton"
             Click="ResetButton_Click"
             Style="{ThemeResource SecondaryButton}"
-            HorizontalAlignment="Left">
+            HorizontalAlignment="Right">
             <Button.Content>
                 <TextBlock
-                    Text="Reset" />
+                    x:Uid="Reset" />
             </Button.Content>
         </Button>
     </Grid>

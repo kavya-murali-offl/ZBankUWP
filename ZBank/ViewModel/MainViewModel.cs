@@ -32,6 +32,14 @@ namespace ZBank.ViewModel
     {
         public IList<Navigation> TopNavigationList { get; private set; }
 
+        private string _title = string.Empty;
+
+        public string Title
+        {
+            get => _title;
+            set => Set(ref _title, value);
+        }
+
         private Navigation _selectedItem;
 
         public Navigation SelectedItem
@@ -54,7 +62,13 @@ namespace ZBank.ViewModel
         public void OnLoaded()
         {
             GetCustomerData();
+            ViewNotifier.Instance.FrameContentChanged += ChangeFrame;
             ViewNotifier.Instance.GetCustomerSuccess += CustomerFetched;
+        }
+
+        private void ChangeFrame(FrameContentChangedArgs args)
+        {
+            Title = args.Title;
         }
 
         private void CustomerFetched(Customer obj)
@@ -74,21 +88,20 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-    
-
         public MainViewModel(IView view)
         {
             View = view;
             TopNavigationList = new List<Navigation>
             {
-                new Navigation("Dashboard".GetLocalized(), "\uE80F", typeof(DashboardPage)),
-                new Navigation("Accounts".GetLocalized(), "\uE910", typeof(AccountsPage), typeof(AccountInfoPage)),
-                new Navigation("Cards".GetLocalized(), "\uE8C7", typeof(CardsPage)),
-                new Navigation("Transactions".GetLocalized(), "\uE8AB", typeof(TransactionsPage)),
-                new Navigation("Beneficiaries".GetLocalized(), "\uE716", typeof(BeneficiariesPage)),
+                new Navigation("Dashboard", "Dashboard".GetLocalized(), "\uE80F", typeof(DashboardPage)),
+                new Navigation("Accounts", "Accounts".GetLocalized(), "\uE910", typeof(AccountsPage), typeof(AccountInfoPage)),
+                new Navigation("Cards", "Cards".GetLocalized(), "\uE8C7", typeof(CardsPage)),
+                new Navigation("Transactions", "Transactions".GetLocalized(), "\uE8AB", typeof(TransactionsPage)),
+                new Navigation("Beneficiaries", "Beneficiaries".GetLocalized(), "\uE716", typeof(BeneficiariesPage)),
             };
 
             SelectedItem = TopNavigationList.FirstOrDefault();
+            Title = SelectedItem.Text.GetLocalized();
         }
 
 
@@ -107,7 +120,10 @@ namespace ZBank.ViewModel
             {
                 PageType = pageType,
                 Params = pageParams,
+                Title = navigation.Text
             };
+
+            Title = navigation.Text;
             ViewNotifier.Instance.OnFrameContentChanged(args);
         }
 
@@ -145,6 +161,7 @@ namespace ZBank.ViewModel
         internal void OnUnloaded()
         {
             ViewNotifier.Instance.GetCustomerSuccess -= CustomerFetched;
+            ViewNotifier.Instance.FrameContentChanged -= ChangeFrame;
         }
 
         internal async Task OpenSettingsWindow()

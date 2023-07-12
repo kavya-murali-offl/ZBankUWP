@@ -33,7 +33,6 @@ namespace ZBank.ViewModel
         public DashboardViewModel(IView view)
         {
             View = view;
-            Title = "Dashboard";
             PreviousCardCommand = new RelayCommand(OnPreviousCard, 
                 () => DashboardModel?.AllCards?.Count > 0 ? DashboardModel?.AllCards?.ElementAtOrDefault(_onViewCardIndex - 1) != null : false);
             
@@ -179,7 +178,7 @@ namespace ZBank.ViewModel
         {
             FrameContentChangedArgs args = new FrameContentChangedArgs();
             args.PageType = typeof(TransactionsPage);
-            args.Title = "Transactions";
+            args.Title = "Transactions".GetLocalized();
             ViewNotifier.Instance.OnFrameContentChanged(args);
         }
 

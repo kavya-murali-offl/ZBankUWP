@@ -8,10 +8,10 @@ namespace ZBank.Entities.BusinessObjects
 {
     public class Navigation
     {
-        public Navigation(string text, string iconSource, params Type[] pageTypes)
+        public Navigation(string tag, string text, string iconSource, params Type[] pageTypes)
         {
             Text = text;
-            Tag = text;
+            Tag = tag;
             IconSource = iconSource;
             PageTypes = pageTypes;
         }

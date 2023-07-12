@@ -171,10 +171,7 @@ namespace ZBank.ViewModel
         public void UpdateCard(CardDataUpdatedArgs args)
         {
             LinkedCard = args.CardsList.FirstOrDefault();
-            if (LinkedCard != null)
-            {
-                LinkedCard.SetDefaultValues();
-            }
+            LinkedCard?.SetDefaultValues();
         }
 
         public void UpdateTransactions(TransactionPageDataUpdatedArgs args)
@@ -236,9 +233,9 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException exception)
             {
-
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
+                    ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = exception.Message,

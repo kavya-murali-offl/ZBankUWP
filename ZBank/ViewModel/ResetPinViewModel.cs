@@ -48,7 +48,7 @@ namespace ZBank.ViewModel
             {
                 ErrorText = "Pin Number is Required";
             }
-            else if (NewPin.Length != 4 || !int.TryParse(NewPin, out int pinNumber))
+            else if (NewPin.Length != 4 || !int.TryParse(NewPin, out _))
             {
                 ErrorText = "Pin Number should be a number of 4 digits";
             }

@@ -40,8 +40,6 @@ namespace ZBank.ViewModel
         public AddOrEditAccountViewModel(IView view)
         {
             View = view;
-            DispatcherManager.Current.Dispatcher = view.Dispatcher;
-            BranchList = new ObservableCollection<Branch>();
             Reset();
         }
 
@@ -159,21 +157,34 @@ namespace ZBank.ViewModel
             return account;
         }
 
-       
-
         internal void LoadContent()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
+            ViewNotifier.Instance.GetCustomerSuccess += CustomerFetched;
             ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
             ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
             LoadAllAccounts();
             LoadAllBranches();
+            GetCustomerData();
+        }
+
+        internal void UnloadContent()
+        {
+            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+            ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
+            ViewNotifier.Instance.GetCustomerSuccess -= CustomerFetched;
+            ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
+        }
+
+        private void CustomerFetched(Customer customer)
+        {
+            CurrentCustomer = customer;
         }
 
         private void OnAccountInsertionSuccessful(bool isInserted)
         {
-            WindowService.CloseWindow(CoreApplication.GetCurrentView());
+            WindowService.CloseWindow();
         }
 
         private void ConsolidateView()
@@ -182,16 +193,14 @@ namespace ZBank.ViewModel
             ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
         }
 
+      
+
         private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
         {
             ConsolidateView();
         }
 
-        internal void UnloadContent()
-        {
-            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
-            ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
-        }
+     
 
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
@@ -201,6 +210,18 @@ namespace ZBank.ViewModel
         private void UpdateBranchesList(BranchListUpdatedArgs args)
         {
             BranchList = new ObservableCollection<Branch>(args.BranchList);
+        }
+
+        private void GetCustomerData()
+        {
+            GetCustomerRequest request = new GetCustomerRequest()
+            {
+                CustomerID = Repository.Current.CurrentUserID
+            };
+
+            IPresenterCallback<GetCustomerResponse> presenterCallback = new GetCustomerPresenterCallback(this);
+            UseCaseBase<GetCustomerResponse> useCase = new GetCustomerUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         private void LoadAllAccounts()
@@ -300,64 +321,38 @@ namespace ZBank.ViewModel
             }
         }
 
-        private Customer _currentCustomer = null;
-
-        public Customer CurrentCustomer
-        {
-            get { return _currentCustomer; }
-            set
-            {
-                _currentCustomer = value;
-                OnPropertyChanged(nameof(CurrentCustomer));
-            }
-        }
+        private Customer CurrentCustomer = null;
 
         private string _uploadInfo = string.Empty;
 
         public string UploadInfo
         {
-            get { return _uploadInfo; }
-            set
-            {
-                _uploadInfo = value;
-                OnPropertyChanged(nameof(UploadInfo));
-            }
+            get => _uploadInfo; 
+            set => Set(ref  _uploadInfo, value);    
         }
 
-        private ObservableCollection<Account> _accounts { get; set; }
+        private ObservableCollection<Account> _accounts = new ObservableCollection<Account>();
 
         public ObservableCollection<Account> Accounts
         {
-            get { return _accounts; }
-            set
-            {
-                _accounts = value;
-                OnPropertyChanged(nameof(Accounts));
-            }
+            get => _accounts;
+            set => Set(ref _accounts, value);  
         }
 
-        private FrameworkElement _selectedTemplate { get; set; }
+        private FrameworkElement _selectedTemplate = null;
 
         public FrameworkElement SelectedTemplate
         {
-            get { return _selectedTemplate; }
-            set
-            {
-                _selectedTemplate = value;
-                OnPropertyChanged(nameof(SelectedTemplate));
-            }
+            get => _selectedTemplate;
+            set => Set(ref _selectedTemplate, value);
         }
 
-        private ObservableCollection<Branch> _branchList { get; set; }
+        private ObservableCollection<Branch> _branchList = new ObservableCollection<Branch>();
 
         public ObservableCollection<Branch> BranchList
         {
-            get { return _branchList; }
-            set
-            {
-                _branchList = value;
-                OnPropertyChanged(nameof(BranchList));
-            }
+            get => _branchList;
+            set => Set(ref _branchList, value);
         }
 
 
@@ -367,6 +362,37 @@ namespace ZBank.ViewModel
             new DropDownItem("1 year", 12),
             new DropDownItem("2 years", 24),
         };
+
+        private class GetCustomerPresenterCallback : IPresenterCallback<GetCustomerResponse>
+        {
+            private AddOrEditAccountViewModel ViewModel { get; set; }
+
+            public GetCustomerPresenterCallback(AddOrEditAccountViewModel accountPageViewModel)
+            {
+                ViewModel = accountPageViewModel;
+            }
+
+            public async Task OnSuccess(GetCustomerResponse response)
+            {
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
+                });
+            }
+
+            public async Task OnFailure(ZBankException error)
+            {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(
+                        new Notification()
+                        {
+                            Message = error.Message,
+                            Type = NotificationType.ERROR
+                        });
+                });
+            }
+        }
 
         private class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
         {
@@ -379,7 +405,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertAccountResponse response)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnAccountInserted(true);
                 });
@@ -433,9 +459,7 @@ namespace ZBank.ViewModel
                             Type = NotificationType.ERROR
                       });
                 });
-
             }
-
         }
 
         private class GetAllAccountsInAddPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
@@ -449,7 +473,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(GetAllAccountsResponse response)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                     {

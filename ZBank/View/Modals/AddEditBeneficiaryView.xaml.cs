@@ -19,6 +19,7 @@ using ZBank.Entities;
 using ZBank.ViewModel;
 using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.EnumerationTypes;
+using ZBankManagement.Helpers;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -33,7 +34,7 @@ namespace ZBank.View.UserControls
             this.InitializeComponent();
             ViewModel = new AddEditBeneficiaryViewModel(this);
             CancelButton.Visibility = Visibility.Collapsed;
-            BeneficiaryButton.Content = ViewModel.BeneficiaryTypes.ElementAt(0).ToString();
+            BeneficiaryButton.Content = ViewModel.BeneficiaryTypes.ElementAt(0).ToString().GetLocalized();
         }
 
         public AddEditBeneficiaryView(BeneficiaryBObj beneficiaryBObj)
@@ -50,7 +51,7 @@ namespace ZBank.View.UserControls
                 if (item.SelectedIndex >= 0)
                 {
                     ViewModel.SetBeneficiaryType(item.SelectedIndex);
-                    BeneficiaryButton.Content = item.SelectedValue;
+                    BeneficiaryButton.Content = item.SelectedValue.ToString().GetLocalized(); ;
                 }
                 BeneficiaryButton.Flyout.Hide();
             }

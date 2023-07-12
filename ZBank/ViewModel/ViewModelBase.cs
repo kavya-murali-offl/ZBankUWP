@@ -20,12 +20,6 @@ namespace ZBank.ViewModel
     {
         public IView View { get; set; }
 
-        private string _title = string.Empty;
-
-        public string Title {
-            get => _title;
-            set => Set(ref _title, value);
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

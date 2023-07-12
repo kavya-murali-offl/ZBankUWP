@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entity;
+using ZBankManagement.Helpers;
 
 namespace ZBank.Entities.BusinessObjects
 {
@@ -23,6 +24,6 @@ namespace ZBank.Entities.BusinessObjects
 
         public IEnumerable<TransactionBObj> Transactions { get; set; }
 
-        public override string ToString() => AccountNumber + " - " + AccountType.ToString();
+        public override string ToString() => AccountNumber + " - " + AccountType.ToString().GetLocalized();
     }
 }

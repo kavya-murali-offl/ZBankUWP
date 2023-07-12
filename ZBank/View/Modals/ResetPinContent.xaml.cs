@@ -31,9 +31,11 @@ namespace ZBank.View.UserControls
        public ResetPinContent(string cardNumber)
        {
             this.InitializeComponent();
-            ViewModel = new ResetPinViewModel(this);
-            ViewModel.CardNumber = cardNumber;
-       }
+            ViewModel = new ResetPinViewModel(this)
+            {
+                CardNumber = cardNumber
+            };
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

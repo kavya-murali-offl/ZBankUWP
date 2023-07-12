@@ -61,7 +61,7 @@
                             TextTrimming="CharacterEllipsis"
                             HorizontalAlignment="Center"
                             x:Name="AccountsText"
-                            Text="{x:Bind AccountsList.SelectedValue.ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
+                            Text="{x:Bind AccountsList.SelectedValue.ToString(), Mode=OneWay}" />
                     </DropDownButton.Content>
                     <DropDownButton.Flyout>
                         <Flyout
@@ -111,7 +111,7 @@
                             x:Name="BeneficiaryText"
                             MaxWidth="300"
                             TextTrimming="CharacterEllipsis"
-                            Text="{x:Bind BeneficiaryList.SelectedValue.ToString(), TargetNullValue='Select Beneficiary', Mode=OneWay}" />
+                            Text="{x:Bind BeneficiaryList.SelectedValue.ToString(), Mode=OneWay}" />
                     </DropDownButton.Content>
                     <DropDownButton.Flyout>
                         <Flyout

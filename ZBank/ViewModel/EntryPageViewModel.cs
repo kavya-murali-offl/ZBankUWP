@@ -15,6 +15,7 @@ using Windows.UI;
 using static ZBankManagement.Domain.UseCase.InitializeApp;
 using Windows.UI.Core;
 using ZBankManagement.Domain.UseCase;
+using Microsoft.Toolkit.Uwp;
 
 namespace ZBank.ViewModel
 {
@@ -46,7 +47,7 @@ namespace ZBank.ViewModel
                     {
                         CustomerID = customerID,
                     },
-                    Title = "Dashboard"
+                    Title = "Dashboard".GetLocalized()
                 };
                 ViewNotifier.Instance.OnFrameContentChanged(args);
             }

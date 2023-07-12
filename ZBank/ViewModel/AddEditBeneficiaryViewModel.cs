@@ -173,11 +173,11 @@ namespace ZBank.ViewModel
         {
             var type = BeneficiaryTypes.ElementAt(index);
             SelectedBeneficiary.BeneficiaryType = type;
-            UpdateTemplate(type);
+            UpdateTemplate();
             Reset(type);
         }
 
-        private void UpdateTemplate(BeneficiaryType type)
+        private void UpdateTemplate()
         {
             switch (SelectedBeneficiary.BeneficiaryType)
             {
@@ -240,12 +240,12 @@ namespace ZBank.ViewModel
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.InsertedBeneficiary, true);
+                    ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = "Beneficiary Inserted Successfully",
                         Type = NotificationType.SUCCESS
                     });
-                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
 

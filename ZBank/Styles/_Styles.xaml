@@ -1908,6 +1908,9 @@
             Property="HorizontalContentAlignment"
             Value="Center" />
         <Setter
+            Property="MinWidth"
+            Value="300" />
+        <Setter
             Property="Background"
             Value="Transparent" />
         <Setter
@@ -1920,9 +1923,10 @@
                     TargetType="ListViewItem">
                     <ListViewItemPresenter
                         ContentTransitions="{TemplateBinding ContentTransitions}"
-                        CornerRadius="5"
-                        SelectedBorderThickness="2,0,0,0"
-                        SelectionCheckMarkVisualEnabled="True" />
+                        SelectedPointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
+                        PointerOverBackground="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
+                        SelectionCheckMarkVisualEnabled="False"
+                        SelectedBackground="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

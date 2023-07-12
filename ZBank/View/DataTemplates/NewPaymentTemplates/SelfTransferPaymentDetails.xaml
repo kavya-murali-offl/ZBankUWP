@@ -95,11 +95,13 @@
                         </Flyout>
                     </DropDownButton.Flyout>
                 </DropDownButton>
+                
                 <TextBlock
                     Margin="5"
                     TextWrapping="Wrap"
                     Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
                     Foreground="IndianRed" />
+                
                 <TextBlock
                     Margin="5"
                     x:Uid="ToAccountRequired"

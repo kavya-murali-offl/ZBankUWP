@@ -28,7 +28,7 @@ namespace ZBank.ViewModel
         public AccountPageViewModel(IView view)
         {
             View = view;
-            Title = "Accounts".GetLocalized();
+
         }
 
         public void OnPageLoaded()
@@ -86,6 +86,7 @@ namespace ZBank.ViewModel
             {
                 PageType = typeof(AccountInfoPage),
                 Params = parameters,
+                Title = "Accounts".GetLocalized()
             };
 
             ViewNotifier.Instance.OnFrameContentChanged(args);

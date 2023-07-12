@@ -69,12 +69,12 @@ namespace ZBank.ViewModel
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard);
+                    ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = "Card inserted successfully",
                         Type = NotificationType.SUCCESS
                     });
-                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
 

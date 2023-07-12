@@ -18,6 +18,7 @@ using ZBank.Entities.BusinessObjects;
 using ZBank.View.Modals;
 using ZBank.ViewModel;
 using ZBankManagement.Entities.BusinessObjects;
+using ZBankManagement.Helpers;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -37,8 +38,8 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Reset()
         {
-            AccountsText.Text = "Select Account";
-            BeneficiaryText.Text = "Select Beneficiary";
+            AccountsText.Text = "SelectAccount".GetLocalized();
+            BeneficiaryText.Text = "SelectBeneficiary".GetLocalized();
         }
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)

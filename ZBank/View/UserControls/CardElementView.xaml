@@ -18,6 +18,8 @@
             x:Key="CurrencyConverter" />
         <converter:MaskConverter
             x:Key="MaskConverter" />
+        <converter:EnumToStringConverter
+            x:Key="EnumToStringConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid
@@ -53,11 +55,12 @@
                 FontWeight="Bold"
                 VerticalAlignment="Center"
                 Foreground="Azure"
-                Text="{x:Bind TemplateCard.Type, Mode=OneWay}" />
+                Text="{x:Bind TemplateCard.Type, Mode=OneWay, Converter={StaticResource EnumToStringConverter}}" />
             <Image
                     MaxHeight="35"
                     HorizontalAlignment="Right"
                     Source="{x:Bind BankLogo, Mode=OneWay}" />
+            
             <TextBlock
                 Grid.Row="1"
                 HorizontalAlignment="Center"

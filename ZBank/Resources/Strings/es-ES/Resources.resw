@@ -132,6 +132,9 @@
   <data name="ActiveDeposits" xml:space="preserve">
     <value>Depósitos Activos</value>
   </data>
+  <data name="AddBeneficiary.Text" xml:space="preserve">
+    <value>Añadir Beneficiario</value>
+  </data>
   <data name="AddCreditCard.Text" xml:space="preserve">
     <value>Añadir tarjeta de crédito</value>
   </data>
@@ -219,6 +222,9 @@
   <data name="IncomePerMonth" xml:space="preserve">
     <value>Ingresos / Mes</value>
   </data>
+  <data name="LastLoggedOn.Text" xml:space="preserve">
+    <value>Last Logged On</value>
+  </data>
   <data name="LatestTransactions" xml:space="preserve">
     <value>Últimas transacciones</value>
   </data>
@@ -241,6 +247,9 @@
     <value>Próxima</value>
   </data>
   <data name="OtherBank" xml:space="preserve">
+    <value>Otros bancos</value>
+  </data>
+  <data name="OTHER_BANK" xml:space="preserve">
     <value>Otros bancos</value>
   </data>
   <data name="Previous.Text" xml:space="preserve">
@@ -322,6 +331,9 @@
     <value>Ver más</value>
   </data>
   <data name="WithinBank" xml:space="preserve">
+    <value>Dentro del Banco</value>
+  </data>
+  <data name="WITHIN_BANK" xml:space="preserve">
     <value>Dentro del Banco</value>
   </data>
 </root>

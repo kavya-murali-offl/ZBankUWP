@@ -15,12 +15,11 @@
         <converter:BooleanToVisibilityConverter
             x:Key="BoolToVisibilityConverter"/>
         <converter:InitialsConverter
-            x:Key="InitialsConverter" />
+            x:Key="InitialsConverter" />        
             <DataTemplate
                 x:Name="GridViewTemplate"
                 x:DataType="businessobjects:BeneficiaryBObj">
-                <Grid >
-
+            <Grid>
                 <Grid
                     VerticalAlignment="Top"
                     HorizontalAlignment="Center"
@@ -42,24 +41,23 @@
                         Margin="10,40,10,10"
                         MinHeight="200"
                         Width="250">
-                        <Grid.RowDefinitions>
-                            <RowDefinition
-                                Height="Auto" />
-                            <RowDefinition
-                                Height="Auto" />
-                            <RowDefinition
-                                Height="Auto" />
-                            <RowDefinition
-                                Height="Auto" />
-                            <RowDefinition
-                                Height="Auto" />
-                            <RowDefinition
-                                Height="Auto" />
-                            <RowDefinition
-                                Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <TextBlock
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
                             Canvas.ZIndex="20"
                             HorizontalAlignment="Center"
                             Grid.Row="1"
@@ -304,10 +302,10 @@
                     <Grid
                         CornerRadius="8"
                         Margin="5"
-                        Background="{ThemeResource ApplicationBackground}">
+                        Background="{ThemeResource ApplicationBackgroundThemeBrush}">
                         <usercontrols:CardControl
                             Height="Auto"
-                            MyTitle="Add Beneficiary">
+                            MyTitle="AddBeneficiary">
                             <usercontrols:CardControl.MyContent>
                                 <usercontrols:AddEditBeneficiaryView />
                             </usercontrols:CardControl.MyContent>
