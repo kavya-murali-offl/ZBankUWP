@@ -301,7 +301,6 @@
                     </Grid.RowDefinitions>
                     <Grid
                         CornerRadius="8"
-                        Margin="5"
                         Background="{ThemeResource ApplicationBackgroundThemeBrush}">
                         <usercontrols:CardControl
                             Height="Auto"

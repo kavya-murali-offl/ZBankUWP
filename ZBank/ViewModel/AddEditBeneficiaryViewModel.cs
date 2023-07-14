@@ -241,6 +241,10 @@ namespace ZBank.ViewModel
                 {
                     ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.InsertedBeneficiary, true);
                     ViewNotifier.Instance.OnCloseDialog();
+                   
+                });
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = "Beneficiary Inserted Successfully",
@@ -249,11 +253,15 @@ namespace ZBank.ViewModel
                 });
             }
 
+
             public async Task OnFailure(ZBankException exception)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnRequestFailed(true);
+                });
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification() { Message = exception.Message, Type = NotificationType.ERROR });
                 });
             }
@@ -274,12 +282,19 @@ namespace ZBank.ViewModel
                 {
                     ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnBeneficiaryAddOrUpdated(response.UpdatedBeneficiary, true);
+                  
+                });
+
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = "Beneficiary Updated Successfully",
                         Type = NotificationType.SUCCESS
                     });
                 });
+
+              
             }
 
             public async Task OnFailure(ZBankException exception)
@@ -288,12 +303,17 @@ namespace ZBank.ViewModel
                 {
                     ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnRequestFailed(true);
+                   
+                });
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = exception,
                         Type = NotificationType.ERROR
                     });
                 });
+               
             }
         }
 

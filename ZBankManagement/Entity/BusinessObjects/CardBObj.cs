@@ -25,14 +25,14 @@ namespace ZBank.Entity.BusinessObjects
 
         public void SetDefaultValues()
         {
-            if (this is CreditCard)
+            if (Type == CardType.CREDIT)
             {
                 CreditCard creditCard = this as CreditCard;
                 CustomText1Key = "AvailableCreditLimit".GetLocalized();
                 CustomText1Value = (decimal)(creditCard.CreditLimit - creditCard.TotalOutstanding);
                 ProviderLogo = LogoHelper.GetCardProviderPath(creditCard.CreditCardProvider);
             }
-            else if (this is DebitCard)
+            else if (Type == CardType.DEBIT)
             {
                 DebitCard debitCard = this as DebitCard;
                 CustomText1Key = "AccountNumber".GetLocalized();

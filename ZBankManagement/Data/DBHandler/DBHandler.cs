@@ -279,7 +279,13 @@ namespace ZBank.DatabaseHandler
 
         public async Task<IEnumerable<CardBObj>> GetCardByAccountNumber(string accountNumber)
         {
-            return await _databaseAdapter.Query<CardBObj>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where AccountNumber = ?", accountNumber).ConfigureAwait(false);
+            List<CardBObj> cardsList = new List<CardBObj>();
+            var debitCard = await _databaseAdapter.Query<DebitCard>(
+                "Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber" +
+                " where AccountNumber = ?",
+            accountNumber).ConfigureAwait(false);
+            cardsList.AddRange(debitCard);
+            return cardsList;
         }
 
         public async Task<IEnumerable<CardBObj>> GetCardByCardNumber(string cardNumber)

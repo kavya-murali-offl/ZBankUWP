@@ -23,6 +23,6 @@ namespace ZBank.Services
         }
 
         public static async Task CallOnMainViewUiThreadAsync(DispatchedHandler handler) =>
-            await CallOnUIThreadAsync(CoreApplication.MainView.CoreWindow.Dispatcher, handler);
+            await CoreApplication.MainView.CoreWindow.Dispatcher.CallOnUIThreadAsync(handler);
     }
 }

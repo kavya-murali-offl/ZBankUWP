@@ -83,6 +83,5 @@ namespace ZBank.Services
         {
             CoreApplication.GetCurrentView().CoreWindow.Close();
         }
-
     }
 }

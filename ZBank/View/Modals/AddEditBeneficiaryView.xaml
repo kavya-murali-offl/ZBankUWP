@@ -18,7 +18,7 @@
         <converter:EnumToStringConverter
             x:Name="EnumToStringConverter" />
     </UserControl.Resources>
-    <Grid MinWidth="400">
+    <Grid MinWidth="400" Padding="10">
       
         <Grid.RowDefinitions>
             <RowDefinition
@@ -73,7 +73,6 @@
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
                         Width="340"
-                        ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="ListView_SelectionChanged"
                         ItemsSource="{x:Bind ViewModel.BeneficiaryTypes, Mode=OneWay}">
                         <ListView.ItemTemplate>

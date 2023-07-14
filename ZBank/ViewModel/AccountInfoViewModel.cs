@@ -141,6 +141,7 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountUpdated += OnAccountUpdated;
             ViewNotifier.Instance.CardInserted += OnCardInserted;
             LoadTransactions();
+            LoadCardByID();
         }
 
         private void OnAccountUpdated(bool isUpdated, AccountBObj obj)
@@ -170,15 +171,15 @@ namespace ZBank.ViewModel
 
         public void UpdateCard(CardDataUpdatedArgs args)
         {
-            LinkedCard = args.CardsList.FirstOrDefault();
-            LinkedCard?.SetDefaultValues();
+            var card = args.CardsList.FirstOrDefault();
+            card?.SetDefaultValues();
+            LinkedCard = card;
         }
 
         public void UpdateTransactions(TransactionPageDataUpdatedArgs args)
         {
             Transactions = args.TransactionList;
         }
-
 
         private void LoadTransactions()
         {
@@ -223,24 +224,33 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() => {
                     ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard); 
-                    ViewNotifier.Instance.OnNotificationStackUpdated(
-                        new Notification() { 
-                            Message = "Card linked successfully", 
-                            Type = NotificationType.SUCCESS
-                        }); 
                 });
+
+                //await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                //{
+                //    ViewNotifier.Instance.OnNotificationStackUpdated(
+                //       new Notification()
+                //       {
+                //           Message = "Card linked successfully",
+                //           Type = NotificationType.SUCCESS
+                //       });
+                //});
             }
 
             public async Task OnFailure(ZBankException exception)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
-                    ViewNotifier.Instance.OnCloseDialog();
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = exception.Message,
                         Type = NotificationType.ERROR
                     });
+
+                });
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
         }
@@ -269,14 +279,14 @@ namespace ZBank.ViewModel
                 {
                     ViewNotifier.Instance.OnAccountUpdated(false);
                 });
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
-                {
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                    {
-                        Message = exception.Message,
-                        Type = NotificationType.ERROR
-                    });
-                });
+                //await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                //{
+                //    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                //    {
+                //        Message = exception.Message,
+                //        Type = NotificationType.ERROR
+                //    });
+                //});
             }
         }
 

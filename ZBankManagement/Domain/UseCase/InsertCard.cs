@@ -113,6 +113,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         public string CustomerID { get; set; }
 
         public string AccountNumber { get; set; }
+
         public Card CardToInsert { get; set; }
 
     }

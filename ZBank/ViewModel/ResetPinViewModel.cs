@@ -92,7 +92,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(ResetPinResponse response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {

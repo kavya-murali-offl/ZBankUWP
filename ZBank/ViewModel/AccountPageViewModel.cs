@@ -38,9 +38,12 @@ namespace ZBank.ViewModel
             LoadAllAccounts();
         }
 
-        private void OnAccountInserted(bool obj)
+        private void OnAccountInserted(bool isInserted)
         {
-            LoadAllAccounts();
+            if (isInserted)
+            {
+                LoadAllAccounts();
+            }
         }
 
         public void OnPageUnLoaded()
@@ -107,7 +110,7 @@ namespace ZBank.ViewModel
                 {
                     AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
                     {
-                        AccountsList = new ObservableCollection<AccountBObj>(response.Accounts)
+                        AccountsList = response.Accounts
                     };
                     ViewNotifier.Instance.OnAccountsListUpdated(args);
                 });

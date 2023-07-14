@@ -164,9 +164,15 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.GetCustomerSuccess += CustomerFetched;
             ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
             ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
+            CoreApplication.GetCurrentView().CoreWindow.Closed += WindowClosed;
             LoadAllAccounts();
             LoadAllBranches();
             GetCustomerData();
+        }
+
+        private void WindowClosed(CoreWindow sender, CoreWindowEventArgs args)
+        {
+            ConsolidateView();
         }
 
         internal void UnloadContent()
@@ -174,7 +180,7 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
             ViewNotifier.Instance.GetCustomerSuccess -= CustomerFetched;
-            ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
+            ViewNotifier.Instance.AccountInserted -= OnAccountInsertionSuccessful;
         }
 
         private void CustomerFetched(Customer customer)
@@ -184,23 +190,21 @@ namespace ZBank.ViewModel
 
         private void OnAccountInsertionSuccessful(bool isInserted)
         {
-            WindowService.CloseWindow();
+            CoreApplication.GetCurrentView().CoreWindow.Close();
         }
 
         private void ConsolidateView()
         {
             UnloadContent();
             ApplicationView.GetForCurrentView().Consolidated -= ViewConsolidated;
+            CoreApplication.GetCurrentView().CoreWindow.Closed -= WindowClosed;
         }
-
-      
 
         private void ViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
         {
             ConsolidateView();
         }
 
-     
 
         private void UpdateAccountsList(AccountsListUpdatedArgs args)
         {
@@ -382,7 +386,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException error)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await CoreApplication.GetCurrentView().Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(
                         new Notification()
@@ -413,7 +417,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException error)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await CoreApplication.GetCurrentView().Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(
                         new Notification()
@@ -450,7 +454,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await CoreApplication.GetCurrentView().Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(
                       new Notification()
@@ -485,7 +489,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await CoreApplication.GetCurrentView().Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(
                       new Notification()

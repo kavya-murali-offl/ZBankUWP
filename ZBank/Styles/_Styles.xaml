@@ -1127,7 +1127,7 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource }" />
+                                                Value="{ThemeResource TextControlBorderBrushPointerOver}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="PlaceholderTextContentPresenter"
