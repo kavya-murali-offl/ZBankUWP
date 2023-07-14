@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Windows.Storage;
+using System.Linq;
 
 namespace ZBankManagement.DataManager
 {
@@ -36,27 +37,38 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                IEnumerable<KYCDocuments> documents = new List<KYCDocuments>(); 
-                foreach(var doc in request.Documents)
+                var customers = await DBHandler.GetCustomer(request.CustomerID);
+                if (customers.Count > 0)
                 {
-                    byte[] fileBytes = await GetBytesFromFile(doc);
-                    KYCDocuments kycDoc = new KYCDocuments()
+                    IEnumerable<KYCDocuments> documents = new List<KYCDocuments>();
+                    foreach (var doc in request.Documents)
                     {
-                        ID = Guid.NewGuid().ToString(),
-                        File = fileBytes,
-                        FileName = doc.Name,
-                        UploadedOn = DateTime.Now,
-                    };
-                }
+                        byte[] fileBytes = await GetBytesFromFile(doc);
+                        KYCDocuments kycDoc = new KYCDocuments()
+                        {
+                            ID = Guid.NewGuid().ToString(),
+                            File = fileBytes,
+                            FileName = doc.Name,
+                            UploadedOn = DateTime.Now,
+                        };
+                    }
 
-
-                await DBHandler.InsertAccount(request.AccountToInsert, documents).ConfigureAwait(false);
-               InsertAccountResponse response = new InsertAccountResponse
-               {
+                    request.AccountToInsert.AccountName = customers.FirstOrDefault().Name;
+                    await DBHandler.InsertAccount(request.AccountToInsert, documents).ConfigureAwait(false);
+                    InsertAccountResponse response = new InsertAccountResponse
+                    {
                         IsSuccess = true,
                         InsertedAccount = request.AccountToInsert
-               };
-               callback.OnSuccess(response);
+                    };
+                    callback.OnSuccess(response);
+                }
+                else
+                {
+                    ZBankException error = new ZBankException();
+                    error.Message = "Customer not found";
+                    error.Type = ErrorType.DATABASE_ERROR;
+                    callback.OnFailure(error);
+                }
               
             }
             catch(Exception err)

@@ -327,7 +327,6 @@ namespace ZBank.ViewModel
 
         private void ClosePaymentDialog()
         {
-            ContentDialog.Hide();
             Reset();
         }
 

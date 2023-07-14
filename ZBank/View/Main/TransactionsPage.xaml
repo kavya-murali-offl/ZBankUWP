@@ -414,7 +414,7 @@
                             Placement="Bottom"
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
-                                ItemContainerStyle="{StaticResource DefaultListItemStyle}"
+                                ItemContainerStyle="{ThemeResource DropdownListViewItemStyle}"
                                 x:Name="AccountsList"
                                 SelectionChanged="AccountsList_SelectionChanged"
                                 ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
@@ -659,7 +659,7 @@
                 Background="{ThemeResource ApplicationBackground}"
                 CornerRadius="8">
                 <ListView
-                    ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
+                    ItemContainerStyle="{ThemeResource TableListViewItemStyle}"
                     SelectionChanged="TransactionListView_SelectionChanged"
                     SelectedValue="{x:Bind ViewModel.InViewTransaction, Mode=OneWay}"
                     x:Name="TransactionListView"

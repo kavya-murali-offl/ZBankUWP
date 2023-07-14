@@ -16,11 +16,11 @@ namespace ZBank.Entities.BusinessObjects
         public decimal ClosingBalance { get; set; }    
 
         public string Name {
-            get => 
-                string.IsNullOrEmpty(BeneficiaryName) 
-                ? 
-                (string.IsNullOrEmpty(ExternalName) ? "You" : ExternalName) 
-                : BeneficiaryName; }
+            get =>
+                !string.IsNullOrEmpty(BeneficiaryName) ? BeneficiaryName :
+                (!string.IsNullOrEmpty(AccountName) ? AccountName :
+                (!string.IsNullOrEmpty(ExternalName) ? ExternalName : "You"));
+        }
 
         public string SenderName 
         { 

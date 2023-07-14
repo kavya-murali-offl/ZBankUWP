@@ -152,7 +152,6 @@ namespace ZBank.ViewModel
                 account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
                 account.CreatedOn = DateTime.Now;
                 account.Currency = Currency.INR;
-                account.AccountName="";
             }
             return account;
         }
@@ -161,13 +160,11 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
-            ViewNotifier.Instance.GetCustomerSuccess += CustomerFetched;
             ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
             ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
             CoreApplication.GetCurrentView().CoreWindow.Closed += WindowClosed;
             LoadAllAccounts();
             LoadAllBranches();
-            GetCustomerData();
         }
 
         private void WindowClosed(CoreWindow sender, CoreWindowEventArgs args)
@@ -179,7 +176,6 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
-            ViewNotifier.Instance.GetCustomerSuccess -= CustomerFetched;
             ViewNotifier.Instance.AccountInserted -= OnAccountInsertionSuccessful;
         }
 
@@ -216,17 +212,6 @@ namespace ZBank.ViewModel
             BranchList = new ObservableCollection<Branch>(args.BranchList);
         }
 
-        private void GetCustomerData()
-        {
-            GetCustomerRequest request = new GetCustomerRequest()
-            {
-                CustomerID = Repository.Current.CurrentUserID
-            };
-
-            IPresenterCallback<GetCustomerResponse> presenterCallback = new GetCustomerPresenterCallback(this);
-            UseCaseBase<GetCustomerResponse> useCase = new GetCustomerUseCase(request, presenterCallback);
-            useCase.Execute();
-        }
 
         private void LoadAllAccounts()
         {
@@ -256,7 +241,8 @@ namespace ZBank.ViewModel
             InsertAccountRequest request = new InsertAccountRequest()
             {
                 AccountToInsert = accountToInsert,
-                Documents = files
+                Documents = files,
+                CustomerID = Repository.Current.CurrentUserID
             };
 
             IPresenterCallback<InsertAccountResponse> presenterCallback = new InsertAccountPresenterCallback(this);
@@ -366,37 +352,6 @@ namespace ZBank.ViewModel
             new DropDownItem("1 year", 12),
             new DropDownItem("2 years", 24),
         };
-
-        private class GetCustomerPresenterCallback : IPresenterCallback<GetCustomerResponse>
-        {
-            private AddOrEditAccountViewModel ViewModel { get; set; }
-
-            public GetCustomerPresenterCallback(AddOrEditAccountViewModel accountPageViewModel)
-            {
-                ViewModel = accountPageViewModel;
-            }
-
-            public async Task OnSuccess(GetCustomerResponse response)
-            {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
-                {
-                    ViewNotifier.Instance.OnGetCustomerSuccess(response.Customer);
-                });
-            }
-
-            public async Task OnFailure(ZBankException error)
-            {
-                await CoreApplication.GetCurrentView().Dispatcher.CallOnUIThreadAsync(() =>
-                {
-                    ViewNotifier.Instance.OnNotificationStackUpdated(
-                        new Notification()
-                        {
-                            Message = error.Message,
-                            Type = NotificationType.ERROR
-                        });
-                });
-            }
-        }
 
         private class InsertAccountPresenterCallback : IPresenterCallback<InsertAccountResponse>
         {

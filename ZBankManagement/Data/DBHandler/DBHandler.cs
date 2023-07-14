@@ -214,7 +214,7 @@ namespace ZBank.DatabaseHandler
                  "Left Join Account on Transactions.SenderAccountNumber = Account.AccountNumber " +
                  "Left Join ExternalAccounts on Transactions.SenderAccountNumber = ExternalAccounts.ExternalAccountNumber " +
                 "Left Join TransactionMetaData on Transactions.ReferenceID = TransactionMetaData.ReferenceID and TransactionMetaData.AccountNumber = ?" +
-                "WHERE Transactions.RecipientAccountNumber == ? ";
+                "WHERE Transactions.RecipientAccountNumber == ?";
 
         private string expenseTransactionsQuery = "SELECT Transactions.*, TransactionMetaData.ClosingBalance, ExternalAccounts.ExternalName, Account.AccountName, Beneficiary.BeneficiaryName FROM Transactions " +
                 "Left Join Beneficiary on Transactions.RecipientAccountNumber = Beneficiary.AccountNumber " +
@@ -258,7 +258,7 @@ namespace ZBank.DatabaseHandler
         {
             Func<Task> action = async () =>
             {
-                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", 
+                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?",
                     ownerAccount.Balance, ownerAccount.AccountNumber).ConfigureAwait(false);
                 await _databaseAdapter.Insert(transaction).ConfigureAwait(false);
                 await _databaseAdapter.Insert(metaData).ConfigureAwait(false);
@@ -293,7 +293,7 @@ namespace ZBank.DatabaseHandler
             List<CardBObj> cardsList = new List<CardBObj>();
             var debitCard = await _databaseAdapter.Query<DebitCard>("Select * from Card Inner Join DebitCard on DebitCard.CardNumber = Card.CardNumber where Card.CardNumber = ?",
                 cardNumber).ConfigureAwait(false);
-            var creditCard = 
+            var creditCard =
                 await _databaseAdapter.Query<CreditCard>("Select * from Card Inner Join CreditCard on CreditCard.CardNumber = Card.CardNumber where Card.CardNumber = ?",
                 cardNumber).ConfigureAwait(false);
             cardsList.AddRange(debitCard);
@@ -595,8 +595,25 @@ namespace ZBank.DatabaseHandler
                     ExternalAccountNumber="6788 6788 7898 5890",
                     ExternalIFSCCode="HDFC1001",
                     ExternalName="Menon",
+                },
+                     new ExternalAccount()
+                {
+                    ExternalAccountNumber="1111 1111 1111 1111",
+                    ExternalIFSCCode="XOOOX",
+                    ExternalName="Visa Credit Card",
+                },
+                new ExternalAccount()
+                {
+                    ExternalAccountNumber="2222 2222 2222 2222",
+                    ExternalIFSCCode="XOOOX",
+                    ExternalName="Rupay Credit Card",
+                },
+                new ExternalAccount()
+                {
+                    ExternalAccountNumber="3333 3333 3333 3333",
+                    ExternalIFSCCode="XOOOX",
+                    ExternalName="MasterCard Credit Card",
                 }
-
             };
 
             await _databaseAdapter.InsertAll(externalAccounts);

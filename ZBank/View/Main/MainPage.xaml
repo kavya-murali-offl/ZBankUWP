@@ -152,8 +152,7 @@
                             IsItemClickEnabled="True" />
                         <Grid
                             HorizontalAlignment="Stretch"
-                            Grid.Row="2"
-                           >
+                            Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition
                                 Height="Auto" />

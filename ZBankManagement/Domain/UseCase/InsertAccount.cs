@@ -75,6 +75,8 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
         {
             public Account AccountToInsert { get; set; }
 
+            public string CustomerID { get; set; }
+
             public IReadOnlyList<StorageFile> Documents { get; set; }
         }
 
