@@ -327,6 +327,7 @@ namespace ZBank.ViewModel
 
         private void ClosePaymentDialog()
         {
+            ViewNotifier.Instance.OnCloseDialog();
             Reset();
         }
 

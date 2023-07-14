@@ -55,47 +55,18 @@
                     Margin="5"
                     x:Uid="FromAccountRequired"
                     Style="{ThemeResource NormalSubText}" />
-                <DropDownButton
-                    x:Name="AccountsDropdownButton"
+
+                <AutoSuggestBox
+                    Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+                    SuggestionChosen="FromAccount_SuggestionChosen"
                     HorizontalAlignment="Stretch"
-                    CornerRadius="8">
-                    <DropDownButton.Content>
-                        <TextBlock
-                            MaxWidth="300"
-                            TextTrimming="CharacterEllipsis"
-                            HorizontalAlignment="Center"
-                            x:Name="AccountsText"
-                            Text="{x:Bind AccountsList.SelectedValue.ToString(), Mode=OneWay, TargetNullValue='Select From Account'}" />
-                    </DropDownButton.Content>
-                    <DropDownButton.Flyout>
-                        <Flyout
-                            Placement="Bottom"
-                            FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                            <ListView
-                                Width="350"
-                                x:Name="AccountsList"
-                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
-                                ItemClick="AccountsList_ItemClick"
-                                SelectionChanged="AccountsList_SelectionChanged"
-                                ItemsSource="{x:Bind ViewModel.UserAccounts, Mode=OneWay}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate
-                                        x:DataType="modelBObj:AccountBObj">
-                                        <TextBlock
-                                            ScrollViewer.HorizontalScrollMode="Disabled"
-                                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                            Padding="10"
-                                            TextTrimming="CharacterEllipsis"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            Text="{x:Bind}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </Flyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
-                
+                    TextChanged="FromAccount_TextChanged"
+                    Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
+                    PlaceholderText="SelectToAccount"
+                    x:Name="FromAccount"
+                    VerticalAlignment="Center"
+                    ItemsSource="{x:Bind ViewModel.OtherAccounts, Mode=OneWay}" />
+
                 <TextBlock
                     Margin="5"
                     TextWrapping="Wrap"
@@ -106,48 +77,16 @@
                     Margin="5"
                     x:Uid="ToAccountRequired"
                     Style="{ThemeResource NormalSubText}" />
-
-                <DropDownButton
-                    x:Name="BeneficiaryButton"
-                    HorizontalAlignment="Stretch"
-                    CornerRadius="8">
-                    <DropDownButton.Content>
-                        <TextBlock
-                            MaxWidth="300"
-                            TextTrimming="CharacterEllipsis"
-                            HorizontalAlignment="Center"
-                            x:Name="BeneficiaryText"
-                            Text="{x:Bind BeneficiaryList.SelectedValue.ToString(), TargetNullValue='Select To Account', Mode=OneWay}" />
-                    </DropDownButton.Content>
-                    <DropDownButton.Flyout>
-                        <Flyout
-                            Placement="Bottom"
-                            FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                            <ListView
-                                x:Name="BeneficiaryList"
-                                ItemClick="BeneficiaryList_ItemClick"
-                                Width="350"
-                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                SelectionChanged="BeneficiaryList_SelectionChanged"
-                                ItemsSource="{x:Bind ViewModel.OtherAccounts, Mode=OneWay}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate
-                                        x:DataType="model:Account">
-                                        <TextBlock
-                                            Padding="10"
-                                            TextTrimming="CharacterEllipsis"
-                                            MaxWidth="300"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            Text="{x:Bind}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </Flyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                
+                <AutoSuggestBox
+                    SuggestionChosen="ToAccount_SuggestionChosen"
+                    Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+                    TextChanged="ToAccount_TextChanged"
+                    Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
+                    PlaceholderText="Select To Account"
+                    x:Name="ToAccount"
+                    VerticalAlignment="Center"
+                    ItemsSource="{x:Bind ViewModel.OtherAccounts, Mode=OneWay}" />
                 
                 <TextBlock
                     TextWrapping="Wrap"

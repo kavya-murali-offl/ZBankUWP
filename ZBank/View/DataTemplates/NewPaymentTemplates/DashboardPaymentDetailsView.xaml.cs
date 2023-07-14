@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.View.Modals;
 using ZBank.ViewModel;
@@ -38,29 +39,24 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Reset()
         {
-            AccountsText.Text = "SelectAccount".GetLocalized();
-            BeneficiaryText.Text = "SelectBeneficiary".GetLocalized();
+            //AccountsText.Text = "SelectAccount".GetLocalized();
+            //BeneficiaryText.Text = "SelectBeneficiary".GetLocalized();
         }
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!ViewModel.IsConfirmed)
-            {
-                ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
-                ViewModel.FieldErrors["Account"] = string.Empty;
-                AccountsDropdownButton.Flyout.Hide();
-            }
+            //if (!ViewModel.IsConfirmed)
+            //{
+            //    ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
+            //    ViewModel.FieldErrors["Account"] = string.Empty;
+            //    AccountsDropdownButton.Flyout.Hide();
+            //}
             
         }
 
         private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!ViewModel.IsConfirmed)
-            {
-                ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as BeneficiaryBObj)?.AccountNumber;
-                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
-                BeneficiaryButton.Flyout.Hide();
-            }
+         
         }
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
@@ -127,6 +123,47 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                 e.Handled = true;
                 ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
             }
+        }
+
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            var account = args.SelectedItem as AccountBObj;
+            sender.Text = account.ToString();
+            ViewModel.CurrentTransaction.SenderAccountNumber = account?.AccountNumber;
+            ViewModel.FieldErrors["Account"] = string.Empty;
+           
+        }
+
+        private void AccountsSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    ViewModel.CurrentTransaction.SenderAccountNumber = string.Empty;
+                }
+            }
+        }
+
+        private void BeneficiariesSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    ViewModel.CurrentTransaction.SenderAccountNumber = string.Empty;
+                }
+            }
+        }
+
+        private void BeneficiariesSuggestionBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if(args.SelectedItem != null && args.SelectedItem is BeneficiaryBObj beneficiary)
+            {
+                ViewModel.CurrentTransaction.RecipientAccountNumber = beneficiary.AccountNumber;
+                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
+            }
+
         }
     }
 }

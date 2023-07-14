@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
+using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.ViewModel;
 using ZBankManagement.Entities.BusinessObjects;
@@ -36,38 +37,59 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Reset()
         {
-            AccountsText.Text = "Select From Account";
-            BeneficiaryText.Text = "Select To Account";
         }
 
-        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ToAccount_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if (!IsConfirmed)
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
-                ViewModel.FieldErrors["Account"] = string.Empty;
-                ViewModel.OtherAccounts = new ObservableCollection<AccountBObj>();
-                foreach (var account in ViewModel.UserAccounts)
+                if (string.IsNullOrEmpty(sender.Text))
                 {
-                    if ((AccountsList?.SelectedValue as AccountBObj)?.AccountNumber != account.AccountNumber)
-                    {
-                        ViewModel.OtherAccounts.Add(account);
-                    }
+                    ViewModel.CurrentTransaction.SenderAccountNumber = string.Empty;
+
                 }
-                BeneficiaryText.Text = "Select To Account";
-                ViewModel.CurrentTransaction.RecipientAccountNumber = null;
-                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
-                AccountsDropdownButton.Flyout.Hide();
             }
         }
 
-        private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FromAccount_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (!IsConfirmed)
+            if(args.SelectedItem != null && args.SelectedItem is AccountBObj account)
             {
-                ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as AccountBObj)?.AccountNumber;
+                ViewModel.CurrentTransaction.SenderAccountNumber = account.AccountNumber;
+                ViewModel.FieldErrors["Account"] = string.Empty;
+                ViewModel.OtherAccounts = new ObservableCollection<AccountBObj>();
+                foreach (var otherAccount in ViewModel.UserAccounts)
+                {
+                    if (account?.AccountNumber != otherAccount.AccountNumber)
+                    {
+                        ViewModel.OtherAccounts.Add(otherAccount);
+                    }
+                }
+                ViewModel.CurrentTransaction.RecipientAccountNumber = null;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
-                BeneficiaryButton.Flyout.Hide();
+            }
+        }
+
+
+        private void FromAccount_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    ViewModel.CurrentTransaction.SenderAccountNumber = string.Empty;
+                    ViewModel.OtherAccounts = ViewModel.UserAccounts;
+                    ViewModel.CurrentTransaction.RecipientAccountNumber = null;
+                }
+            }
+        }
+
+        private void ToAccount_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem != null && args.SelectedItem is BeneficiaryBObj beneficiary)
+            {
+                ViewModel.CurrentTransaction.RecipientAccountNumber = beneficiary?.AccountNumber;
+                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
             }
         }
 
@@ -110,37 +132,6 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             Reset();
         }
 
-        private void AccountsList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (!IsConfirmed)
-            {
-                ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
-                ViewModel.FieldErrors["Account"] = string.Empty;
-                ViewModel.OtherAccounts = new ObservableCollection<AccountBObj>();
-                foreach (var account in ViewModel.UserAccounts)
-                {
-                    if ((AccountsList?.SelectedValue as AccountBObj)?.AccountNumber != account.AccountNumber)
-                    {
-                        ViewModel.OtherAccounts.Add(account);
-                    }
-                }
-                BeneficiaryText.Text = "Select To Acount";
-                ViewModel.CurrentTransaction.RecipientAccountNumber = null;
-                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
-                AccountsDropdownButton.Flyout.Hide();
-            }
-        }
-
-        private void BeneficiaryList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (!IsConfirmed)
-            {
-                ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as AccountBObj)?.AccountNumber;
-                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
-                BeneficiaryButton.Flyout.Hide();
-            }
-        }
-
         private void AmountTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter)
@@ -150,5 +141,8 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                 ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
             }
         }
+
+
+     
     }
 }

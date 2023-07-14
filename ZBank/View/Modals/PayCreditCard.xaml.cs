@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Principal;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -48,19 +49,12 @@ namespace ZBank.View.Modals
             ViewModel.FieldErrors["Amount"] = string.Empty;
         }
 
-        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ViewModel.SelectedAccount = (AccountsList.SelectedValue as AccountBObj);
-            ViewModel.AvailableBalance = ViewModel.SelectedAccount.Balance;
-            ViewModel.FieldErrors["Account"] = string.Empty;
-            AccountsDropdownButton.Flyout.Hide();
-        }
+        
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectedAccount = null;
             ViewModel.AvailableBalance = 0;
-            AccountsText.Text = "Select Account";
             ViewModel.Reset();
         }
 
@@ -90,6 +84,28 @@ namespace ZBank.View.Modals
             {
                 e.Handled = true;
                 ViewModel.PayCard();
+            }
+        }
+
+        private void Accounts_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if(args.SelectedItem != null && args.SelectedItem is AccountBObj account)
+            {
+                ViewModel.SelectedAccount = account;
+                ViewModel.AvailableBalance = ViewModel.SelectedAccount.Balance;
+                ViewModel.FieldErrors["Account"] = string.Empty;
+            }
+        }
+
+        private void Accounts_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    ViewModel.SelectedAccount = null;
+                    ViewModel.AvailableBalance = 0m;
+                }
             }
         }
     }

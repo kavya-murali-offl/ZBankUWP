@@ -88,48 +88,21 @@
             Style="{ThemeResource NormalSubText}"
             Text="Account To Pay From" />
 
-        <DropDownButton
-            x:Name="AccountsDropdownButton"
+        <AutoSuggestBox
+            Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+            SuggestionChosen="Accounts_SuggestionChosen"
+            Width="300"
             HorizontalAlignment="Stretch"
             Grid.Row="4"
             Grid.ColumnSpan="2"
             Margin="10"
-            CornerRadius="8">
-            <DropDownButton.Content>
-                <TextBlock
-                    MaxWidth="300"
-                    TextTrimming="CharacterEllipsis"
-                    HorizontalAlignment="Center"
-                    x:Name="AccountsText"
-                    Text="{x:Bind ViewModel.SelectedAccount.ToString(), TargetNullValue='Select Account', Mode=OneWay}" />
-            </DropDownButton.Content>
-            <DropDownButton.Flyout>
-                <Flyout
-                    Placement="Bottom"
-                    FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                    <ListView
-                        x:Name="AccountsList"
-                        ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
-                        SelectionChanged="AccountsList_SelectionChanged"
-                        ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate
-                                x:DataType="modelBObj:AccountBObj">
-                                <TextBlock
-                                    Padding="10"
-                                    TextTrimming="CharacterEllipsis"
-                                    MinWidth="300"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Text="{Binding}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Flyout>
-            </DropDownButton.Flyout>
-        </DropDownButton>
+            TextChanged="Accounts_TextChanged"
+            Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
+            PlaceholderText="Select Account"
+            x:Name="Accounts"
+            VerticalAlignment="Center"
+            ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}" />
 
-        
         <TextBlock
             Grid.Row="6"
             Margin="10"

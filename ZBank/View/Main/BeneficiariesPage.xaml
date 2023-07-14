@@ -203,6 +203,7 @@
                                 ItemsSource="{x:Bind ViewModel.WithinBankBeneficiaries, Mode=OneWay}"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
+                                ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
                                 SelectionMode="None">
                                 <GridView.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -212,17 +213,6 @@
                                             VerticalAlignment="Center" />
                                     </ItemsPanelTemplate>
                                 </GridView.ItemsPanel>
-                                <GridView.ItemContainerStyle>
-                                    <Style
-                                        TargetType="GridViewItem">
-                                        <Setter
-                                            Value="10"
-                                            Property="Margin" />
-                                        <Setter
-                                            Value="Stretch"
-                                            Property="HorizontalAlignment" />
-                                    </Style>
-                                </GridView.ItemContainerStyle>
                             </GridView>
                         </ScrollViewer>
                     </Grid>
@@ -262,6 +252,7 @@
                             Grid.Row="1">
                             <GridView
                                 VerticalAlignment="Center"
+                                ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
                                 ItemTemplate="{StaticResource GridViewTemplate}"
                                 ItemsSource="{x:Bind ViewModel.OtherBankBeneficiaries, Mode=OneWay}"
                                 HorizontalAlignment="Stretch"
@@ -275,17 +266,6 @@
                                             VerticalAlignment="Center" />
                                     </ItemsPanelTemplate>
                                 </GridView.ItemsPanel>
-                                <GridView.ItemContainerStyle>
-                                    <Style
-                                        TargetType="GridViewItem">
-                                        <Setter
-                                            Value="10"
-                                            Property="Margin" />
-                                        <Setter
-                                            Value="Stretch"
-                                            Property="HorizontalAlignment" />
-                                    </Style>
-                                </GridView.ItemContainerStyle>
                             </GridView>
                         </ScrollViewer>
                     </Grid>
@@ -326,6 +306,7 @@
                             Text="Favourites" />
                         <GridView
                             VerticalAlignment="Center"
+                            ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
                             ItemTemplate="{StaticResource GridViewTemplate}"
                             ItemsSource="{x:Bind ViewModel.FavouriteBeneficiaries, Mode=OneWay}"
                             HorizontalAlignment="Stretch"
@@ -339,17 +320,6 @@
                                         VerticalAlignment="Center" />
                                 </ItemsPanelTemplate>
                             </GridView.ItemsPanel>
-                            <GridView.ItemContainerStyle>
-                                <Style
-                                    TargetType="GridViewItem">
-                                    <Setter
-                                        Value="10"
-                                        Property="Margin" />
-                                    <Setter
-                                        Value="Auto"
-                                        Property="Width" />
-                                </Style>
-                            </GridView.ItemContainerStyle>
                         </GridView>
                     </StackPanel>
                 </Grid>

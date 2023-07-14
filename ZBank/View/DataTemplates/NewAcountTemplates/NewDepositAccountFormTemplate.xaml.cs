@@ -118,40 +118,6 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
             }
         }
 
-        private void FromAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListView item = null;
-            if (sender is ListView view)
-            {
-                item = view;
-            }
-            if (item.SelectedIndex >= 0)
-            {
-                Account selectedAccount = (item.SelectedItem as Account);
-                FieldValues["From Account Number"] = selectedAccount.ToString();
-                FieldErrors["From Account Number"] = string.Empty;
-                FromAccountDropdownButton.Flyout.Hide();
-            }
-
-        }
-
-        private void ToAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListView item = null;
-            if (sender is ListView view)
-            {
-                item = view;
-            }
-            if (item.SelectedIndex >= 0)
-            {
-                Account selectedAccount = (item.SelectedItem as Account);
-                FieldValues["Repayment Account Number"] = selectedAccount.ToString();
-                FieldErrors["Repayment Account Number"] = string.Empty;
-                ToAccountDropdownButton.Flyout.Hide();
-            }
-        }
-
-
        
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -162,7 +128,45 @@ namespace ZBank.View.DataTemplates.NewAcountTemplates
         {
         }
 
-        
+        private void ToAccountsSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    FieldValues["From Account Number"] = string.Empty;
+                }
+            }
+        }
+
+        private void ToAccountsSuggestionBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem != null && args.SelectedItem is Account account)
+            {
+                FieldValues["From Account Number"] = account.ToString();
+                FieldErrors["From Account Number"] = string.Empty;
+            }
+        }
+
+        private void AccountsSuggestionBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if(args.SelectedItem != null && args.SelectedItem is Account account)
+            {
+                FieldValues["Repayment Account Number"] = account.ToString();
+                FieldErrors["Repayment Account Number"] = string.Empty;
+            }
+        }
+
+        private void AccountsSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    FieldValues["Repayment Account Number"] = string.Empty;
+                }
+            }
+        }
     }
 
 }

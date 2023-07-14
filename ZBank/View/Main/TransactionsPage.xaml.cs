@@ -73,8 +73,8 @@ namespace ZBank.View.Main
 
         private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.UpdateSelectedAccount(AccountsList.SelectedItem as AccountBObj);
-            AccountNumberDropDownButton.Flyout.Hide();
+            //ViewModel.UpdateSelectedAccount(AccountsList.SelectedItem as AccountBObj);
+            //AccountNumberDropDownButton.Flyout.Hide();
         }
 
         private void FromAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -113,8 +113,25 @@ namespace ZBank.View.Main
                 ViewModel.UpdateView(transactionBObj);
             }
         }
-    }
 
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            var account = args.SelectedItem as AccountBObj;
+            sender.Text = account.ToString();
+            ViewModel.UpdateSelectedAccount(account);
+        }
+
+        private void AccountsSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    ViewModel.UpdateSelectedAccount(null);
+                }
+            }
+        }
+    }
 }
 
 

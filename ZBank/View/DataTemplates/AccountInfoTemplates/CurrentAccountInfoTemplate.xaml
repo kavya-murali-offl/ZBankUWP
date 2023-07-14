@@ -85,22 +85,12 @@
                 Grid.Row="3"
                 />
 
-            <GridView SelectionMode="None"  Grid.Row="4" HorizontalAlignment="Center">
-                <GridView.ItemContainerStyle>
-                    <Style
-                        TargetType="GridViewItem">
-                        <Setter
-                            Property="HorizontalContentAlignment"
-                            Value="Center" />
-                        <Setter
-                            Property="HorizontalAlignment"
-                            Value="Center" />
-                        <Setter
-                            Property="Padding"
-                            Value="10" />
-
-                    </Style>
-                </GridView.ItemContainerStyle>
+            <GridView
+                ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
+                Style="{ThemeResource DefaultGridViewItemStyling}"
+                SelectionMode="None"
+                Grid.Row="4"
+                HorizontalAlignment="Center">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid

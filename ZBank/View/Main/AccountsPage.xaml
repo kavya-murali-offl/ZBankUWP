@@ -51,6 +51,7 @@
             Margin="0,20,0,0"
             SelectionMode="None"
             Grid.Row="1"
+            ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
             ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -398,7 +398,18 @@
                     Height="Auto" />
             </Grid.RowDefinitions>
             <Grid>
-                <DropDownButton
+                <AutoSuggestBox
+                    Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                    Width="300"
+                    TextChanged="AccountsSuggestionBox_TextChanged"
+                    Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
+                    HorizontalAlignment="Left"
+                    PlaceholderText="Select Account"
+                    VerticalAlignment="Center"
+                    ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}"
+                    x:Name="AccountsSuggestionBox" />
+                <!--<DropDownButton
                     Width="300"
                     x:Name="AccountNumberDropDownButton"
                     CornerRadius="8">
@@ -415,7 +426,7 @@
                             FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                             <ListView
                                 ItemContainerStyle="{ThemeResource DropdownListViewItemStyle}"
-                                x:Name="AccountsList"
+                                x:Name="Accou{ntsList"
                                 SelectionChanged="AccountsList_SelectionChanged"
                                 ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
                                 <ListView.ItemContainerTransitions>
@@ -438,7 +449,7 @@
                             </ListView>
                         </Flyout>
                     </DropDownButton.Flyout>
-                </DropDownButton>
+                </DropDownButton>-->
                 <Button
                     Margin="0,10,0,10"
                     HorizontalAlignment="Right"

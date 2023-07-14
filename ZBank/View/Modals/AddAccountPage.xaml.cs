@@ -88,21 +88,6 @@ namespace ZBank.View.Modals
             SetFormTemplate(AccountType.CURRENT);
         }
 
-
-        private void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is ListView item)
-            {
-                if (item.SelectedIndex >= 0)
-                {
-                    var branch = (item.SelectedItem as Branch);
-                    ViewModel.UpdateBranch(branch);
-                    BranchText.Text = branch.ToString();
-                }
-                BranchDropdown.Flyout.Hide();
-            }
-        }
-
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.ValidateAndSubmit();
@@ -111,6 +96,31 @@ namespace ZBank.View.Modals
         private async void UploadButton_Click(object sender, RoutedEventArgs e)
         {
             await ViewModel.UploadFiles();
+        }
+
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if(args.SelectedItem == null)
+            {
+                ViewModel.UpdateBranch(null);
+            }
+            else
+            {
+                var branch = args.SelectedItem as Branch;
+                ViewModel.UpdateBranch(branch);
+                sender.Text = branch.ToString();
+            }
+           
+        }
+
+        private void BranchSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text)){
+                    ViewModel.UpdateBranch(null);
+                }
+            }
         }
     }
 }

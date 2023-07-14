@@ -64,5 +64,10 @@ namespace ZBank.View.Modals
                 ViewModel.InsertCard();
             }
         }
+
+        private void BranchSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+
+        }
     }
 }

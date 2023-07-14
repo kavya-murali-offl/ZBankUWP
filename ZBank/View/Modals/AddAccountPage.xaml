@@ -81,7 +81,6 @@
                     <ColumnDefinition
                         Width="4*" />
                 </Grid.ColumnDefinitions>
-                    
                 <TextBlock
                         TextTrimming="CharacterEllipsis"
                         FontSize="14"
@@ -91,8 +90,21 @@
                         FontWeight="SemiBold"
                         MinHeight="22"
                         Text="Branch" />
+                    <AutoSuggestBox
+                        Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+                        SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                        Width="300"
+                        Grid.Row="1"
+                        TextChanged="BranchSuggestionBox_TextChanged"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        Text="{x:Bind BranchSuggestionBox.Text, Mode=OneWay}"
+                        PlaceholderText="Select Branch"
+                        VerticalAlignment="Center"
+                        ItemsSource="{x:Bind ViewModel.BranchList, Mode=OneWay}"
+                        x:Name="BranchSuggestionBox" />
 
-                    <DropDownButton
+                    <!--<DropDownButton
                         x:Name="BranchDropdown"
                         Width="300"
                     Grid.Row="1"
@@ -132,7 +144,7 @@
                                 </ListView>
                             </Flyout>
                         </DropDownButton.Flyout>
-                    </DropDownButton>
+                    </DropDownButton>-->
                     
                     <TextBlock
                     Grid.Row="2"

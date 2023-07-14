@@ -71,6 +71,7 @@
         </Grid>
         <GridView
             Grid.Row="1"
+            ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
             SelectionMode="None">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -81,17 +82,6 @@
                         MaximumRowsOrColumns="3" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-            <GridView.ItemContainerStyle>
-                <Style
-                    TargetType="GridViewItem">
-                    <Setter
-                        Property="HorizontalContentAlignment"
-                        Value="Stretch" />
-                    <Setter
-                        Property="HorizontalAlignment"
-                        Value="Stretch" />
-                </Style>
-            </GridView.ItemContainerStyle>
             <GridViewItem>
                 <Grid
                     Margin="5"
@@ -279,6 +269,7 @@
             Visibility="{x:Bind ViewModel.DataModel.AllCards, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"
             HorizontalAlignment="Center"
             SelectionMode="None"
+            ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
             Grid.Row="3">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -290,23 +281,6 @@
                         MaximumRowsOrColumns="3" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-            <GridView.ItemContainerStyle>
-                <Style
-                    TargetType="GridViewItem">
-                    <Setter
-                        Property="HorizontalContentAlignment"
-                        Value="Stretch" />   
-                    <Setter
-                        Property="HorizontalAlignment"
-                        Value="Center" />
-                    <Setter
-                        Property="VerticalContentAlignment"
-                        Value="Stretch" />
-                    <Setter
-                        Property="VerticalAlignment"
-                        Value="Stretch" />
-                </Style>
-            </GridView.ItemContainerStyle>
             <GridViewItem>
                 <Grid
                     MinWidth="400"

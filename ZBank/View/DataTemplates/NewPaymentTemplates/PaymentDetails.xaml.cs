@@ -35,21 +35,28 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             Reset();
         }
 
-        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Accounts_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            Account selectedAccount = (AccountsList.SelectedValue as Account);
-            ViewModel.CurrentTransaction.SenderAccountNumber = selectedAccount?.AccountNumber;
-            ViewModel.AvailableBalance = selectedAccount?.Balance ?? 0;
-            ViewModel.FieldErrors["Account"] = string.Empty;
-            AccountsDropdownButton.Flyout.Hide();
+            if (args.SelectedItem != null && args.SelectedItem is AccountBObj selectedAccount)
+            {
+                ViewModel.CurrentTransaction.SenderAccountNumber = selectedAccount?.AccountNumber;
+                ViewModel.AvailableBalance = selectedAccount?.Balance ?? 0;
+                ViewModel.FieldErrors["Account"] = string.Empty;
+            }
         }
 
-        private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Accounts_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            ViewModel.CurrentTransaction.RecipientAccountNumber = (BeneficiaryList.SelectedValue as BeneficiaryBObj)?.AccountNumber;
-            ViewModel.FieldErrors["Beneficiary"] = string.Empty;
-            BeneficiaryButton.Flyout.Hide();
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    ViewModel.CurrentTransaction.SenderAccountNumber = string.Empty;
+                    ViewModel.AvailableBalance = 0m;
+                }
+            }
         }
+
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
@@ -72,13 +79,32 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Reset()
         {
-            AccountsText.Text = "Select Account";
-            BeneficiaryText.Text = "Select Beneficiary";
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.PaymentResetRequested -= Reset;
+        }
+
+        private void BeneficiariesBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    ViewModel.CurrentTransaction.RecipientAccountNumber = string.Empty;
+                }
+            }
+        }
+
+        private void BeneficiariesBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem != null && args.SelectedItem is BeneficiaryBObj beneficiary)
+            {
+                ViewModel.CurrentTransaction.RecipientAccountNumber = beneficiary.AccountNumber;
+                ViewModel.FieldErrors["Beneficiary"] = string.Empty;
+            }
         }
     }
 }

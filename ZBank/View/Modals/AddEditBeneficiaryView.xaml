@@ -52,6 +52,7 @@
             Text="Type"
             MaxWidth="400"
             Style="{ThemeResource NormalSubText}" />
+
         <DropDownButton
             IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
             MaxWidth="390"

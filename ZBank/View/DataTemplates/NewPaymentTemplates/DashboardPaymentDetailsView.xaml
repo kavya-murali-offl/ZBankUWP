@@ -50,45 +50,16 @@
                     Margin="5"
                     x:Uid="AccountRequired"
                     Style="{ThemeResource NormalSubText}" />
-                <DropDownButton
-                    x:Name="AccountsDropdownButton"
+                <AutoSuggestBox
                     MaxWidth="400"
                     HorizontalAlignment="Stretch"
-                    CornerRadius="8">
-                    <DropDownButton.Content>
-                        <TextBlock
-                            MaxWidth="300"
-                            TextTrimming="CharacterEllipsis"
-                            HorizontalAlignment="Center"
-                            x:Name="AccountsText"
-                            Text="{x:Bind AccountsList.SelectedValue.ToString(), Mode=OneWay}" />
-                    </DropDownButton.Content>
-                    <DropDownButton.Flyout>
-                        <Flyout
-                            Placement="Bottom"
-                            FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                            <ListView
-                                Width="380"
-                                x:Name="AccountsList"
-                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
-                                ItemClick="AccountsList_ItemClick"
-                                SelectionChanged="AccountsList_SelectionChanged"
-                                ItemsSource="{x:Bind ViewModel.UserAccounts, Mode=OneWay}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate
-                                        x:DataType="modelBObj:AccountBObj">
-                                        <TextBlock
-                                            TextTrimming="CharacterEllipsis"
-                                            MaxWidth="300"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            Text="{x:Bind}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </Flyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                    Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                    TextChanged="AccountsSuggestionBox_TextChanged"
+                    PlaceholderText="Select Account"
+                    VerticalAlignment="Center"
+                    ItemsSource="{x:Bind ViewModel.UserAccounts, Mode=OneWay}"
+                    x:Name="AccountsSuggestionBox" />
                 <TextBlock
                     MaxWidth="400"
                     TextWrapping="Wrap"
@@ -99,47 +70,17 @@
                     Margin="5"
                     x:Uid="BeneficiaryRequired"
                     Style="{ThemeResource NormalSubText}" />
-
-                <DropDownButton
-                    x:Name="BeneficiaryButton"
+                
+                <AutoSuggestBox
                     MaxWidth="400"
                     HorizontalAlignment="Stretch"
-                    CornerRadius="8">
-                    <DropDownButton.Content>
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            x:Name="BeneficiaryText"
-                            MaxWidth="300"
-                            TextTrimming="CharacterEllipsis"
-                            Text="{x:Bind BeneficiaryList.SelectedValue.ToString(), Mode=OneWay}" />
-                    </DropDownButton.Content>
-                    <DropDownButton.Flyout>
-                        <Flyout
-                            Placement="Bottom"
-                            FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                            <ListView
-                                Width="380"
-                                ItemClick="BeneficiaryList_ItemClick"
-                                x:Name="BeneficiaryList"
-                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
-                                SelectionChanged="BeneficiaryList_SelectionChanged"
-                                ItemsSource="{x:Bind ViewModel.AllBeneficiaries, Mode=OneWay}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate
-                                        x:DataType="model:Beneficiary">
-                                        <TextBlock
-                                            Padding="10"
-                                            TextTrimming="CharacterEllipsis"
-                                            MaxWidth="300"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            Text="{x:Bind}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </Flyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                    Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+                    SuggestionChosen="BeneficiariesSuggestionBox_SuggestionChosen"
+                    TextChanged="BeneficiariesSuggestionBox_TextChanged"
+                    PlaceholderText="Select Beneficiary"
+                    VerticalAlignment="Center"
+                    ItemsSource="{x:Bind ViewModel.AllBeneficiaries, Mode=OneWay}"
+                    x:Name="BeneficiariesSuggestionBox" />
                 
                 <TextBlock
                     MaxWidth="400"

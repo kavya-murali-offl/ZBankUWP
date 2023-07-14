@@ -98,27 +98,13 @@ Unloaded="UserControl_Unloaded"
                 Text="Account Summary"
                 Foreground="Gray"
                 Grid.Row="3" />
-            
+
             <GridView
                 SelectionMode="None"
                 Grid.Row="4"
+                ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
                 HorizontalAlignment="Center">
-                
-                <GridView.ItemContainerStyle>
-                    <Style
-                        TargetType="GridViewItem">
-                        <Setter
-                            Property="HorizontalContentAlignment"
-                            Value="Center" />
-                        <Setter
-                            Property="HorizontalAlignment"
-                            Value="Center" />
-                        <Setter
-                            Property="Padding"
-                            Value="10" />
-                    </Style>
-                </GridView.ItemContainerStyle>
-                
+
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid
