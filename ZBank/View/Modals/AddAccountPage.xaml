@@ -7,6 +7,7 @@
     xmlns:model="using:ZBank.Entities"
     xmlns:allTemplates="using:ZBank.View.DataTemplates"
     xmlns:userControls="using:ZBank.View.UserControls"
+    xmlns:converters="using:ZBank.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
@@ -14,6 +15,13 @@
     Background="{ThemeResource ApplicationBackgroundThemeBrush}"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded">
+    <Page.Resources>
+        <converters:EnumToStringConverter
+            x:Name="EnumToStringConverter" />
+        <converters:StringEqualityConverter
+            x:Name="StringEqualityConverter" />
+
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition
@@ -90,7 +98,9 @@
                         FontWeight="SemiBold"
                         MinHeight="22"
                         Text="Branch" />
+                    
                     <AutoSuggestBox
+                        LostFocus="BranchSuggestionBox_LostFocus"
                         Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                         SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                         Width="300"
@@ -104,53 +114,11 @@
                         ItemsSource="{x:Bind ViewModel.BranchList, Mode=OneWay}"
                         x:Name="BranchSuggestionBox" />
 
-                    <!--<DropDownButton
-                        x:Name="BranchDropdown"
-                        Width="300"
-                    Grid.Row="1"
-                        Grid.Column="1"
-                    HorizontalAlignment="Left"
-                        CornerRadius="5">
-                        <DropDownButton.Content>
-                            <TextBlock
-                                MaxWidth="300"
-                                TextTrimming="CharacterEllipsis"
-                                HorizontalAlignment="Center"
-                                x:Name="BranchText"
-                                Text="{x:Bind ViewModel.FieldValues['Branch'], TargetNullValue='Select Branch'}" />
-                        </DropDownButton.Content>
-                        <DropDownButton.Flyout>
-                            <Flyout
-                                Placement="Bottom"
-                                FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                                <ListView
-                                    Width="300"
-                                    x:Name="BranchList"
-                                    ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
-                                    SelectionChanged="BranchList_SelectionChanged"
-                                    ItemsSource="{x:Bind ViewModel.BranchList, Mode=OneWay}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate
-                                            x:DataType="model:Branch">
-                                            <TextBlock
-                                                Padding="10"
-                                                TextTrimming="CharacterEllipsis"
-                                                MaxWidth="300"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                Text="{Binding BranchName}" />
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </Flyout>
-                        </DropDownButton.Flyout>
-                    </DropDownButton>-->
-                    
                     <TextBlock
-                    Grid.Row="2"
+                        Grid.Row="2"
                         Margin="0,10,0,0"
                         Grid.Column="1"
-                    TextWrapping="Wrap"
+                        TextWrapping="Wrap"
                         Text="{x:Bind ViewModel.FieldErrors['Branch'], Mode=OneWay}"
                         Foreground="IndianRed" />
 
@@ -162,15 +130,47 @@
                         Foreground="Gray"
                         Text="Choose Account Type" />
 
-                    <controls:RadioButtons
+                    <!--<controls:RadioButtons
                         Grid.Row="4"
-                        HorizontalAlignment="Center"
+                        Grid.Column="1"
+                        Style="{ThemeResource DefaultRadioButtonsStyle}"
+                        HorizontalAlignment="Left"
                         x:Name="AccountTypeButton"
-                        MaxColumns="3"
-                        Grid.ColumnSpan="2"
+                        MaxColumns="1"
                         ItemsSource="{x:Bind ViewModel.AccountTypes}"
                         SelectionChanged="AccountTypeButton_SelectionChanged">
-                    </controls:RadioButtons>
+                        <RadioButton 
+                            BorderBrush="{ThemeResource AccentColorBrush}"
+                            Background="{ThemeResource AccentColorBrush}"
+                            Foreground="{ThemeResource AccentColorBrush}"
+                            Content="{x:Bind Converter={StaticResource EnumToStringConverter}, Mode=OneWay}"/>
+                    </controls:RadioButtons>-->
+
+                    <StackPanel
+                        Grid.Row="4"
+                        Grid.Column="1">
+                        <RadioButton
+                            Checked="RadioButton1_Checked"
+                            Style="{ThemeResource CustomRadioButton}"
+                            Name="RadioButton1"
+                            GroupName="Group1"
+                            Content="{x:Bind ViewModel.AccountTypes[0], Mode=OneWay, Converter={StaticResource EnumToStringConverter}}"
+                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=TwoWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[0]}}" />
+                        <RadioButton
+                            Checked="RadioButton2_Checked"
+                            Name="RadioButton2"
+                            Style="{ThemeResource CustomRadioButton}"
+                            GroupName="Group1"
+                            Content="{x:Bind ViewModel.AccountTypes[1], Mode=OneWay, Converter={StaticResource EnumToStringConverter}}"
+                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=TwoWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[1]}}" />
+                        <RadioButton
+                            Style="{ThemeResource CustomRadioButton}"
+                            Name="RadioButton3"
+                            GroupName="Group1"
+                            Checked="RadioButton3_Checked"
+                            Content="{x:Bind ViewModel.AccountTypes[2], Mode=OneWay, Converter={StaticResource EnumToStringConverter}}"
+                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=TwoWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[2]}}" />
+                    </StackPanel>
 
                     <ContentControl
                         Margin="0,10,0,10"
@@ -178,7 +178,6 @@
                         Grid.ColumnSpan="2"
                         Grid.Row="5"
                         Content="{x:Bind ViewModel.SelectedTemplate, Mode=OneWay}"
-                        MinHeight="200"
                         x:Name="AccountForm">
                     </ContentControl>
 

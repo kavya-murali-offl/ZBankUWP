@@ -10,6 +10,7 @@ using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using System.Collections.Generic;
 using ZBank.Entity.BusinessObjects;
+using ZBankManagement.Entities.BusinessObjects;
 
 namespace ZBank.ZBankManagement.DomainLayer.UseCase
 {
@@ -60,7 +61,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetDashboardDataResponse
     {
         public IEnumerable<CardBObj> AllCards { get; set; }
-        public IEnumerable<Beneficiary> Beneficiaries { get; set; }
+        public IEnumerable<BeneficiaryBObj> Beneficiaries { get; set; }
         public IEnumerable<TransactionBObj> LatestTransactions { get; set; }
         public DashboardCardModel BeneficiariesCard { get; set; }
         public DashboardCardModel DepositCard { get; set; }

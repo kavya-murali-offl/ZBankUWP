@@ -217,9 +217,12 @@ namespace ZBank.ViewModel
                     {
                         IsConfirmed = true;
                         CurrentStep = Steps[previousIndex + 1];
-                        if (ContentDialog == null)
+                        if(parameter is bool isContentNotOpen)
                         {
-                            await DialogService.ShowContentAsync(View, new NewPaymentView(this), null, Window.Current.Content.XamlRoot);
+                            if (isContentNotOpen)
+                            {
+                                await DialogService.ShowContentAsync(View, new NewPaymentView(this), null, Window.Current.Content.XamlRoot);
+                            }
                         }
                     }
                     else
@@ -237,17 +240,13 @@ namespace ZBank.ViewModel
         }
 
 
-        public ObservableCollection<StepModel> Steps { get;  set; }  
+        public ObservableCollection<StepModel> Steps { get;  set; }
 
-        private StepModel _currentStep;
+        private StepModel _currentStep = null;
         public StepModel CurrentStep
         {
             get { return _currentStep; }
-            set
-            {
-                _currentStep = value;
-                OnPropertyChanged(nameof(CurrentStep));
-            }
+            set => Set(ref _currentStep, value);
         }
 
         private void InitializeSteps()
@@ -336,46 +335,31 @@ namespace ZBank.ViewModel
         public ObservableCollection<AccountBObj> UserAccounts
         {
             get { return _accounts; }
-            set
-            {
-                Set(ref _accounts, value);
-            }
+            set => Set(ref _accounts, value);
         }
 
-        private ObservableCollection<AccountBObj> _otherAccounts { get; set; }
+        private ObservableCollection<AccountBObj> _otherAccounts = new ObservableCollection<AccountBObj>();
 
         public ObservableCollection<AccountBObj> OtherAccounts
         {
             get { return _otherAccounts; }
-            set
-            {
-                _otherAccounts = value;
-                OnPropertyChanged(nameof(OtherAccounts));
-            }
+            set => Set(ref _otherAccounts, value);
         }
 
-        private ObservableCollection<BeneficiaryBObj> _beneficiaries { get; set; }
+        private ObservableCollection<BeneficiaryBObj> _beneficiaries = new ObservableCollection<BeneficiaryBObj>();
 
         public ObservableCollection<BeneficiaryBObj> AllBeneficiaries
         {
             get { return _beneficiaries; }
-            set
-            {
-                _beneficiaries = value;
-                OnPropertyChanged(nameof(AllBeneficiaries));
-            }
+            set => Set(ref _beneficiaries, value);
         }
 
-        private Transaction _currentTransaction { get; set; }
+        private Transaction _currentTransaction = null;
 
         public Transaction CurrentTransaction
         {
             get { return _currentTransaction; }
-            set
-            {
-                _currentTransaction = value;
-                OnPropertyChanged(nameof(CurrentTransaction));
-            }
+            set => Set(ref _currentTransaction, value);
         }
 
         private class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>

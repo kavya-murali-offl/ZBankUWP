@@ -28,7 +28,6 @@ namespace ZBank.ViewModel
         public AccountPageViewModel(IView view)
         {
             View = view;
-
         }
 
         public void OnPageLoaded()
@@ -40,10 +39,7 @@ namespace ZBank.ViewModel
 
         private void OnAccountInserted(bool isInserted)
         {
-            if (isInserted)
-            {
-                LoadAllAccounts();
-            }
+           LoadAllAccounts();
         }
 
         public void OnPageUnLoaded()

@@ -95,19 +95,20 @@
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid
                             Orientation="Horizontal"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Stretch"
                             MaximumRowsOrColumns="6" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
               
                 <GridViewItem
-                        MinWidth="200">
+                        Width="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             Foreground="Gray"
                             FontWeight="SemiBold"
                             Text="Account Status" />
@@ -126,12 +127,12 @@
                         </StackPanel>
                     </StackPanel>
                 </GridViewItem>
-                <GridViewItem MinWidth="300">
+                <GridViewItem Width="200">
                     <StackPanel Orientation="Vertical">
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             Foreground="Gray"
                             FontWeight="SemiBold"
                             Text="Account Name" />
@@ -144,7 +145,7 @@
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
-                    MinWidth="300">
+                    MinWidth="200">
                     <StackPanel
                         VerticalAlignment="Center"
                         Orientation="Vertical">
@@ -157,31 +158,31 @@
                             Text="Account Opened On" />
                         <TextBlock
                             Margin="0,10,0,0"
-                            
                             FontSize="16"
                             HorizontalAlignment="Center"
                             FontWeight="SemiBold"
                             Text="{x:Bind SelectedAccount.CreatedOn, Converter={StaticResource DateFormatConverter}}" />
                     </StackPanel>
                 </GridViewItem>
-                <GridViewItem MinWidth="300">
+                <GridViewItem MinWidth="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
+                            HorizontalAlignment="Center"
                             Foreground="Gray"
                             FontWeight="SemiBold"
                             Text="IFSC Code" />
                         <TextBlock
                             Margin="0,10,0,0"
-                            
+                            HorizontalAlignment="Center"
                             FontSize="16"
                             FontWeight="SemiBold"
                             Text="{x:Bind SelectedAccount.IfscCode}" />
                     </StackPanel>
                 </GridViewItem>
-                <GridViewItem MinWidth="300">
+                <GridViewItem MinWidth="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock
@@ -200,7 +201,7 @@
 
                     </StackPanel>
                 </GridViewItem>
-                <GridViewItem MinWidth="300">
+                <GridViewItem MinWidth="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock
@@ -224,6 +225,7 @@
         <usercontrol:OneByTwoGrid
             Width1Ratio="3*"
             Width2Ratio="2*"
+            NarrowScreenBreakPoint="1100"
             VerticalContentAlignment="Stretch"
             VerticalAlignment="Stretch"
             Grid.Row="1">
@@ -365,12 +367,19 @@
                             Grid.Row="1"
                             SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
                     </Grid>
-                    <StackPanel
+                    <Grid
                         Grid.Row="1"
                         Padding="10"
+                        Margin="5"
                         VerticalAlignment="Stretch"
                         Background="{ThemeResource ApplicationBackground}"
                         CornerRadius="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="*" />
+                        </Grid.RowDefinitions>
                         <TextBlock
                             Margin="10"
                             VerticalAlignment="Center"
@@ -378,7 +387,6 @@
                             Text="Quick Actions"
                             FontWeight="Bold"
                             FontSize="19" />
-
                         <Button
                             Grid.Row="1"
                             x:Name="AddBeneficiaryButton"
@@ -390,7 +398,7 @@
                             Style="{ThemeResource PrimaryButton}"
                             Content="Add Beneficiary" />
 
-                    </StackPanel>
+                    </Grid>
                 </Grid>
               
             </usercontrol:OneByTwoGrid.Column2Content>

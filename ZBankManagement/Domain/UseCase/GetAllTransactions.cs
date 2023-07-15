@@ -26,14 +26,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         protected override void Action()
         {
-            //if(_request.AccountNumber != null)
-            //{
-            //    _getTransactionDataManager.GetTransactionsByAccountNumber(_request, new GetAllTransactionsCallback(this));
-            //}
-            //else
-            //{
                 _getTransactionDataManager.GetTransactionsIncrementally(_request, new GetAllTransactionsCallback(this));
-            //}
         }
 
         private class GetAllTransactionsCallback : IUseCaseCallback<GetAllTransactionsResponse>

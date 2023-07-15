@@ -37,6 +37,8 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Reset()
         {
+            FromAccount.Text = string.Empty;
+            ToAccount.Text = string.Empty;  
         }
 
         private void ToAccount_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -66,6 +68,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                     }
                 }
                 ViewModel.CurrentTransaction.RecipientAccountNumber = null;
+                ToAccount.Text = string.Empty;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
             }
         }
@@ -80,15 +83,17 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                     ViewModel.CurrentTransaction.SenderAccountNumber = string.Empty;
                     ViewModel.OtherAccounts = ViewModel.UserAccounts;
                     ViewModel.CurrentTransaction.RecipientAccountNumber = null;
+                    Reset();
                 }
             }
         }
 
         private void ToAccount_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (args.SelectedItem != null && args.SelectedItem is BeneficiaryBObj beneficiary)
+            if (args.SelectedItem != null && args.SelectedItem is AccountBObj beneficiary)
             {
-                ViewModel.CurrentTransaction.RecipientAccountNumber = beneficiary?.AccountNumber;
+                ViewModel.CurrentTransaction.RecipientAccountNumber = beneficiary.AccountNumber;
+                ToAccount.Text = beneficiary.ToString();
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
             }
         }
@@ -105,7 +110,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             IsConfirmed = true;
-            ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
+            ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -138,7 +143,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             {
                 e.Handled = true;
                 IsConfirmed = true;
-                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
+                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
             }
         }
 

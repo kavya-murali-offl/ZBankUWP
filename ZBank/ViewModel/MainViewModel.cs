@@ -53,11 +53,7 @@ namespace ZBank.ViewModel
         public Customer CurrentCustomer
         {
             get { return _currentCustomer; }
-            set
-            {
-                _currentCustomer = value;
-                OnPropertyChanged(nameof(CurrentCustomer));
-            }
+            set => Set(ref _currentCustomer, value);
         }
         public void OnLoaded()
         {

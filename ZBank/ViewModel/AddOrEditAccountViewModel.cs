@@ -41,6 +41,7 @@ namespace ZBank.ViewModel
         {
             View = view;
             Reset();
+            UpdateAccounType(0);
         }
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
@@ -179,11 +180,6 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountInserted -= OnAccountInsertionSuccessful;
         }
 
-        private void CustomerFetched(Customer customer)
-        {
-            CurrentCustomer = customer;
-        }
-
         private void OnAccountInsertionSuccessful(bool isInserted)
         {
             CoreApplication.GetCurrentView().CoreWindow.Close();
@@ -309,6 +305,12 @@ namespace ZBank.ViewModel
                     SelectedTemplate = newDepositAccountFormTemplate;   
                     break;
             }
+        }
+
+        internal void UpdateAccounType(int index)
+        {
+            SelectedAccountType = AccountTypes[index];
+            SwitchTemplate(SelectedAccountType);
         }
 
         private Customer CurrentCustomer = null;

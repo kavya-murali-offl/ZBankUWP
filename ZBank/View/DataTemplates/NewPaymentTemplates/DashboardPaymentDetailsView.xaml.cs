@@ -39,24 +39,8 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Reset()
         {
-            //AccountsText.Text = "SelectAccount".GetLocalized();
-            //BeneficiaryText.Text = "SelectBeneficiary".GetLocalized();
-        }
-
-        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //if (!ViewModel.IsConfirmed)
-            //{
-            //    ViewModel.CurrentTransaction.SenderAccountNumber = (AccountsList.SelectedValue as AccountBObj)?.AccountNumber;
-            //    ViewModel.FieldErrors["Account"] = string.Empty;
-            //    AccountsDropdownButton.Flyout.Hide();
-            //}
-            
-        }
-
-        private void BeneficiaryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-         
+            AccountsSuggestionBox.Text  = string.Empty; 
+            BeneficiariesSuggestionBox.Text = string.Empty;
         }
 
         private void AmountTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
@@ -70,7 +54,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
+            ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -97,22 +81,12 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             Reset();
         }
 
-        private void AccountsList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            
-        }
-
-        private void BeneficiaryList_ItemClick(object sender, ItemClickEventArgs e)
-        {
- 
-        }
-
         private void DescriptionTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter)
             {
                 e.Handled = true;
-                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
+                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
             }
         }
 
@@ -121,7 +95,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             if (e.Key == VirtualKey.Enter)
             {
                 e.Handled = true;
-                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(null);
+                ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
             }
         }
 
@@ -131,7 +105,6 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             sender.Text = account.ToString();
             ViewModel.CurrentTransaction.SenderAccountNumber = account?.AccountNumber;
             ViewModel.FieldErrors["Account"] = string.Empty;
-           
         }
 
         private void AccountsSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -163,7 +136,6 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                 ViewModel.CurrentTransaction.RecipientAccountNumber = beneficiary.AccountNumber;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
             }
-
         }
     }
 }

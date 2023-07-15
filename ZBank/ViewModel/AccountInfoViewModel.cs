@@ -27,40 +27,28 @@ namespace ZBank.ViewModel
     public class AccountInfoViewModel : ViewModelBase
     {
 
-        private AccountBObj _selectedAccount { get; set; }
+        private AccountBObj _selectedAccount = null;
 
         public AccountBObj SelectedAccount
         {
             get { return _selectedAccount; }
-            set
-            {
-                _selectedAccount = value;
-                OnPropertyChanged(nameof(SelectedAccount));
-            }
+            set => Set(ref _selectedAccount, value);
         }
 
-        private CardBObj _linkedCard { get; set; }
+        private CardBObj _linkedCard = null;
 
         public CardBObj LinkedCard
         {
             get { return _linkedCard; }
-            set
-            {
-                _linkedCard = value;
-                OnPropertyChanged(nameof(LinkedCard));
-            }
+            set => Set(ref _linkedCard, value);
         }
 
-        private IEnumerable<TransactionBObj> _transactions { get; set; } = new List<TransactionBObj>();
+        private IEnumerable<TransactionBObj> _transactions = new List<TransactionBObj>();
 
         public IEnumerable<TransactionBObj> Transactions
         {
             get { return _transactions; }
-            set
-            {
-                _transactions = value;
-                OnPropertyChanged(nameof(Transactions));
-            }
+            set => Set(ref _transactions, value);
         }
 
         public AccountInfoViewModel(IView view)

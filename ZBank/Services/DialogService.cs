@@ -35,7 +35,6 @@ namespace ZBank.Services
 
         public static Task ShowContentAsync(IView view, FrameworkElement content, string title, XamlRoot xamlRoot = null)
         {
-            xamlRoot = Window.Current.Content.XamlRoot;
             return view.Dispatcher.CallOnUIThreadAsync(async() =>
             {
                 var contentDialog = new ContentDialog()
@@ -43,8 +42,10 @@ namespace ZBank.Services
                     Title = title,
                     Content = content,
                     XamlRoot = xamlRoot,
-                    RequestedTheme = ThemeService.Theme
+                    RequestedTheme = ThemeService.Theme,
+                    MinWidth = 500
                 };
+                contentDialog.MinWidth = 400;
                 ViewNotifier.Instance.CloseDialog += () => contentDialog.Hide();
                 ViewNotifier.Instance.ThemeChanged += async (ElementTheme theme) =>
                 {
@@ -57,6 +58,7 @@ namespace ZBank.Services
                         await view.Dispatcher.CallOnUIThreadAsync(() =>
                       {
                           ((FrameworkElement)xamlRoot.Content).RequestedTheme = theme;
+                          contentDialog.RequestedTheme = theme;
                       });
                     }
                 };

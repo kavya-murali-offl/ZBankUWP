@@ -119,6 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Converters\StringConcatenatorConverter.cs" />
+    <Compile Include="Utilities\Converters\StringEqualityConverter.cs" />
     <Compile Include="Utilities\Helpers\ColorsHelper.cs" />
     <Compile Include="DataStore\Repository.cs" />
     <Compile Include="Services\AppSettings.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="ViewModel\CardsViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\TransferAmountViewModel.cs" />
+    <Compile Include="ViewModel\VMObjects\FormBase.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableDictionary.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableItemCollection.cs" />
     <Compile Include="ViewModel\VMObjects\ObservableObject.cs" />

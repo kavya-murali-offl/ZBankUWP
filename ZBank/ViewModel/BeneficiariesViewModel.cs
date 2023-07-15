@@ -107,11 +107,17 @@ namespace ZBank.ViewModel
             UpdateBeneficiary(selectedBeneficiary);
         }
 
-        private void UpdateBeneficiary(Beneficiary beneficiary)
+        private void UpdateBeneficiary(BeneficiaryBObj beneficiary)
         {
             UpdateBeneficiaryRequest request = new UpdateBeneficiaryRequest()
             {
-                BeneficiaryToUpdate = beneficiary,
+                BeneficiaryToUpdate = new Beneficiary()
+                {
+                    AccountNumber = beneficiary.AccountNumber,
+                    ID = beneficiary.ID,    
+                     BeneficiaryName = beneficiary.BeneficiaryName,
+                      IsFavourite = beneficiary.IsFavourite 
+                },
             };
 
             IPresenterCallback<UpdateBeneficiaryResponse> presenterCallback = new UpdateBeneficiaryPresenterCallback(this);
@@ -125,7 +131,7 @@ namespace ZBank.ViewModel
                 View, 
                 new AddEditBeneficiaryView(selectedBeneficiary),
                 "Edit Beneficiary", 
-                Window.Current.Content.XamlRoot
+                Window.Current.Content.XamlRoot.Content.XamlRoot.Content.XamlRoot
            );
         }
 

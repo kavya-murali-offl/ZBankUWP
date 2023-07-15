@@ -14,7 +14,7 @@
         <converter:BooleanToVisibilityConverter
             x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid MinWidth="400">
+    <Grid MinWidth="400" Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
@@ -25,23 +25,22 @@
         </Grid.RowDefinitions>
        
         <TextBlock
-            Margin="20,20,0,0"
+            Margin="10,20,0,0"
             Foreground="Gray"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Text="Choose Provider" />
         
         <DropDownButton
-            Width="200"
-            Margin="10"
+            Margin="10,10,10,50"
             Grid.Row="1"
             KeyDown="ProviderButton_KeyDown"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Stretch"
             x:Name="ProviderButton"
             CornerRadius="5">
             <DropDownButton.Content>
                 <TextBlock
-                    MaxWidth="300"
+                    Width="300"
                     TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     x:Name="ProviderText"

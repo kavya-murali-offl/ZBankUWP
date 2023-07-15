@@ -158,7 +158,7 @@
         </DataTemplate>
     </Page.Resources>
     <Grid Canvas.ZIndex="10">
-        <usercontrols:OneByTwoGrid Width1Ratio="2*" Width2Ratio="*" NarrowScreenBreakPoint="1000">
+        <usercontrols:OneByTwoGrid Width1Ratio="2*" Width2Ratio="*" NarrowScreenBreakPoint="1200">
             <usercontrols:OneByTwoGrid.Column1Content>
                 <Grid>
                     <Grid.RowDefinitions>

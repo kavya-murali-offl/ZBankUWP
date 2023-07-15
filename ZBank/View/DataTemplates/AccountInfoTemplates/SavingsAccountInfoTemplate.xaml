@@ -20,8 +20,6 @@
             x:Name="DateFormatConverter" />
     </UserControl.Resources>
 
-    <!--To do set width and text trimming
-    Usercontrol for each row-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition
@@ -66,6 +64,7 @@
                 Padding="30,10,30,10"
                 CornerRadius="4"
                 Grid.RowSpan="2"
+                MinWidth="150"
                 Background="Green"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">
@@ -100,6 +99,7 @@
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid
                             Orientation="Horizontal"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Stretch"
                             MaximumRowsOrColumns="6" />
                     </ItemsPanelTemplate>
@@ -132,7 +132,7 @@
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
-                    MinWidth="300">
+                    MinWidth="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock
@@ -150,7 +150,7 @@
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
-                    MinWidth="300">
+                    MinWidth="200">
                     <StackPanel
                         VerticalAlignment="Center"
                         Orientation="Vertical">
@@ -169,23 +169,25 @@
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
-                    MinWidth="300">
+                    MinWidth="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
+                            HorizontalAlignment="Center"
                             Foreground="Gray"
                             FontWeight="SemiBold"
                             Text="IFSC Code" />
                         <TextBlock
+                            HorizontalAlignment="Center"
                             Margin="0,10,0,0"
                             FontSize="16"
                             Text="{x:Bind SelectedAccount.IfscCode}" />
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
-                    MinWidth="300">
+                    MinWidth="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock
@@ -203,7 +205,7 @@
                     </StackPanel>
                 </GridViewItem>
                 <GridViewItem
-                    MinWidth="300">
+                    MinWidth="200">
                     <StackPanel
                         Orientation="Vertical">
                         <TextBlock

@@ -417,7 +417,7 @@
                                 HorizontalAlignment="Center"
                                 FontSize="18"
                                 Padding="5"
-                                Text="{x:Bind ViewModel.DataModel.OnViewCard.ExpiryMonth, Mode=OneWay}" />
+                                Text="{x:Bind ViewModel.DataModel.OnViewCard.ExpiryString, Mode=OneWay}" />
                         </Grid>
 
 

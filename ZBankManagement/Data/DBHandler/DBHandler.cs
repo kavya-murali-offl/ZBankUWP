@@ -406,8 +406,8 @@ namespace ZBank.DatabaseHandler
                   DepositType=DepositType.OnMaturity,
                    MaturityAmount=200000,
                     MaturityDate=DateTime.Now.AddYears(1),
-              RepaymentAccountNumber="1000 1789 7890 6633",
-               Tenure=12
+                  RepaymentAccountNumber="1000 1789 7890 6633",
+                   Tenure=12
                 }
             };
 
@@ -452,7 +452,7 @@ namespace ZBank.DatabaseHandler
                     CreatedOn = DateTime.Now,
                     AccountStatus = AccountStatus.ACTIVE,
                     Currency = Currency.INR,
-                    Balance = 0m,
+                    Balance = 200000m,
                     IsKYCApproved = true,
                     AccountType = AccountType.TERM_DEPOSIT,
                 },

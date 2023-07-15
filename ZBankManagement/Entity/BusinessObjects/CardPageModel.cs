@@ -16,7 +16,7 @@ namespace ZBankManagement.Entity.BusinessObjects
             public CardBObj RightCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex + 1); }
 
             public CardBObj OnViewCard { get => AllCards?.ElementAtOrDefault(OnViewCardIndex); }
-
+            
             public bool IsOnViewCreditCard { get => OnViewCard?.Type == CardType.CREDIT; }
 
             public CreditCard OnViewCreditCard { get => OnViewCard is CreditCard ? OnViewCard as CreditCard : null; }

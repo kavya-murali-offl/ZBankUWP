@@ -8,10 +8,6 @@ namespace ZBankManagement.Interface
 {
     interface IGetTransactionDataManager
     {
-        Task GetTransactionsByAccountNumber(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
-
-        Task GetTransactionsByCustomerID(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
-
         Task GetTransactionsIncrementally(GetAllTransactionsRequest request, IUseCaseCallback<GetAllTransactionsResponse> callback);
     }
 }

@@ -9,6 +9,7 @@ using ZBank.Entity.EnumerationTypes;
 using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.EnumerationTypes;
 
 namespace ZBankManagement.Data.DataManager
@@ -47,7 +48,7 @@ namespace ZBankManagement.Data.DataManager
 
                 if (isIFSCCodeValidated)
                 {
-                    IEnumerable<Beneficiary> beneficiaries = await DBHandler.GetBeneficiaries(request.BeneficiaryToInsert.UserID).ConfigureAwait(false);
+                    IEnumerable<BeneficiaryBObj> beneficiaries = await DBHandler.GetBeneficiaries(request.BeneficiaryToInsert.UserID).ConfigureAwait(false);
                     var alreadyAddedBeneficiary = beneficiaries.Where(ben => ben.AccountNumber == request.BeneficiaryToInsert.AccountNumber);
                     if(alreadyAddedBeneficiary?.Count() > 0)
                     {

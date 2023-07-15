@@ -16,7 +16,9 @@ namespace ZBank.Entity.BusinessObjects
         private static int bgIndex { get; set; } = 0;
 
         public object CustomText1Key { get; set; }
-
+        
+        public string ExpiryString => ExpiryMonth + " / " + ExpiryYear;
+  
         public object CustomText1Value { get; set; }
 
         public string BackgroundImage { get; set; } =   string.Empty;

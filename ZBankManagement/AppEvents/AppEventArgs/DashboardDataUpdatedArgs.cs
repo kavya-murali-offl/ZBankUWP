@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
+using ZBankManagement.Entities.BusinessObjects;
 
 namespace ZBank.AppEvents.AppEventArgs
 {
@@ -23,7 +24,7 @@ namespace ZBank.AppEvents.AppEventArgs
 
         public IEnumerable<CardBObj> AllCards { get; set; }
 
-        public IEnumerable<Beneficiary> AllBeneficiaries { get; set; }
+        public IEnumerable<BeneficiaryBObj> AllBeneficiaries { get; set; }
 
         public IEnumerable<TransactionBObj> LatestTransactions { get; set; }
 

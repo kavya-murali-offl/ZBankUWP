@@ -86,7 +86,7 @@ namespace ZBank.View.UserControls
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Reset(ViewModel.SelectedBeneficiary.BeneficiaryType);
+            ViewModel.Reset(ViewModel.EditableItem.BeneficiaryType);
         }
 
         private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)

@@ -19,7 +19,6 @@
             x:Name="EnumToStringConverter" />
     </UserControl.Resources>
     <Grid
-        MinWidth="400"
         Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition
@@ -55,8 +54,9 @@
             MaxWidth="400"
             Style="{ThemeResource NormalSubText}" />
         <DropDownButton
-            IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
+            IsEnabled="{x:Bind ViewModel.IsNew, Mode=OneWay}"
             MaxWidth="390"
+            MinWidth="250"
             Grid.ColumnSpan="2"
             Grid.Row="1"
             HorizontalAlignment="Stretch"
@@ -67,7 +67,7 @@
                     TextTrimming="CharacterEllipsis"
                     HorizontalAlignment="Center"
                     x:Name="BeneficiaryText"
-                    Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryType, Mode=OneWay, Converter={StaticResource EnumToStringConverter}}" />
+                    Text="{x:Bind ViewModel.EditableItem.BeneficiaryType, Mode=OneWay, Converter={StaticResource EnumToStringConverter}}" />
             </DropDownButton.Content>
             <DropDownButton.Flyout>
                 <Flyout
@@ -102,7 +102,7 @@
             Style="{ThemeResource CustomTextBoxStyle}"
             x:Name="NameBox"
             MaxWidth="400"
-            Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
+            Text="{x:Bind ViewModel.EditableItem.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
             PlaceholderText="Enter Beneficiary Name" />
         
         <TextBlock
@@ -124,9 +124,9 @@
             MaxWidth="400"
             KeyDown="TextBox_KeyDown"
             Style="{ThemeResource CustomTextBoxStyle}"
-            IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
+            IsEnabled="{x:Bind ViewModel.IsNew, Mode=OneWay}"
             PlaceholderText="Enter Account Number"
-            Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay, TargetNullValue=''}" />
+            Text="{x:Bind ViewModel.EditableItem.AccountNumber, Mode=TwoWay, TargetNullValue=''}" />
 
         <TextBlock
             Grid.Row="7"
@@ -147,12 +147,12 @@
             Grid.Row="9"
             MaxWidth="400"
             Style="{ThemeResource CustomTextBoxStyle}"
-            IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
+            IsEnabled="{x:Bind ViewModel.IsNew, Mode=OneWay}"
             Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
             x:Name="IFSCCodeBox"
             KeyDown="IFSCCodeBox_KeyDown"
             PlaceholderText="Enter IFSC Code"
-            Text="{x:Bind ViewModel.SelectedBeneficiary.IFSCCode, Mode=TwoWay}" />
+            Text="{x:Bind ViewModel.EditableItem.IFSCCode, Mode=TwoWay}" />
 
         <TextBlock
             Margin="10,0,10,0"

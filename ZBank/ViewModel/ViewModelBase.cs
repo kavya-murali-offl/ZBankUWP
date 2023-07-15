@@ -16,39 +16,12 @@ using ZBank.ViewModel.VMObjects;
 
 namespace ZBank.ViewModel
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : ObservableObject
     {
         public IView View { get; set; }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected async void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                if (View?.Dispatcher == null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }
-                else
-                {
-                    if (View.Dispatcher.HasThreadAccess)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                    }
-                    else
-                    {
-                        await View.Dispatcher.CallOnUIThreadAsync(
-                             () =>
-                            {
-                                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                            });
-                    }
-                }
-            }
-        }
-
+        virtual public void Merge(ObservableObject source) { }
+       
         public void ValidateObject(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
         {
             foreach (var field in fieldsToValidate)
@@ -95,11 +68,10 @@ namespace ZBank.ViewModel
             if (!EqualityComparer<T>.Default.Equals(field, newValue))
             {
                 field = newValue;
-                OnPropertyChanged(propertyName);
+                OnPropertyChanged(propertyName, View?.Dispatcher);
                 return true;
             }
             return false;
         }
-
     }
 }

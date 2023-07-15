@@ -5,28 +5,40 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Core;
+using ZBank.Services;
 
-namespace ZBank.ViewModel.VMObjects
+namespace ZBank.ViewModel.VMObjects 
 {
-    public class ObservableObject
+    public class ObservableObject : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName = null)
+        protected async void OnPropertyChanged([CallerMemberName] string propertyName = "", CoreDispatcher dispatcher = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected bool Set<T>(ref T field, T newValue = default(T), [CallerMemberName] string propertyName = null)
-        {
-            if (!EqualityComparer<T>.Default.Equals(field, newValue))
+            if (PropertyChanged != null)
             {
-                field = newValue;
-                OnPropertyChanged(propertyName);
-                return true;
+                if (dispatcher == null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }
+                else
+                {
+                    if (dispatcher.HasThreadAccess)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                    }
+                    else
+                    {
+                        await dispatcher.CallOnUIThreadAsync(
+                             () =>
+                             {
+                                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                             });
+                    }
+                }
             }
-            return false;
         }
 
     }

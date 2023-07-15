@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.Entity.BusinessObjects;
+using ZBankManagement.Entities.BusinessObjects;
 
 namespace ZBank.Entities.BusinessObjects
 {
@@ -23,7 +24,7 @@ namespace ZBank.Entities.BusinessObjects
 
         public ObservableCollection<CardBObj> AllCards { get; set; }
 
-        public ObservableCollection<Beneficiary> AllBeneficiaries { get; set; }
+        public ObservableCollection<BeneficiaryBObj> AllBeneficiaries { get; set; }
 
         public ObservableCollection<TransactionBObj> LatestTransactions { get; set; }
 

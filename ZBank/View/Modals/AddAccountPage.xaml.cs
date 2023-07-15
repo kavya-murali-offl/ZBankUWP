@@ -50,29 +50,13 @@ namespace ZBank.View.Modals
             ViewModel = new AddOrEditAccountViewModel(this);
         }
 
-
-        private void AccountTypeButton_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is RadioButtons radios)
-            {
-                if(radios.SelectedItem != null) { 
-                    AccountType accountType = (AccountType)radios.SelectedItem;
-                    ViewModel.SelectedAccountType = accountType;
-                    SetFormTemplate(accountType);
-                }
-            }
-        }
-
-        private void SetFormTemplate(AccountType accountType)
-        {
-            ViewModel.SwitchTemplate(accountType);
-        }
+       
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.LoadContent();    
             AccountForm.DataContext = ViewModel;
-            SetFormTemplate(AccountType.CURRENT);
+            RadioButton1.IsChecked = true;
         }
 
 
@@ -82,12 +66,6 @@ namespace ZBank.View.Modals
         }
 
      
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            AccountTypeButton.SelectedIndex = 0;
-            SetFormTemplate(AccountType.CURRENT);
-        }
-
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.ValidateAndSubmit();
@@ -110,7 +88,6 @@ namespace ZBank.View.Modals
                 ViewModel.UpdateBranch(branch);
                 sender.Text = branch.ToString();
             }
-           
         }
 
         private void BranchSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -121,6 +98,26 @@ namespace ZBank.View.Modals
                     ViewModel.UpdateBranch(null);
                 }
             }
+        }
+
+        private void BranchSuggestionBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            BranchSuggestionBox.IsSuggestionListOpen = false;
+        }
+
+        private void RadioButton1_Checked(object sender, RoutedEventArgs e)
+        {
+            ViewModel.UpdateAccounType(0);
+        }
+
+        private void RadioButton2_Checked(object sender, RoutedEventArgs e)
+        {
+            ViewModel.UpdateAccounType(1);
+        }
+
+        private void RadioButton3_Checked(object sender, RoutedEventArgs e)
+        {
+            ViewModel.UpdateAccounType(2);
         }
     }
 }

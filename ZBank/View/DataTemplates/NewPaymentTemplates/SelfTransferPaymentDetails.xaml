@@ -62,7 +62,7 @@
                     HorizontalAlignment="Stretch"
                     TextChanged="FromAccount_TextChanged"
                     Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
-                    PlaceholderText="SelectToAccount"
+                    x:Uid="FromAccount"
                     x:Name="FromAccount"
                     VerticalAlignment="Center"
                     ItemsSource="{x:Bind ViewModel.OtherAccounts, Mode=OneWay}" />
@@ -82,7 +82,7 @@
                     SuggestionChosen="ToAccount_SuggestionChosen"
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     TextChanged="ToAccount_TextChanged"
-                    Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
+                    Text="{x:Bind ViewModel.SelectedOtherAccount, Mode=OneWay}"
                     PlaceholderText="Select To Account"
                     x:Name="ToAccount"
                     VerticalAlignment="Center"

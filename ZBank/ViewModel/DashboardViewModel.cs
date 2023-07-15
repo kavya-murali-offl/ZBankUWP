@@ -20,6 +20,7 @@ using ZBank.ViewModel.VMObjects;
 using ZBank.ZBankManagement.DomainLayer.UseCase;
 using ZBankManagement.AppEvents.AppEventArgs;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Helpers;
 
 namespace ZBank.ViewModel
@@ -125,7 +126,7 @@ namespace ZBank.ViewModel
 
             DashboardModel = new DashboardDataModel()
             {
-                AllBeneficiaries = new ObservableCollection<Beneficiary>(args.AllBeneficiaries),
+                AllBeneficiaries = new ObservableCollection<BeneficiaryBObj>(args.AllBeneficiaries),
                 AllCards = new ObservableCollection<CardBObj>(args.AllCards),
                 LatestTransactions = new ObservableCollection<TransactionBObj>(args.LatestTransactions),
                 BalanceCard = args.BalanceCard,

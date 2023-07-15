@@ -9,6 +9,7 @@ using ZBank.Entities;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBankManagement.DataManager;
 using ZBankManagement.Domain.UseCase;
+using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.EnumerationTypes;
 using ZBankManagement.Interface;
 using static ZBank.ZBankManagement.DomainLayer.UseCase.LoginCustomerUseCase;
@@ -119,7 +120,7 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
 
         public string CustomerID { get; set; }
 
-        public Beneficiary Beneficiary { get; set; }  
+        public BeneficiaryBObj Beneficiary { get; set; }  
 
         public Account OtherAccount { get; set; }   
     }
