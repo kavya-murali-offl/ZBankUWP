@@ -115,7 +115,6 @@ namespace ZBank
 
         private async void SwitchTheme(ElementTheme theme)
         {
-            ThemeService.SetTheme(theme);
             await Dispatcher.CallOnUIThreadAsync(() =>
             {
                 ((FrameworkElement)Window.Current.Content).RequestedTheme = this.RequestedTheme = theme;

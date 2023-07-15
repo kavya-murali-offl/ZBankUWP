@@ -79,6 +79,8 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Reset()
         {
+            AccountsBox.Text = string.Empty;
+            BeneficiariesBox.Text = string.Empty;
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

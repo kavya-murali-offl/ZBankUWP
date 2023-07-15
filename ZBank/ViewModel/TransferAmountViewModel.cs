@@ -219,7 +219,7 @@ namespace ZBank.ViewModel
                         CurrentStep = Steps[previousIndex + 1];
                         if (ContentDialog == null)
                         {
-                            await DialogService.ShowContentAsync(View, new NewPaymentView(this), "New Payment", Window.Current.Content.XamlRoot);
+                            await DialogService.ShowContentAsync(View, new NewPaymentView(this), null, Window.Current.Content.XamlRoot);
                         }
                     }
                     else

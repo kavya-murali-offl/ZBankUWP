@@ -31,7 +31,7 @@
             TextChanged="Accounts_TextChanged"
             Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
             PlaceholderText="Select Account"
-            x:Name="Accounts"
+            x:Name="AccountsBox"
             VerticalAlignment="Center"
             ItemsSource="{x:Bind ViewModel.UserAccounts, Mode=OneWay}" />
         <TextBlock

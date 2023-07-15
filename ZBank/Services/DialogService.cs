@@ -8,6 +8,7 @@ using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.View;
@@ -30,6 +31,8 @@ namespace ZBank.Services
             );
         }
 
+        private IEnumerable<FrameworkElement> Contents { get; set; } = new List<FrameworkElement>();    
+
         public static Task ShowContentAsync(IView view, FrameworkElement content, string title, XamlRoot xamlRoot = null)
         {
             xamlRoot = Window.Current.Content.XamlRoot;
@@ -43,6 +46,26 @@ namespace ZBank.Services
                     RequestedTheme = ThemeService.Theme
                 };
                 ViewNotifier.Instance.CloseDialog += () => contentDialog.Hide();
+                ViewNotifier.Instance.ThemeChanged += async (ElementTheme theme) =>
+                {
+                    if (view.Dispatcher.HasThreadAccess)
+                    {
+                        content.RequestedTheme = theme;
+                    }
+                    else
+                    {
+                        await view.Dispatcher.CallOnUIThreadAsync(() =>
+                      {
+                          ((FrameworkElement)xamlRoot.Content).RequestedTheme = theme;
+                      });
+                    }
+                };
+                
+               
+                //await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                //{
+                //    content.RequestedTheme = theme;
+                //});
                 await contentDialog.ShowAsync();
             });
         }

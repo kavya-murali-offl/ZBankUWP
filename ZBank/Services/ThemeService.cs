@@ -144,7 +144,7 @@ namespace ZBank.Config
             string backgroundColor = UISettings.GetColorValue(UIColorType.Background).ToString();
             if(Theme == ElementTheme.Default)
             {
-                return  backgroundColor == DarkBackgroundColor;
+                return backgroundColor == DarkBackgroundColor;
             }
             return Theme == ElementTheme.Dark;
         }
@@ -184,7 +184,6 @@ namespace ZBank.Config
 
                 titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
                 titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
-
             }
 
             titleBar.ButtonHoverBackgroundColor = ((SolidColorBrush)Application.Current.Resources["AccentColorBrush"]).Color;

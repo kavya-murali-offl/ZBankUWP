@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Entities;
+using ZBank.Services;
 using ZBank.ViewModel;
 using ZBankManagement.Entities.BusinessObjects;
 using ZBankManagement.Entity.EnumerationTypes;
@@ -59,13 +60,23 @@ namespace ZBank.View.UserControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.ThemeChanged += OnThemeChanged;
             ViewModel.OnLoaded();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.ThemeChanged -= OnThemeChanged;
             ViewModel.OnUnloaded();
 
+        }
+
+        private async void OnThemeChanged(ElementTheme obj)
+        {
+            await Dispatcher.CallOnUIThreadAsync(() =>
+            {
+                this.RequestedTheme = obj;
+            });
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
