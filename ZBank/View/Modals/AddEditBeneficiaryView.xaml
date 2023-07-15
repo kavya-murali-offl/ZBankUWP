@@ -18,22 +18,18 @@
         <converter:EnumToStringConverter
             x:Name="EnumToStringConverter" />
     </UserControl.Resources>
-    <Grid MinWidth="400" Padding="10">
-      
+    <Grid
+        MinWidth="400"
+        Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
-                Height="Auto" />  
-            <RowDefinition
-                Height="Auto" /><RowDefinition
                 Height="Auto" />
             <RowDefinition
                 Height="Auto" />
-            <RowDefinition
-                Height="Auto" />  
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
@@ -41,9 +37,15 @@
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
-                Height="Auto" />  
+                Height="Auto" />
             <RowDefinition
-                Height="Auto" /> 
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
             <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
@@ -52,7 +54,6 @@
             Text="Type"
             MaxWidth="400"
             Style="{ThemeResource NormalSubText}" />
-
         <DropDownButton
             IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
             MaxWidth="390"
@@ -90,72 +91,70 @@
                 </Flyout>
             </DropDownButton.Flyout>
         </DropDownButton>
-            
-            <TextBlock
-                Margin="10"
-                Text="Name"
+        <TextBlock
+            Margin="10"
+            Text="Name"
             MaxWidth="400"
             Grid.Row="2"
-                Style="{ThemeResource NormalSubText}" />
-
-            <TextBox
+            Style="{ThemeResource NormalSubText}" />
+        <TextBox
             Grid.Row="3"
             Style="{ThemeResource CustomTextBoxStyle}"
-                x:Name="NameBox"
-                MaxWidth="400"
-                Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
-                PlaceholderText="Enter Beneficiary Name" />
-
-            <TextBlock
-                Grid.Row="4"
+            x:Name="NameBox"
+            MaxWidth="400"
+            Text="{x:Bind ViewModel.SelectedBeneficiary.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
+            PlaceholderText="Enter Beneficiary Name" />
+        
+        <TextBlock
+            Grid.Row="4"
             MaxWidth="400"
             Margin="10,0,10,0"
             Foreground="IndianRed"
-                Text="{x:Bind ViewModel.FieldErrors['BeneficiaryName'], Mode=OneWay}" />
+            Text="{x:Bind ViewModel.FieldErrors['BeneficiaryName'], Mode=OneWay}" />
 
-            <TextBlock
+        <TextBlock
             Grid.Row="5"
             Margin="10"
             MaxWidth="400"
             Text="Account Number"
-                Style="{ThemeResource NormalSubText}" />
+            Style="{ThemeResource NormalSubText}" />
 
-            <TextBox
+        <TextBox
             Grid.Row="6"
             MaxWidth="400"
             KeyDown="TextBox_KeyDown"
             Style="{ThemeResource CustomTextBoxStyle}"
-                IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
-                PlaceholderText="Enter Account Number"
-                Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay, TargetNullValue=''}" />
+            IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
+            PlaceholderText="Enter Account Number"
+            Text="{x:Bind ViewModel.SelectedBeneficiary.AccountNumber, Mode=TwoWay, TargetNullValue=''}" />
 
-            <TextBlock
+        <TextBlock
             Grid.Row="7"
             MaxWidth="400"
             Margin="10,0,10,0"
             Foreground="IndianRed"
-                Text="{x:Bind ViewModel.FieldErrors['AccountNumber'], Mode=OneWay}" />
+            Text="{x:Bind ViewModel.FieldErrors['AccountNumber'], Mode=OneWay}" />
 
-            <TextBlock
+        <TextBlock
             Grid.Row="8"
             Margin="10"
             MaxWidth="400"
             Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                Text="IFSC Code"
-                Style="{ThemeResource NormalSubText}" />
+            Text="IFSC Code"
+            Style="{ThemeResource NormalSubText}" />
 
-            <TextBox
+        <TextBox
             Grid.Row="9"
             MaxWidth="400"
             Style="{ThemeResource CustomTextBoxStyle}"
-                IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
-                Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                x:Name="IFSCCodeBox"
-                KeyDown="IFSCCodeBox_KeyDown"
-                PlaceholderText="Enter IFSC Code"
-                Text="{x:Bind ViewModel.SelectedBeneficiary.IFSCCode, Mode=TwoWay}" />
+            IsEnabled="{x:Bind ViewModel.IsAdd, Mode=OneWay}"
+            Visibility="{x:Bind ViewModel.IsOtherBankSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+            x:Name="IFSCCodeBox"
+            KeyDown="IFSCCodeBox_KeyDown"
+            PlaceholderText="Enter IFSC Code"
+            Text="{x:Bind ViewModel.SelectedBeneficiary.IFSCCode, Mode=TwoWay}" />
 
-            <TextBlock
+        <TextBlock
             Margin="10,0,10,0"
             Grid.Row="10"
             MaxWidth="400"
@@ -163,7 +162,7 @@
             Text="{x:Bind ViewModel.FieldErrors['IFSCCode'], Mode=OneWay}"
             Foreground="IndianRed" />
 
-       
+
         <Button
             Grid.ColumnSpan="2"
             Grid.Row="11"
@@ -179,7 +178,7 @@
                     Text="{x:Bind ViewModel.SubmitText}" />
             </Button.Content>
         </Button>
-        
+
         <Button
             Visibility="Collapsed"
             Grid.Row="11"

@@ -47,7 +47,7 @@ namespace ZBank.View.Main
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
             await Dispatcher.CallOnUIThreadAsync(() =>
             {
-                ThemeService.SetRequestedTheme(null, Window.Current.Content, titleBar);
+                ThemeService.SetRequestedAccentColor();
             });
         }
 

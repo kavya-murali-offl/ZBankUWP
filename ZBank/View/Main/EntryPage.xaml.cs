@@ -41,7 +41,7 @@ namespace ZBank.View.Main
         }
         private void InitializeThemeSettings()
         {
-            ThemeService.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+            ThemeService.SetRequestedTheme(Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar, ThemeService.Theme);
             ViewNotifier.Instance.ThemeChanged += ThemeSelector_OnThemeChanged;
             ViewNotifier.Instance.AccentColorChanged += ThemeSelector_OnAccentColorChanged;
         }
@@ -50,7 +50,6 @@ namespace ZBank.View.Main
         {
             await Dispatcher.CallOnUIThreadAsync(()=> {
                 ThemeService.SetRequestedAccentColor();
-                ThemeService.ApplyThemeForTitleBarButtons(ApplicationView.GetForCurrentView().TitleBar, ThemeService.Theme);
             });
         }
 
@@ -58,7 +57,7 @@ namespace ZBank.View.Main
         {
             await Dispatcher.CallOnUIThreadAsync(() =>
             {
-                ThemeService.SetRequestedTheme(RootGrid, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+                ThemeService.SetRequestedTheme(Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar, theme);
             });
         }
 

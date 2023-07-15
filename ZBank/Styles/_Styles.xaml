@@ -21,6 +21,7 @@
     <SolidColorBrush
         x:Key="ApplicationBackground"
         Color="{ThemeResource SystemAltHighColor}" />
+    
     <SolidColorBrush
         x:Key="ApplicationPageBackground"
         Color="{ThemeResource SystemAltLowColor}" />
@@ -595,7 +596,7 @@
             Value="Stretch" />
         <Setter
             Property="VerticalContentAlignment"
-            Value="Center" />
+            Value="Stretch" />
         <Setter
             Property="Margin"
             Value="0,0,4,4" />

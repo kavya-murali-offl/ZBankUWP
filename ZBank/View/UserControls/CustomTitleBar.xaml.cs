@@ -91,7 +91,7 @@ namespace ZBank.View.UserControls
         {
             await Dispatcher.CallOnUIThreadAsync(() =>
             {
-                ThemeService.SetRequestedTheme(AppTitleBar, Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar);
+                ThemeService.SetRequestedTheme(Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar, Theme);
             });
         }
     }

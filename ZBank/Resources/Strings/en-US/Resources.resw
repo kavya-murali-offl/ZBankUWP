@@ -132,7 +132,7 @@
   <data name="ActiveDeposits" xml:space="preserve">
     <value>Active Deposits</value>
   </data>
-  <data name="AddBeneficiary.Text" xml:space="preserve">
+  <data name="AddBeneficiary" xml:space="preserve">
     <value>Add Beneficiary</value>
   </data>
   <data name="AddCreditCard.Text" xml:space="preserve">

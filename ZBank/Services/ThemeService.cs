@@ -22,10 +22,13 @@ namespace ZBank.Config
         public static readonly string DarkThemeIcon = "\uEC46";
         public static readonly string LightThemeIcon = "\uE793";
         private const string themeKey = "Theme";
-        public static ElementTheme Theme { get; set; } = ElementTheme.Light;
+        public static ElementTheme Theme { get; set; } = ElementTheme.Default;
 
         private static readonly ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         private static readonly UISettings UISettings = new UISettings();
+
+        private static readonly string LightBackgroundColor = "#FFFFFFFF";
+        private static readonly string DarkBackgroundColor = "#FF000000";
 
         public static void Initialize()
         {
@@ -63,7 +66,7 @@ namespace ZBank.Config
             }
         }
 
-        public static void SetRequestedTheme(Panel backgroundPanel, UIElement currentContent, ApplicationViewTitleBar titleBar)
+        public static void SetRequestedTheme(UIElement currentContent, ApplicationViewTitleBar titleBar, ElementTheme theme)
         {
 
             if (currentContent is FrameworkElement frameworkElement)
@@ -71,7 +74,7 @@ namespace ZBank.Config
                 frameworkElement.RequestedTheme = Theme;
             }
 
-
+            SetTheme(theme);
 
             ((SolidColorBrush)Application.Current.Resources["SystemControlPageBackgroundMediumAltMediumBrush"]).Color =
             Theme == ElementTheme.Dark ? Color.FromArgb(153, 0, 0, 0) : Color.FromArgb(153, 255, 255, 255);
@@ -136,6 +139,16 @@ namespace ZBank.Config
             }
         }
 
+        private static bool IsDarkTheme()
+        {
+            string backgroundColor = UISettings.GetColorValue(UIColorType.Background).ToString();
+            if(Theme == ElementTheme.Default)
+            {
+                return  backgroundColor == DarkBackgroundColor;
+            }
+            return Theme == ElementTheme.Dark;
+        }
+
         private static void UiSettings_ColorValuesChanged(UISettings sender, object args)
         {
             if (UseWindowsAccentColor)
@@ -146,31 +159,28 @@ namespace ZBank.Config
 
         public static void ApplyThemeForTitleBarButtons(ApplicationViewTitleBar titleBar, ElementTheme theme)
         {
-            if (theme == ElementTheme.Dark)
+            if (IsDarkTheme())
             {
-
                 titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
                 titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
-                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
-                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
+                titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
+                titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
                 titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
                 titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemAltLowColor"];
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
-                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"]; ;
-                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
-
+                titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
+                titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
             }
             else
             {
-
                 titleBar.ButtonBackgroundColor = (Color)Application.Current.Resources["SystemAltHighColor"];
                 titleBar.ButtonForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"];
                 titleBar.ButtonHoverForegroundColor = (Color)Application.Current.Resources["SystemBaseHighColor"];
                 titleBar.ButtonPressedForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
                 titleBar.ButtonPressedBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
-                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
                 titleBar.ButtonInactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseLowColor"];
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
                 titleBar.InactiveForegroundColor = (Color)Application.Current.Resources["SystemBaseMediumColor"]; ;
                 titleBar.InactiveBackgroundColor = (Color)Application.Current.Resources["SystemAltMediumColor"];
@@ -216,13 +226,9 @@ namespace ZBank.Config
 
             try
             {
-                // Overwrite MenuFlyoutSubItemRevealBackgroundSubMenuOpened resource color
                 ((RevealBackgroundBrush)Application.Current.Resources["SystemControlHighlightAccent3RevealBackgroundBrush"]).Color = color;
             }
-            catch (Exception)
-            {
-                // ignore
-            }
+            catch { }
         }
 
         public static void SetRequestedAccentColor()
@@ -249,7 +255,7 @@ namespace ZBank.Config
 
         private static void LoadCacheTheme()
         {
-            ElementTheme localTheme = ElementTheme.Dark;
+            ElementTheme localTheme = ElementTheme.Default;
 
             string themeName = (string)LocalSettings.Values[themeKey];
 
