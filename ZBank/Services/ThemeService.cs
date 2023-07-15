@@ -265,5 +265,35 @@ namespace ZBank.Config
             }
             Theme = localTheme;
         }
+
+        public static void SwitchTheme()
+        {
+            var switchedTheme = Theme;
+
+            if(Theme == ElementTheme.Default)
+            {
+                if (UISettings.GetColorValue(UIColorType.Background).ToString() == DarkBackgroundColor){
+                    switchedTheme = ElementTheme.Light;
+                }
+                else
+                {
+                    switchedTheme = ElementTheme.Dark;  
+                }
+            }
+            else
+            {
+               switchedTheme = GetTheme(Theme);
+            }
+            SetTheme(switchedTheme);
+        }
+
+        public static ElementTheme GetTheme(ElementTheme theme)
+        {
+            if (theme == ElementTheme.Dark)
+            {
+                return ElementTheme.Light;
+            }
+            return ElementTheme.Dark;
+        }
     }
 }

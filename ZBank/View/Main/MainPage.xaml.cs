@@ -126,14 +126,7 @@ namespace ZBank
 
         private void SwitchThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ThemeService.Theme == ElementTheme.Dark)
-            {
-                ViewNotifier.Instance.OnThemeChanged(ElementTheme.Light);
-            }
-            else
-            {
-                ViewNotifier.Instance.OnThemeChanged(ElementTheme.Dark);
-            }
+            ThemeService.SwitchTheme();
         }
 
         private void LoadToggleButton()
