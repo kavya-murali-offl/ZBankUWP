@@ -19,6 +19,7 @@
             x:Name="EnumToStringConverter" />
     </UserControl.Resources>
     <Grid
+        x:Name="ContentGrid"
         Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition
@@ -101,6 +102,7 @@
             Grid.Row="3"
             Style="{ThemeResource CustomTextBoxStyle}"
             x:Name="NameBox"
+            TextChanging="NameBox_TextChanging"
             MaxWidth="400"
             Text="{x:Bind ViewModel.EditableItem.BeneficiaryName, Mode=TwoWay, TargetNullValue=''}"
             PlaceholderText="Enter Beneficiary Name" />
@@ -169,7 +171,7 @@
             CornerRadius="5"
             VerticalAlignment="Center"
             MinWidth="100"
-            Margin="20"
+            Margin="0,20,0,20"
             Command="{x:Bind ViewModel.SubmitCommand}"
             Style="{ThemeResource PrimaryButton}"
             HorizontalAlignment="Right">
@@ -180,7 +182,7 @@
         </Button>
 
         <Button
-            Visibility="Collapsed"
+            Visibility="{x:Bind IsModal, Converter={StaticResource BoolToVisibilityConverter}}"
             Grid.Row="11"
             CornerRadius="5"
             MinWidth="100"
@@ -200,7 +202,7 @@
             CornerRadius="5"
             VerticalAlignment="Center"
             MinWidth="100"
-            Margin="20,20,130,20"
+            Margin="20,20,110,20"
             x:Name="ResetButton"
             Click="ResetButton_Click"
             Style="{ThemeResource SecondaryButton}"

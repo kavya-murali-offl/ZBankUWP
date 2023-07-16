@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -30,19 +31,30 @@ namespace ZBank.View.UserControls
     {
         private AddEditBeneficiaryViewModel ViewModel { get; set; }
 
+        public AddEditBeneficiaryView(bool isModal=false)
+        {
+            this.InitializeComponent();
+            ViewModel = new AddEditBeneficiaryViewModel(this);
+            BeneficiaryButton.Content = ViewModel.BeneficiaryTypes.ElementAt(0).ToString().GetLocalized();
+            IsModal = isModal;
+            if (isModal) ContentGrid.MinWidth = 400;
+        }
+
         public AddEditBeneficiaryView()
         {
             this.InitializeComponent();
             ViewModel = new AddEditBeneficiaryViewModel(this);
-            CancelButton.Visibility = Visibility.Collapsed;
             BeneficiaryButton.Content = ViewModel.BeneficiaryTypes.ElementAt(0).ToString().GetLocalized();
         }
 
-        public AddEditBeneficiaryView(BeneficiaryBObj beneficiaryBObj)
+        public bool IsModal { get; set; }
+
+        public AddEditBeneficiaryView(BeneficiaryBObj beneficiaryBObj, bool isModal)
         {
             this.InitializeComponent();
-            CancelButton.Visibility = Visibility.Visible;
             ViewModel = new AddEditBeneficiaryViewModel(this, beneficiaryBObj);
+            IsModal = isModal;
+            if (isModal) ContentGrid.MinWidth = 400;
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -110,6 +122,12 @@ namespace ZBank.View.UserControls
                 e.Handled = true;
                 SubmitForm();
             }
+        }
+
+
+        private void NameBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            sender.SelectionStart = sender.Text.Length;
         }
     }
 }

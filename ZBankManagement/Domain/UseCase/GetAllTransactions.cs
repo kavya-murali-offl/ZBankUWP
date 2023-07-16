@@ -53,6 +53,10 @@ namespace ZBank.ZBankManagement.DomainLayer.UseCase
     public class GetAllTransactionsRequest : RequestObjectBase
     {
         public string CustomerID { get; set; }
+        
+        public DateTime FromDate { get; set; }
+        
+        public DateTime ToDate { get; set; }
 
         public string AccountNumber { get; set; }
 

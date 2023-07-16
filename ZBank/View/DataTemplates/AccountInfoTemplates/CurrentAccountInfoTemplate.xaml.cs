@@ -80,7 +80,7 @@ namespace ZBank.View.DataTemplates
 
         private async void AddBeneficiaryButton_Click(object sender, RoutedEventArgs e)
         {
-            await DialogService.ShowContentAsync(this, new AddEditBeneficiaryView(), "Add Beneficiary", XamlRoot);
+            await DialogService.ShowContentAsync(this, new AddEditBeneficiaryView(true), "Add Beneficiary", XamlRoot);
         }
     }
 }

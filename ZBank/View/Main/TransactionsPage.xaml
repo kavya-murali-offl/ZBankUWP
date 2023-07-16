@@ -25,7 +25,7 @@
             x:Name="IndexToPositionConverter" />
         <DataTemplate
             x:Key="NarrowHeaderDataTemplate">
-        <Grid
+            <Grid
                 BorderThickness="0,0,0,1"
                 BorderBrush="DarkGray"
                 Padding="0,15,0,15"
@@ -150,7 +150,8 @@
                     Text="Balance" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="NarrowDataTemplate">
+        <DataTemplate
+            x:Key="NarrowDataTemplate">
             <Grid
                 Padding="0,15,0,15">
                 <Grid.ColumnDefinitions>
@@ -339,11 +340,12 @@
                     VerticalAlignment="Center"
                     Text="{Binding ClosingBalance, Converter={StaticResource CurrencyConverter}}"
                     TextTrimming="CharacterEllipsis" />
-               
+
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    <Grid ScrollViewer.VerticalScrollMode="Disabled">
+    <Grid
+        ScrollViewer.VerticalScrollMode="Disabled">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState
@@ -398,61 +400,24 @@
                     Height="Auto" />
             </Grid.RowDefinitions>
             <Grid>
-                <AutoSuggestBox
-                    Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
-                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
-                    Width="300"
-                    LostFocus="AccountsSuggestionBox_LostFocus"
-                    TextChanged="AccountsSuggestionBox_TextChanged"
-                    Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
-                    HorizontalAlignment="Left"
-                    PlaceholderText="Select Account"
-                    VerticalAlignment="Center"
-                    ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}"
-                    x:Name="AccountsSuggestionBox" />
-                <!--<DropDownButton
-                    Width="300"
-                    x:Name="AccountNumberDropDownButton"
-                    CornerRadius="8">
-                    <DropDownButton.Content>
-                        <TextBlock
-                            TextTrimming="CharacterEllipsis"
-                            HorizontalAlignment="Center"
-                            x:Name="AccountText"
-                            Text="{x:Bind ViewModel.SelectedAccount.ToString(), Mode=OneWay}" />
-                    </DropDownButton.Content>
-                    <DropDownButton.Flyout>
-                        <Flyout
-                            Placement="Bottom"
-                            FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
-                            <ListView
-                                ItemContainerStyle="{ThemeResource DropdownListViewItemStyle}"
-                                x:Name="Accou{ntsList"
-                                SelectionChanged="AccountsList_SelectionChanged"
-                                ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}">
-                                <ListView.ItemContainerTransitions>
-                                        <TransitionCollection>
-                                            <EntranceThemeTransition />
-                                        </TransitionCollection>
-                                </ListView.ItemContainerTransitions>
-                                <ListView.ItemTemplate>
-                                    <DataTemplate
-                                        x:DataType="modelBObj:AccountBObj">
-                                        <TextBlock
-                                            Padding="10"
-                                            TextTrimming="CharacterEllipsis"
-                                            MaxWidth="300"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            Text="{Binding}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </Flyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>-->
+              
+            </Grid>
+            <Grid
+                Background="{ThemeResource ApplicationBackground}"
+                CornerRadius="8"
+                Grid.Row="2"
+                Padding="10"
+                Margin="0,0,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
                 <Button
-                    Margin="0,10,0,10"
+                    Margin="10,0,10,0"
                     HorizontalAlignment="Right"
                     x:Name="NewPaymentButton"
                     Click="NewPaymentButton_Click"
@@ -464,68 +429,86 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-
-            </Grid>
-            <!--<Grid
-                Visibility="Collapsed"
-                Background="{ThemeResource ApplicationBackground}"
-                MinHeight="150"
-                CornerRadius="8"
-                Grid.Row="2"
-                Margin="0,0,0,5">
                 <GridView
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    SelectionMode="None">
+                    Grid.Row="1"
+                    SelectionMode="None"
+                    ItemContainerStyle="{ThemeResource DefaultGridViewItemStyling}"
+                   >
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VariableSizedWrapGrid
-                                ItemWidth="220"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal" />
+                                Orientation="Horizontal"
+                                MaximumRowsOrColumns="3" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
-                    <GridView.ItemContainerStyle>
-                        <Style
-                            TargetType="GridViewItem">
-                            <Setter
-                                Value="10"
-                                Property="Margin" />
-                            <Setter
-                                Value="Auto"
-                                Property="Width" />
-                        </Style>
-                    </GridView.ItemContainerStyle>
                     <GridViewItem>
-                        <StackPanel>
+                        <StackPanel
+                            Margin="10,0,10,0">
                             <TextBlock
+                                Grid.Row="1"
                                 Foreground="Gray"
                                 Margin="0,5,0,5"
-                                Text="From Date" />
-                            <CalendarDatePicker
-                                x:Name="FromDatePicker"
-                                DateChanged="FromDatePicker_DateChanged"
-                                PlaceholderText="Select From Date"
-                                Background="{ThemeResource ApplicationPageBackground}"
-                                Width="200" />
+                                Text="Account" />
+                            <AutoSuggestBox
+                                Grid.Row="2"
+                                Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
+                                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                Width="300"
+                                LostFocus="AccountsSuggestionBox_LostFocus"
+                                TextChanged="AccountsSuggestionBox_TextChanged"
+                                Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
+                                HorizontalAlignment="Left"
+                                PlaceholderText="Select Account"
+                                VerticalAlignment="Center"
+                                ItemsSource="{x:Bind ViewModel.AccountsList, Mode=OneWay}"
+                                x:Name="AccountsSuggestionBox" />
                         </StackPanel>
                     </GridViewItem>
                     <GridViewItem>
-                        <StackPanel>
+                        <StackPanel
+                            Margin="10,0,10,0">
                             <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Foreground="Gray"
+                            Margin="0,5,0,5"
+                            Text="From Date" />
+                        <CalendarDatePicker
+                                Style="{ThemeResource DefaultCalendarDatePicker}"
+                            Grid.Row="2"
+                                Width="300"
+                                Grid.Column="1"
+                                Foreground="{ThemeResource ApplicationForeground}"
+                                x:Name="FromDatePicker"
+                            DateChanged="FromDatePicker_DateChanged"
+                            PlaceholderText="Select From Date"
+                            Background="{ThemeResource ApplicationPageBackground}"
+                         />
+                        </StackPanel>
+                    </GridViewItem>
+                    <GridViewItem>
+                        <StackPanel
+                            Margin="10,0,10,0">
+                            <TextBlock
+                                Grid.Row="2"
                                 Foreground="Gray"
                                 Margin="0,5,0,5"
                                 Text="To Date" />
                             <CalendarDatePicker
+                                Grid.Column="2"
+                                Style="{ThemeResource DefaultCalendarDatePicker}"
+                                Grid.Row="2"
+                                Foreground="{ThemeResource ApplicationForeground}"
                                 x:Name="ToDatePicker"
                                 PlaceholderText="Select To Date"
                                 DateChanged="ToDatePicker_DateChanged"
                                 Background="{ThemeResource ApplicationPageBackground}"
-                                Width="200" />
+                                Width="300" />
                         </StackPanel>
                     </GridViewItem>
-                    <GridViewItem
+                </GridView>
+                    <!--<GridViewItem
                         MinWidth="200">
                         <StackPanel
                             MinWidth="200">
@@ -659,11 +642,10 @@
                                 </DropDownButton.Flyout>
                             </DropDownButton>
                         </StackPanel>
-
-                    </GridViewItem>
-                </GridView>
-            </Grid>-->
+                    </GridViewItem>-->
+            </Grid>
             <Grid
+                MinHeight="600"
                 MaxHeight="600"
                 Grid.Row="3"
                 BorderBrush="DarkGray"
@@ -701,7 +683,7 @@
                         <Flyout>
                             <ListView
                                 Width="100"
-                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
+                                ItemContainerStyle="{ThemeResource DropdownListViewItemStyle}"
                                 SelectedValue="{x:Bind ViewModel.RowsPerPage, Mode=OneWay}"
                                 x:Name="RowsPerPageList"
                                 SelectionChanged="RowsPerPageList_SelectionChanged"
@@ -768,5 +750,5 @@
         </Grid>
 
     </Grid>
-   
+
 </Page>

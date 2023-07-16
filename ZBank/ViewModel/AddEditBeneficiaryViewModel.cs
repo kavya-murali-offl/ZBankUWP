@@ -76,7 +76,7 @@ namespace ZBank.ViewModel
             ValidateObject(FieldErrors, typeof(BeneficiaryBObj), list, EditableItem);
             if (!IsNew)
             {
-                if (Item.BeneficiaryName == EditableItem.BeneficiaryName)
+                if (Item.BeneficiaryName == EditableItem.BeneficiaryName?.Trim())
                 {
                     FieldErrors["BeneficiaryName"] = "Enter a different beneficiary name";
                 }
@@ -306,6 +306,4 @@ namespace ZBank.ViewModel
         }
 
     }
-
-
 }

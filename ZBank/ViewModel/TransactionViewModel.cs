@@ -46,6 +46,8 @@ namespace ZBank.ViewModel
             NextCommand = new RelayCommand(GoToNextPage, IsNextButtonEnabled);
             PreviousCommand = new RelayCommand(GoToPreviousPage, IsPreviousButtonEnabled);
             RowsPerPage = DefinedRows.FirstOrDefault();
+            FromDate = DateTime.Now.AddMonths(-1);
+            ToDate = DateTime.Now;
         }
 
         public void OnPageLoaded()
@@ -99,6 +101,7 @@ namespace ZBank.ViewModel
                     CustomerID = Repository.Current.CurrentUserID,
                     CurrentPageIndex = CurrentPageIndex,
                     RowsPerPage = RowsPerPage,
+                    FromDate = FromDate, ToDate = ToDate,   
                     AccountNumber = SelectedAccount.AccountNumber
                 };
 
@@ -186,6 +189,18 @@ namespace ZBank.ViewModel
             await DialogService.ShowContentAsync(View, new NewPaymentView(), "New Payment", Window.Current.Content.XamlRoot);
         }
 
+        internal void UpdateToDate(DateTime date)
+        {
+            ToDate = date;
+            LoadAllTransactionsData();
+        }
+
+        internal void UpdateFromDate(DateTime date)
+        {
+            FromDate = date;
+            LoadAllTransactionsData();
+        }
+
         private int _currentPageIndex = 0;
 
         public int CurrentPageIndex
@@ -199,6 +214,20 @@ namespace ZBank.ViewModel
         {
             get => _totalPages;
             set => Set(ref _totalPages, value);
+        }
+
+        private DateTime _fromDate;
+        public DateTime FromDate
+        {
+            get => _fromDate;
+            set => Set(ref _fromDate, value);
+        }
+
+        private DateTime _toDate;
+        public DateTime ToDate
+        {
+            get => _toDate;
+            set => Set(ref _toDate, value);
         }
 
 

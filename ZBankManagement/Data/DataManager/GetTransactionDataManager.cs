@@ -43,7 +43,9 @@ namespace ZBankManagement.DataManager
                     accountTransactions = await DBHandler.GetAllTransactionByAccountNumber(request.AccountNumber, request.CustomerID).ConfigureAwait(false);
                 }
 
-                accountTransactions = accountTransactions.OrderByDescending(trans => trans.RecordedOn);
+                accountTransactions = accountTransactions
+                    .Where(transaction => transaction.RecordedOn < request.ToDate && transaction.RecordedOn > request.FromDate)
+                    .OrderByDescending(trans => trans.RecordedOn);
 
                 int totalPages = (accountTransactions.Count() / request.RowsPerPage);
                 if (accountTransactions.Count() % request.RowsPerPage != 0)

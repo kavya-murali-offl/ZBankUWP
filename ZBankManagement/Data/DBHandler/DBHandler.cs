@@ -141,8 +141,14 @@ namespace ZBank.DatabaseHandler
 
         public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Insert(beneficiary);
 
-        public Task<int> UpdateBeneficiary(Beneficiary beneficiaryToUpdate) => _databaseAdapter.Update(beneficiaryToUpdate, typeof(Beneficiary));
-
+        public Task<int> UpdateBeneficiary(Beneficiary beneficiaryToUpdate)
+        {
+            return _databaseAdapter.Execute(
+                "Update Beneficiary Set IsFavourite = ? and BeneficiaryName = ? Where ID = ?",
+                beneficiaryToUpdate.IsFavourite,
+                beneficiaryToUpdate.BeneficiaryName,
+                beneficiaryToUpdate.ID);
+        }
         public async Task<int> DeleteBeneficiary(Beneficiary beneficiary)
         {
             return await _databaseAdapter.Delete(beneficiary).ConfigureAwait(false);
@@ -438,7 +444,7 @@ namespace ZBank.DatabaseHandler
                     CreatedOn = DateTime.Now,
                     AccountStatus = AccountStatus.ACTIVE,
                     Currency = Currency.INR,
-                    Balance = 0m,
+                    Balance = 23330m,
                     AccountType = AccountType.SAVINGS,
                     IsKYCApproved = true
                 },
@@ -465,7 +471,33 @@ namespace ZBank.DatabaseHandler
                     CreatedOn = DateTime.Now,
                     AccountStatus = AccountStatus.ACTIVE,
                     Currency = Currency.INR,
-                    Balance = 0m,
+                    Balance = 12000m,
+                    IsKYCApproved = true,
+                    AccountType = AccountType.CURRENT,
+                  },
+                     new Account()
+                  {
+                    AccountNumber="2334 7888 0988 6678",
+                     IFSCCode = "ZBNK1002",
+                      AccountName = "Kristen",
+                    UserID = "11234456",
+                    CreatedOn = DateTime.Now,
+                    AccountStatus = AccountStatus.ACTIVE,
+                    Currency = Currency.INR,
+                    Balance = 20000m,
+                    IsKYCApproved = true,
+                    AccountType = AccountType.CURRENT,
+                  },
+                      new Account()
+                  {
+                    AccountNumber="7867 6789 6789 3456",
+                     IFSCCode = "ZBNK1002",
+                      AccountName = "Rose",
+                    UserID = "98765434",
+                    CreatedOn = DateTime.Now,
+                    AccountStatus = AccountStatus.ACTIVE,
+                    Currency = Currency.INR,
+                    Balance = 8000m,
                     IsKYCApproved = true,
                     AccountType = AccountType.CURRENT,
                   }

@@ -103,7 +103,6 @@ namespace ZBank.ViewModel
 
         internal void SwitchFavourite(BeneficiaryBObj selectedBeneficiary)
         {
-            selectedBeneficiary.IsFavourite = !selectedBeneficiary.IsFavourite;
             UpdateBeneficiary(selectedBeneficiary);
         }
 
@@ -115,8 +114,8 @@ namespace ZBank.ViewModel
                 {
                     AccountNumber = beneficiary.AccountNumber,
                     ID = beneficiary.ID,    
-                     BeneficiaryName = beneficiary.BeneficiaryName,
-                      IsFavourite = beneficiary.IsFavourite 
+                    BeneficiaryName = beneficiary.BeneficiaryName,
+                    IsFavourite = !beneficiary.IsFavourite 
                 },
             };
 
@@ -129,7 +128,7 @@ namespace ZBank.ViewModel
         {
             await DialogService.ShowContentAsync(
                 View, 
-                new AddEditBeneficiaryView(selectedBeneficiary),
+                new AddEditBeneficiaryView(selectedBeneficiary, true),
                 "Edit Beneficiary", 
                 Window.Current.Content.XamlRoot.Content.XamlRoot.Content.XamlRoot
            );

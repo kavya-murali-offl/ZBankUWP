@@ -37,6 +37,5 @@ namespace ZBank.Entities
         public string ExternalName { get; set; }
 
         public string ProfilePicture { get; set; }
-
     }
 }

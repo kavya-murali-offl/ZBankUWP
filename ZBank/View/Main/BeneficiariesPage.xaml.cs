@@ -77,5 +77,9 @@ namespace ZBank.View.Main
             BeneficiaryBObj selectedBeneficiary = ((FrameworkElement)sender).DataContext as BeneficiaryBObj;
             ViewModel.DeleteBeneficiary(selectedBeneficiary);
         }
+
+        private void WithinBankTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+        }
     }
 }

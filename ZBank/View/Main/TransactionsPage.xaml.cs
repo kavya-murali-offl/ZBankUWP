@@ -39,6 +39,8 @@ namespace ZBank.View.Main
         {
             this.InitializeComponent();
             ViewModel = new TransactionViewModel(this);
+            ToDatePicker.Date = DateTime.Now;
+            FromDatePicker.Date = DateTime.Now.AddMonths(-1);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -72,38 +74,15 @@ namespace ZBank.View.Main
             await ViewModel.OpenNewPaymentDialog();
         }
 
-        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //ViewModel.UpdateSelectedAccount(AccountsList.SelectedItem as AccountBObj);
-            //AccountNumberDropDownButton.Flyout.Hide();
-        }
-
-        private void FromAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //ViewModel.FilterValues["FromAccount"] = FromAccountsList.SelectedItem as AccountBObj;
-            //FromAccountButton.Flyout.Hide();
-        }
-
-        private void ToAccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //ViewModel.FilterValues["ToAccount"] = ToAccountsList.SelectedItem as AccountBObj;
-            //ToAccountButton.Flyout.Hide();  
-        }
-
-        private void TransactionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //TransactionTypeButton.Flyout.Hide();    
-        }
 
         private void ToDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
-
-            //ViewModel.FilterValues["ToDate"] = ToDatePicker.Date.ToString();
+            ViewModel.UpdateToDate(sender.Date.GetValueOrDefault().Date);
         }
 
         private void FromDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
-            //ViewModel.FilterValues["FromDate"] = FromDatePicker.Date.ToString();
+            ViewModel.UpdateFromDate(sender.Date.GetValueOrDefault().Date);
         }
 
         private void TransactionListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

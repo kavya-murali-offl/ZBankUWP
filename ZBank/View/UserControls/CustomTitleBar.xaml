@@ -10,6 +10,7 @@
     Unloaded="Page_Unloaded"
     >
         <Grid
+            Canvas.ZIndex="20"
             HorizontalAlignment="Stretch"
             x:Name="AppTitleBar">
             <Image
@@ -18,8 +19,7 @@
                 Width="25"
                 Height="25"
                 Source="/Assets/banklogo.png" 
-                Stretch="UniformToFill"
-                />
+                Stretch="UniformToFill" />
             <TextBlock
                 FontWeight="SemiBold"
                 x:Name="AppTitleTextBlock"
