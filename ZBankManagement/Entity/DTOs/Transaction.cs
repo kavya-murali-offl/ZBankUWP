@@ -43,11 +43,7 @@ namespace ZBank.Entities
 
     public enum TransactionType
     {
-        INTERNAL, EXTERNAL
+        SELF_TRANSFER, TRANSFER, CARD_PAYMENT
     }
 
-    public enum ModeOfPayment
-    {
-        NONE, CREDIT_CARD, DEBIT_CARD, DIRECT
-    }
 }

@@ -82,7 +82,7 @@ namespace ZBankManagement.Data.DataManager
                         RecipientAccountNumber = request.CreditCard.CardNumber,
                         RecordedOn = DateTime.Now,
                         SenderAccountNumber = request.PaymentAccount.AccountNumber,
-                        TransactionType = TransactionType.EXTERNAL
+                        TransactionType = TransactionType.CARD_PAYMENT
                     };
                     var metaData = new TransactionMetaData()
                     {

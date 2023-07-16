@@ -32,16 +32,16 @@ namespace ZBank.ViewModel
     {
 
         public IList<AccountType> AccountTypes { get; set; } = new List<AccountType>() { AccountType.CURRENT, AccountType.SAVINGS, AccountType.TERM_DEPOSIT };
-        
+
         public ICommand SubmitCommand { get; set; }
-        
+
         public AccountType SelectedAccountType { get; set; }
 
         public AddOrEditAccountViewModel(IView view)
         {
             View = view;
             Reset();
-            UpdateAccounType(0);
+            UpdateAccountType(0);
         }
 
         public ObservableDictionary<string, string> FieldErrors = new ObservableDictionary<string, string>();
@@ -52,12 +52,15 @@ namespace ZBank.ViewModel
             if (ValidateFields())
             {
                 Account account = GetAccount();
-                if (account.AccountNumber == null)
+                if(account != null)
                 {
-                    IReadOnlyList<StorageFile> files = FieldValues["KYC"] as IReadOnlyList<StorageFile>;
-                    if(files.Count > 0)
+                    if (account.AccountNumber == null)
                     {
-                        ApplyNewAccount(account, files);
+                        IReadOnlyList<StorageFile> files = FieldValues["KYC"] as IReadOnlyList<StorageFile>;
+                        if (files.Count > 0)
+                        {
+                            ApplyNewAccount(account, files);
+                        }
                     }
                 }
             }
@@ -110,23 +113,42 @@ namespace ZBank.ViewModel
         private Account GetAccount()
         {
             Account account = null;
+            
             switch (SelectedAccountType)
             {
                 case AccountType.CURRENT:
-                   account =  new CurrentAccount()
+                    var currentAccount =  new CurrentAccount()
                     {
-                       AccountType = AccountType.CURRENT,
+                        AccountType = AccountType.CURRENT,
                         InterestRate = 3.2m,
-                        MinimumBalance=500m
-                    };
+                        Balance = decimal.Parse(FieldValues["Amount"].ToString())
+            };
+                    if(currentAccount.Balance < currentAccount.MinimumBalance)
+                    {
+                        FieldErrors["Amount"] = $"Initial Amount should be greater than MinimumBalance {currentAccount.MinimumBalance.ToString("C")}";
+                        account = null;
+                    }
+                    else
+                    {
+                        account = currentAccount;
+                    }
                     break;
                 case AccountType.SAVINGS:
-                    account = new SavingsAccount()
+                    var savingsAccount = new SavingsAccount()
                     {
                         AccountType = AccountType.SAVINGS,
                         InterestRate = 4.8m,
-                        MinimumBalance = 500m
+                        Balance = decimal.Parse(FieldValues["Amount"].ToString())
                     };
+                    if (savingsAccount.Balance < savingsAccount.MinimumBalance)
+                    {
+                        FieldErrors["Amount"] = $"Initial Amount should be greater than MinimumBalance {savingsAccount.MinimumBalance.ToString("C")}";
+                        account = null;
+                    }
+                    else
+                    {
+                        account = savingsAccount;
+                    }
                     break;
                 case AccountType.TERM_DEPOSIT:
                     TermDepositAccount depositAccount = new TermDepositAccount()
@@ -142,11 +164,13 @@ namespace ZBank.ViewModel
                     depositAccount.SetDefault();
                     account = depositAccount;
                     break;
-                 default: break;
+                default: break;
+
+                  
             }
+
             if(account != null)
             {
-                account.Balance = decimal.Parse(FieldValues["Amount"].ToString());
                 account.IFSCCode = BranchList.FirstOrDefault(brnch => brnch.ToString().Equals(FieldValues["Branch"].ToString()))?.IfscCode;
                 account.UserID = Repository.Current.CurrentUserID;
                 account.AccountStatus = AccountStatus.ACTIVE;
@@ -162,10 +186,16 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
             ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
+            ViewNotifier.Instance.CurrentUserChanged += OnCurrentUserChanged;
             ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
             CoreApplication.GetCurrentView().CoreWindow.Closed += WindowClosed;
             LoadAllAccounts();
             LoadAllBranches();
+        }
+
+        private void OnCurrentUserChanged(string obj)
+        {
+            WindowService.CloseWindow();
         }
 
         private void WindowClosed(CoreWindow sender, CoreWindowEventArgs args)
@@ -178,11 +208,12 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
             ViewNotifier.Instance.AccountInserted -= OnAccountInsertionSuccessful;
+            ViewNotifier.Instance.CurrentUserChanged -= OnCurrentUserChanged;
         }
 
         private void OnAccountInsertionSuccessful(bool isInserted)
         {
-            CoreApplication.GetCurrentView().CoreWindow.Close();
+            WindowService.CloseWindow();
         }
 
         private void ConsolidateView()
@@ -258,7 +289,7 @@ namespace ZBank.ViewModel
         internal async Task UploadFiles()
         {
             var files = await FilesHelper.GetFiles();
-            if(files.Count > 0)
+            if (files.Count > 0)
             {
                 FieldValues["KYC"] = files;
                 FieldErrors["KYC"] = string.Empty;
@@ -302,12 +333,12 @@ namespace ZBank.ViewModel
                         FieldValues = FieldValues,
                     };
                     newDepositAccountFormTemplate.Reset();
-                    SelectedTemplate = newDepositAccountFormTemplate;   
+                    SelectedTemplate = newDepositAccountFormTemplate;
                     break;
             }
         }
 
-        internal void UpdateAccounType(int index)
+        internal void UpdateAccountType(int index)
         {
             SelectedAccountType = AccountTypes[index];
             SwitchTemplate(SelectedAccountType);
@@ -319,8 +350,8 @@ namespace ZBank.ViewModel
 
         public string UploadInfo
         {
-            get => _uploadInfo; 
-            set => Set(ref  _uploadInfo, value);    
+            get => _uploadInfo;
+            set => Set(ref _uploadInfo, value);
         }
 
         private ObservableCollection<Account> _accounts = new ObservableCollection<Account>();
@@ -328,7 +359,7 @@ namespace ZBank.ViewModel
         public ObservableCollection<Account> Accounts
         {
             get => _accounts;
-            set => Set(ref _accounts, value);  
+            set => Set(ref _accounts, value);
         }
 
         private FrameworkElement _selectedTemplate = null;
@@ -381,7 +412,7 @@ namespace ZBank.ViewModel
                         {
                             Message = error.Message,
                             Type = NotificationType.ERROR
-                    });
+                        });
                 });
             }
         }
@@ -416,8 +447,8 @@ namespace ZBank.ViewModel
                     ViewNotifier.Instance.OnNotificationStackUpdated(
                       new Notification()
                       {
-                            Message = response.Message,
-                            Type = NotificationType.ERROR
+                          Message = response.Message,
+                          Type = NotificationType.ERROR
                       });
                 });
             }

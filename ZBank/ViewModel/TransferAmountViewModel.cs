@@ -36,14 +36,16 @@ namespace ZBank.ViewModel
 
         public bool IsConfirmed { get; set; }
 
-        public TransferAmountViewModel(IView view) {
+        public TransferAmountViewModel(IView view, TransactionType type)
+        {
             View = view;
             InitializeSteps();
-            Reset();
+            Reset(type);
             ViewNotifier.Instance.PaymentInProgress = true;
         }
 
         private decimal _availableBalance;
+
         public decimal AvailableBalance
         {
             get { return _availableBalance; }
@@ -65,8 +67,6 @@ namespace ZBank.ViewModel
             get => AllBeneficiaries?.FirstOrDefault(acc => acc.AccountNumber == CurrentTransaction.RecipientAccountNumber);
         }
 
-        private ContentDialog ContentDialog { get; set; }
-
         private void ProceedToPay(object parameter)
         {
             var ReferenceID = Guid.NewGuid().ToString();
@@ -87,10 +87,16 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
-        public void Reset(object parameter=null) 
+        public void Reset(object parameter) 
         {
+            
             ViewNotifier.Instance.OnPaymentResetRequested();
             CurrentTransaction = new Transaction();
+            if (parameter is TransactionType type)
+            {
+                CurrentTransaction.TransactionType = type;
+            }
+
             AvailableBalance = 0m;
             FieldErrors["Amount"] = string.Empty;
             FieldErrors["Description"] = string.Empty;
@@ -146,7 +152,7 @@ namespace ZBank.ViewModel
         {
             if(isPaymentCompleted)
             {
-                Reset();
+                Reset(CurrentTransaction.TransactionType);
                 GoToNextStep();
             }
             else
@@ -179,7 +185,6 @@ namespace ZBank.ViewModel
         {
             OtherAccounts = UserAccounts;
         }
-
 
         public void OnUnloaded()
         {
@@ -327,7 +332,7 @@ namespace ZBank.ViewModel
         private void ClosePaymentDialog()
         {
             ViewNotifier.Instance.OnCloseDialog();
-            Reset();
+            Reset(CurrentTransaction.TransactionType);
         }
 
         private ObservableCollection<AccountBObj> _accounts = null;
@@ -446,7 +451,6 @@ namespace ZBank.ViewModel
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnCancelPaymentRequested(true);
-                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
 
@@ -459,7 +463,6 @@ namespace ZBank.ViewModel
                             Message = response.Message,
                             Type = NotificationType.ERROR,
                     });
-                    ViewNotifier.Instance.OnCloseDialog();
                 });
             }
         }

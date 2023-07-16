@@ -63,7 +63,6 @@
             Grid.Row="2"
             Margin="10"
             VerticalAlignment="Center"
-            
             FontSize="16"
             FontWeight="SemiBold"
             Style="{ThemeResource NormalSubText}"
@@ -91,7 +90,6 @@
         <AutoSuggestBox
             Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
             SuggestionChosen="Accounts_SuggestionChosen"
-            Width="300"
             HorizontalAlignment="Stretch"
             Grid.Row="4"
             Grid.ColumnSpan="2"
@@ -102,6 +100,18 @@
             x:Name="Accounts"
             VerticalAlignment="Center"
             ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}" />
+
+        <TextBlock
+            FontSize="14"
+            VerticalAlignment="Center"
+            Grid.Row="5"
+            Margin="10,0,10,0"
+            MaxWidth="300"
+            TextWrapping="Wrap"
+            Grid.ColumnSpan="2"
+            Text="{x:Bind ViewModel.FieldErrors['Account'], Mode=OneWay}"
+            Foreground="IndianRed"
+            HorizontalAlignment="Left" />
 
         <TextBlock
             Grid.Row="6"

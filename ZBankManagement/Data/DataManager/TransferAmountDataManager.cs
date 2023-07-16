@@ -37,7 +37,9 @@ namespace ZBankManagement.DataManager
                     {
                        limit = (request.OwnerAccount as CurrentAccount).TransactionLimit;
                       
-                    }else if(request.OwnerAccount is SavingsAccount) {
+                    }
+                    else if(request.OwnerAccount is SavingsAccount) 
+                    {
                         limit = (request.OwnerAccount as SavingsAccount).TransactionLimit;
                     }
 
@@ -68,6 +70,7 @@ namespace ZBankManagement.DataManager
                         AccountNumber = request.OwnerAccount.AccountNumber,
                         ClosingBalance = request.OwnerAccount.Balance -= request.Transaction.Amount,
                     };
+
                     await _dBHandler.InitiateTransactionExternal(request.Transaction, request.OwnerAccount, metaData).ConfigureAwait(false);
                     TransferAmountResponse response = new TransferAmountResponse()
                     {
@@ -133,7 +136,6 @@ namespace ZBankManagement.DataManager
                         AccountNumber = otherAccount.AccountNumber,
                         ClosingBalance = otherAccount.Balance += request.Transaction.Amount,
                     };
-
                     await _dBHandler.InitiateTransactionInternal(request.OwnerAccount, otherAccount, request.Transaction, metaData, otherMetaData).ConfigureAwait(false);
                     TransferAmountResponse response = new TransferAmountResponse()
                     {

@@ -46,32 +46,33 @@
             </Grid.RowDefinitions>
 
             <TextBlock
+                Margin="20"
                 FontWeight="SemiBold"
                 FontSize="20"
-                Margin="20"
                 HorizontalAlignment="Center"
                 Text="Login" />
 
             <TextBlock
                 Grid.Row="1"
+                Margin="0,20,0,10"
                 Text="Customer ID" />
 
             <TextBox
                 Style="{ThemeResource CustomTextBoxStyle}"
-                Margin="10"
                 Grid.Row="2"
+                Margin="0,0,0,20"
                 PlaceholderText="Enter Customer ID"
                 TextChanged="TextBox_TextChanged"
                 Text="{x:Bind ViewModel.CustomerID, Mode=TwoWay}" />
 
             <TextBlock
-                Margin="0,20,0,0"
                 Grid.Row="3"
+                Margin="0,10,0,10"
                 Text="Password" />
 
             <PasswordBox
+                Margin="0,0,0,10"
                 HorizontalAlignment="Stretch"
-                Margin="10"
                 x:Name="PasswordText"
                 PasswordChanged="PasswordText_PasswordChanged"
                 Grid.Row="4"
@@ -85,7 +86,6 @@
                 Grid.Row="5"
                 Foreground="IndianRed"
                 HorizontalAlignment="Center"
-                Margin="0,10,0,10"
                 TextWrapping="WrapWholeWords"
                 Text="{x:Bind ViewModel.ErrorText, Mode=OneWay}" />
 
@@ -93,7 +93,7 @@
                 Grid.Row="6"
                 MinWidth="200"
                 Command="{x:Bind ViewModel.LoginCommand}"
-                Margin="0,10,0,20"
+                Margin="0,20,0,20"
                 HorizontalAlignment="Center"
                 Style="{StaticResource PrimaryButton}">
                 <Button.Content>

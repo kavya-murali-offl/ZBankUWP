@@ -17,9 +17,11 @@ namespace ZBank.Entities.BusinessObjects
 
         public string Name {
             get =>
-                !string.IsNullOrEmpty(BeneficiaryName) ? BeneficiaryName :
+                TransactionType == TransactionType.SELF_TRANSFER ? "Me" :
+                TransactionType == TransactionType.CARD_PAYMENT ? "Card Payment" :
+                (!string.IsNullOrEmpty(BeneficiaryName) ? BeneficiaryName :
                 (!string.IsNullOrEmpty(AccountName) ? AccountName :
-                (!string.IsNullOrEmpty(ExternalName) ? ExternalName : "You"));
+                (!string.IsNullOrEmpty(ExternalName) ? ExternalName : "You")));
         }
 
         public string SenderName 

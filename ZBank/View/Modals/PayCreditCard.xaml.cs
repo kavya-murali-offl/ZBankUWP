@@ -25,14 +25,7 @@ namespace ZBank.View.Modals
 {
     public sealed partial class PayCreditCard : UserControl, IView
     {
-        public PayCreditCard()
-        {
-            this.InitializeComponent();
-        }
-
         private PayCreditCardViewModel ViewModel { get; set; }      
-
-
 
         public PayCreditCard(CreditCard card)
         {
@@ -48,8 +41,6 @@ namespace ZBank.View.Modals
             ViewModel.Amount = decimal.TryParse(newText, out decimal amount) ? amount : 0m;
             ViewModel.FieldErrors["Amount"] = string.Empty;
         }
-
-        
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
@@ -70,7 +61,7 @@ namespace ZBank.View.Modals
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-          ViewModel.OnLoaded();
+            ViewModel.OnLoaded();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

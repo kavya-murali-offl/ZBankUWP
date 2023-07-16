@@ -27,11 +27,11 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
     public sealed partial class SelfTransferPaymentDetails : UserControl, IView
     {
         private TransferAmountViewModel ViewModel { get; set; }
-        private bool IsConfirmed { get ; set; } 
+
         public SelfTransferPaymentDetails()
         {
             this.InitializeComponent();
-            ViewModel = new TransferAmountViewModel(this);
+            ViewModel = new TransferAmountViewModel(this, TransactionType.SELF_TRANSFER);
             Reset();
         }
 
@@ -109,7 +109,6 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            IsConfirmed = true;
             ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
         }
 
@@ -122,7 +121,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         private void CancelPaymentRequested(bool obj)
         {
             Reset();
-            ViewModel.Reset();
+            ViewModel.Reset(TransactionType.SELF_TRANSFER);
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -142,7 +141,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             if (e.Key == VirtualKey.Enter)
             {
                 e.Handled = true;
-                IsConfirmed = true;
+                //IsConfirmed = true;
                 ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
             }
         }

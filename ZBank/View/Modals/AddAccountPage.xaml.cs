@@ -107,17 +107,17 @@ namespace ZBank.View.Modals
 
         private void RadioButton1_Checked(object sender, RoutedEventArgs e)
         {
-            ViewModel.UpdateAccounType(0);
+            ViewModel.UpdateAccountType(0);
         }
 
         private void RadioButton2_Checked(object sender, RoutedEventArgs e)
         {
-            ViewModel.UpdateAccounType(1);
+            ViewModel.UpdateAccountType(1);
         }
 
         private void RadioButton3_Checked(object sender, RoutedEventArgs e)
         {
-            ViewModel.UpdateAccounType(2);
+            ViewModel.UpdateAccountType(2);
         }
     }
 }

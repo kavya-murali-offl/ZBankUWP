@@ -11,7 +11,7 @@ namespace ZBank.Entities
     {
         public decimal InterestRate { get; set; }
 
-        public decimal MinimumBalance { get; set; }
+        public decimal MinimumBalance = 500m;
         public decimal TransactionLimit { get; set; }
 
     }

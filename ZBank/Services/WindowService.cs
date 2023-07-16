@@ -28,8 +28,7 @@ namespace ZBank.Services
             await CoreApplication.CreateNewView().Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
             {
                 var frame = new Frame();
-                frame.Loaded += FrameLoaded;
-                frame.NavigationFailed += (s, e) => { System.Diagnostics.Debugger.Break(); };
+                frame.RequestedTheme = ThemeService.Theme;
                 Window.Current.Content = frame;
                 Window.Current.Activate();
                 frame.Navigate(typeof(T));
@@ -52,13 +51,6 @@ namespace ZBank.Services
                 SecondaryViews.TryAdd(view.Id, typeof(T).Name);
             });
             await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewId, ViewSizePreference.UseHalf);
-            
-        }
-
-        private static void FrameLoaded(object sender, RoutedEventArgs e)
-        {
-            var frame = sender as Frame;
-            frame.RequestedTheme = ThemeService.Theme;
         }
 
         public static async Task ShowOrSwitchAsync<T>(bool isFullScreenRequested = false)

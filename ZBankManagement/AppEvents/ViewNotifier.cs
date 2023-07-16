@@ -22,10 +22,10 @@ namespace ZBank.AppEvents
             LoadApp?.Invoke();
         }
 
-        public event Action<bool> CreditCardSettled;
-        public void OnCreditCardSettled(bool IsSettled)
+        public event Action<bool, string> CreditCardSettled;
+        public void OnCreditCardSettled(bool IsSettled, string message)
         {
-            CreditCardSettled?.Invoke(IsSettled);
+            CreditCardSettled?.Invoke(IsSettled, message);
         }
 
         public event Action PaymentResetRequested;

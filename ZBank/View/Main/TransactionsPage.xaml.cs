@@ -40,6 +40,7 @@ namespace ZBank.View.Main
             this.InitializeComponent();
             ViewModel = new TransactionViewModel(this);
         }
+
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);

@@ -37,7 +37,7 @@ namespace ZBank.View.Modals
             }
             else
             {
-                ViewModel = new TransferAmountViewModel(this);
+                ViewModel = new TransferAmountViewModel(this, TransactionType.TRANSFER);
             }
         }
 
@@ -55,11 +55,6 @@ namespace ZBank.View.Modals
         {
             ViewModel.ResumeAtCurrentStep();
             ViewNotifier.Instance.OnCancelPaymentRequested(false);
-        }
-
-        private void PayButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

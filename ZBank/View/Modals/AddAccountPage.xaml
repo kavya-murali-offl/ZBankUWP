@@ -155,21 +155,21 @@
                             Name="RadioButton1"
                             GroupName="Group1"
                             Content="{x:Bind ViewModel.AccountTypes[0], Mode=OneWay, Converter={StaticResource EnumToStringConverter}}"
-                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=TwoWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[0]}}" />
+                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[0]}}" />
                         <RadioButton
                             Checked="RadioButton2_Checked"
                             Name="RadioButton2"
                             Style="{ThemeResource CustomRadioButton}"
                             GroupName="Group1"
                             Content="{x:Bind ViewModel.AccountTypes[1], Mode=OneWay, Converter={StaticResource EnumToStringConverter}}"
-                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=TwoWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[1]}}" />
+                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[1]}}" />
                         <RadioButton
                             Style="{ThemeResource CustomRadioButton}"
                             Name="RadioButton3"
                             GroupName="Group1"
                             Checked="RadioButton3_Checked"
                             Content="{x:Bind ViewModel.AccountTypes[2], Mode=OneWay, Converter={StaticResource EnumToStringConverter}}"
-                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=TwoWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[2]}}" />
+                            IsChecked="{x:Bind ViewModel.SelectedAccountType, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter={StaticResource ViewModel.AccountTypes[2]}}" />
                     </StackPanel>
 
                     <ContentControl

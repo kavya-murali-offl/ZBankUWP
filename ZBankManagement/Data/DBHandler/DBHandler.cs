@@ -501,37 +501,37 @@ namespace ZBank.DatabaseHandler
             {
                 new Transaction()
                 {
-                     ReferenceID = id1,
-                     TransactionType = Entities.TransactionType.INTERNAL,
-                      Amount=12000m,
-                         Description="Salary",
-                          SenderAccountNumber="1666 5788 4567 5676",
-                          RecipientAccountNumber="1000 1789 7890 6633",
-                           RecordedOn=DateTime.Now,
+                    ReferenceID = id1,
+                    TransactionType = Entities.TransactionType.TRANSFER,
+                    Amount=12000m,
+                    Description="Salary",
+                    SenderAccountNumber="1666 5788 4567 5676",
+                    RecipientAccountNumber="1000 1789 7890 6633",
+                    RecordedOn=DateTime.Now,
                 },
 
                 new Transaction()
                 {
                      ReferenceID = id2,
-                      Amount=2000m,
-                     TransactionType = Entities.TransactionType.EXTERNAL,
-                         Description="Payment",
-                         SenderAccountNumber ="1234 7654 9876 9874",
-                          RecipientAccountNumber="1000 1789 7890 6633",
-                           RecordedOn=DateTime.Now,
+                     Amount=2000m,
+                     TransactionType = Entities.TransactionType.TRANSFER,
+                     Description="Payment",
+                     SenderAccountNumber ="1234 7654 9876 9874",
+                     RecipientAccountNumber="1000 1789 7890 6633",
+                     RecordedOn=DateTime.Now,
                 },
 
                  new Transaction()
                 {
                      ReferenceID = id3,
-                      Amount=5000m,
-                     TransactionType = Entities.TransactionType.EXTERNAL,
-                         Description="Payment",
-                          RecipientAccountNumber="1234 7654 9876 9874",
-                          SenderAccountNumber="1000 1789 7890 6633",
-                           RecordedOn=DateTime.Now,
+                     Amount=5000m,
+                     TransactionType = Entities.TransactionType.TRANSFER,
+                     Description="Payment",
+                     RecipientAccountNumber="1234 7654 9876 9874",
+                     SenderAccountNumber="1000 1789 7890 6633",
+                     RecordedOn=DateTime.Now,
                 }
-                };
+            };
 
             await _databaseAdapter.InsertAll(transactions);
 

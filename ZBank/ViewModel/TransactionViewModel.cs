@@ -36,8 +36,6 @@ namespace ZBank.ViewModel
 
         public IList<int> DefinedRows { get; private set; }
 
-        public IEnumerable<TransactionType> TransactionTypes { get => Enum.GetValues(typeof(TransactionType)).Cast<TransactionType>(); }
-
         public TransactionViewModel(IView view)
         {
             View = view;

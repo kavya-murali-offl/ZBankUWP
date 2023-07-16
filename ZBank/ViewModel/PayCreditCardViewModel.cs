@@ -33,13 +33,41 @@ namespace ZBank.ViewModel
             View = view;
             Card = card;
             Reset();
+            ViewNotifier.Instance.AccountsListUpdated += OnAccountsListUpdated;
         }
 
         public void OnLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated += OnAccountsListUpdated;
+            ViewNotifier.Instance.CreditCardSettled += OnCreditCardSettled;
             LoadAllAccounts();
             Reset();
+        }
+
+        private async void OnCreditCardSettled(bool isSettled, string message)
+        {
+            if (isSettled)
+            {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = $"Credit Card Amount Settled Successfully",
+                        Type = NotificationType.ERROR
+                    });
+                });
+            }
+            else
+            {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = message,
+                        Type = NotificationType.ERROR
+                    });
+                });
+            }
         }
 
         private ObservableCollection<AccountBObj> _accounts = new ObservableCollection<AccountBObj>();  
@@ -144,7 +172,8 @@ namespace ZBank.ViewModel
             };
 
             ValidateObject(FieldErrors, typeof(AccountBObj), list, SelectedAccount ?? new AccountBObj());
-            FieldErrors["Account"] = FieldErrors["AccountNumber"];
+            FieldErrors["Account"] = FieldErrors["AccountNumber"]?.Replace("AccountNumber", "Account");
+
             ValidateField(FieldErrors, "Amount", Amount);
            
             if (FieldErrors.Values.Any((val) => val.Length > 0))
@@ -181,8 +210,8 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
+                    ViewNotifier.Instance.OnCreditCardSettled(true, "Credit Card Payment Successful");
                     ViewNotifier.Instance.OnCloseDialog();
-                    ViewNotifier.Instance.OnCreditCardSettled(true);
                 });
             }
 
@@ -191,8 +220,10 @@ namespace ZBank.ViewModel
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnCloseDialog();
-                    ViewNotifier.Instance.OnCreditCardSettled(false);
+                    ViewNotifier.Instance.OnCreditCardSettled(false, response.Message);
                 });
+               
+
             }
         }
 
@@ -215,7 +246,6 @@ namespace ZBank.ViewModel
                         AccountsList = response.Accounts
                     };
                     ViewNotifier.Instance.OnAccountsListUpdated(args);
-
                 });
             }
 
@@ -229,10 +259,7 @@ namespace ZBank.ViewModel
                         Type = NotificationType.ERROR
                     });
                 });
-
             }
         }
-
-
     }
 }

@@ -38,8 +38,9 @@ namespace ZBankManagement.Data.DataManager
                         RecordedOn = DateTime.Now,
                         ReferenceID = Guid.NewGuid().ToString(),
                         SenderAccountNumber = request.DepositAccount.AccountNumber,
-                        TransactionType = TransactionType.INTERNAL
+                        TransactionType = TransactionType.TRANSFER
                     };
+
                     request.DepositAccount.IFSCCode = request.DepositAccount.IfscCode;
                     request.DepositAccount.AccountStatus = AccountStatus.CLOSED;
                     request.DepositAccount.MaturityDate = DateTime.Now;

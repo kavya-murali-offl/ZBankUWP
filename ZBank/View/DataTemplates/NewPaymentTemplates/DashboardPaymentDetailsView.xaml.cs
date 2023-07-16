@@ -32,7 +32,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         public DashboardPaymentDetailsView()
         {
             this.InitializeComponent();
-            ViewModel = new TransferAmountViewModel(this);
+            ViewModel = new TransferAmountViewModel(this, TransactionType.TRANSFER);
             Reset();
         }
 
