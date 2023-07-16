@@ -165,8 +165,6 @@ namespace ZBank.ViewModel
                     account = depositAccount;
                     break;
                 default: break;
-
-                  
             }
 
             if(account != null)
@@ -442,7 +440,7 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException response)
             {
-                await CoreApplication.GetCurrentView().Dispatcher.CallOnUIThreadAsync(() =>
+                await CoreApplication.GetCurrentView().CoreWindow.Dispatcher.CallOnUIThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(
                       new Notification()

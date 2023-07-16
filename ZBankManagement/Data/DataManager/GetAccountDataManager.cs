@@ -71,5 +71,31 @@ namespace ZBankManagement.DataManager
 
         }
 
+        public async Task GetAccountByAccountNumber(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback)
+        {
+            try
+            {
+                AccountBObj account = await DBHandler.GetAccountByAccountNumber(request.UserID, request.AccountNumber).ConfigureAwait(false);
+                GetAllAccountsResponse response = new GetAllAccountsResponse()
+                {
+                    Accounts = new List<AccountBObj>()
+                    {
+                        account
+                    }
+                };
+                callback.OnSuccess(response);
+            }
+            catch (Exception ex)
+            {
+                ZBankException error = new ZBankException()
+                {
+                    Type = ErrorType.UNKNOWN,
+                    Message = ex.Message,
+                };
+                callback.OnFailure(error);
+            }
+
+        }
+
     }
 }

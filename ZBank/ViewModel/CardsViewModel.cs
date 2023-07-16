@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -197,6 +199,25 @@ namespace ZBank.ViewModel
         internal async Task OpenPayCardDialog()
         {
             await DialogService.ShowContentAsync(View, new PayCreditCard(DataModel.OnViewCard as CreditCard), "Pay Credit Card", Window.Current.Content.XamlRoot);
+        }
+
+        internal void GoToAccount()
+        {
+            if(DataModel.OnViewCard is DebitCard debitCard)
+            {
+                AccountInfoPageParams parameters = new AccountInfoPageParams()
+                {
+                    AccountNumber = debitCard.AccountNumber,
+                };
+                FrameContentChangedArgs args = new FrameContentChangedArgs()
+                {
+                    PageType = typeof(AccountInfoPage),
+                    Params = parameters,
+                    Title = "Account Info".GetLocalized()
+                };
+
+                ViewNotifier.Instance.OnFrameContentChanged(args);
+            }
         }
 
         private class UpdateLimitPresenterCallback : IPresenterCallback<UpdateCardResponse>

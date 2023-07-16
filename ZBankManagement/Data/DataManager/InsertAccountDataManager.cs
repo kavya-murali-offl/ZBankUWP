@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using Windows.Storage;
 using System.Linq;
+using ZBank.Entities;
 
 namespace ZBankManagement.DataManager
 {
@@ -52,15 +53,60 @@ namespace ZBankManagement.DataManager
                             UploadedOn = DateTime.Now,
                         };
                     }
-
-                    request.AccountToInsert.AccountName = customers.FirstOrDefault().Name;
-                    await DBHandler.InsertAccount(request.AccountToInsert, documents).ConfigureAwait(false);
-                    InsertAccountResponse response = new InsertAccountResponse
+                    if (request.AccountToInsert is TermDepositAccount depositAccount)
                     {
-                        IsSuccess = true,
-                        InsertedAccount = request.AccountToInsert
-                    };
-                    callback.OnSuccess(response);
+                        var account = await DBHandler.GetAccount(request.CustomerID, depositAccount.FromAccountNumber);
+                        if(account != null)
+                        {
+                            if(account.Balance > request.AccountToInsert.Balance)
+                            {
+                                var transaction = new Transaction()
+                                {
+                                    Amount = request.AccountToInsert.Balance,
+                                    Description = "Deposit Account Opening",
+                                    RecipientAccountNumber = request.AccountToInsert.AccountNumber,
+                                    SenderAccountNumber = account.AccountNumber,
+                                    RecordedOn = DateTime.Now,
+                                    ReferenceID = Guid.NewGuid().ToString(),
+                                    TransactionType = TransactionType.SELF_TRANSFER
+                                };
+                                account.Balance -= request.AccountToInsert.Balance;
+                                request.AccountToInsert.AccountName = customers.FirstOrDefault().Name;
+                                await DBHandler.InsertAccount(request.AccountToInsert, account, transaction, documents).ConfigureAwait(false);
+                                InsertAccountResponse response = new InsertAccountResponse
+                                {
+                                    IsSuccess = true,
+                                    InsertedAccount = request.AccountToInsert
+                                };
+                                callback.OnSuccess(response);
+                            }
+                            else
+                            {
+                                ZBankException error = new ZBankException();
+                                error.Message = "Insufficient Balance";
+                                error.Type = ErrorType.DATABASE_ERROR;
+                                callback.OnFailure(error);
+                            }
+                        }
+                        else
+                        {
+                            ZBankException error = new ZBankException();
+                            error.Message = "From Account not found";
+                            error.Type = ErrorType.DATABASE_ERROR;
+                            callback.OnFailure(error);
+                        }
+                    }
+                    else
+                    {
+                        request.AccountToInsert.AccountName = customers.FirstOrDefault().Name;
+                        await DBHandler.InsertAccount(request.AccountToInsert, documents).ConfigureAwait(false);
+                        InsertAccountResponse response = new InsertAccountResponse
+                        {
+                            IsSuccess = true,
+                            InsertedAccount = request.AccountToInsert
+                        };
+                        callback.OnSuccess(response);
+                    }
                 }
                 else
                 {

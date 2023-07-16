@@ -683,7 +683,7 @@
                         <Flyout>
                             <ListView
                                 Width="100"
-                                ItemContainerStyle="{ThemeResource DropdownListViewItemStyle}"
+                                ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                                 SelectedValue="{x:Bind ViewModel.RowsPerPage, Mode=OneWay}"
                                 x:Name="RowsPerPageList"
                                 SelectionChanged="RowsPerPageList_SelectionChanged"
@@ -692,6 +692,7 @@
                                     <DataTemplate>
                                         <TextBlock
                                             Padding="10"
+                                            Margin="10,0,0,0"
                                             HorizontalAlignment="Center"
                                             Text="{Binding }" />
                                     </DataTemplate>

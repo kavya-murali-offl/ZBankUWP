@@ -14,5 +14,6 @@ namespace ZBankManagement.Interface
     {
         Task GetAllAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback);
         Task GetAllTransactionAccounts(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback);
+        Task GetAccountByAccountNumber(GetAllAccountsRequest request, IUseCaseCallback<GetAllAccountsResponse> callback);
     }
 }

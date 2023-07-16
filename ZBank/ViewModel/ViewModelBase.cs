@@ -10,8 +10,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
+using ZBank.AppEvents;
 using ZBank.Services;
 using ZBank.View;
+using ZBank.View.UserControls;
 using ZBank.ViewModel.VMObjects;
 
 namespace ZBank.ViewModel
@@ -21,6 +24,22 @@ namespace ZBank.ViewModel
         public IView View { get; set; }
 
         virtual public void Merge(ObservableObject source) { }
+       
+        protected bool IsBusy { get; set; } 
+
+        public async Task SetBusy(bool busy) {
+            if (busy)
+            {
+               await DialogService.ShowContentAsync(View, new LoadingScreen(), "", Window.Current.Content.XamlRoot);
+            }
+            else
+            {
+                await View.Dispatcher.CallOnUIThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnCloseDialog();
+                });
+            }
+        }  
        
         public void ValidateObject(ObservableDictionary<string, string> FieldErrors, Type type, List<string> fieldsToValidate, object objectToCompare)
         {

@@ -101,7 +101,8 @@ namespace ZBank.ViewModel
                     CustomerID = Repository.Current.CurrentUserID,
                     CurrentPageIndex = CurrentPageIndex,
                     RowsPerPage = RowsPerPage,
-                    FromDate = FromDate, ToDate = ToDate,   
+                    FromDate = FromDate,
+                    ToDate = ToDate,   
                     AccountNumber = SelectedAccount.AccountNumber
                 };
 

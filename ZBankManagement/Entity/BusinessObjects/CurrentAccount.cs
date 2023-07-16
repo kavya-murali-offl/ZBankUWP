@@ -16,7 +16,7 @@ namespace ZBank.Entities
 
         public decimal MinimumBalance = 500m;
 
-        public decimal TransactionLimit { get; set; }
+        public decimal TransactionLimit = 20000000m;
 
     }
 }

@@ -149,13 +149,13 @@
                         FontWeight="SemiBold"
                         FontSize="16"
                         HorizontalAlignment="Center"
-                        x:Uid="MaximumCreditCards" />
+                        x:Uid="TotalCards" />
                     <TextBlock
                         Padding="10"
                         FontSize="20"
                         HorizontalAlignment="Center"
                         Grid.Row="1"
-                        Text="{x:Bind ViewModel.DataModel.MaximumCards, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.DataModel.TotalAllCards, Mode=OneWay}" />
                 </Grid>
             </GridViewItem>
         </GridView>
@@ -629,6 +629,7 @@
                             MinWidth="150"
                             Margin="20"
                             HorizontalAlignment="Center"
+                            Click="Button_Click"
                             Style="{ThemeResource PrimaryButton}">
                             <Button.Content>
                                 <TextBlock

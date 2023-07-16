@@ -54,6 +54,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.CurrentStep = ViewModel.Steps.FirstOrDefault();   
             ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
         }
 
@@ -67,6 +68,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         private void CancelPaymentRequested(bool obj)
         {
             Reset();
+            ViewModel.Reset(TransactionType.TRANSFER);
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

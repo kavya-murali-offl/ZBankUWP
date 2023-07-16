@@ -115,16 +115,57 @@ namespace ZBank.DatabaseHandler
                 await _databaseAdapter.Insert(dtoObject).ConfigureAwait(false);
                 foreach (var kycDoc in documents)
                 {
-
                     await _databaseAdapter.Insert(kycDoc).ConfigureAwait(false);
                 }
             };
             await _databaseAdapter.RunInTransactionAsync(func).ConfigureAwait(false);
         }
 
-        public async Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber)
+        public async Task InsertAccount(Account account, Account accountToUpdate, Transaction transaction, IEnumerable<KYCDocuments> documents)
         {
-            return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync().ConfigureAwait(false);
+            object dtoObject = AccountFactory.GetDTOObject(account);
+            Func<Task> func = async () =>
+            {
+                await _databaseAdapter.Insert(account, typeof(Account)).ConfigureAwait(false);
+                await _databaseAdapter.Insert(dtoObject).ConfigureAwait(false);
+                await _databaseAdapter.Insert(transaction).ConfigureAwait(false);
+                await _databaseAdapter.Execute("Update Account Set Balance = ? where AccountNumber = ?", accountToUpdate.Balance, accountToUpdate.AccountNumber).ConfigureAwait(false);
+                foreach (var kycDoc in documents)
+                {
+                    await _databaseAdapter.Insert(kycDoc).ConfigureAwait(false);
+                }
+            };
+            await _databaseAdapter.RunInTransactionAsync(func).ConfigureAwait(false);
+        }
+
+        public async Task<AccountBObj> GetAccountByAccountNumber(string customerID, string accountNumber)
+        {
+            List<AccountBObj> accountsList = new List<AccountBObj>();
+            var currentAccount = await _databaseAdapter.Query<CurrentAccount>($"Select * from Account " +
+                $"Inner Join CurrentAccount on CurrentAccount.AccountNumber = Account.AccountNumber " +
+                $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+                $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+                $"where UserID = ? and Account.AccountNumber = ?", customerID, accountNumber).ConfigureAwait(false);
+            var savingsAccount = await _databaseAdapter.Query<SavingsAccount>($"Select * from Account " +
+                $"Inner Join SavingsAccount on SavingsAccount.AccountNumber = Account.AccountNumber " +
+                $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+                $"Left Join DebitCard on DebitCard.AccountNumber = Account.AccountNumber " +
+                $"where UserID = ? and Account.AccountNumber = ?", customerID, accountNumber).ConfigureAwait(false);
+            var termDepositAccounts = await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
+                $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber " +
+                $"Inner Join Branch on Branch.IfscCode = Account.IFSCCode " +
+                $"where UserID = ? and Account.AccountNumber = ?", customerID, accountNumber).ConfigureAwait(false);
+
+            accountsList.AddRange(currentAccount);
+            accountsList.AddRange(savingsAccount);
+            accountsList.AddRange(termDepositAccounts);
+
+            return accountsList.FirstOrDefault();
+        }
+
+        public async Task<Account> GetAccount(string customerID, string accountNumber)
+        {
+            return await _databaseAdapter.GetAll<Account>().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefaultAsync();
         }
 
         #endregion

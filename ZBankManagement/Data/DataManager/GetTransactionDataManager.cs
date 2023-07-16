@@ -44,7 +44,7 @@ namespace ZBankManagement.DataManager
                 }
 
                 accountTransactions = accountTransactions
-                    .Where(transaction => transaction.RecordedOn < request.ToDate && transaction.RecordedOn > request.FromDate)
+                    .Where(transaction => transaction.RecordedOn.Date <= request.ToDate.Date && transaction.RecordedOn.Date >= request.FromDate.Date)
                     .OrderByDescending(trans => trans.RecordedOn);
 
                 int totalPages = (accountTransactions.Count() / request.RowsPerPage);

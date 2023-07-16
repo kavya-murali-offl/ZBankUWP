@@ -54,6 +54,10 @@ namespace ZBank.DatabaseHandler
 
         Task InsertAccount(Account account, IEnumerable<KYCDocuments> documents);
 
+        Task InsertAccount(Account account, Account accountToUpdate, Transaction transaction, IEnumerable<KYCDocuments> documents);
+
+        Task<Account> GetAccount(string customerID, string accountNumber);
+
         // Card
         Task InsertCreditCard(Card card, CreditCardDTO creditCardDTO);
 
@@ -93,7 +97,7 @@ namespace ZBank.DatabaseHandler
         
         Task PayCreditCardBill(Transaction transaction, Account account, TransactionMetaData metaData, CreditCard creditCard);
 
-        Task<Account> GetAccountByAccountNumber(string customerID, string accountNumber);
+        Task<AccountBObj> GetAccountByAccountNumber(string customerID, string accountNumber);
 
         Task CreateTables();
 

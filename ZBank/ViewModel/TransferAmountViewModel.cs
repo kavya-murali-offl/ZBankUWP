@@ -89,7 +89,6 @@ namespace ZBank.ViewModel
 
         public void Reset(object parameter) 
         {
-            
             ViewNotifier.Instance.OnPaymentResetRequested();
             CurrentTransaction = new Transaction();
             if (parameter is TransactionType type)

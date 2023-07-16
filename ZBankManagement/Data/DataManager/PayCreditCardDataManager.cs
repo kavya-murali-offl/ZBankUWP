@@ -31,7 +31,7 @@ namespace ZBankManagement.Data.DataManager
                 bool validated = false;
                 if (request.PaymentAccount.AccountType == AccountType.CURRENT || request.PaymentAccount.AccountType == AccountType.SAVINGS)
                 {
-                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.PaymentAccount.AccountNumber);
+                    Account ownerAccount = await _dBHandler.GetAccount(request.CustomerID, request.PaymentAccount.AccountNumber);
                     if (ownerAccount.Balance > request.PaymentAmount)
                     {
                         IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.PaymentAccount.AccountNumber, request.CustomerID);

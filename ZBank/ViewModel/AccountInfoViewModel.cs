@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Core;
+using Windows.Graphics.DirectX.Direct3D11;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using ZBank.AppEvents;
@@ -32,7 +33,21 @@ namespace ZBank.ViewModel
         public AccountBObj SelectedAccount
         {
             get { return _selectedAccount; }
-            set => Set(ref _selectedAccount, value);
+            set 
+            {
+                _selectedAccount = value;
+                OnPropertyChanged(nameof(SelectedAccount));
+            }
+        }
+
+        public void UpdateSelectedAccount(AccountBObj accountBObj)
+        {
+            if(accountBObj != null)
+            {
+                SelectedAccount = accountBObj;
+                LoadTransactions();
+                LoadCardByID();
+            }
         }
 
         private CardBObj _linkedCard = null;
@@ -103,6 +118,7 @@ namespace ZBank.ViewModel
 
         private void CloseTermDepositAccount(TermDepositAccount termDepositAccount)
         {
+            _ = SetBusy(true);
             CloseDepositRequest request = new CloseDepositRequest()
             {
                DepositAccount = termDepositAccount,
@@ -122,24 +138,38 @@ namespace ZBank.ViewModel
 
         public void OnPageLoaded()
         {
-
             ViewNotifier.Instance.CardsDataUpdated += UpdateCard;
             ViewNotifier.Instance.TransactionListUpdated += UpdateTransactions;
             ViewNotifier.Instance.DepositClosed += DepositClosed;
             ViewNotifier.Instance.AccountUpdated += OnAccountUpdated;
             ViewNotifier.Instance.CardInserted += OnCardInserted;
-            LoadTransactions();
-            LoadCardByID();
         }
+
 
         private void OnAccountUpdated(bool isUpdated, AccountBObj obj)
         {
-            SelectedAccount = isUpdated ? obj : SelectedAccount;
+            UpdateSelectedAccount(SelectedAccount);
+            _ = SetBusy(false);
         }
 
         private void DepositClosed(TermDepositAccount depositAccount)
         {
-            SelectedAccount = depositAccount;
+            LoadAccount(depositAccount.AccountNumber);
+        }
+
+        public void LoadAccount(string accountNumber)
+        {
+            GetAllAccountsRequest request = new GetAllAccountsRequest()
+            {
+                IsTransactionAccounts = false,
+                AccountType = null,
+                AccountNumber = accountNumber,
+                UserID = Repository.Current.CurrentUserID
+            };
+
+            IPresenterCallback<GetAllAccountsResponse> presenterCallback = new GetAllAccountsPresenterCallback(this);
+            UseCaseBase<GetAllAccountsResponse> useCase = new GetAllAccountsUseCase(request, presenterCallback);
+            useCase.Execute();
         }
 
         public void OnPageUnLoaded()
@@ -171,18 +201,20 @@ namespace ZBank.ViewModel
 
         private void LoadTransactions()
         {
-
-            GetAllTransactionsRequest request = new GetAllTransactionsRequest()
+            if(SelectedAccount != null)
             {
-                AccountNumber = SelectedAccount.AccountNumber,
-                CustomerID = Repository.Current.CurrentUserID,
-                 CurrentPageIndex = 0,
-              RowsPerPage = 20
-            };
+                GetAllTransactionsRequest request = new GetAllTransactionsRequest()
+                {
+                    AccountNumber = SelectedAccount.AccountNumber,
+                    CustomerID = Repository.Current.CurrentUserID,
+                    CurrentPageIndex = 0,
+                    RowsPerPage = 20
+                };
 
-            IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsOfAccountPresenterCallback(this);
-            UseCaseBase<GetAllTransactionsResponse> useCase = new GetAllTransactionsUseCase(request, presenterCallback);
-            useCase.Execute();
+                IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsOfAccountPresenterCallback(this);
+                UseCaseBase<GetAllTransactionsResponse> useCase = new GetAllTransactionsUseCase(request, presenterCallback);
+                useCase.Execute();
+            }
         }
 
         private void LoadCardByID()
@@ -198,6 +230,38 @@ namespace ZBank.ViewModel
             useCase.Execute();
         }
 
+        private class GetAllAccountsPresenterCallback : IPresenterCallback<GetAllAccountsResponse>
+        {
+            private AccountInfoViewModel ViewModel { get; set; }
+
+            public GetAllAccountsPresenterCallback(AccountInfoViewModel accountPageViewModel)
+            {
+                ViewModel = accountPageViewModel;
+            }
+
+            public async Task OnSuccess(GetAllAccountsResponse response)
+            {
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnAccountUpdated(true, response.Accounts.FirstOrDefault());
+                });
+            }
+
+            public async Task OnFailure(ZBankException response)
+            {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = response.Message,
+                        Type = NotificationType.ERROR
+                    });
+                });
+
+            }
+        }
+
+
 
         private class InsertCardPresenterCallback : IPresenterCallback<InsertCardResponse>
         {
@@ -210,19 +274,16 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(InsertCardResponse response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() => {
-                    ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard); 
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnCardInserted(true, response.InsertedCard);
+                    ViewNotifier.Instance.OnNotificationStackUpdated(
+                       new Notification()
+                       {
+                           Message = "Card linked successfully",
+                           Type = NotificationType.SUCCESS
+                       });
                 });
-
-                //await DispatcherService.CallOnMainViewUiThreadAsync(() =>
-                //{
-                //    ViewNotifier.Instance.OnNotificationStackUpdated(
-                //       new Notification()
-                //       {
-                //           Message = "Card linked successfully",
-                //           Type = NotificationType.SUCCESS
-                //       });
-                //});
             }
 
             public async Task OnFailure(ZBankException exception)
@@ -263,18 +324,15 @@ namespace ZBank.ViewModel
 
             public async Task OnFailure(ZBankException exception)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnAccountUpdated(false);
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = exception.Message,
+                        Type = NotificationType.ERROR
+                    });
                 });
-                //await DispatcherService.CallOnMainViewUiThreadAsync(() =>
-                //{
-                //    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                //    {
-                //        Message = exception.Message,
-                //        Type = NotificationType.ERROR
-                //    });
-                //});
             }
         }
 
@@ -290,9 +348,14 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(CloseDepositResponse response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnDepositClosed(response.DepositAccount);
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = "Deposit Closed Successfully",
+                        Type = NotificationType.SUCCESS
+                    });
                 });
             }
 
@@ -322,11 +385,10 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    CardDataUpdatedArgs args = new CardDataUpdatedArgs()
+                    ViewNotifier.Instance.OnCardsPageDataUpdated(new CardDataUpdatedArgs()
                     {
                         CardsList = response.Cards
-                    };
-                    ViewNotifier.Instance.OnCardsPageDataUpdated(args);
+                    });
                 });
             }
 
@@ -360,7 +422,6 @@ namespace ZBank.ViewModel
                     {
                         TransactionList = response.Transactions,
                     };
-
                     ViewNotifier.Instance.OnTransactionsListUpdated(args);
                 });
             }

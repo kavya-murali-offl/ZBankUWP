@@ -145,6 +145,11 @@ namespace ZBank.View.Main
             await Task.Delay(5000);
             FadeStoryboard.Stop();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToAccount();
+        }
     } 
 }
 

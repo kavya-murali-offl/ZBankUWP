@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZBank.AppEvents;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
 using ZBank.ViewModel;
@@ -35,43 +36,67 @@ namespace ZBank.View.UserControls
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            ViewModel.OnPageLoaded();
             if(e.Parameter is AccountInfoPageParams) { 
                 var parameters = (e.Parameter) as AccountInfoPageParams;
-
-                AccountBObj SelectedAccount = parameters.SelectedAccount;
-
-                ViewModel.SelectedAccount = SelectedAccount;
-
-                DataTemplate template = null;
-
-                if (SelectedAccount is SavingsAccount)
+                if(parameters.AccountNumber != null)
                 {
-                    template = Resources["SavingsAccountTemplate"] as DataTemplate;
+                    ViewModel.LoadAccount(parameters.AccountNumber);
                 }
-                else if (SelectedAccount is CurrentAccount)
+                else
                 {
-                    template = Resources["CurrentAccountTemplate"] as DataTemplate;
+                    UpdateSelectedAccount(parameters.SelectedAccount);
                 }
-                else if (SelectedAccount is TermDepositAccount)
-                {
-                    template = Resources["DepositAccountTemplate"] as DataTemplate;
-                }
+            }
+        }
 
-                if(template != null)
-                {
-                    AccountInfoContentControl.DataContext = ViewModel;
-                    AccountInfoContentControl.Content = template.LoadContent();
-                }
+        private void UpdateSelectedAccount(AccountBObj selectedAccount)
+        {
+            if(selectedAccount == null)
+            {
+                selectedAccount = ViewModel.SelectedAccount;
+            }
+            else
+            {
+                ViewModel.UpdateSelectedAccount(selectedAccount);
+            }
+
+            DataTemplate template = null;
+
+            if (selectedAccount is SavingsAccount)
+            {
+                template = Resources["SavingsAccountTemplate"] as DataTemplate;
+            }
+            else if (selectedAccount is CurrentAccount)
+            {
+                template = Resources["CurrentAccountTemplate"] as DataTemplate;
+            }
+            else if (selectedAccount is TermDepositAccount)
+            {
+                template = Resources["DepositAccountTemplate"] as DataTemplate;
+            }
+
+            if (template != null)
+            {
+                AccountInfoContentControl.DataContext = ViewModel;
+                AccountInfoContentControl.Content = template.LoadContent();
             }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.AccountUpdated += OnAccountUpdated;
             ViewModel.OnPageLoaded();
+        }
+
+        private void OnAccountUpdated(bool arg1, AccountBObj obj)
+        {
+            UpdateSelectedAccount(obj);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            ViewNotifier.Instance.AccountUpdated -= OnAccountUpdated;
             ViewModel.OnPageUnLoaded();
         }
     }
@@ -79,5 +104,7 @@ namespace ZBank.View.UserControls
     public class AccountInfoPageParams
     {
         public AccountBObj SelectedAccount { get; set; }
+
+        public string AccountNumber { get; set; }
     }
 }

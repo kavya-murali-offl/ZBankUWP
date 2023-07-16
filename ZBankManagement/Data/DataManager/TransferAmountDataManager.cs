@@ -29,32 +29,47 @@ namespace ZBankManagement.DataManager
                 bool validated = false;
                 if (request.OwnerAccount.AccountType == AccountType.CURRENT || request.OwnerAccount.AccountType == AccountType.SAVINGS)
                 {
-                    IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.OwnerAccount.AccountNumber, request.CustomerID).ConfigureAwait(false);
-                    Account ownerAccount = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.OwnerAccount.AccountNumber).ConfigureAwait(false);
-                    var amountTransacted = transactionsMadeToday.Sum(x => x.Amount);
-                    decimal limit = 0;
-                    if (request.OwnerAccount is CurrentAccount)
+                    Account ownerAccount = await _dBHandler.GetAccount(request.CustomerID, request.OwnerAccount.AccountNumber).ConfigureAwait(false);
+                    if(ownerAccount != null)
                     {
-                       limit = (request.OwnerAccount as CurrentAccount).TransactionLimit;
-                      
-                    }
-                    else if(request.OwnerAccount is SavingsAccount) 
-                    {
-                        limit = (request.OwnerAccount as SavingsAccount).TransactionLimit;
-                    }
-
-                    if (amountTransacted + request.Transaction.Amount > limit)
-                    {
-                        ZBankException error = new ZBankException()
+                        if(ownerAccount.Balance < request.Transaction.Amount)
                         {
-                            Type = ErrorType.UNKNOWN,
-                            Message = "Daily Transaction Limit Exceeded. Try again later",
-                        };
-                        callback.OnFailure(error);
-                    }
-                    else
-                    {
-                        validated = true;
+                            IEnumerable<TransactionBObj> transactionsMadeToday = await _dBHandler.FetchAllTodayTransactions(request.OwnerAccount.AccountNumber, request.CustomerID).ConfigureAwait(false);
+                            var amountTransacted = transactionsMadeToday.Sum(x => x.Amount);
+                            decimal limit = 0;
+                            if (request.OwnerAccount is CurrentAccount)
+                            {
+                                limit = ( request.OwnerAccount as CurrentAccount ).TransactionLimit;
+
+                            }
+                            else if (request.OwnerAccount is SavingsAccount)
+                            {
+                                limit = ( request.OwnerAccount as SavingsAccount ).TransactionLimit;
+                            }
+
+                            if (amountTransacted + request.Transaction.Amount > limit)
+                            {
+                                ZBankException error = new ZBankException()
+                                {
+                                    Type = ErrorType.UNKNOWN,
+                                    Message = "Daily Transaction Limit Exceeded. Try again later",
+                                };
+                                callback.OnFailure(error);
+                            }
+                            else
+                            {
+                                validated = true;
+                            }
+                        }
+                        else
+                        {
+                            ZBankException error = new ZBankException()
+                            {
+                                Type = ErrorType.UNKNOWN,
+                                Message = "Insufficient Balance",
+                            };
+                            callback.OnFailure(error);
+                        }
                     }
                 }
                 else
@@ -93,7 +108,7 @@ namespace ZBankManagement.DataManager
         {
             try
             {
-                Account account = await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber).ConfigureAwait(false);
+                Account account = await _dBHandler.GetAccount(request.CustomerID, request.Beneficiary.AccountNumber).ConfigureAwait(false);
                 GetBeneficiaryAccountResponse response = new GetBeneficiaryAccountResponse()
                 {
                     Account = account
@@ -117,7 +132,7 @@ namespace ZBankManagement.DataManager
             {
                 Account otherAccount =
                     request.OtherAccount != null ? request.OtherAccount : 
-                    await _dBHandler.GetAccountByAccountNumber(request.CustomerID, request.Beneficiary.AccountNumber).ConfigureAwait(false);
+                    await _dBHandler.GetAccount(request.CustomerID, request.Beneficiary.AccountNumber).ConfigureAwait(false);
                 
                 if (otherAccount != null)
                 {

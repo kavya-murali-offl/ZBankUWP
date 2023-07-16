@@ -109,6 +109,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.CurrentStep = ViewModel.Steps.FirstOrDefault();
             ViewModel.Steps.ElementAt(0).PrimaryCommand.Execute(true);
         }
 

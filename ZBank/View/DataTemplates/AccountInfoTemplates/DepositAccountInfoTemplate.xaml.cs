@@ -34,19 +34,8 @@ namespace ZBank.View.DataTemplates
             this.InitializeComponent();
         }
 
-     
-
-        public TermDepositAccount CalculatorAccount
-        {
-            get { return (TermDepositAccount)GetValue(CalculatorAccountProperty); }
-            set { SetValue(CalculatorAccountProperty, value); }
-        }
-
-        public static readonly DependencyProperty CalculatorAccountProperty =
-            DependencyProperty.Register("CalculatorAccount", typeof(TermDepositAccount), typeof(DepositAccountInfoTemplate), new PropertyMetadata(new TermDepositAccount()));
-
-
         private bool IsActive { get => SelectedAccount.AccountStatus == AccountStatus.ACTIVE; }
+
         public ICommand CloseAccountCommand
         {
             get { return (ICommand)GetValue(CloseAccountCommandProperty); }
@@ -64,12 +53,8 @@ namespace ZBank.View.DataTemplates
         }
 
         public static readonly DependencyProperty SelectedAccountProperty =
-            DependencyProperty.Register("SelectedAccount", typeof(TermDepositAccount), typeof(DepositAccountInfoTemplate), new PropertyMetadata(null, OnSelectedAccountChanged));
+            DependencyProperty.Register("SelectedAccount", typeof(TermDepositAccount), typeof(DepositAccountInfoTemplate), new PropertyMetadata(null));
 
-        private static void OnSelectedAccountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            TermDepositAccount account = (TermDepositAccount)e.NewValue;
-        }
 
         public ICommand UpdateAccountCommand
         {
@@ -81,12 +66,6 @@ namespace ZBank.View.DataTemplates
         public static readonly DependencyProperty UpdateAccountCommandProperty =
             DependencyProperty.Register("UpdateAccountCommand", typeof(ICommand), typeof(DepositAccountInfoTemplate), new PropertyMetadata(null));
 
-    
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private async void AddBeneficiary_Click(object sender, RoutedEventArgs e)
         {
@@ -104,7 +83,7 @@ namespace ZBank.View.DataTemplates
             {
                 UpdateErrorText.Text = "Field should not be empty";
             }
-            else if(SelectedAccount.RepaymentAccountNumber == RepaymentAccountNumberText.Text)
+            else if(SelectedAccount?.RepaymentAccountNumber == RepaymentAccountNumberText.Text)
             {
                 UpdateErrorText.Text = "Enter a different account number";
             }
@@ -127,34 +106,6 @@ namespace ZBank.View.DataTemplates
         private void RepaymentAccountNumberText_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateErrorText.Text = "";
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewNotifier.Instance.AccountUpdated += OnAccountUpdated;
-        }
-
-        private void OnAccountUpdated(bool isUpdated, AccountBObj updatedAccount)
-        {
-            if(isUpdated && updatedAccount is TermDepositAccount)
-            {
-                SelectedAccount = updatedAccount as TermDepositAccount;
-            }
-            else
-            {
-                Reset();
-            }
-        }
-
-        private void Reset()
-        {
-            RepaymentAccountNumberText.Text = SelectedAccount.RepaymentAccountNumber;
-            UpdateErrorText.Text = "";
-        }
-
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            ViewNotifier.Instance.AccountUpdated -= OnAccountUpdated;
         }
     }
 }
