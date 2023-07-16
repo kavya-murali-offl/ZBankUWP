@@ -108,5 +108,15 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
             }
         }
+
+        private void AccountsBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            AccountsBox.IsSuggestionListOpen = false;
+        }
+
+        private void BeneficiariesBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            BeneficiariesBox.IsSuggestionListOpen = false;
+        }
     }
 }

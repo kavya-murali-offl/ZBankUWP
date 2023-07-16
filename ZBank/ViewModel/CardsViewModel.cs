@@ -66,7 +66,34 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.CardsDataUpdated += UpdateCardsList;
             ViewNotifier.Instance.CardInserted += OnCardInserted;
+            ViewNotifier.Instance.LimitUpdated += OnUpdatedLimit;
             LoadAllCards();
+        }
+
+        private async void OnUpdatedLimit(bool isUpdated, string message)
+        {
+            if(isUpdated)
+            {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = "Limit Updated Successfully",
+                        Type = NotificationType.SUCCESS
+                    });
+                });
+            }
+            else
+            {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
+                    {
+                        Message = message,
+                        Type = NotificationType.ERROR
+                    });
+                });
+            }
         }
 
         public void OnPageUnLoaded()
@@ -185,25 +212,15 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    ViewNotifier.Instance.OnUpdatedLimit(true, response.UpdatedCard);
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                    {
-                        Message = "Transaction Limit Update Successful",
-                        Type = NotificationType.SUCCESS
-                    });
+                    ViewNotifier.Instance.OnUpdatedLimit(true, string.Empty);
                 });
             }
 
             public async Task OnFailure(ZBankException response)
             {
-                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    ViewNotifier.Instance.OnUpdatedLimit(false, null);
-                    ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
-                    {
-                        Message = response.Message,
-                        Type = NotificationType.ERROR
-                    });
+                    ViewNotifier.Instance.OnUpdatedLimit(false, response.Message);
                 });
 
             }

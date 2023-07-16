@@ -177,6 +177,7 @@
             Grid.Row="6"
             Width="300"
             Grid.Column="1"
+            LostFocus="AutoSuggestBox_LostFocus"
             Margin="0,20,0,10"
             HorizontalAlignment="Left"
             MaxWidth="400"
@@ -208,6 +209,7 @@
         <AutoSuggestBox
             Width="300"
             HorizontalAlignment="Left"
+            LostFocus="ToAccountsSuggestionBox_LostFocus"
             MaxWidth="400"
             Margin="0,20,0,10"
             Grid.Row="8"

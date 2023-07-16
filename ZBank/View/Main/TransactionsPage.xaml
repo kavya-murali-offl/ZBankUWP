@@ -402,6 +402,7 @@
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                     Width="300"
+                    LostFocus="AccountsSuggestionBox_LostFocus"
                     TextChanged="AccountsSuggestionBox_TextChanged"
                     Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
                     HorizontalAlignment="Left"

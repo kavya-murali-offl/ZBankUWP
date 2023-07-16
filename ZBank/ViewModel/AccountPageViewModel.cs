@@ -19,6 +19,7 @@ using ZBank.DataStore;
 using ZBank.Services;
 using ZBank.View.UserControls;
 using Microsoft.Toolkit.Uwp;
+using Windows.UI.Xaml;
 
 namespace ZBank.ViewModel
 {
@@ -33,7 +34,13 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            Window.Current.Activated += OnActivated;
             ViewNotifier.Instance.AccountInserted += OnAccountInserted;
+            LoadAllAccounts();
+        }
+
+        private void OnActivated(object sender, WindowActivatedEventArgs e)
+        {
             LoadAllAccounts();
         }
 

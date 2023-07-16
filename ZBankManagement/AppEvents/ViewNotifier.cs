@@ -40,10 +40,10 @@ namespace ZBank.AppEvents
             CardInserted?.Invoke(updated, updatedCard);
         }
 
-        public event Action<bool, Card> LimitUpdated;
-        public void OnUpdatedLimit(bool updated, Card updatedCard)
+        public event Action<bool, string> LimitUpdated;
+        public void OnUpdatedLimit(bool updated, string message)
         {
-            LimitUpdated?.Invoke(updated, updatedCard);
+            LimitUpdated?.Invoke(updated, message);
         }
 
         public event Action<bool, AccountBObj> AccountUpdated;

@@ -132,6 +132,11 @@ namespace ZBank.View.Main
                 }
             }
         }
+
+        private void AccountsSuggestionBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            AccountsSuggestionBox.IsSuggestionListOpen = false;
+        }
     }
 }
 

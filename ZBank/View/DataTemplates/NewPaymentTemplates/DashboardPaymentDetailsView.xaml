@@ -52,6 +52,7 @@
                     Style="{ThemeResource NormalSubText}" />
                 <AutoSuggestBox
                     MaxWidth="400"
+                    LostFocus="AccountsSuggestionBox_LostFocus"
                     HorizontalAlignment="Stretch"
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     SuggestionChosen="AutoSuggestBox_SuggestionChosen"
@@ -73,6 +74,7 @@
                 
                 <AutoSuggestBox
                     MaxWidth="400"
+                    LostFocus="AutoSuggestBox_LostFocus"
                     HorizontalAlignment="Stretch"
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     SuggestionChosen="BeneficiariesSuggestionBox_SuggestionChosen"

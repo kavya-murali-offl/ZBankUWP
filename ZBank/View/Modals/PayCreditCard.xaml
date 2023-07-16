@@ -91,6 +91,7 @@
             Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
             SuggestionChosen="Accounts_SuggestionChosen"
             HorizontalAlignment="Stretch"
+            LostFocus="Accounts_LostFocus"
             Grid.Row="4"
             Grid.ColumnSpan="2"
             Margin="10"

@@ -53,7 +53,7 @@ namespace ZBank.ViewModel
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
                         Message = $"Credit Card Amount Settled Successfully",
-                        Type = NotificationType.ERROR
+                        Type = NotificationType.SUCCESS
                     });
                 });
             }

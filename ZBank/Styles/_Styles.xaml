@@ -817,7 +817,7 @@
                                                                     Storyboard.TargetProperty="Background">
                                                                     <DiscreteObjectKeyFrame
                                                                         KeyTime="0"
-                                                                        Value="Transparent" />
+                                                                        Value="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" />
                                                                 </ObjectAnimationUsingKeyFrames>
                                                                 <ObjectAnimationUsingKeyFrames
                                                                     Storyboard.TargetName="ButtonLayoutGrid"
@@ -913,7 +913,7 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBackgroundDisabled}" />
+                                                Value="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="BorderElement"
@@ -951,10 +951,17 @@
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="BorderElement"
+                                            Storyboard.TargetProperty="Opacity">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="0.9" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="BorderElement"
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBackgroundPointerOver}" />
+                                                Value="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="PlaceholderTextContentPresenter"
@@ -969,6 +976,13 @@
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
                                                 Value="{ThemeResource TextControlForegroundPointerOver}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="BorderElement"
+                                            Storyboard.TargetProperty="BorderThickness">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="0,0,0,2" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -987,7 +1001,14 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBackgroundPointerOver}" />
+                                                Value="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="BorderElement"
+                                            Storyboard.TargetProperty="Opacity">
+                                            <DiscreteObjectKeyFrame
+                                                KeyTime="0"
+                                                Value="0.5" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="BorderElement"
@@ -1077,7 +1098,8 @@
                             Grid.Column="0"
                             Grid.RowSpan="1"
                             Grid.ColumnSpan="2"
-                            Background="{TemplateBinding Background}"
+                            Background="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
+                            Opacity="0.3"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding CornerRadius}"
@@ -1420,7 +1442,7 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBorderBrushPointerOver}" />
+                                                Value="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="PlaceholderTextContentPresenter"
@@ -1454,7 +1476,7 @@
                                             Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource TextControlBackgroundFocused}" />
+                                                Value="{ThemeResource ApplicationInactiveSelectionHighlightBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="BorderElement"
@@ -1542,7 +1564,7 @@
                             Grid.Column="0"
                             Grid.RowSpan="1"
                             Grid.ColumnSpan="2"
-                            Background="{TemplateBinding Background}"
+                            Background="{ThemeResource ApplicationInactiveSelectionHighlightBrush}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding CornerRadius}"

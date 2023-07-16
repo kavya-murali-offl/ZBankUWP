@@ -52,7 +52,7 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                     PrimaryValue = beneficiaries.Count(),
                     SecondaryKey1 = "WithinBank".GetLocalized(),
                     SecondaryValue1 = beneficiaries.Where(ben => ifscCodes.Contains(ben.IFSCCode)).Count(),
-                    SecondaryKey2 = "OtherBanks".GetLocalized(),
+                    SecondaryKey2 = "OtherBank".GetLocalized(),
                     SecondaryValue2 = beneficiaries.Where(ben => !ifscCodes.Contains(ben.IFSCCode)).Count()
                 };
 

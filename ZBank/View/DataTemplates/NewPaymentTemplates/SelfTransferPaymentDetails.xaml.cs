@@ -146,7 +146,14 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             }
         }
 
+        private void FromAccount_LostFocus(object sender, RoutedEventArgs e)
+        {
+            FromAccount.IsSuggestionListOpen = false;
+        }
 
-     
+        private void AutoSuggestBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ToAccount.IsSuggestionListOpen = false;
+        }
     }
 }

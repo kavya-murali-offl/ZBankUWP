@@ -53,10 +53,10 @@ namespace ZBank.View.Main
             ViewModel.Params = parameters; 
         }
 
-        private void OnUpdatedLimit(bool isUpdated, Card updatedCard)
+        private void OnUpdatedLimit(bool isUpdated, string message)
         {
             LimitSlider.IsEnabled = false;
-            if (isUpdated && ViewModel.DataModel.OnViewCard.CardNumber == updatedCard.CardNumber)
+            if (isUpdated)
             {
                 LimitSlider.Value = UpdatedLimit;
             }

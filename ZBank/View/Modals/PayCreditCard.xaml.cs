@@ -99,5 +99,10 @@ namespace ZBank.View.Modals
                 }
             }
         }
+
+        private void Accounts_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Accounts.IsSuggestionListOpen = false;
+        }
     }
 }

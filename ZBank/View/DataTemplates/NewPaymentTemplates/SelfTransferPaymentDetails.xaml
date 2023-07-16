@@ -60,6 +60,7 @@
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     SuggestionChosen="FromAccount_SuggestionChosen"
                     HorizontalAlignment="Stretch"
+                    LostFocus="FromAccount_LostFocus"
                     TextChanged="FromAccount_TextChanged"
                     Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
                     x:Uid="FromAccount"
@@ -79,6 +80,7 @@
                     Style="{ThemeResource NormalSubText}" />
                 
                 <AutoSuggestBox
+                    LostFocus="AutoSuggestBox_LostFocus"
                     SuggestionChosen="ToAccount_SuggestionChosen"
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     TextChanged="ToAccount_TextChanged"
