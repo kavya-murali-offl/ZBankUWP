@@ -251,6 +251,7 @@
                         Margin="10"
                         Text="Transactions" />
                     <ListView
+                        SelectionMode="None"
                         Margin="0,20,0,20"
                         Grid.ColumnSpan="2"
                         Grid.Row="1"

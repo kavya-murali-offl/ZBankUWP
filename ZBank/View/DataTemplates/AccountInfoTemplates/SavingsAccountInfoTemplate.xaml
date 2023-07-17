@@ -229,6 +229,7 @@
         <usercontrol:OneByTwoGrid
             Width1Ratio="3*"
             Width2Ratio="2*"
+            NarrowScreenBreakPoint="1000"
             VerticalContentAlignment="Stretch"
             VerticalAlignment="Stretch"
             Grid.Row="1">
@@ -253,6 +254,7 @@
                         FontSize="18"
                         Text="Transactions" />
                     <ListView
+                        SelectionMode="None"
                         Margin="0,20,0,20"
                         Grid.ColumnSpan="2"
                         Grid.Row="1"
@@ -358,19 +360,22 @@
                             <RowDefinition
                                 Height="*" />
                         </Grid.RowDefinitions>
-
                         <TextBlock
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             FontWeight="SemiBold"
                             FontSize="18"
                             Text="Linked Card" />
-
-                        <local:ViewOrNoCardTemplate
-                            LinkCardCommand="{x:Bind LinkCardCommand}"
+                        <ScrollViewer
                             Grid.Row="1"
-                            SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
-                    </Grid>
+                            HorizontalScrollMode="Auto"
+                            HorizontalScrollBarVisibility="Auto">
+                            <local:ViewOrNoCardTemplate
+                                Width="400"
+                                LinkCardCommand="{x:Bind LinkCardCommand}"
+                                SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
+                        </ScrollViewer>
+                       </Grid>
                     <Grid
                         Grid.Row="1"
                         Margin="5"

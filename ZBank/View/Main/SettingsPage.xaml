@@ -85,10 +85,18 @@
                 FontSize="14"
                 Text="Accent Color" />
 
-            <ToggleSwitch
-                Margin="10"
-                Toggled="UseWindowsAccentColor_Toggled"
-                x:Name="UseWindowsAccentColor" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    FontSize="14"
+                    Text="Use Windows Accent Color" />
+                <ToggleSwitch
+                    Margin="10"
+                    Toggled="UseWindowsAccentColor_Toggled"
+                    x:Name="UseWindowsAccentColor" />
+            </StackPanel>
+            
 
             <ListView
                 Visibility="{x:Bind UseWindowsAccentColor.IsOn, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}"

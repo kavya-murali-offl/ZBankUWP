@@ -98,7 +98,7 @@ namespace ZBank.DatabaseHandler
         public async Task<IEnumerable<TermDepositAccount>> GetAllDepositAccounts()
         {
             return await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
-                $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber ").ConfigureAwait(false);
+                $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber").ConfigureAwait(false);
 
         }
 
@@ -455,11 +455,11 @@ namespace ZBank.DatabaseHandler
                 new TermDepositAccountDTO()
                 {
                     AccountNumber="1009 6678 5556 3332",
-                    DepositStartDate=DateTime.Now,
+                    DepositStartDate=DateTime.Now.AddMonths(-12),
                  InterestRate=7.2m,
                   DepositType=DepositType.OnMaturity,
                    MaturityAmount=200000,
-                    MaturityDate=DateTime.Now.AddYears(1),
+                    MaturityDate=DateTime.Now,
                   RepaymentAccountNumber="1000 1789 7890 6633",
                    Tenure=12
                 }
@@ -523,7 +523,7 @@ namespace ZBank.DatabaseHandler
                     IsKYCApproved = true,
                     AccountType = AccountType.CURRENT,
                   },
-                     new Account()
+                  new Account()
                   {
                     AccountNumber="2334 7888 0988 6678",
                      IFSCCode = "ZBNK1002",

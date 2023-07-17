@@ -42,7 +42,6 @@ namespace ZBankManagement.Domain.UseCase
                     callback = new InitializeAppCallback(this);
                 }
                 _initializeAppDataManager.CreateTables(_request, callback);
-                _closeDepositDataManager.CloseAllMaturedDeposits(new CloseDepositRequest(), null);
             }
 
             private class InitializeAppCallback : IUseCaseCallback<InitializeAppResponse>
@@ -57,6 +56,7 @@ namespace ZBankManagement.Domain.UseCase
                 public void OnSuccess(InitializeAppResponse response)
                 {
                     _useCase.PresenterCallback.OnSuccess(response);
+                    _useCase._closeDepositDataManager.CloseAllMaturedDeposits(new CloseDepositRequest(), null);
                 }
 
                 public void OnFailure(ZBankException error)

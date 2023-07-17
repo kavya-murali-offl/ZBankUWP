@@ -92,7 +92,7 @@ namespace ZBankManagement.Data.DataManager
                 IEnumerable<TermDepositAccount>  accounts = await DBHandler.GetAllDepositAccounts();
                 foreach (var account in accounts)
                 {
-                    if (account.MaturityDate.Date > DateTime.Now.Date && account.AccountStatus != AccountStatus.CLOSED)
+                    if (account.MaturityDate.Date >= DateTime.Now.Date && account.AccountStatus != AccountStatus.CLOSED)
                     {
                         Account repaymentAccount = await DBHandler.GetAccount(null, account.RepaymentAccountNumber).ConfigureAwait(false);
                         if (repaymentAccount != null)

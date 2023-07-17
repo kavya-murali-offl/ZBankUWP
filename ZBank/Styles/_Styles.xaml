@@ -125,7 +125,6 @@
                                 x:Name="CommonStates">
                                 <VisualState
                                     x:Name="Normal" />
-
                                 <VisualState
                                     x:Name="PointerOver">
                                     <Storyboard>
@@ -2624,7 +2623,7 @@
                                             Storyboard.TargetProperty="Fill">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource ListViewItemBackgroundSelected}" />
+                                                Value="{ThemeResource ApplicationActiveSelectionHighlightBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="SelectedBorder"

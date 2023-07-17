@@ -208,7 +208,9 @@ namespace ZBank.ViewModel
                     AccountNumber = SelectedAccount.AccountNumber,
                     CustomerID = Repository.Current.CurrentUserID,
                     CurrentPageIndex = 0,
-                    RowsPerPage = 20
+                    RowsPerPage = 20,
+                    FromDate = DateTime.Now.AddMonths(-1),
+                    ToDate = DateTime.Now,
                 };
 
                 IPresenterCallback<GetAllTransactionsResponse> presenterCallback = new GetAllTransactionsOfAccountPresenterCallback(this);
