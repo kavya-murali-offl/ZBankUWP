@@ -14,6 +14,7 @@
             x:Name="CurrencyConverter" />
     </UserControl.Resources>
     <Grid
+        MaxWidth="700"
         Margin="5"
         VerticalAlignment="Stretch"
         Background="{ThemeResource ApplicationBackground}"

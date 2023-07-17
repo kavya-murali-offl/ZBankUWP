@@ -46,7 +46,7 @@
                     x:Name="wideScreen">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger
-                            MinWindowWidth="1100" />
+                            MinWindowWidth="1200" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter
@@ -151,7 +151,7 @@
                         Height="2*" />
                 </Grid.RowDefinitions>
 
-                <usercontrol:OneByTwoGrid NarrowScreenBreakPoint="900">
+                <usercontrol:OneByTwoGrid NarrowScreenBreakPoint="1200">
                     <usercontrol:OneByTwoGrid.Column1Content>
                         <usercontrol:AmountInfoCardUserControl
                             x:Name="Row1Column1"
@@ -165,7 +165,7 @@
                     </usercontrol:OneByTwoGrid.Column2Content>
                 </usercontrol:OneByTwoGrid>
 
-                <usercontrol:OneByTwoGrid
+                <usercontrol:OneByTwoGrid NarrowScreenBreakPoint="1200"
                     Grid.Row="1">
                     <usercontrol:OneByTwoGrid.Column1Content>
                         <usercontrol:AmountInfoCardUserControl
@@ -181,12 +181,15 @@
                 </usercontrol:OneByTwoGrid>
 
                 <usercontrol:OneByTwoGrid
+                    NarrowScreenBreakPoint="1200"
                     Grid.Row="2">
                     <usercontrol:OneByTwoGrid.Column1Content>
-                          <paymentTemplate:DashboardPaymentDetailsView />
+                          <paymentTemplate:DashboardPaymentDetailsView
+                            MaxWidth="700" />
                     </usercontrol:OneByTwoGrid.Column1Content>
                     <usercontrol:OneByTwoGrid.Column2Content>
                         <usercontrol:CardControl
+                            MaxWidth="700"
                             MinHeight="400"
                             Grid.Column="1"
                             Padding="10"
@@ -326,6 +329,7 @@
                         Height="*" />
                 </Grid.RowDefinitions>
                 <usercontrol:CardControl
+                    MaxWidth="700"
                     MyTitle="Cards">
                     <usercontrol:CardControl.MyControls>
                         <StackPanel
@@ -425,8 +429,8 @@
                     </usercontrol:CardControl.MyContent>
                 </usercontrol:CardControl>
                    <paymentTemplate:SelfTransferPaymentDetails
-                       Grid.Row="1"
-                      />
+                    MaxWidth="700"
+                    Grid.Row="1" />
             </Grid>
         </Grid>
     </Grid>
