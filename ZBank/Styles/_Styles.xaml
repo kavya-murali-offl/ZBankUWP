@@ -79,8 +79,8 @@
 
     <AcrylicBrush
         x:Key="CardBackgroundAcrylicBrush"
-        TintColor="{ThemeResource SystemAltHighColor}"
-        TintOpacity="0.9" />
+        TintColor="{ThemeResource SystemBaseLowColor}"
+        TintOpacity="0.1" />
 
     <Style
         x:Name="DefaultCalendarDatePicker"
@@ -1079,7 +1079,7 @@
             Value="{ThemeResource TextControlForeground}" />
         <Setter
             Property="Background"
-            Value="{ThemeResource TextControlBackground}" />
+            Value="{ThemeResource ApplicationBackgroundThemeBrush}" />
         <Setter
             Property="BorderBrush"
             Value="{ThemeResource TextControlBorderBrush}" />
@@ -2593,6 +2593,7 @@
                                                 KeyTime="0"
                                                 Value="{ThemeResource AccentColorBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
+                                        
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="BorderBackground"
                                             Storyboard.TargetProperty="Fill">
@@ -2623,7 +2624,7 @@
                                             Storyboard.TargetProperty="Fill">
                                             <DiscreteObjectKeyFrame
                                                 KeyTime="0"
-                                                Value="{ThemeResource ListViewItemBackgroundSelectedPressed}" />
+                                                Value="{ThemeResource ListViewItemBackgroundSelected}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames
                                             Storyboard.TargetName="SelectedBorder"

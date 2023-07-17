@@ -181,10 +181,9 @@ namespace ZBank.ViewModel
 
         internal void LoadContent()
         {
-            ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
+            ViewNotifier.Instance.TransactionAccountsUpdated += UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated += UpdateBranchesList;
             ViewNotifier.Instance.AccountInserted += OnAccountInsertionSuccessful;
-            ViewNotifier.Instance.CurrentUserChanged += OnCurrentUserChanged;
             ApplicationView.GetForCurrentView().Consolidated += ViewConsolidated;
             CoreApplication.GetCurrentView().CoreWindow.Closed += WindowClosed;
             LoadAllAccounts();
@@ -203,10 +202,10 @@ namespace ZBank.ViewModel
 
         internal void UnloadContent()
         {
-            ViewNotifier.Instance.AccountsListUpdated -= UpdateAccountsList;
+            ViewNotifier.Instance.TransactionAccountsUpdated -= UpdateAccountsList;
             ViewNotifier.Instance.BranchListUpdated -= UpdateBranchesList;
             ViewNotifier.Instance.AccountInserted -= OnAccountInsertionSuccessful;
-            ViewNotifier.Instance.CurrentUserChanged -= OnCurrentUserChanged;
+           
         }
 
         private void OnAccountInsertionSuccessful(bool isInserted)
@@ -227,9 +226,9 @@ namespace ZBank.ViewModel
         }
 
 
-        private void UpdateAccountsList(AccountsListUpdatedArgs args)
+        private void UpdateAccountsList(IEnumerable<AccountBObj> accounts)
         {
-            Accounts = new ObservableCollection<Account>(args.AccountsList);
+            Accounts = new ObservableCollection<AccountBObj>(accounts);
         }
 
         private void UpdateBranchesList(BranchListUpdatedArgs args)
@@ -342,8 +341,6 @@ namespace ZBank.ViewModel
             SwitchTemplate(SelectedAccountType);
         }
 
-        private Customer CurrentCustomer = null;
-
         private string _uploadInfo = string.Empty;
 
         public string UploadInfo
@@ -352,9 +349,9 @@ namespace ZBank.ViewModel
             set => Set(ref _uploadInfo, value);
         }
 
-        private ObservableCollection<Account> _accounts = new ObservableCollection<Account>();
+        private ObservableCollection<AccountBObj> _accounts = new ObservableCollection<AccountBObj>();
 
-        public ObservableCollection<Account> Accounts
+        public ObservableCollection<AccountBObj> Accounts
         {
             get => _accounts;
             set => Set(ref _accounts, value);
@@ -465,11 +462,7 @@ namespace ZBank.ViewModel
             {
                 await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
                 {
-                    AccountsListUpdatedArgs args = new AccountsListUpdatedArgs()
-                    {
-                        AccountsList = response.Accounts
-                    };
-                    ViewNotifier.Instance.OnAccountsListUpdated(args);
+                    ViewNotifier.Instance.OnTransactionAccountsUpdated(response.Accounts);
                 });
             }
 

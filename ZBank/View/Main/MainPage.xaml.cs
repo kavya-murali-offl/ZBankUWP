@@ -63,9 +63,7 @@ namespace ZBank
             ViewNotifier.Instance.OnRightPaneContentUpdated(null);
         }
 
-        private void SecondarySplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
-        {
-        }
+     
 
         public void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
@@ -234,9 +232,9 @@ namespace ZBank
             MySplitView.IsPaneOpen = false;
         }
 
-        private void SignoutButton_Click(object sender, RoutedEventArgs e)
+        private async void SignoutButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Signout();
+            await ViewModel.SignoutConfirmation();
         }
     }
 }

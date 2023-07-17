@@ -223,7 +223,6 @@
                         PaneClosed="SecondarySplitView_PaneClosed"
                         PaneBackground="{ThemeResource ApplicationBackground}"
                         PanePlacement="Right"
-                        PaneClosing="SecondarySplitView_PaneClosing"
                         x:Name="SecondarySplitView">
                         <SplitView.Content>
                             <Grid

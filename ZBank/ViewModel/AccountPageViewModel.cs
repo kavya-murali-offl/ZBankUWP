@@ -34,15 +34,10 @@ namespace ZBank.ViewModel
         public void OnPageLoaded()
         {
             ViewNotifier.Instance.AccountsListUpdated += UpdateAccountsList;
-            Window.Current.Activated += OnActivated;
             ViewNotifier.Instance.AccountInserted += OnAccountInserted;
             LoadAllAccounts();
         }
 
-        private void OnActivated(object sender, WindowActivatedEventArgs e)
-        {
-            LoadAllAccounts();
-        }
 
         private void OnAccountInserted(bool isInserted)
         {

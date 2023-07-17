@@ -34,6 +34,14 @@ namespace ZBank.AppEvents
             PaymentResetRequested?.Invoke();
         }
 
+
+        public event Action<IEnumerable<AccountBObj>> TransactionAccountsUpdated;
+        public void OnTransactionAccountsUpdated(IEnumerable<AccountBObj> accounts)
+        {
+            TransactionAccountsUpdated?.Invoke(accounts);
+        }
+
+
         public event Action<bool, Card> CardInserted;
         public void OnCardInserted(bool updated, Card updatedCard)
         {

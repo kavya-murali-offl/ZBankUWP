@@ -41,7 +41,7 @@ namespace ZBank.ViewModel
             View = view;
             DefinedRows = new List<int>()
             {
-              1, 5, 10, 25, 50
+               5, 10, 25, 50
             };
             NextCommand = new RelayCommand(GoToNextPage, IsNextButtonEnabled);
             PreviousCommand = new RelayCommand(GoToPreviousPage, IsPreviousButtonEnabled);

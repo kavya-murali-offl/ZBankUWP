@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.ServiceModel.Channels;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -21,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 using ZBank.AppEvents;
 using ZBank.Entities;
 using ZBank.Entities.BusinessObjects;
+using ZBank.Services;
 using ZBankManagement.AppEvents;
 using ZBankManagement.AppEvents.AppEventArgs;
 
@@ -91,18 +93,19 @@ namespace ZBank.View.UserControls
 
         private void Show(Notification notification)
         {
-            NotificationPanel.Visibility = Visibility.Visible;
-            NotificationPanel.DataContext = notification;
-            if (notification.Duration > 0)
-            {
-                OnViewNotification = notification;
-                Timer.Interval = TimeSpan.FromMilliseconds(notification.Duration);
-                Timer.Start();
-            }
-            else
-            {
-                Timer.Stop();
-            }
+                NotificationPanel.Visibility = Visibility.Visible;
+                NotificationPanel.DataContext = notification;
+                if (notification.Duration > 0)
+                {
+                    OnViewNotification = notification;
+                    Timer.Interval = TimeSpan.FromMilliseconds(notification.Duration);
+                    Timer.Start();
+                }
+                else
+                {
+                    Timer.Stop();
+                }
+           
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

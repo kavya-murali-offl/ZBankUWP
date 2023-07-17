@@ -142,7 +142,7 @@ namespace ZBank.ViewModel
             }
         }
 
-        public void Signout()
+        public void Signout(object parameter=null)
         {
             LogoutCustomerRequest request = new LogoutCustomerRequest()
             {
@@ -163,6 +163,13 @@ namespace ZBank.ViewModel
         internal async Task OpenSettingsWindow()
         {
             await WindowService.ShowOrSwitchAsync<SettingsPage>(false);
+        }
+
+        internal async Task SignoutConfirmation()
+        {
+            await DialogService.ShowActionDialogAsync("Are you sure you want to logout?", Signout,
+                "Logout Confirmation"
+                );
         }
 
         private class GetCustomerPresenterCallback : IPresenterCallback<GetCustomerResponse>

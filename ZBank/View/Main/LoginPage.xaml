@@ -8,16 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
-    Unloaded="Page_Unloaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Unloaded="Page_Unloaded">
     <Page.Resources>
         <converter:NullToVisibilityConverter
             x:Key="NullToVisibilityConverter" />
         <converter:MaskConverter
             x:Key="MaskConverter" />
     </Page.Resources>
-    <Grid
-        Background="{ThemeResource ApplicationPageBackground}">
+    <Grid>
         <Grid
             x:Name="LoginGrid"
             Margin="10"
@@ -80,7 +78,6 @@
                 KeyDown="PasswordText_KeyDown"
                 Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
                 PlaceholderText="Enter Password" />
-
 
             <TextBlock
                 Grid.Row="5"

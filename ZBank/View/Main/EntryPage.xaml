@@ -8,11 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
-    Unloaded="Page_Unloaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Unloaded="Page_Unloaded" 
+    Background="{ThemeResource ApplicationBackground}">
     
-    <Grid x:Name="RootGrid">
-        
+    <Grid x:Name="RootGrid" Background="{ThemeResource CardBackgroundAcrylicBrush}">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="34" />

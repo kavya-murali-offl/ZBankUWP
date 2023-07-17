@@ -12,26 +12,42 @@ using Windows.UI.Xaml.Controls.Primitives;
 using ZBank.AppEvents;
 using ZBank.Config;
 using ZBank.View;
+using ZBank.ViewModel.VMObjects;
 
 namespace ZBank.Services
 {
     internal class DialogService
     {
-        public static async Task ShowActionDialogAsync(string content, Action callback, string title = null, string okButtonText = "Ok", string cancelButtonText = "Cancel")
+        public static async Task ShowActionDialogAsync(string content, Action<object> callback, string title = null, string okButtonText = "Yes", string cancelButtonText = "Cancel")
         {
-            var dialog = title == null ?
-                new MessageDialog(content) { CancelCommandIndex = 1 } :
-                new MessageDialog(content, title) { CancelCommandIndex = 1 };
+            var dialog = new ContentDialog()
+            {
+                Content = content,
+                XamlRoot = Window.Current.Content.XamlRoot,
+                Title = title,
+                RequestedTheme = ThemeService.Theme,
+                PrimaryButtonCommand = new RelayCommand(callback),
+                PrimaryButtonText = "Yes",
+            };
+            dialog.SecondaryButtonCommand = new RelayCommand(CloseDialog);
+            dialog.SecondaryButtonCommandParameter = dialog;
+            dialog.SecondaryButtonText = "Cancel";
 
-            dialog.Commands.Add(new UICommand(okButtonText, command => callback()));
-            dialog.Commands.Add(new UICommand(cancelButtonText));
-            
             await DispatcherService.CallOnMainViewUiThreadAsync(async () =>
-            await dialog.ShowAsync()
+                await dialog.ShowAsync()
             );
         }
 
-        private IEnumerable<FrameworkElement> Contents { get; set; } = new List<FrameworkElement>();    
+        private static async void CloseDialog(object dialog)
+        {
+            if(dialog is ContentDialog contentDialog) {
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
+                {
+                    contentDialog.Hide();
+                });
+            }
+        }
+
 
         public static Task ShowContentAsync(IView view, FrameworkElement content, string title, XamlRoot xamlRoot = null)
         {
@@ -46,7 +62,10 @@ namespace ZBank.Services
                     MinWidth = 500
                 };
                 contentDialog.MinWidth = 400;
-                ViewNotifier.Instance.CloseDialog += () => contentDialog.Hide();
+                ViewNotifier.Instance.CloseDialog += () =>
+                {
+                    contentDialog.Hide();
+                };
                 ViewNotifier.Instance.ThemeChanged += async (ElementTheme theme) =>
                 {
                     if (view.Dispatcher.HasThreadAccess)

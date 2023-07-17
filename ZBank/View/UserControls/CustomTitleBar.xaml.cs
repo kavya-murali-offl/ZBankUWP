@@ -89,7 +89,7 @@ namespace ZBank.View.UserControls
 
         private async void UpdateTitleBarTheme(ElementTheme Theme)
         {
-            await Dispatcher.CallOnUIThreadAsync(() =>
+            await CoreApplication.GetCurrentView().CoreWindow.Dispatcher.CallOnUIThreadAsync(() =>
             {
                 ThemeService.SetRequestedTheme(Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar, Theme);
             });
