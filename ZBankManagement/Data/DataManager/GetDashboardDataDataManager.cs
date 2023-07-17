@@ -96,8 +96,8 @@ namespace ZBank.ZBankManagement.DataLayer.DataManager
                 };
 
                 IEnumerable<CardBObj> AllCards = await _handler.GetAllCards(request.UserID).ConfigureAwait(false);
-                transactions = transactions.Count() > 10 ? transactions.Take(10) : transactions;
                 transactions = transactions.OrderByDescending(tran => tran.RecordedOn);
+                transactions = transactions.Count() > 10 ? transactions.Take(10) : transactions;
                 GetDashboardDataResponse response = new GetDashboardDataResponse
                 {
                     AllCards = AllCards,

@@ -39,6 +39,7 @@ namespace ZBank.View.Main
             ThemeService.Initialize();
             InitializeThemeSettings();
         }
+
         private void InitializeThemeSettings()
         {
             ThemeService.SetRequestedTheme(Window.Current.Content, ApplicationView.GetForCurrentView().TitleBar, ThemeService.Theme);
@@ -82,16 +83,16 @@ namespace ZBank.View.Main
                 });
             }
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewNotifier.Instance.CurrentUserChanged += CurrentUserChanged;
             ViewNotifier.Instance.LoadApp += OnAppLoaded;
-            ViewModel.OnNavigatedTo();
+            await ViewModel.OnNavigatedTo();
         }
 
-        private void OnAppLoaded()
+        private async void OnAppLoaded()
         {
-            LoadingScreen.Visibility = Visibility.Collapsed;
+            await ViewModel.SetBusy(false);
             MainFrame.Visibility = Visibility.Visible;
         }
 

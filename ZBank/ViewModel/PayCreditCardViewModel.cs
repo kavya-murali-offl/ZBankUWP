@@ -208,7 +208,7 @@ namespace ZBank.ViewModel
 
             public async Task OnSuccess(PayCreditCardResponse response)
             {
-                await ViewModel.View.Dispatcher.CallOnUIThreadAsync(() =>
+                await DispatcherService.CallOnMainViewUiThreadAsync(() =>
                 {
                     ViewNotifier.Instance.OnCreditCardSettled(true, "Credit Card Payment Successful");
                     ViewNotifier.Instance.OnCloseDialog();

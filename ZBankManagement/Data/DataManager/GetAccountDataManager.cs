@@ -31,7 +31,7 @@ namespace ZBankManagement.DataManager
                 IEnumerable<AccountBObj> accountsList = await DBHandler.GetAllAccounts(request.UserID).ConfigureAwait(false);
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {
-                    Accounts = accountsList
+                    Accounts = accountsList.OrderByDescending(acc => acc.CreatedOn)
                 };
                 callback.OnSuccess(response);
             }
@@ -55,7 +55,7 @@ namespace ZBankManagement.DataManager
                 var transactionAccounts = accountsList.Where(acc => acc.AccountType != AccountType.TERM_DEPOSIT);
                 GetAllAccountsResponse response = new GetAllAccountsResponse()
                 {
-                    Accounts = transactionAccounts
+                    Accounts = transactionAccounts.OrderByDescending(acc => acc.CreatedOn)
                 };
                 callback.OnSuccess(response);
             }

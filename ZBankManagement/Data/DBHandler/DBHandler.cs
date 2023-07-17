@@ -182,10 +182,10 @@ namespace ZBank.DatabaseHandler
 
         public Task<int> AddBeneficiary(Beneficiary beneficiary) => _databaseAdapter.Insert(beneficiary);
 
-        public Task<int> UpdateBeneficiary(Beneficiary beneficiaryToUpdate)
+        public async Task<int> UpdateBeneficiary(Beneficiary beneficiaryToUpdate)
         {
-            return _databaseAdapter.Execute(
-                "Update Beneficiary Set IsFavourite = ? and BeneficiaryName = ? Where ID = ?",
+            return await _databaseAdapter.Execute(
+                "Update Beneficiary Set IsFavourite = ? and Name = ? Where ID = ?",
                 beneficiaryToUpdate.IsFavourite,
                 beneficiaryToUpdate.BeneficiaryName,
                 beneficiaryToUpdate.ID);

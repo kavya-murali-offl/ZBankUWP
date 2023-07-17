@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Media;
 using ZBank.Entities;
+using ZBankManagement.Helpers;
 
 namespace ZBank.Entities.BusinessObjects
 {
@@ -17,11 +18,10 @@ namespace ZBank.Entities.BusinessObjects
 
         public string Name {
             get =>
-                TransactionType == TransactionType.SELF_TRANSFER ? "Me" :
-                TransactionType == TransactionType.CARD_PAYMENT ? "Card Payment" :
+                TransactionType == TransactionType.SELF_TRANSFER ? "SelfTransfer".GetLocalized() :
+                TransactionType == TransactionType.CARD_PAYMENT ? "CardPayment".GetLocalized() :
                 (!string.IsNullOrEmpty(BeneficiaryName) ? BeneficiaryName :
-                (!string.IsNullOrEmpty(AccountName) ? AccountName :
-                (!string.IsNullOrEmpty(ExternalName) ? ExternalName : "You")));
+                (!string.IsNullOrEmpty(ExternalName) ? ExternalName : "Me".GetLocalized()));
         }
 
         public string SenderName 

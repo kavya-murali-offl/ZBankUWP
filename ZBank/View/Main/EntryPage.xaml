@@ -37,7 +37,7 @@
             Canvas.ZIndex="30"
             x:Name="AppNotification" />
 
-        <Grid
+        <!--<Grid
             x:Name="LoadingScreen"
             Background="#464646">
             <Canvas>
@@ -50,7 +50,7 @@
                     Width="20"
                     HorizontalAlignment="Center"></ProgressRing>
             </Canvas>
-        </Grid>
+        </Grid>-->
     </Grid>
   
     

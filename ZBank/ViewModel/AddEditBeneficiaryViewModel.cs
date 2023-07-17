@@ -297,7 +297,7 @@ namespace ZBank.ViewModel
                 {
                     ViewNotifier.Instance.OnNotificationStackUpdated(new Notification()
                     {
-                        Message = exception,
+                        Message = exception.Message,
                         Type = NotificationType.ERROR
                     });
                 });

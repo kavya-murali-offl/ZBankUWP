@@ -418,7 +418,6 @@
                         <TextBox
                             Style="{ThemeResource CustomTextBoxStyle}"
                             Grid.Row="2"
-                            MaxWidth="400"
                             IsEnabled="{x:Bind IsActive, Mode=OneWay}"  
                             TextChanged="RepaymentAccountNumberText_TextChanged"
                             x:Name="RepaymentAccountNumberText"

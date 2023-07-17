@@ -251,7 +251,6 @@
                                                     Text="{Binding RecordedOn, 
                                                     Converter={StaticResource DateFormatConverter}}"
                                                     Style="{ThemeResource NormalSubText}" />
-
                                                 <TextBlock
                                                     Grid.Column="2"
                                                     x:Name="AmountText"

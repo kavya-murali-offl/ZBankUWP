@@ -68,7 +68,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         private void CancelPaymentRequested(bool obj)
         {
             Reset();
-            ViewModel.Reset(TransactionType.TRANSFER);
+            ViewModel = new TransferAmountViewModel(this, TransactionType.TRANSFER);
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -103,10 +103,12 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
 
         private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            var account = args.SelectedItem as AccountBObj;
-            sender.Text = account.ToString();
-            ViewModel.CurrentTransaction.SenderAccountNumber = account?.AccountNumber;
-            ViewModel.FieldErrors["Account"] = string.Empty;
+            if (args.SelectedItem != null && args.SelectedItem is AccountBObj account)
+            {
+                sender.Text = account.ToString();
+                ViewModel.CurrentTransaction.SenderAccountNumber = account?.AccountNumber;
+                ViewModel.FieldErrors["Account"] = string.Empty;
+            }
         }
 
         private void AccountsSuggestionBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -126,7 +128,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
             {
                 if (string.IsNullOrEmpty(sender.Text))
                 {
-                    ViewModel.CurrentTransaction.SenderAccountNumber = string.Empty;
+                    ViewModel.CurrentTransaction.RecipientAccountNumber = string.Empty;
                 }
             }
         }
@@ -135,6 +137,7 @@ namespace ZBank.View.DataTemplates.NewPaymentTemplates
         {
             if(args.SelectedItem != null && args.SelectedItem is BeneficiaryBObj beneficiary)
             {
+                sender.Text = beneficiary.ToString();
                 ViewModel.CurrentTransaction.RecipientAccountNumber = beneficiary.AccountNumber;
                 ViewModel.FieldErrors["Beneficiary"] = string.Empty;
             }

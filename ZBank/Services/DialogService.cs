@@ -63,11 +63,6 @@ namespace ZBank.Services
                     }
                 };
                 
-               
-                //await DispatcherService.CallOnMainViewUiThreadAsync(() =>
-                //{
-                //    content.RequestedTheme = theme;
-                //});
                 await contentDialog.ShowAsync();
             });
         }

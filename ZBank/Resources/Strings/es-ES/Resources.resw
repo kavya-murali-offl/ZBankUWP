@@ -150,6 +150,9 @@
   <data name="Beneficiaries" xml:space="preserve">
     <value>Beneficiarias</value>
   </data>
+  <data name="Beneficiary.Text" xml:space="preserve">
+    <value>Beneficiaria</value>
+  </data>
   <data name="BeneficiaryRequired.Text" xml:space="preserve">
     <value>Beneficiaria *</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="CardNumber.Text" xml:space="preserve">
     <value>Número de tarjeta</value>
+  </data>
+  <data name="CardPayment" xml:space="preserve">
+    <value>Pago con tarjeta</value>
   </data>
   <data name="CardProvider.Text" xml:space="preserve">
     <value>Proveedor de tarjeta</value>
@@ -213,6 +219,9 @@
   <data name="ExpiryDate.Text" xml:space="preserve">
     <value>Fecha de caducidad</value>
   </data>
+  <data name="FromAccount.PlaceholderText" xml:space="preserve">
+    <value>Seleccionar de cuenta</value>
+  </data>
   <data name="FromAccountRequired.Text" xml:space="preserve">
     <value>De la cuenta *</value>
   </data>
@@ -236,6 +245,9 @@
   </data>
   <data name="MaximumCreditCards.Text" xml:space="preserve">
     <value>Tarjetas de crédito máximas</value>
+  </data>
+  <data name="Me" xml:space="preserve">
+    <value>A mí</value>
   </data>
   <data name="MinimumOutstanding.Text" xml:space="preserve">
     <value>Mínima pendiente</value>
@@ -270,7 +282,7 @@
   <data name="SelectAccount" xml:space="preserve">
     <value>Seleccionar cuenta</value>
   </data>
-  <data name="SelectBeneficiary" xml:space="preserve">
+  <data name="SelectBeneficiary.PlaceholderText" xml:space="preserve">
     <value>Seleccionar Beneficiario</value>
   </data>
   <data name="SelfTransfer" xml:space="preserve">
@@ -288,6 +300,9 @@
   <data name="TERM_DEPOSIT" xml:space="preserve">
     <value>Depósito a plazo</value>
   </data>
+  <data name="ToAccount.PlaceholderText" xml:space="preserve">
+    <value>Seleccionar a la cuenta</value>
+  </data>
   <data name="ToAccountRequired.Text" xml:space="preserve">
     <value>A la cuenta *</value>
   </data>
@@ -296,6 +311,9 @@
   </data>
   <data name="TotalBeneficiaries" xml:space="preserve">
     <value>Total de beneficiarias</value>
+  </data>
+  <data name="TotalCards" xml:space="preserve">
+    <value>Tarjetas totales</value>
   </data>
   <data name="TotalCreditCards.Text" xml:space="preserve">
     <value>Tarjetas de crédito totales</value>

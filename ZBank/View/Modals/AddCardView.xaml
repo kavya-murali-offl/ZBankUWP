@@ -32,8 +32,9 @@
             Text="Choose Provider" />
         
         <DropDownButton
-            Margin="10,10,10,50"
+            Margin="0,10,10,50"
             Grid.Row="1"
+            Width="350"
             KeyDown="ProviderButton_KeyDown"
             HorizontalAlignment="Stretch"
             x:Name="ProviderButton"
@@ -51,12 +52,15 @@
                     Placement="Bottom"
                     FlyoutPresenterStyle="{StaticResource CustomFlyoutStyle}">
                     <ListView
+                        Width="300"
+                        ItemContainerStyle="{ThemeResource DefaultListItemStyle}"
                         SelectionChanged="ListView_SelectionChanged"
                         ItemsSource="{x:Bind ViewModel.CreditCardProviders, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock
                                     Padding="10"
+                                    Margin="20,0,0,0"
                                     TextTrimming="CharacterEllipsis"
                                     MaxWidth="300"
                                     VerticalAlignment="Center"

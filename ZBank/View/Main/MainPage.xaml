@@ -200,7 +200,7 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 HorizontalTextAlignment="Left"
-                                Text="LastLoggedOn"
+                                x:Uid="LastLoggedOn"
                                 FontSize="12"
                                 Style="{ThemeResource ProfileNameText}" />
                             <TextBlock

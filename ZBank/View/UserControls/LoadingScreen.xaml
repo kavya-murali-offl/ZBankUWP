@@ -13,8 +13,9 @@
         <ProgressRing
             BorderThickness="2"
             BorderBrush="{ThemeResource AccentColorBrush}"
-            Width="100"
-            Height="100"
+            Width="50"
+            Height="50"
+            IsActive="True"
             Foreground="{ThemeResource ApplicationForeground}" />
     </Grid>
 </UserControl>

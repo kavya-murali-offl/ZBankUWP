@@ -63,7 +63,7 @@
                     LostFocus="FromAccount_LostFocus"
                     TextChanged="FromAccount_TextChanged"
                     Text="{x:Bind ViewModel.SelectedAccount, Mode=OneWay}"
-                    x:Uid="FromAccount"
+                    x:Uid="FromAccountPlaceholder"
                     x:Name="FromAccount"
                     VerticalAlignment="Center"
                     ItemsSource="{x:Bind ViewModel.OtherAccounts, Mode=OneWay}" />
@@ -85,7 +85,7 @@
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     TextChanged="ToAccount_TextChanged"
                     Text="{x:Bind ViewModel.SelectedOtherAccount, Mode=OneWay}"
-                    PlaceholderText="Select To Account"
+                    x:Uid="ToAccountPlaceholder"
                     x:Name="ToAccount"
                     VerticalAlignment="Center"
                     ItemsSource="{x:Bind ViewModel.OtherAccounts, Mode=OneWay}" />

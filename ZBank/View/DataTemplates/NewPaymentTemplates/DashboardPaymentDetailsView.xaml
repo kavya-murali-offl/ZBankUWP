@@ -79,7 +79,7 @@
                     Style="{ThemeResource DefaultAutoSuggestBoxStyling}"
                     SuggestionChosen="BeneficiariesSuggestionBox_SuggestionChosen"
                     TextChanged="BeneficiariesSuggestionBox_TextChanged"
-                    PlaceholderText="Select Beneficiary"
+                    x:Uid="SelectBeneficiary"
                     VerticalAlignment="Center"
                     ItemsSource="{x:Bind ViewModel.AllBeneficiaries, Mode=OneWay}"
                     x:Name="BeneficiariesSuggestionBox" />

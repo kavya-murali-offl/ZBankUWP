@@ -102,6 +102,12 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.CardsDataUpdated -= UpdateCardsList;
             ViewNotifier.Instance.CardInserted -= OnCardInserted;
+            ViewNotifier.Instance.CreditCardSettled -= OnCreditCardSettled;
+        }
+
+        private void OnCreditCardSettled(bool arg1, string arg2)
+        {
+            LoadAllCards();
         }
 
         private void OnCardInserted(bool arg1, Card arg2)
@@ -109,7 +115,7 @@ namespace ZBank.ViewModel
             LoadAllCards();
         }
 
-        private CardPageModel _dataModel { get; set; } = new CardPageModel();
+        private CardPageModel _dataModel { get; set; } = null;
 
         public CardPageModel DataModel
         {
@@ -146,20 +152,23 @@ namespace ZBank.ViewModel
                 index++;
                 card.SetDefaultValues();
             }
-            
-            DataModel = new CardPageModel();
-            DataModel.AllCards = args.CardsList.Count() > 0 ? new ObservableCollection<CardBObj>(args.CardsList) : null;
-            
-            if (Params?.OnViewCard?.CardNumber != null)
+            int onViewCardIndex = 0;
+            if (DataModel == null)
             {
-                CardBObj cardBOBj = args.CardsList.FirstOrDefault(card => card.CardNumber == Params.OnViewCard.CardNumber);
-                int onViewCardIndex = args.CardsList.ToList().IndexOf(cardBOBj);
-                UpdateView(onViewCardIndex); 
+                DataModel = new CardPageModel();
+                if (Params?.OnViewCard?.CardNumber != null)
+                {
+                    CardBObj cardBOBj = args.CardsList.FirstOrDefault(card => card.CardNumber == Params.OnViewCard.CardNumber);
+                    onViewCardIndex = args.CardsList.ToList().IndexOf(cardBOBj);
+                    UpdateView(onViewCardIndex);
+                }
             }
             else
             {
-                UpdateView(0);
+                onViewCardIndex = DataModel.OnViewCardIndex;
             }
+            DataModel.AllCards = args.CardsList.Count() > 0 ? new ObservableCollection<CardBObj>(args.CardsList) : null;
+            UpdateView(onViewCardIndex);
         }
 
         private void UpdateView(int onViewIndex)

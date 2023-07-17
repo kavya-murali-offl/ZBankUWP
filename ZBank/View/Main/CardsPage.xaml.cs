@@ -129,7 +129,10 @@ namespace ZBank.View.Main
 
         private void LimitSlider_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdatedLimit = double.Parse(ViewModel.DataModel.OnViewCard.TransactionLimit.ToString());
+            if (ViewModel?.DataModel?.OnViewCard != null)
+            {
+                UpdatedLimit = double.Parse(ViewModel.DataModel.OnViewCard.TransactionLimit.ToString());
+            }
         }
 
         private async void NextButton_Tapped(object sender, TappedRoutedEventArgs e)

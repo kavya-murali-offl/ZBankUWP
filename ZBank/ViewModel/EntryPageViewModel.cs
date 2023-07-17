@@ -19,7 +19,7 @@ using Microsoft.Toolkit.Uwp;
 
 namespace ZBank.ViewModel
 {
-    public class EntryPageViewModel :ViewModelBase
+    public class EntryPageViewModel : ViewModelBase
     {
         public EntryPageViewModel(IView view) 
         { 
@@ -27,13 +27,11 @@ namespace ZBank.ViewModel
             ThemeService.Initialize();
         }
 
-        internal void OnNavigatedTo()
+        internal async Task OnNavigatedTo()
         {
-            InitializeAppData();
+            await InitializeAppData();
             EnterApplication();
         }
-
-        
 
         private void EnterApplication()
         {
@@ -53,10 +51,10 @@ namespace ZBank.ViewModel
             }
         }
 
-        private void InitializeAppData()
+        private async Task InitializeAppData()
         {
+            await SetBusy(true);
             InitializeAppRequest request = new InitializeAppRequest();
-
             IPresenterCallback<InitializeAppResponse> presenterCallback = new InitializeAppPresenterCallback(this);
             UseCaseBase<InitializeAppResponse> useCase = new InitializeAppUseCase(request, presenterCallback);
             useCase.Execute();

@@ -26,13 +26,17 @@
                     Canvas.ZIndex="40"
                     Margin="0,15,0,0">
                     <Ellipse
-                        Fill="Beige" />
+                        Stroke="{ThemeResource AccentColorBrush}"
+                        Fill="{ThemeResource CardBackgroundAcrylicBrush}" />
                     <PersonPicture
                         Width="50"
+                        Foreground="{ThemeResource ApplicationForeground}"
                         Height="50"
                         Initials="{Binding BeneficiaryName, Converter={StaticResource InitialsConverter},Mode=OneWay}" />
                     </Grid>
                     <Grid
+                        BorderBrush="{ThemeResource AccentColorBrush}"
+                        BorderThickness="1"
                         Canvas.ZIndex="20"
                         Background="{ThemeResource ApplicationBackgroundThemeBrush}"
                         Padding="10,30,10,10"

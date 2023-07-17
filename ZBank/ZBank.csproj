@@ -512,7 +512,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <PRIResource Include="Resources\Strings\es-ES\Resources.resw" />
+    <PRIResource Include="Resources\Strings\es-ES\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
