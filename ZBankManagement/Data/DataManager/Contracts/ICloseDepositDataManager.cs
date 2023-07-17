@@ -11,6 +11,8 @@ namespace ZBankManagement.Data.DataManager.Contracts
 {
     interface ICloseDepositDataManager
     {
+        Task CloseAllMaturedDeposits(CloseDepositRequest request, IUseCaseCallback<CloseDepositResponse> callback);
+
         Task CloseDeposit(CloseDepositRequest request, IUseCaseCallback<CloseDepositResponse> callback);
 
     }

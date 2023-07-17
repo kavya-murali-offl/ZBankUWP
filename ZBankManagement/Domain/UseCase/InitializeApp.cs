@@ -11,6 +11,7 @@ using ZBank.ZBankManagement.DataLayer.DataManager.Contracts;
 using ZBank.ZBankManagement.DomainLayer.UseCase.Common;
 using ZBankManagement.Data;
 using ZBankManagement.Data.DataManager.Contracts;
+using ZBankManagement.Interface;
 
 namespace ZBankManagement.Domain.UseCase
 {
@@ -20,6 +21,7 @@ namespace ZBankManagement.Domain.UseCase
         {
 
             private readonly IInitializeAppDataManager _initializeAppDataManager = DependencyContainer.ServiceProvider.GetRequiredService<IInitializeAppDataManager>();
+            private readonly ICloseDepositDataManager _closeDepositDataManager = DependencyContainer.ServiceProvider.GetRequiredService<ICloseDepositDataManager>();
             private readonly InitializeAppRequest _request;
 
             public InitializeAppUseCase(InitializeAppRequest request, IPresenterCallback<InitializeAppResponse> presenterCallback)
@@ -40,6 +42,7 @@ namespace ZBankManagement.Domain.UseCase
                     callback = new InitializeAppCallback(this);
                 }
                 _initializeAppDataManager.CreateTables(_request, callback);
+                _closeDepositDataManager.CloseAllMaturedDeposits(new CloseDepositRequest(), null);
             }
 
             private class InitializeAppCallback : IUseCaseCallback<InitializeAppResponse>

@@ -362,10 +362,15 @@
                             FontWeight="Bold"
                             FontSize="19" />
 
-                        <local:ViewOrNoCardTemplate
-                            LinkCardCommand="{x:Bind LinkCardCommand}"
+                        <ScrollViewer
                             Grid.Row="1"
-                            SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
+                            HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto">
+                            <local:ViewOrNoCardTemplate
+                                Width="400"
+                                LinkCardCommand="{x:Bind LinkCardCommand}"
+                                SelectedCard="{x:Bind LinkedCard, Mode=OneWay}" />
+                        </ScrollViewer>
+                        
                     </Grid>
                     <Grid
                         Grid.Row="1"

@@ -312,7 +312,7 @@
   <data name="TotalBeneficiaries" xml:space="preserve">
     <value>Total Beneficiaries</value>
   </data>
-  <data name="TotalCards" xml:space="preserve">
+  <data name="TotalCards.Text" xml:space="preserve">
     <value>Total Cards</value>
   </data>
   <data name="TotalCreditCards.Text" xml:space="preserve">

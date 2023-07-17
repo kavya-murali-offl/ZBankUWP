@@ -38,7 +38,6 @@ namespace ZBankManagement.Data.DataManager
                 };
                 callback.OnFailure(error);
             }
-
         }
 
         public async Task PopulateData(InitializeAppRequest request, IUseCaseCallback<InitializeAppResponse> callback)

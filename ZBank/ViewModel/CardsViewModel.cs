@@ -69,6 +69,7 @@ namespace ZBank.ViewModel
             ViewNotifier.Instance.CardsDataUpdated += UpdateCardsList;
             ViewNotifier.Instance.CardInserted += OnCardInserted;
             ViewNotifier.Instance.LimitUpdated += OnUpdatedLimit;
+            ViewNotifier.Instance.CreditCardSettled -= OnCreditCardSettled;
             LoadAllCards();
         }
 
@@ -102,6 +103,7 @@ namespace ZBank.ViewModel
         {
             ViewNotifier.Instance.CardsDataUpdated -= UpdateCardsList;
             ViewNotifier.Instance.CardInserted -= OnCardInserted;
+            ViewNotifier.Instance.LimitUpdated -= OnUpdatedLimit;
             ViewNotifier.Instance.CreditCardSettled -= OnCreditCardSettled;
         }
 

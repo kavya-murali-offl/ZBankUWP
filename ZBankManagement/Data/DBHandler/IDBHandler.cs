@@ -104,5 +104,7 @@ namespace ZBank.DatabaseHandler
         Task PopulateData();
 
         Task CloseDeposit(TermDepositAccount termDepositAccount, Account repaymentAccount, Transaction transaction);
+        
+        Task<IEnumerable<TermDepositAccount>> GetAllDepositAccounts();
     }
 }

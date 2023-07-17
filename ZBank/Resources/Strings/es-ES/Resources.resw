@@ -232,7 +232,7 @@
     <value>Ingresos / Mes</value>
   </data>
   <data name="LastLoggedOn.Text" xml:space="preserve">
-    <value>Last Logged On</value>
+    <value>Último inicio de sesión</value>
   </data>
   <data name="LatestTransactions" xml:space="preserve">
     <value>Últimas transacciones</value>
@@ -312,7 +312,7 @@
   <data name="TotalBeneficiaries" xml:space="preserve">
     <value>Total de beneficiarias</value>
   </data>
-  <data name="TotalCards" xml:space="preserve">
+  <data name="TotalCards.Text" xml:space="preserve">
     <value>Tarjetas totales</value>
   </data>
   <data name="TotalCreditCards.Text" xml:space="preserve">

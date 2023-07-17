@@ -82,7 +82,7 @@ namespace ZBank.View.Main
 
         private void UseWindowsAccentColor_Toggled(object sender, RoutedEventArgs e)
         {
-            ThemeService.UseWindowsAccentColor = UseWindowsAccentColor.IsEnabled;
+            ThemeService.UseWindowsAccentColor = UseWindowsAccentColor.IsOn;
         }
 
         private void SystemToggleButton_Click(object sender, RoutedEventArgs e)

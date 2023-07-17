@@ -27,31 +27,10 @@ namespace ZBankManagement.Data.DataManager
             try
             {
                 Account repaymentAccount = await DBHandler.GetAccount(request.CustomerID, request.DepositAccount.RepaymentAccountNumber).ConfigureAwait(false);
-                if(repaymentAccount != null)
+                if (repaymentAccount != null)
                 {
-                    decimal totalAmount = request.DepositAccount.CalculateClosingAmount(DateTime.Now);
-                   
-                    Transaction transaction = new Transaction()
-                    {
-                        Amount = totalAmount,
-                        Description = $"FD Account {request.DepositAccount.AccountNumber} Closed",
-                        RecipientAccountNumber = repaymentAccount.AccountNumber,
-                        RecordedOn = DateTime.Now,
-                        ReferenceID = Guid.NewGuid().ToString(),
-                        SenderAccountNumber = request.DepositAccount.AccountNumber,
-                        TransactionType = TransactionType.TRANSFER
-                    };
+                    await CloseDeposit(request.DepositAccount, repaymentAccount);
 
-                    request.DepositAccount.IFSCCode = request.DepositAccount.IfscCode;
-                    request.DepositAccount.AccountStatus = AccountStatus.CLOSED;
-                    request.DepositAccount.MaturityDate = DateTime.Now;
-                    request.DepositAccount.MaturityAmount = totalAmount;
-                    request.DepositAccount.Balance = 0m;
-
-                    repaymentAccount.Balance += totalAmount;
-
-                    await DBHandler.CloseDeposit(request.DepositAccount, repaymentAccount, transaction).ConfigureAwait(false);
-                   
                     CloseDepositResponse response = new CloseDepositResponse()
                     {
                         DepositAccount = request.DepositAccount,
@@ -78,6 +57,60 @@ namespace ZBankManagement.Data.DataManager
                 callback.OnFailure(error);
             }
 
+        }
+
+        private async Task CloseDeposit(TermDepositAccount depositAccount, Account repaymentAccount)
+        {
+            decimal totalAmount = depositAccount.CalculateClosingAmount(DateTime.Now);
+
+            Transaction transaction = new Transaction()
+            {
+                Amount = totalAmount,
+                Description = $"FD Account {depositAccount.AccountNumber} Closed",
+                RecipientAccountNumber = repaymentAccount.AccountNumber,
+                RecordedOn = DateTime.Now,
+                ReferenceID = Guid.NewGuid().ToString(),
+                SenderAccountNumber = depositAccount.AccountNumber,
+                TransactionType = TransactionType.TRANSFER
+            };
+
+            depositAccount.IFSCCode = depositAccount.IfscCode;
+            depositAccount.AccountStatus = AccountStatus.CLOSED;
+            depositAccount.MaturityDate = DateTime.Now;
+            depositAccount.MaturityAmount = totalAmount;
+            depositAccount.Balance = 0m;
+
+            repaymentAccount.Balance += totalAmount;
+
+            await DBHandler.CloseDeposit(depositAccount, repaymentAccount, transaction).ConfigureAwait(false);
+        }
+
+        public async Task CloseAllMaturedDeposits(CloseDepositRequest request, IUseCaseCallback<CloseDepositResponse> callback)
+        {
+            try
+            {
+                IEnumerable<TermDepositAccount>  accounts = await DBHandler.GetAllDepositAccounts();
+                foreach (var account in accounts)
+                {
+                    if (account.MaturityDate > DateTime.Now.Date)
+                    {
+                        Account repaymentAccount = await DBHandler.GetAccount(null, account.RepaymentAccountNumber).ConfigureAwait(false);
+                        if (repaymentAccount != null)
+                        {
+                            await CloseDeposit(account, repaymentAccount);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ZBankException error = new ZBankException()
+                {
+                    Type = ErrorType.UNKNOWN,
+                    Message = ex.Message,
+                };
+                callback.OnFailure(error);
+            }
         }
     }
 }

@@ -94,6 +94,13 @@ namespace ZBank.DatabaseHandler
             };
             await _databaseAdapter.RunInTransactionAsync(action);
         }
+      
+        public async Task<IEnumerable<TermDepositAccount>> GetAllDepositAccounts()
+        {
+            return await _databaseAdapter.Query<TermDepositAccount>($"Select * from Account " +
+                $"Inner Join TermDepositAccount on TermDepositAccount.AccountNumber = Account.AccountNumber ").ConfigureAwait(false);
+
+        }
 
         public async Task<IEnumerable<Account>> GetIFSCCodeByAccountNumber(string accountNumber)
         {
@@ -185,7 +192,7 @@ namespace ZBank.DatabaseHandler
         public async Task<int> UpdateBeneficiary(Beneficiary beneficiaryToUpdate)
         {
             return await _databaseAdapter.Execute(
-                "Update Beneficiary Set IsFavourite = ? and Name = ? Where ID = ?",
+                "Update Beneficiary Set IsFavourite = ?, BeneficiaryName = ? Where ID = ?",
                 beneficiaryToUpdate.IsFavourite,
                 beneficiaryToUpdate.BeneficiaryName,
                 beneficiaryToUpdate.ID);
